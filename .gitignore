@@ -29,7 +29,7 @@
 !/tmp/storage/
 !/tmp/storage/.keep
 
-/public/assets
+#/public/assets   -- para todos accedan a la versión compilada de los assets
 
 # Ignore master key for decrypting credentials and more.
 /config/master.key
