@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  apellido: MyString
+  correo: MyString
+  contrasenia: MyString
+  descripcion: MyText
+  telefono: MyString
+  ultimo_acceso: 2025-04-19 21:43:41
+  facultad: MyString
+  estado: MyString
+  dni: MyString
+  cantidad_miembros_equipo: 1
+  nombre_proyectos: MyString
+  proviene: MyString
+  tipo: MyString
+  ocupacion: one
+
+two:
+  nombre: MyString
+  apellido: MyString
+  correo: MyString
+  contrasenia: MyString
+  descripcion: MyText
+  telefono: MyString
+  ultimo_acceso: 2025-04-19 21:43:41
+  facultad: MyString
+  estado: MyString
+  dni: MyString
+  cantidad_miembros_equipo: 1
+  nombre_proyectos: MyString
+  proviene: MyString
+  tipo: MyString
+  ocupacion: two

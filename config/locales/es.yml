@@ -1,0 +1,25 @@
+es:
+  app_name: "Incuba UNAS"
+  
+  navigation:
+    programas: "PROGRAMAS"
+    eventos: "EVENTOS"
+    servicios: "SERVICIOS"
+    nosotros: "NOSOTROS"
+    mentores: "MENTORES"
+    contacto: "CONTACTO"
+    iniciar_sesion: "Iniciar Sesión"
+  
+  hero:
+    transformamos: "TRANSFORMAMOS IDEAS INNOVADORAS PARA IMPULSAR TU NEGOCIO"
+    usando_estrategias: "¡Usando estrategias personalizadas y tecnología de vanguardia!"
+    inscribete: "INSCRÍBETE YA!"
+    cupos_limitados: "Cupos limitados"
+  
+  stats:
+    total_estudiantes: "Total Estudiantes"
+    nuevos_participantes: "Nuevos Participantes"
+    diarios: "Diarios"
+    contribuciones: "Contribuciones"
+    ultimo_ano: "En el Último Año"
+    explora_servicios: "Explora<br>Nuestros Servicios"

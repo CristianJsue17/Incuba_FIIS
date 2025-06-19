@@ -1,0 +1,31 @@
+es:
+  devise:
+    sessions:
+      user:
+        signed_in: "Has iniciado sesión correctamente."
+        signed_out: "Has cerrado sesión correctamente."
+      signed_in: "Has iniciado sesión correctamente."
+      signed_out: "Has cerrado sesión correctamente."
+      already_signed_out: "Ya has cerrado sesión."
+    failure:
+      user:
+        invalid: "Email o contraseña incorrectos."
+        not_found_in_database: "Email o contraseña incorrectos."
+      invalid: "Email o contraseña incorrectos."
+      unauthenticated: "Necesitas iniciar sesión para continuar."
+      timeout: "Tu sesión ha expirado. Inicia sesión nuevamente."
+    registrations:
+      user:
+        signed_up: "¡Bienvenido! Te has registrado correctamente."
+        updated: "Tu cuenta se ha actualizado correctamente."
+      signed_up: "¡Bienvenido! Te has registrado correctamente."
+      updated: "Tu cuenta se ha actualizado correctamente."
+    passwords:
+      send_instructions: "Recibirás un email con instrucciones para restablecer tu contraseña."
+      updated: "Tu contraseña se ha cambiado correctamente."
+    confirmations:
+      send_instructions: "Recibirás un email con instrucciones para confirmar tu cuenta."
+      confirmed: "Tu cuenta ha sido confirmada exitosamente."
+    unlocks:
+      send_instructions: "Recibirás un email con instrucciones para desbloquear tu cuenta."
+      unlocked: "Tu cuenta ha sido desbloqueada exitosamente."

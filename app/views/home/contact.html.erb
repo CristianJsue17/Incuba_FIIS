@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INCUBA - UNAS</title>
+
+    <!-- Font Awesome y Google Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+  
+    <!-- Estilos propios de home -->
+    <% content_for :stylesheets do %>
+      <%= stylesheet_link_tag "home" %>
+      <%= stylesheet_link_tag "contact" %>
+      <%= stylesheet_link_tag "swiper-bundle.min" %>
+    <% end %>
+
+    <% content_for :scripts do %>
+        <%= javascript_include_tag "enhanced_header", defer: true %>
+        <%= javascript_include_tag "footer", defer: true %>
+        <%= javascript_include_tag "swiper-bundle.min", defer: true %>
+        <%= javascript_include_tag "swiper-init", defer: true %>
+  <% end %>
+</head>
+
+<body>
+<!-- Header reestructurado con dropdowns completos -->
+<header class="header" role="banner">
+    <div class="header__container">
+       <div class="header__logo">
+            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+                <!-- DIV SEPARADO PARA EL LOGO -->
+                <div class="header__logo-container">
+                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+                </div>
+                <!-- DIV SEPARADO PARA EL TEXTO -->
+                <div class="header__text-container">
+                    <span class="header__logo-text">INCUBA UNAS</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+            <ul class="header__menu">
+                <!-- PROGRAMAS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- EVENTOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- SERVICIOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- NOSOTROS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- MENTORES -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- CONTACTO -->
+                <li class="header__menu-item">
+                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+                </li>
+
+                <!-- LOGIN MÓVIL -->
+                <li class="header__menu-item">
+                    <a href="<%= new_user_session_path %>"
+                        class="header__action-btn header__action-btn--mobile"
+                        data-turbo="false"
+                        aria-label="Iniciar sesión">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        INICIAR SESIÓN
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+<div class="header__actions">
+    <!-- SELECTOR DE IDIOMA -->
+    <%= render 'shared/language_switcher' %>
+    
+    <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    </div>
+</div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+</header>
+
+    <main>
+
+        <section class="contact">
+            <div class="contact__container">
+                <div class="contact__header">
+                    <h2 class="contact__title">CONTÁCTANOS</h2>
+                    <p class="contact__subtitle">Estamos aquí para ayudarte. Completa el formulario y nos pondremos en
+                        contacto
+                        contigo lo antes posible.</p>
+                </div>
+
+                <div class="contact__content">
+                    <div class="contact__info">
+                        <div class="contact__image-wrapper">
+                            <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80"
+                                alt="Nuestro equipo" class="contact__image">
+                        </div>
+
+                        <div class="contact__details">
+                            <div class="contact__detail-item">
+                                <div class="contact__icon-wrapper">
+                                    <i class='bx bxs-envelope'></i>
+                                </div>
+                                <div class="contact__detail-content">
+                                    <h3 class="contact__detail-title">Correo Electrónico</h3>
+                                    <p class="contact__detail-text">incubaunas@unas.edu.pe</p>
+                                </div>
+                            </div>
+
+                            <div class="contact__detail-item">
+                                <div class="contact__icon-wrapper">
+                                    <i class='bx bxs-map'></i>
+                                </div>
+                                <div class="contact__detail-content">
+                                    <h3 class="contact__detail-title">Dirección de Oficina</h3>
+                                    <p class="contact__detail-text">Carretera Central km. 1.21; Tingo María</p>
+                                    <p class="contact__detail-text">Tingo Maria, UNAS</p>
+                                </div>
+                            </div>
+
+                            <div class="contact__detail-item">
+                                <div class="contact__icon-wrapper">
+                                    <i class='bx bxs-phone'></i>
+                                </div>
+                                <div class="contact__detail-content">
+                                    <h3 class="contact__detail-title">Teléfono</h3>
+                                    <p class="contact__detail-text">+51 922 012 421</p>
+                                </div>
+                            </div>
+
+                            <div class="contact__social">
+                                <a href="#" class="contact__social-link" aria-label="Facebook">
+                                    <i class='bx bxl-facebook'></i>
+                                </a>
+                                <a href="#" class="contact__social-link" aria-label="Twitter">
+                                    <i class='bx bxl-twitter'></i>
+                                </a>
+                                <a href="#" class="contact__social-link" aria-label="LinkedIn">
+                                    <i class='bx bxl-linkedin-square'></i>
+                                </a>
+                                <a href="#" class="contact__social-link" aria-label="Instagram">
+                                    <i class='bx bxl-instagram'></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="contact__form-container">
+                        <form class="contact__form" id="contactForm">
+                            <div class="contact__form-header">
+                                <h3 class="contact__form-title">Envíanos un mensaje</h3>
+                            </div>
+
+                            <div class="contact__form-group">
+                                <div class="contact__input-wrapper">
+                                    <input type="text" id="name" class="contact__input" placeholder=" " required>
+                                    <label for="name" class="contact__label">Nombre y Apellido</label>
+                                    <span class="contact__input-focus"></span>
+                                </div>
+                            </div>
+
+                            <div class="contact__form-row">
+                                <div class="contact__form-group">
+                                    <div class="contact__input-wrapper">
+                                        <input type="email" id="email" class="contact__input" placeholder=" " required>
+                                        <label for="email" class="contact__label">Correo Electrónico</label>
+                                        <span class="contact__input-focus"></span>
+                                    </div>
+                                </div>
+
+                                <div class="contact__form-group">
+                                    <div class="contact__input-wrapper">
+                                        <input type="tel" id="phone" class="contact__input" placeholder=" " required>
+                                        <label for="phone" class="contact__label">Teléfono</label>
+                                        <span class="contact__input-focus"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="contact__form-group">
+                                <div class="contact__input-wrapper">
+                                    <textarea id="message" class="contact__textarea" placeholder=" " required></textarea>
+                                    <label for="message" class="contact__label">Mensaje</label>
+                                    <span class="contact__input-focus"></span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="contact__submit-btn">
+                                <span class="contact__btn-text">Enviar Mensaje</span>
+                                <span class="contact__btn-icon">
+                                    <i class='bx bxs-paper-plane'></i>
+                                </span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <footer class="footer">
+            <div class="footer__decoration footer__decoration--top-left"></div>
+            <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+            <div class="footer__container">
+                <!-- Columna izquierda: Logo y suscripción -->
+                <div class="footer__column footer__column--main">
+                    <div class="footer__logo-container">
+                        <div class="footer__logo">
+                            <span class="footer__logo-icon">I</span>NCUBA UNAS
+                        </div>
+                        <p class="footer__description">
+                        Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                        emprendimientos innovadores y sostenibles en la región.
+                        </p>    
+                    </div>
+
+                    <form class="footer__subscribe">
+                        <input type="email" class="footer__input" placeholder="Enter email">
+                        <button type="submit" class="footer__button">
+                            <i class="fas fa-arrow-right"></i>
+                            Suscribete
+                        </button>
+                    </form>
+
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link">
+                            <i class='bx bxl-instagram'></i>
+                        </a>
+                        <a href="#" class="footer__social-link">
+                            <i class='bx bxl-twitter'></i>
+                        </a>
+                        <a href="#" class="footer__social-link">
+                            <i class='bx bxl-facebook'></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Columnas de enlaces -->
+                <div class="footer__column">
+                    <h3 class="footer__heading">Principal</h3>
+                    <ul class="footer__links">
+                        <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h3 class="footer__heading">Nosotros</h3>
+                    <ul class="footer__links">
+                        <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer__column">
+                    <h3 class="footer__heading">Enlaces de Interés </h3>
+                    <ul class="footer__links">
+                        <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                        <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+                    </ul>
+                </div>
+            </div>
+        </footer>
+
+
+    </main>
+
+</body>
+
+</html>

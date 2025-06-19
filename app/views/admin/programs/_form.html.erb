@@ -1,0 +1,508 @@
+<!-- app/views/admin/programs/_form.html.erb -->
+<% if program.errors.any? %>
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+    <h5 class="font-semibold mb-2">Corrige los siguientes errores:</h5>
+    <ul class="list-disc pl-5">
+      <% program.errors.each do |error| %>
+        <% unless ['objetivos', 'beneficios', 'requisitos'].include?(error.attribute.to_s) %>
+          <% if error.attribute.to_s == 'fecha_vencimiento' && error.message.include?('posterior') %>
+            <li class="font-bold"><%= error.full_message %> 
+              <a href="#fechas-section" class="text-blue-600 underline">Ir a la sección de fechas</a>
+            </li>
+          <% else %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        <% end %>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: program,
+              url: program.persisted? ? admin_program_path(program) : admin_programs_path,
+              html: { class: "program-form", novalidate: true, multipart: true } do |f| %>
+
+  <!-- Información básica del programa -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-info-circle"></i> Información Básica</h3>
+    
+    <div class="grid-cols-2">
+      <div class="form-group">
+        <%= f.label :titulo, "Título del Programa*", class: "form-label" %>
+        <%= f.text_field :titulo, class: "form-control #{'is-invalid' if program.errors[:titulo].any?}", required: true %>
+        <% if program.errors[:titulo].any? %>
+          <div class="invalid-feedback">
+            <%= program.errors[:titulo].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :encargado, "Encargado*", class: "form-label" %>
+        <%= f.text_field :encargado, class: "form-control #{'is-invalid' if program.errors[:encargado].any?}", required: true %>
+        <% if program.errors[:encargado].any? %>
+          <div class="invalid-feedback">
+            <%= program.errors[:encargado].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group mt-4">
+      <%= f.label :descripcion, "Descripción*", class: "form-label" %>
+      <%= f.text_area :descripcion, class: "form-control #{'is-invalid' if program.errors[:descripcion].any?}", rows: 4, required: true %>
+      <% if program.errors[:descripcion].any? %>
+        <div class="invalid-feedback">
+          <%= program.errors[:descripcion].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Configuración del programa -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-cogs"></i> Configuración</h3>
+    
+    <div class="grid-cols-2">
+      <div class="form-group" data-controller="select">
+        <%= f.label :tipo, "Tipo de Programa*", class: "form-label" %>
+        <%= f.select :tipo, 
+                    Program::TIPOS.map { |t| [t.humanize, t] }, 
+                    { prompt: 'Selecciona un tipo' }, 
+                    { class: "form-select #{'is-invalid' if program.errors[:tipo].any?}", 
+                      required: true,
+                      data: { 
+                        select_target: "select",
+                        action: "change->select#updateOutput change->select#updateFormularioVisibility" 
+                      } 
+                    } %>
+        <% if program.errors[:tipo].any? %>
+          <div class="invalid-feedback">
+            <%= program.errors[:tipo].join(', ') %>
+          </div>
+        <% end %>
+        <small class="tipo-programa-message" data-select-target="output">
+          <% if program.tipo.present? %>
+            Formulario del Programa: <%= program.tipo.humanize %>
+          <% else %>
+            Seleccione un tipo de programa
+          <% end %>
+        </small>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :estado, "Estado*", class: "form-label" %>
+        <%= f.select :estado, 
+                  ['activo', 'inactivo', 'pendiente', 'finalizado'], 
+                  { prompt: nil, selected: program.estado || 'activo' }, 
+                  { class: "form-select #{'is-invalid' if program.errors[:estado].any?}", 
+                    required: true } %>
+        <% if program.errors[:estado].any? %>
+          <div class="invalid-feedback">
+            <%= program.errors[:estado].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- Fechas del programa -->
+<div class="form-section" id="fechas-section">
+  <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Período</h3>
+  
+  <div class="grid-cols-2">
+    <div class="form-group">
+  <%= f.label :fecha_publicacion, "Fecha de Publicación*", class: "form-label" %>
+  <%= f.datetime_local_field :fecha_publicacion, 
+                         value: program.fecha_publicacion || Time.current.strftime("%Y-%m-%dT%H:%M"),
+                         class: "form-control #{'is-invalid' if program.errors[:fecha_publicacion].any?}",
+                         id: "fecha_publicacion_field",
+                         required: true %>
+  <% if program.errors[:fecha_publicacion].any? %>
+    <div class="invalid-feedback">
+      <%= program.errors[:fecha_publicacion].join(', ') %>
+    </div>
+  <% end %>
+  <small class="text-gray-500 mt-1 block">Seleccione la fecha de inicio del programa</small>
+</div>
+
+<div class="form-group">
+  <%= f.label :fecha_vencimiento, "Fecha de Vencimiento*", class: "form-label" %>
+  <%= f.datetime_local_field :fecha_vencimiento, 
+                         value: program.fecha_vencimiento || (Time.current + 1.days).strftime("%Y-%m-%dT%H:%M"),
+                         class: "form-control #{'is-invalid' if program.errors[:fecha_vencimiento].any?}",
+                         id: "fecha_vencimiento_field",
+                         required: true %>
+  <% if program.errors[:fecha_vencimiento].any? %>
+    <div class="invalid-feedback">
+      <%= program.errors[:fecha_vencimiento].join(', ') %>
+    </div>
+  <% end %>
+  <div id="date-error-msg" style="color: #dc3545; font-weight: bold; margin-top: 5px; display: none;">
+    La fecha de vencimiento debe ser posterior a la fecha de publicación
+  </div>
+  <small class="text-gray-500 mt-1 block">Debe ser posterior a la fecha de publicación</small>
+</div>
+  </div>
+</div>
+
+  <!-- Imagen del programa -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-image"></i> Imagen</h3>
+    
+    <div data-controller="image-preview">
+      <%= f.label :image, "Imagen del Programa", class: "form-label" %>
+      
+      <%= f.file_field :image, 
+                     id: "program-image-input",
+                     class: "form-control #{'is-invalid' if program.errors[:image].any?}",
+                     accept: "image/jpeg, image/png, image/gif",
+                     data: { action: "change->image-preview#preview" } %>
+      
+      <% if program.errors[:image].any? %>
+        <div class="invalid-feedback">
+          <%= program.errors[:image].join(', ') %>
+        </div>
+      <% end %>
+      
+      <div class="image-preview-container mt-3" id="image-preview-container" data-image-preview-target="preview">
+        <% if program.image.attached? %>
+          <%= image_tag program.image, style: "max-width: 100%; height: auto;" %>
+        <% else %>
+          <img src="<%= asset_path('program_placeholder.png') %>" 
+               style="max-width: 100%; height: auto; opacity: 0.5;">
+        <% end %>
+      </div>
+      
+      <small class="text-gray-500 mt-2 block">Formatos aceptados: JPEG, PNG, GIF (Máx. 5MB)</small>
+    </div>
+  </div>
+
+  <!-- Detalles del programa (objetivos, beneficios, requisitos) -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-list-check"></i> Detalles del Programa</h3>
+    
+    <div class="grid-cols-3">
+      <div class="dynamic-card">
+        <div class="dynamic-card-header">
+          <h6 class="mb-0">Objetivos</h6>
+        </div>
+        <div class="dynamic-card-body">
+          <%= render 'admin/programs/dynamic_fields', f: f, program: program, field_type: 'objetivos', title: 'Objetivos' %>
+        </div>
+      </div>
+      
+      <div class="dynamic-card">
+        <div class="dynamic-card-header">
+          <h6 class="mb-0">Beneficios</h6>
+        </div>
+        <div class="dynamic-card-body">
+          <%= render 'admin/programs/dynamic_fields', f: f, program: program, field_type: 'beneficios', title: 'Beneficios' %>
+        </div>
+      </div>
+      
+      <div class="dynamic-card">
+        <div class="dynamic-card-header">
+          <h6 class="mb-0">Requisitos</h6>
+        </div>
+        <div class="dynamic-card-body">
+          <%= render 'admin/programs/dynamic_fields', f: f, program: program, field_type: 'requisitos', title: 'Requisitos' %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Formularios específicos ocultos -->
+  <div class="hidden">
+    <%= f.fields_for :formulario_programa_preincubacion do |preincubacion_form| %>
+      <!-- Campos del formulario preincubación -->
+    <% end %>
+    
+    <%= f.fields_for :formulario_programa_incubacion do |incubacion_form| %>
+      <!-- Campos del formulario incubación -->
+    <% end %>
+    
+    <%= f.fields_for :formulario_programa_innovacion do |innovacion_form| %>
+      <!-- Campos del formulario innovación -->
+    <% end %>
+  </div>
+
+  <!-- Acciones del formulario -->
+  <div class="form-actions">
+    <%= link_to "Cancelar", admin_programs_path, class: "btn btn-outline-danger" %>
+    <%= f.submit program.persisted? ? "Actualizar Programa" : "Crear Programa", 
+                class: "btn btn-primary" %>
+  </div>
+  
+  
+<% end %>
+
+
+<!-- Script de respaldo para la previsualización -->
+<script>
+// Inicialización común para ambas funcionalidades
+document.addEventListener('turbo:load', function() {
+  console.log("Turbo load - Inicializando funcionalidades con JavaScript puro");
+  setupImagePreview();
+  setupDateValidation();
+});
+
+document.addEventListener('turbo:render', function() {
+  console.log("Turbo render - Inicializando funcionalidades con JavaScript puro");
+  setupImagePreview();
+  setupDateValidation();
+});
+
+// También escuchar el evento DOMContentLoaded para navegadores sin Turbo
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOMContentLoaded - Inicializando funcionalidades con JavaScript puro");
+  setupImagePreview();
+  setupDateValidation();
+});
+
+// FUNCIONALIDAD 1: Previsualización de imágenes
+function setupImagePreview() {
+  const imageInput = document.getElementById('program-image-input');
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (imageInput && previewContainer) {
+    console.log("Backup script: Elements found");
+    
+    // Eliminar listeners anteriores para evitar duplicados
+    imageInput.removeEventListener('change', handleImageChange);
+    imageInput.addEventListener('change', handleImageChange);
+    
+    // Si hay un archivo ya seleccionado, mostrarlo
+    if (imageInput.files && imageInput.files[0]) {
+      handleImageChange({ target: imageInput });
+    }
+  }
+}
+
+function handleImageChange(event) {
+  console.log("Backup script: File changed");
+  const file = event.target.files[0];
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (file && previewContainer) {
+    console.log("Backup script: Processing file", file.name);
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      console.log("Backup script: File loaded");
+      previewContainer.innerHTML = `
+        <img src="${e.target.result}" 
+             class="img-thumbnail" 
+             style="max-width: 200px; max-height: 200px; object-fit: cover;">
+      `;
+    };
+    
+    reader.readAsDataURL(file);
+  }
+}
+
+// FUNCIONALIDAD 2: Validación de fechas
+function setupDateValidation() {
+  // Selección directa y con log para depuración
+  console.log("Validación de fechas: Buscando elementos del formulario");
+  
+  const form = document.querySelector('form.program-form'); // usar un selector más específico
+  console.log("Formulario encontrado:", !!form);
+  
+  const pubDateInput = document.querySelector('input[name="program[fecha_publicacion]"]');
+  console.log("Campo fecha publicación encontrado:", !!pubDateInput);
+  
+  const expDateInput = document.querySelector('input[name="program[fecha_vencimiento]"]');
+  console.log("Campo fecha vencimiento encontrado:", !!expDateInput);
+  
+  if (!form || !pubDateInput || !expDateInput) {
+    console.error("No se pudieron encontrar todos los elementos necesarios para validación de fechas");
+    return;
+  }
+  
+  console.log("Todos los elementos encontrados, configurando validación de fechas");
+  
+  // Función simplificada para validar fechas
+  function validateDates() {
+    if (pubDateInput.value && expDateInput.value) {
+      const pubDate = new Date(pubDateInput.value);
+      const expDate = new Date(expDateInput.value);
+      
+      console.log("Validando fechas:");
+      console.log("- Fecha publicación:", pubDateInput.value);
+      console.log("- Fecha vencimiento:", expDateInput.value);
+      
+      if (expDate <= pubDate) {
+        console.error("ERROR: Fecha de vencimiento debe ser posterior");
+        
+        // Mostrar error visual
+        expDateInput.style.borderColor = '#dc3545';
+        
+        // Agregar mensaje de error
+        let errorMsg = document.getElementById('date-error-msg');
+        if (!errorMsg) {
+          errorMsg = document.createElement('div');
+          errorMsg.id = 'date-error-msg';
+          errorMsg.style.color = '#dc3545';
+          errorMsg.style.fontWeight = 'bold';
+          errorMsg.style.marginTop = '5px';
+          expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+        }
+        
+        errorMsg.textContent = "La fecha de vencimiento debe ser posterior a la fecha de publicación";
+        errorMsg.style.display = 'block';
+        
+        return false;
+      } else {
+        console.log("Validación de fechas correcta");
+        
+        // Quitar error visual
+        expDateInput.style.borderColor = '';
+        
+        // Ocultar mensaje de error si existe
+        const errorMsg = document.getElementById('date-error-msg');
+        if (errorMsg) {
+          errorMsg.style.display = 'none';
+        }
+        
+        return true;
+      }
+    }
+    return true;
+  }
+
+  // Función para actualizar la sugerencia de estado según las fechas
+  function updateEstadoSuggestion() {
+    const estadoSelect = document.querySelector('select[name="program[estado]"]');
+    if (!estadoSelect) return;
+    
+    const now = new Date();
+    const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
+    const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
+    
+    if (!pubDate || !expDate) return;
+    
+    console.log("Calculando estado sugerido según fechas:");
+    console.log("- Fecha actual:", now);
+    console.log("- Fecha publicación:", pubDate);
+    console.log("- Fecha vencimiento:", expDate);
+    
+    // Determinar el estado sugerido según las fechas
+    let suggestedEstado = '';
+    let estadoReason = '';
+    
+    if (now < pubDate) {
+      suggestedEstado = 'pendiente';
+      estadoReason = 'aún no ha llegado la fecha de publicación';
+    } else if (now >= pubDate && now < expDate) {
+      suggestedEstado = 'activo';
+      estadoReason = 'está dentro del período de vigencia';
+    } else if (now >= expDate) {
+      // Calcular si han pasado 12 horas desde vencimiento
+      const finalizedUntil = new Date(expDate);
+      finalizedUntil.setHours(finalizedUntil.getHours() + 12);
+      
+      if (now < finalizedUntil) {
+        suggestedEstado = 'finalizado';
+        estadoReason = 'ha pasado la fecha de vencimiento (menos de 12 horas)';
+      } else {
+        suggestedEstado = 'inactivo';
+        estadoReason = 'ha pasado la fecha de vencimiento (más de 12 horas)';
+      }
+    }
+    
+    console.log("- Estado sugerido:", suggestedEstado, "-", estadoReason);
+    
+    // Mostrar mensaje informativo sobre el estado sugerido
+    if (suggestedEstado) {
+      let estadoInfo = document.getElementById('estado-sugerido-info');
+      if (!estadoInfo) {
+        estadoInfo = document.createElement('div');
+        estadoInfo.id = 'estado-sugerido-info';
+        estadoInfo.style.marginTop = '10px';
+        estadoInfo.style.padding = '8px 12px';
+        estadoInfo.style.borderRadius = '4px';
+        estadoSelect.parentNode.appendChild(estadoInfo);
+      }
+      
+      // Si el estado actual no coincide con el sugerido, mostrar una sugerencia
+      if (estadoSelect.value !== suggestedEstado) {
+        estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).
+                                <br>Puedes mantener <strong>${estadoSelect.value}</strong> si lo prefieres.`;
+        estadoInfo.style.backgroundColor = '#fff3cd';
+        estadoInfo.style.color = '#856404';
+        estadoInfo.style.border = '1px solid #ffeeba';
+      } else {
+        estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado para estas fechas (${estadoReason}).`;
+        estadoInfo.style.backgroundColor = '#d4edda';
+        estadoInfo.style.color = '#155724';
+        estadoInfo.style.border = '1px solid #c3e6cb';
+      }
+    }
+  }
+  
+  // Validar al cambiar las fechas
+  pubDateInput.addEventListener('change', function() {
+    console.log("Cambio en fecha de publicación:", pubDateInput.value);
+    validateDates();
+    updateEstadoSuggestion();
+  });
+  
+  expDateInput.addEventListener('change', function() {
+    console.log("Cambio en fecha de vencimiento:", expDateInput.value);
+    validateDates();
+    updateEstadoSuggestion();
+  });
+  
+  // Escuchar cambios en el select de estado
+  const estadoSelect = document.querySelector('select[name="program[estado]"]');
+  if (estadoSelect) {
+    estadoSelect.addEventListener('change', function() {
+      console.log("Cambio en estado:", estadoSelect.value);
+      updateEstadoSuggestion();
+    });
+  }
+  
+  // Validar al enviar el formulario
+  form.addEventListener('submit', function(event) {
+    console.log("Intento de envío del formulario");
+    
+    const isValid = validateDates();
+    if (!isValid) {
+      console.error("Formulario inválido, previniendo envío");
+      event.preventDefault();
+      
+      // Quitamos el alert que es molesto
+      // alert("Error: La fecha de vencimiento debe ser posterior a la fecha de publicación");
+      
+      // En lugar de mostrar una alerta, aseguramos que el mensaje de error sea visible
+      let errorMsg = document.getElementById('date-error-msg');
+      if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.id = 'date-error-msg';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.fontWeight = 'bold';
+        errorMsg.style.marginTop = '5px';
+        expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+      }
+      
+      errorMsg.textContent = "La fecha de vencimiento debe ser posterior a la fecha de publicación";
+      errorMsg.style.display = 'block';
+      
+      // Hacer scroll hasta el campo con error para que sea visible
+      expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      return false;
+    }
+    
+    console.log("Formulario válido, continuando envío");
+    return true;
+  });
+  
+  // Ejecutar validación inicial
+  console.log("Ejecutando validación inicial de fechas");
+  validateDates();
+  updateEstadoSuggestion();
+}
+</script>

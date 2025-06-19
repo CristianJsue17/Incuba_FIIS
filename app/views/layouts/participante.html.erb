@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dashboard Participante - Incuba UNAS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <%= javascript_importmap_tags %>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <!-- jQuery -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+
+<body class="bg-green-50">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="bg-green-800 text-white w-64 flex-shrink-0 flex flex-col">
+      <div class="p-4 border-b border-green-700 flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold">Incuba UNAS</h1>
+          <p class="text-xs text-green-200">Panel Participante</p>
+        </div>
+        <button class="text-white">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      
+      <nav class="flex-1 py-3">
+        <ul class="space-y-0">
+          <li>
+            <a href="<%= participante_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-green-700' : 'hover:bg-green-700' %>">
+              <i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>
+              <span class="font-medium">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-green-700">
+              <i class="fas fa-graduation-cap w-6 h-6 mr-3"></i>
+              <span class="font-medium">Mis Programas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-green-700">
+              <i class="fas fa-users w-6 h-6 mr-3"></i>
+              <span class="font-medium">Mi Equipo</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-green-700">
+              <i class="fas fa-lightbulb w-6 h-6 mr-3"></i>
+              <span class="font-medium">Mis Proyectos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-green-700">
+              <i class="fas fa-calendar-alt w-6 h-6 mr-3"></i>
+              <span class="font-medium">Eventos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-green-700">
+              <i class="fas fa-book w-6 h-6 mr-3"></i>
+              <span class="font-medium">Recursos</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Navigation -->
+      <header class="bg-white shadow-sm">
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center">
+            <h1 class="text-lg font-semibold text-gray-700">Dashboard Participante</h1>
+            <span class="text-gray-500 ml-3">¡Bienvenido emprendedor!</span>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <div class="relative">
+              <button class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">2</span>
+              </button>
+            </div>
+            
+            <div class="relative">
+              <div class="flex items-center cursor-pointer" id="userMenuButton">
+                <div class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white mr-2">
+                  <%= current_user.nombre[0].upcase %>
+                </div>
+                <span class="text-gray-700"><%= current_user.nombre %></span>
+                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+              </div>
+              
+              <!-- Menú desplegable de usuario CORREGIDO -->
+              <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+                  <i class="fas fa-user mr-2 text-green-600"></i> Ver Perfil
+                </a>
+                <div class="border-t border-gray-100"></div>
+                
+                <%= button_to destroy_user_session_path, 
+                    method: :delete,
+                    form: { 
+                      style: "margin: 0; display: block;" 
+                    },
+                    class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors border-0 bg-transparent cursor-pointer",
+                    data: { 
+                      confirm: "¿Estás seguro que quieres cerrar sesión?" 
+                    } do %>
+                  <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Page Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+        <%= yield %>
+      </main>
+      
+      <!-- Footer -->
+      <footer class="bg-white p-4 shadow-inner text-center text-gray-500 text-sm">
+        © <%= Date.today.year %> Incuba UNAS. Todos los derechos reservados.
+      </footer>
+    </div>
+  </div>
+
+  <!-- JavaScript para el menú desplegable -->
+  <script>
+    function initializeUserDropdown() {
+      $("#userMenuButton").off('click');
+      $(document).off('click.userMenu');
+      
+      $("#userMenuButton").on('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $("#userMenu").toggleClass("hidden");
+      });
+      
+      $(document).on('click.userMenu', function(e) {
+        if (!$(e.target).closest("#userMenu").length && !$(e.target).closest("#userMenuButton").length) {
+          $("#userMenu").addClass("hidden");
+        }
+      });
+    }
+
+    $(document).ready(function() {
+      initializeUserDropdown();
+    });
+
+    $(document).on('turbo:load', function() {
+      initializeUserDropdown();
+    });
+  </script>
+</body>
+</html>

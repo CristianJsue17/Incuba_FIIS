@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Incuba UNAS</title>
+  
+  <!-- Meta tags mejorados -->
+  <meta name="description" content="Incuba UNAS transforma ideas en soluciones innovadoras. Programas de incubación, mentorías y aceleración para emprendedores.">
+  <meta name="keywords" content="incubadora, emprendimiento, innovación, startups, UNAS, Huánuco">
+  <meta name="author" content="Incuba UNAS">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Incuba UNAS">
+  <meta property="og:description" content="Programas de incubación y aceleración para emprendedores innovadores">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="<%= request.url %>">
+  
+  <!-- Font Awesome y Google Fonts -->
+  <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800;900&family=Comfortaa:wght@300;400;700&family=Quicksand:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS BASE -->
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  
+  <!-- CSS ESPECÍFICOS DE LAS VISTAS -->
+  <%= yield :stylesheets %>
+  
+  <!-- JavaScript base -->
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  <%= javascript_importmap_tags %>
+  
+  
+  <!-- Rails CSRF -->
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+</head>
+
+<body class="<%= controller_name %>-page <%= action_name %>-action">
+  <%= yield %>
+  
+  <!-- JavaScript específico de las vistas -->
+  <%= yield :scripts %>
+</body>
+</html>

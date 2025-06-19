@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre_equipo: MyString
+  nombre_lider: MyString
+  cantidad_miembros: 1
+  lista_integrantes_equipo: MyText
+  mentor: one
+
+two:
+  nombre_equipo: MyString
+  nombre_lider: MyString
+  cantidad_miembros: 1
+  lista_integrantes_equipo: MyText
+  mentor: two

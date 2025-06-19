@@ -1,0 +1,954 @@
+<!-- app/views/home/servicios.html.erb -->
+
+<head>
+  <!-- Font Awesome y Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos organizados -->
+  <% content_for :stylesheets do %>
+    <%= stylesheet_link_tag "home" %>
+  <% end %>
+ 
+  <!-- JS que contiene -->
+  <% content_for :scripts do %>
+    <%= javascript_include_tag "enhanced_header", defer: true %> 
+    <%= javascript_include_tag "footer", defer: true %>
+  <% end %>
+
+
+</head>
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-dots"></div>
+  <div class="bg-line bg-line-1"></div>
+  <div class="bg-line bg-line-2"></div>
+</div>
+
+<!-- Header reestructurado con dropdowns completos -->
+<header class="header" role="banner">
+    <div class="header__container">
+       <div class="header__logo">
+            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+                <!-- DIV SEPARADO PARA EL LOGO -->
+                <div class="header__logo-container">
+                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+                </div>
+                <!-- DIV SEPARADO PARA EL TEXTO -->
+                <div class="header__text-container">
+                    <span class="header__logo-text">INCUBA UNAS</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+            <ul class="header__menu">
+                <!-- PROGRAMAS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- EVENTOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- SERVICIOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- NOSOTROS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- MENTORES -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- CONTACTO -->
+                <li class="header__menu-item">
+                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+                </li>
+
+                <!-- LOGIN MÓVIL -->
+                <li class="header__menu-item">
+                    <a href="<%= new_user_session_path %>"
+                        class="header__action-btn header__action-btn--mobile"
+                        data-turbo="false"
+                        aria-label="Iniciar sesión">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        INICIAR SESIÓN
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+<div class="header__actions">
+    <!-- SELECTOR DE IDIOMA -->
+    <%= render 'shared/language_switcher' %>
+    
+    <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    </div>
+</div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+</header>
+
+<div class="servicios-container">
+  <div class="hero-servicios">
+    <div class="hero-badge">Descubre nuestros</div>
+    <h1>Nuestros Servicios</h1>
+    <p>En Incuba UNAS ofrecemos programas especializados para emprendedores en diferentes etapas</p>
+  </div>
+  
+  <div class="servicios-cards" id="servicios-cards">
+    <% @datos_servicios[:tipos_programas].each_with_index do |tipo, index| %>
+      <div class="servicio-card" style="opacity: 1; transform: translateY(0);">
+        <div class="servicio-imagen <%= tipo[:tipo] %>-bg">
+          <div class="imagen-overlay"></div>
+          <img 
+            src="<%= asset_path("#{tipo[:tipo]}.png") %>" 
+            alt="<%= tipo[:titulo] %>" 
+            onerror="this.src='<%= asset_path('program-placeholder.png') %>'"
+          >
+          <div class="servicio-badge"><%= tipo[:titulo] %></div>
+        </div>
+        <div class="servicio-content">
+          <h2><%= tipo[:titulo] %></h2>
+          <p><%= tipo[:descripcion] %></p>
+          <ul class="servicio-features">
+            <% tipo[:caracteristicas].each do |caracteristica| %>
+              <li>
+                <span class="feature-icon">
+                  <i class="fas fa-check-circle"></i>
+                </span>
+                <span><%= caracteristica %></span>
+              </li>
+            <% end %>
+          </ul>
+          <a href="<%= "/servicios/#{tipo[:tipo]}" %>" class="btn-ver-programas">
+            <span>Ver Programas</span>
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  
+  <!-- Sección extra moderna -->
+  <div class="extra-section">
+    <div class="extra-section-content">
+      <h2>¿Por qué elegir Incuba UNAS?</h2>
+      <p>Somos el aliado que todo emprendedor necesita para llevar su proyecto al siguiente nivel.</p>
+      
+      <div class="benefit-cards">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <h3>Comunidad</h3>
+          <p>Forma parte de una red de emprendedores e innovadores</p>
+        </div>
+        
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-lightbulb"></i>
+          </div>
+          <h3>Innovación</h3>
+          <p>Acceso a las últimas metodologías y tecnologías</p>
+        </div>
+        
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <h3>Crecimiento</h3>
+          <p>Estrategias probadas para escalar tu negocio</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    <!-- Sección Footer -->
+    <footer class="footer">
+        <div class="footer__decoration footer__decoration--top-left"></div>
+        <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+        <div class="footer__container">
+            <!-- Columna izquierda: Logo y suscripción -->
+            <div class="footer__column footer__column--main">
+                <div class="footer__logo-container">
+                    <div class="footer__logo">
+                        <span class="footer__logo-icon">I</span>NCUBA UNAS
+                    </div>
+                    <p class="footer__description">
+                        Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                        emprendimientos innovadores y sostenibles en la región.
+                    </p>
+                </div>
+
+                <form class="footer__subscribe">
+                    <input type="email" class="footer__input" placeholder="Enter email">
+                    <button type="submit" class="footer__button">
+                        <i class="fas fa-arrow-right"></i>
+                        Contacto
+                    </button>
+                </form>
+
+                <div class="footer__social">
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-instagram'></i>
+                    </a>
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-twitter'></i>
+                    </a>
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-facebook'></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Columnas de enlaces -->
+            <div class="footer__column">
+                <h3 class="footer__heading">Principal</h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__column">
+                <h3 class="footer__heading">Nosotros</h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__column">
+                <h3 class="footer__heading">Enlaces de Interés </h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+<!-- Estilos mejorados y modernos -->
+<style>
+  /* Variables */
+  :root {
+    --azul: #000099;
+    --azul-hover: #0000cc;
+    --azul-claro: #3333ff;
+    --verde: #00CC66;
+    --verde-claro: #33ff99;
+    --blanco: #FFFFFF;
+    --gris-claro: #f8f9fa;
+    --gris-medio: #e9ecef;
+    --fondo: #F9FBFF;
+    --sombra: 0 10px 30px rgba(0, 0, 153, 0.08);
+    --sombra-hover: 0 15px 35px rgba(0, 0, 153, 0.15);
+    --transicion: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --borde-radius: 16px;
+    --borde-radius-sm: 8px;
+  }
+
+  /* Reset básico */
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    background-color: var(--fondo);
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  /* Elementos decorativos de fondo */
+  .background-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.3;
+    filter: blur(60px);
+  }
+
+  .bg-circle-1 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, var(--azul-claro), var(--azul));
+    top: -100px;
+    right: 5%;
+  }
+
+  .bg-circle-2 {
+    width: 500px;
+    height: 500px;
+    background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+    bottom: -200px;
+    left: -200px;
+  }
+
+  .bg-circle-3 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #f9ca24, #f0932b);
+    top: 30%;
+    left: 10%;
+    opacity: 0.15;
+  }
+
+  .bg-dots {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgba(0, 0, 153, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  .bg-line {
+    position: absolute;
+    background: linear-gradient(90deg, rgba(0, 0, 153, 0) 0%, rgba(0, 0, 153, 0.1) 50%, rgba(0, 0, 153, 0) 100%);
+    height: 1px;
+    width: 100%;
+  }
+
+  .bg-line-1 {
+    top: 25%;
+    transform: rotate(-5deg);
+  }
+
+  .bg-line-2 {
+    bottom: 30%;
+    transform: rotate(3deg);
+  }
+
+  /* Estilos para la página de servicios */
+  .servicios-container {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-servicios {
+    text-align: center;
+    margin-bottom: 80px;
+    position: relative;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--azul-claro), var(--azul));
+    color: white;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 153, 0.2);
+  }
+
+  .hero-servicios h1 {
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, var(--azul), var(--azul-claro));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    font-weight: 800;
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-servicios h1::after {
+    content: '';
+    position: absolute;
+    width: 80px;
+    height: 4px;
+    background: var(--verde);
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+  }
+
+  .hero-servicios p {
+    font-size: 1.2rem;
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-top: 25px;
+    line-height: 1.6;
+  }
+
+  .servicios-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    margin-bottom: 80px;
+  }
+
+  .servicio-card {
+    display: flex;
+    background: white;
+    border-radius: var(--borde-radius);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+    transition: var(--transicion);
+    position: relative;
+  }
+
+  .servicio-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: var(--sombra-hover);
+  }
+
+  .servicio-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--azul), var(--verde));
+    border-radius: var(--borde-radius) 0 0 var(--borde-radius);
+  }
+
+  .servicio-imagen {
+    flex: 0 0 300px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .imagen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 153, 0.2), rgba(0, 0, 153, 0.5));
+    z-index: 1;
+    transition: all 0.3s ease;
+  }
+
+  .servicio-card:hover .imagen-overlay {
+    background: linear-gradient(to bottom, rgba(0, 0, 153, 0.1), rgba(0, 0, 153, 0.3));
+  }
+
+  .servicio-imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+
+  .servicio-card:hover .servicio-imagen img {
+    transform: scale(1.05);
+  }
+
+  .servicio-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--azul);
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    z-index: 2;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .preincubacion-bg {
+    background-color: rgba(33, 150, 243, 0.1);
+  }
+
+  .incubacion-bg {
+    background-color: rgba(0, 150, 136, 0.1);
+  }
+
+  .innovacion-bg {
+    background-color: rgba(205, 220, 57, 0.1);
+  }
+
+  .servicio-content {
+    flex: 1;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .servicio-content h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 700;
+    transition: color 0.3s ease;
+  }
+
+  .servicio-card:hover .servicio-content h2 {
+    color: var(--azul);
+  }
+
+  .servicio-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #666;
+    margin-bottom: 25px;
+  }
+
+  .servicio-features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 30px 0;
+  }
+
+  .servicio-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    font-size: 1.05rem;
+    color: #555;
+    transition: transform 0.3s ease;
+  }
+
+  .servicio-features li:hover {
+    transform: translateX(5px);
+  }
+
+  .feature-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, var(--verde-claro), var(--verde));
+    border-radius: 50%;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  .feature-icon i {
+    color: white;
+    font-size: 0.9rem;
+  }
+
+  .btn-ver-programas {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, var(--azul), var(--azul-hover));
+    color: white;
+    text-decoration: none;
+    border-radius: 30px;
+    font-weight: 600;
+    margin-top: auto;
+    align-self: flex-start;
+    transition: var(--transicion);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 153, 0.3);
+  }
+
+  .btn-ver-programas i {
+    transition: transform 0.3s ease;
+  }
+
+  .btn-ver-programas:hover {
+    background: linear-gradient(135deg, var(--azul-hover), var(--azul));
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 153, 0.4);
+  }
+
+  .btn-ver-programas:hover i {
+    transform: translateX(5px);
+  }
+
+  /* Sección extra */
+  .extra-section {
+    background: white;
+    border-radius: var(--borde-radius);
+    padding: 60px 40px;
+    margin-top: 60px;
+    box-shadow: var(--sombra);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .extra-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(to right, var(--azul), var(--verde));
+  }
+
+  .extra-section-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .extra-section h2 {
+    font-size: 2.2rem;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .extra-section p {
+    font-size: 1.1rem;
+    color: #666;
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 40px;
+    line-height: 1.6;
+  }
+
+  .benefit-cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+  }
+
+  .benefit-card {
+    background: var(--gris-claro);
+    border-radius: var(--borde-radius-sm);
+    padding: 30px 25px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 300px;
+    text-align: center;
+    transition: var(--transicion);
+  }
+
+  .benefit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--sombra);
+    background: white;
+  }
+
+  .benefit-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--azul-claro), var(--azul));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+  }
+
+  .benefit-icon i {
+    color: white;
+    font-size: 1.8rem;
+  }
+
+  .benefit-card h3 {
+    font-size: 1.3rem;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .benefit-card p {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Media queries */
+  @media (max-width: 992px) {
+    .servicio-card {
+      flex-direction: column;
+    }
+    
+    .servicio-imagen {
+      height: 250px;
+    }
+    
+    .btn-ver-programas {
+      align-self: center;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .hero-servicios h1 {
+      font-size: 2.8rem;
+    }
+    
+    .benefit-cards {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .benefit-card {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-servicios h1 {
+      font-size: 2.2rem;
+    }
+    
+    .servicio-content h2 {
+      font-size: 1.8rem;
+    }
+    
+    .extra-section {
+      padding: 40px 20px;
+    }
+    
+    .extra-section h2 {
+      font-size: 1.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-servicios h1 {
+      font-size: 1.8rem;
+    }
+    
+    .hero-servicios p {
+      font-size: 1rem;
+    }
+    
+    .servicio-content {
+      padding: 25px 20px;
+    }
+    
+    .servicio-content h2 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<!-- Script mejorado -->
+<script>
+  // Función para manejar el efecto de ripple en botones
+  function setupButtonRipples() {
+    const buttons = document.querySelectorAll('.btn-ver-programas');
+    
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        
+        ripple.style.position = 'absolute';
+        ripple.style.top = '50%';
+        ripple.style.left = '50%';
+        ripple.style.width = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+        ripple.style.opacity = '1';
+        ripple.style.transition = 'all 0.6s ease-out';
+        ripple.style.pointerEvents = 'none';
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.style.transform = 'translate(-50%, -50%) scale(1)';
+          ripple.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => {
+          if (ripple && ripple.parentNode) {
+            ripple.parentNode.removeChild(ripple);
+          }
+        }, 600);
+      });
+    });
+  }
+  
+  // Añadir desplazamiento suave a los botones
+  function setupSmoothScrolling() {
+    const buttons = document.querySelectorAll('a[href^="#"]');
+    buttons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href.startsWith('#')) {
+          e.preventDefault();
+          const targetElement = document.querySelector(href);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        }
+      });
+    });
+  }
+  
+  // Crear efecto paralaje para los elementos de fondo
+  function setupParallaxEffect() {
+    window.addEventListener('mousemove', function(e) {
+      const circles = document.querySelectorAll('.bg-circle');
+      const moveX = (e.clientX - window.innerWidth / 2) / 50;
+      const moveY = (e.clientY - window.innerHeight / 2) / 50;
+      
+      circles.forEach((circle, index) => {
+        const factor = (index + 1) * 0.4;
+        circle.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+      });
+    });
+  }
+  
+  // Asegurarnos de que todo se muestre correctamente
+  function ensureVisibility() {
+    // Forzar el scroll al principio para asegurar que todo se renderice
+    window.scrollTo(0, 0);
+    
+    // Asegurarnos de que todas las tarjetas estén visibles
+    const cards = document.querySelectorAll('.servicio-card');
+    cards.forEach(card => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateY(0)';
+    });
+    
+    // Configurar efectos visuales
+    setupButtonRipples();
+    setupSmoothScrolling();
+    setupParallaxEffect();
+    
+    // Forzar un reflow/repaint del navegador
+    document.body.offsetHeight;
+  }
+  
+  // Eventos para diferentes contextos de carga
+  document.addEventListener('DOMContentLoaded', ensureVisibility);
+  
+  // Si estás usando Turbo, también escuchar eventos de Turbo
+  if (typeof Turbo !== 'undefined') {
+    document.addEventListener('turbo:load', ensureVisibility);
+    document.addEventListener('turbo:render', ensureVisibility);
+    document.addEventListener('turbo:visit', ensureVisibility);
+  }
+  
+  // Asegurarse de que el scroll funcione correctamente
+  window.addEventListener('load', function() {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    ensureVisibility();
+    
+    // Timeout extra para navegadores que puedan tener comportamiento tardío
+    setTimeout(ensureVisibility, 100);
+  });
+</script>

@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  equipo: one
+  project: one
+  program: one
+  event: one
+  monto_ganado: 9.99
+
+two:
+  equipo: two
+  project: two
+  program: two
+  event: two
+  monto_ganado: 9.99

@@ -1,0 +1,1015 @@
+<!-- app/views/home/programas_tipo.html.erb -->
+
+<!-- Font Awesome y Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "home" %>
+  <%= stylesheet_link_tag "swiper-bundle.min" %>
+<% end %>
+
+<% content_for :scripts do %>
+  <%= javascript_include_tag "enhanced_header", defer: true %>
+  <%= javascript_include_tag "footer", defer: true %>
+<% end %>
+
+
+
+<!-- Header reestructurado con dropdowns completos -->
+<header class="header" role="banner">
+    <div class="header__container">
+       <div class="header__logo">
+            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+                <!-- DIV SEPARADO PARA EL LOGO -->
+                <div class="header__logo-container">
+                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+                </div>
+                <!-- DIV SEPARADO PARA EL TEXTO -->
+                <div class="header__text-container">
+                    <span class="header__logo-text">INCUBA UNAS</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+            <ul class="header__menu">
+                <!-- PROGRAMAS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- EVENTOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- SERVICIOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- NOSOTROS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- MENTORES -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- CONTACTO -->
+                <li class="header__menu-item">
+                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+                </li>
+
+                <!-- LOGIN MÓVIL -->
+                <li class="header__menu-item">
+                    <a href="<%= new_user_session_path %>"
+                        class="header__action-btn header__action-btn--mobile"
+                        data-turbo="false"
+                        aria-label="Iniciar sesión">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        INICIAR SESIÓN
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+<div class="header__actions">
+    <!-- SELECTOR DE IDIOMA -->
+    <%= render 'shared/language_switcher' %>
+    
+    <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    </div>
+</div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+</header>
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-dots"></div>
+  <div class="bg-line bg-line-1"></div>
+  <div class="bg-line bg-line-2"></div>
+</div>
+
+<div class="programas-tipo-container">
+  <div class="programas-tipo-header" style="background: linear-gradient(135deg, <%= @tipo_actual[:color] %>, <%= @tipo_actual[:color] %>aa)">
+    <div class="tipo-icono">
+      <i class="fas <%= @tipo_actual[:icono] %>"></i>
+    </div>
+    <div class="tipo-info">
+      <div class="tipo-badge">PROGRAMAS</div>
+      <h1><%= @tipo_actual[:titulo] %></h1>
+      <p><%= @tipo_actual[:descripcion] %></p>
+    </div>
+  </div>
+  
+  <div class="volver-container">
+    <a href="/servicios" class="btn-volver">
+      <i class="fas fa-arrow-left"></i> Volver a Servicios
+    </a>
+  </div>
+  
+  <div class="programas-grid">
+    <% if @programs && @programs.length > 0 %>
+      <% @programs.each do |programa| %>
+        <div class="programa-card" data-programa-id="<%= programa.id %>">
+          <div class="programa-imagen" style="border-color: <%= @tipo_actual[:color] %>">
+            <div class="imagen-overlay"></div>
+            <img 
+              src="<%= programa.image.attached? ? url_for(programa.image) : asset_path('program-placeholder.png') %>" 
+              alt="<%= programa.titulo %>"
+              loading="lazy"
+            >
+            <div class="programa-fecha">
+              <i class="far fa-calendar-alt"></i>
+              <%= programa.fecha_vencimiento ? programa.fecha_vencimiento.strftime("%d/%m/%Y") : "Disponible" %>
+            </div>
+          </div>
+          <div class="programa-content">
+            <h2><%= programa.titulo %></h2>
+            <p><%= programa.descripcion %></p>
+            <div class="programa-actions">
+              <a href="<%= "/programas/#{programa.id}" %>" class="btn-ver-detalles">
+                Ver detalles
+                <i class="fas fa-info-circle"></i>
+              </a>
+              <a href="<%= "/programas/#{programa.id}/inscripcion" %>" class="btn-inscribirse">
+                Inscribirse
+                <i class="fas fa-arrow-right"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="no-programas">
+        <div class="no-programas-icon">
+          <i class="fas fa-exclamation-circle"></i>
+        </div>
+        <h3>No hay programas disponibles</h3>
+        <p>Actualmente no hay programas disponibles en la categoría de <%= @tipo_actual[:titulo] %>. Por favor, vuelve a consultar próximamente.</p>
+        <a href="/servicios" class="btn-volver-grande">
+          <i class="fas fa-home"></i> Volver a la página de servicios
+        </a>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Sección Footer -->
+<footer class="footer">
+    <div class="footer__decoration footer__decoration--top-left"></div>
+    <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+    <div class="footer__container">
+        <!-- Columna izquierda: Logo y suscripción -->
+        <div class="footer__column footer__column--main">
+            <div class="footer__logo-container">
+                <div class="footer__logo">
+                    <span class="footer__logo-icon">I</span>NCUBA UNAS
+                </div>
+                <p class="footer__description">
+                    Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                    emprendimientos innovadores y sostenibles en la región.
+                </p>
+            </div>
+
+            <form class="footer__subscribe">
+                <input type="email" class="footer__input" placeholder="Enter email">
+                <button type="submit" class="footer__button">
+                    <i class="fas fa-arrow-right"></i>
+                    Contacto
+                </button>
+            </form>
+
+            <div class="footer__social">
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-instagram'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-twitter'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-facebook'></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Columnas de enlaces -->
+        <div class="footer__column">
+            <h3 class="footer__heading">Principal</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Nosotros</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Enlaces de Interés </h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<!-- Estilos mejorados y modernos -->
+<style>
+/* Variables */
+:root {
+  --azul: #000099;
+  --azul-hover: #0000cc;
+  --azul-claro: #3333ff;
+  --verde: #00CC66;
+  --verde-claro: #33ff99;
+  --blanco: #FFFFFF;
+  --gris-claro: #f8f9fa;
+  --gris-medio: #e9ecef;
+  --fondo: #F9FBFF;
+  --sombra: 0 10px 30px rgba(0, 0, 153, 0.08);
+  --sombra-hover: 0 15px 35px rgba(0, 0, 153, 0.15);
+  --transicion: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --borde-radius: 16px;
+  --borde-radius-sm: 8px;
+  --tipo-color: #2196F3; /* Se reemplazará dinámicamente */
+  --tipo-color-claro: rgba(33, 150, 243, 0.1); /* Se reemplazará dinámicamente */
+}
+
+/* Reset básico */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background-color: var(--fondo);
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Elementos decorativos de fondo */
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(60px);
+}
+
+.bg-circle-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, var(--tipo-color), #1a1a1a);
+  top: -100px;
+  right: 5%;
+}
+
+.bg-circle-2 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--tipo-color), var(--azul));
+  bottom: -200px;
+  left: -200px;
+  opacity: 0.1;
+}
+
+.bg-circle-3 {
+  width: 200px;
+  height: 200px;
+  background: var(--tipo-color);
+  top: 30%;
+  left: 10%;
+  opacity: 0.1;
+}
+
+.bg-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(0, 0, 153, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.bg-line {
+  position: absolute;
+  background: linear-gradient(90deg, rgba(0, 0, 153, 0) 0%, rgba(0, 0, 153, 0.1) 50%, rgba(0, 0, 153, 0) 100%);
+  height: 1px;
+  width: 100%;
+}
+
+.bg-line-1 {
+  top: 25%;
+  transform: rotate(-5deg);
+}
+
+.bg-line-2 {
+  bottom: 30%;
+  transform: rotate(3deg);
+}
+
+/* Estilos para la página de programas tipo */
+.programas-tipo-container {
+  max-width: 1200px;
+  margin: 0 auto 60px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.programas-tipo-header {
+  display: flex;
+  align-items: center;
+  padding: 40px;
+  border-radius: var(--borde-radius);
+  margin-bottom: 30px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+.programas-tipo-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+.tipo-icono {
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 30px;
+  position: relative;
+  z-index: 1;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+}
+
+.tipo-icono i {
+  font-size: 3rem;
+  color: white;
+}
+
+.tipo-info {
+  flex: 1;
+  z-index: 1;
+}
+
+.tipo-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+}
+
+.tipo-info h1 {
+  font-size: 2.8rem;
+  margin: 0 0 15px;
+  font-weight: 800;
+}
+
+.tipo-info p {
+  font-size: 1.2rem;
+  margin: 0;
+  max-width: 600px;
+  opacity: 0.9;
+  line-height: 1.5;
+}
+
+.volver-container {
+  margin-bottom: 30px;
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: white;
+  color: #333;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transicion);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-volver:hover {
+  background: #f5f5f5;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-volver i {
+  transition: transform 0.3s ease;
+}
+
+.btn-volver:hover i {
+  transform: translateX(-3px);
+}
+
+.programas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.programa-card {
+  background: white;
+  border-radius: var(--borde-radius);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  transition: var(--transicion);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.5s forwards;
+}
+
+.programa-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--sombra-hover);
+}
+
+.programa-imagen {
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+  border-top: 4px solid var(--tipo-color);
+}
+
+.imagen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+  z-index: 1;
+}
+
+.programa-imagen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.programa-card:hover .programa-imagen img {
+  transform: scale(1.05);
+}
+
+.programa-fecha {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.programa-fecha i {
+  color: var(--tipo-color);
+}
+
+.programa-content {
+  padding: 25px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.programa-content h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+
+.programa-card:hover .programa-content h2 {
+  color: var(--tipo-color);
+}
+
+.programa-content p {
+  font-size: 1rem;
+  color: #666;
+  margin: 0 0 20px;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.programa-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.btn-ver-detalles {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: #f5f5f5;
+  color: #333;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transicion);
+  flex: 1;
+}
+
+.btn-ver-detalles:hover {
+  background: #e9e9e9;
+  transform: translateY(-2px);
+}
+
+.btn-inscribirse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 15px;
+  background: var(--tipo-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: var(--transicion);
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-inscribirse i {
+  transition: transform 0.3s ease;
+}
+
+.btn-inscribirse:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.btn-inscribirse:hover i {
+  transform: translateX(3px);
+}
+
+.no-programas {
+  grid-column: 1/-1;
+  background: white;
+  border-radius: var(--borde-radius);
+  padding: 50px 40px;
+  text-align: center;
+  box-shadow: var(--sombra);
+  animation: fadeIn 0.5s forwards;
+}
+
+.no-programas-icon {
+  width: 80px;
+  height: 80px;
+  background: var(--tipo-color-claro);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.no-programas-icon i {
+  font-size: 2.5rem;
+  color: var(--tipo-color);
+}
+
+.no-programas h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 15px;
+}
+
+.no-programas p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 25px;
+  line-height: 1.6;
+}
+
+.btn-volver-grande {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 25px;
+  background: var(--tipo-color);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  transition: var(--transicion);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-volver-grande:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(var(--tipo-color-rgb), 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(var(--tipo-color-rgb), 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(var(--tipo-color-rgb), 0);
+  }
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+  .programas-tipo-header {
+    flex-direction: column;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .tipo-icono {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .tipo-info h1 {
+    font-size: 2.2rem;
+  }
+  
+  .programas-grid {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .programas-tipo-header {
+    padding: 25px;
+  }
+  
+  .tipo-icono {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .tipo-icono i {
+    font-size: 2.2rem;
+  }
+  
+  .tipo-info h1 {
+    font-size: 1.8rem;
+  }
+  
+  .tipo-info p {
+    font-size: 1rem;
+  }
+  
+  .programa-content {
+    padding: 20px;
+  }
+  
+  .programa-actions {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .programas-tipo-header {
+    padding: 20px;
+  }
+  
+  .tipo-icono {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .tipo-icono i {
+    font-size: 1.8rem;
+  }
+  
+  .tipo-info h1 {
+    font-size: 1.6rem;
+  }
+  
+  .tipo-info p {
+    font-size: 0.9rem;
+  }
+  
+  .programas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
+
+<!-- Script JavaScript -->
+<script>
+  // Definir color actual en RGB para animaciones
+  const colorParts = '<%= @tipo_actual[:color] %>'.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+  let tipoColorRGB = '0, 0, 153'; // Valor por defecto
+  
+  if (colorParts) {
+    const r = parseInt(colorParts[1], 16);
+    const g = parseInt(colorParts[2], 16);
+    const b = parseInt(colorParts[3], 16);
+    tipoColorRGB = `${r}, ${g}, ${b}`;
+    
+    // Establecer variable CSS
+    document.documentElement.style.setProperty('--tipo-color-rgb', tipoColorRGB);
+    document.documentElement.style.setProperty('--tipo-color', '<%= @tipo_actual[:color] %>');
+    document.documentElement.style.setProperty('--tipo-color-claro', '<%= @tipo_actual[:color_claro] %>');
+  }
+  
+  // Función para manejar el efecto de ripple en botones
+  function setupButtonRipples() {
+    const buttons = document.querySelectorAll('.btn-inscribirse');
+    
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        
+        ripple.style.position = 'absolute';
+        ripple.style.top = '50%';
+        ripple.style.left = '50%';
+        ripple.style.width = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+        ripple.style.opacity = '1';
+        ripple.style.transition = 'all 0.6s ease-out';
+        ripple.style.pointerEvents = 'none';
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.style.transform = 'translate(-50%, -50%) scale(1)';
+          ripple.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => {
+          if (ripple && ripple.parentNode) {
+            ripple.parentNode.removeChild(ripple);
+          }
+        }, 600);
+      });
+    });
+  }
+  
+  // Crear efecto paralaje para los elementos de fondo
+  function setupParallaxEffect() {
+    window.addEventListener('mousemove', function(e) {
+      const circles = document.querySelectorAll('.bg-circle');
+      const moveX = (e.clientX - window.innerWidth / 2) / 50;
+      const moveY = (e.clientY - window.innerHeight / 2) / 50;
+      
+      circles.forEach((circle, index) => {
+        const factor = (index + 1) * 0.4;
+        circle.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+      });
+    });
+  }
+  
+  // Animar las tarjetas de programas secuencialmente
+  function animateProgramCards() {
+    const cards = document.querySelectorAll('.programa-card');
+    
+    cards.forEach((card, index) => {
+      // Aplicar retraso progresivo
+      card.style.animationDelay = `${index * 0.1}s`;
+    });
+  }
+  
+  // Configurar animaciones para tarjetas al hacer hover
+  function setupCardHoverEffects() {
+    const cards = document.querySelectorAll('.programa-card');
+    
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        // Obtener todas las demás tarjetas
+        const otherCards = Array.from(cards).filter(c => c !== card);
+        
+        // Aplicar efecto de desenfoque a las otras tarjetas
+        otherCards.forEach(otherCard => {
+          otherCard.style.opacity = '0.7';
+          otherCard.style.filter = 'blur(2px)';
+          otherCard.style.transform = 'scale(0.98)';
+        });
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        // Restaurar todas las tarjetas
+        cards.forEach(c => {
+          c.style.opacity = '1';
+          c.style.filter = 'blur(0)';
+          c.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  }
+  
+  // Asegurarnos de que todo se muestre correctamente
+  function initPage() {
+    // Asegurarnos de que todas las tarjetas sean visibles
+    animateProgramCards();
+    
+    // Configurar efectos visuales
+    setupButtonRipples();
+    setupParallaxEffect();
+    setupCardHoverEffects();
+    
+    // Forzar un reflow/repaint del navegador
+    document.body.offsetHeight;
+  }
+  
+  // Eventos para diferentes contextos de carga
+  document.addEventListener('DOMContentLoaded', initPage);
+  
+  // Si estás usando Turbo, también escuchar eventos de Turbo
+  if (typeof Turbo !== 'undefined') {
+    document.addEventListener('turbo:load', initPage);
+    document.addEventListener('turbo:render', initPage);
+    document.addEventListener('turbo:visit', initPage);
+  }
+  
+  // Asegurarse de que el scroll funcione correctamente
+  window.addEventListener('load', function() {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    
+    // Timeout extra para navegadores que puedan tener comportamiento tardío
+    setTimeout(initPage, 100);
+  });
+</script>

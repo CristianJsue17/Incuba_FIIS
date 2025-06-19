@@ -1,0 +1,480 @@
+
+<!-- Font Awesome y Google Fonts -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos propios de home -->
+  <% content_for :stylesheets do %>
+    <%= stylesheet_link_tag "home" %>
+    <%= stylesheet_link_tag "about" %>
+  <% end %>
+
+  <!-- Js propios de home -->
+  <% content_for :scripts do %>
+        <%= javascript_include_tag "enhanced_home", defer: true %>
+        <%= javascript_include_tag "enhanced_header", defer: true %>
+        <%= javascript_include_tag "about", defer: true %>
+        
+        <%= javascript_include_tag "footer", defer: true %>
+  <% end %>
+
+<!-- Header reestructurado con dropdowns completos -->
+<header class="header" role="banner">
+    <div class="header__container">
+       <div class="header__logo">
+            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+                <!-- DIV SEPARADO PARA EL LOGO -->
+                <div class="header__logo-container">
+                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+                </div>
+                <!-- DIV SEPARADO PARA EL TEXTO -->
+                <div class="header__text-container">
+                    <span class="header__logo-text">INCUBA UNAS</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+            <ul class="header__menu">
+                <!-- PROGRAMAS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- EVENTOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- SERVICIOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- NOSOTROS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- MENTORES -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- CONTACTO -->
+                <li class="header__menu-item">
+                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+                </li>
+
+                <!-- LOGIN MÓVIL -->
+                <li class="header__menu-item">
+                    <a href="<%= new_user_session_path %>"
+                        class="header__action-btn header__action-btn--mobile"
+                        data-turbo="false"
+                        aria-label="Iniciar sesión">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        INICIAR SESIÓN
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+<div class="header__actions">
+    <!-- SELECTOR DE IDIOMA -->
+    <%= render 'shared/language_switcher' %>
+    
+    <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    </div>
+</div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+</header>
+
+<section class="about">
+        <div class="about__container">
+            <div class="about__header">
+                <h2 class="about__title">Nosotros</h2>
+                <div class="about__line"></div>
+            </div>
+            
+            <!-- Mission Section -->
+            <div class="about__section about__section--mission">
+                <div class="about__content-wrapper">
+                    <div class="about__vertical-title">
+                        <h2>Mission</h2>
+                    </div>
+                    <div class="about__content">
+                        <div class="about__text-content">
+                            <div class="about__icon-wrapper">
+                                <div class="about__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <circle cx="12" cy="12" r="6"></circle>
+                                        <circle cx="12" cy="12" r="2"></circle>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h3 class="about__content-title">Nuestra Mission</h3>
+                            <p class="about__content-text">
+                                Nos dedicamos a impulsar el crecimiento y desarrollo de startups innovadoras, brindando apoyo integral en la creación y escalamiento de negocios sostenibles.
+                            </p>
+                            <p class="about__content-text">
+                                Nuestro objetivo es fomentar un ecosistema emprendedor dinámico y colaborativo, donde las ideas se conviertan en realidades exitosas.
+                            </p>
+                        </div>
+                        <div class="about__image-wrapper">
+                            <div class="about__image-grid">
+                                <%= image_tag "mision-bg.jpg", alt: "Mission Image", class: "about__image" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Vision Section -->
+            <div class="about__section about__section--vision">
+                <div class="about__content-wrapper">
+
+                    <div class="about__content about__content--reverse">
+                        <div class="about__image-wrapper">
+                            <div class="about__image-grid">
+                                <%= image_tag "vision-bg.jpg", alt: "Vision Image", class: "about__image" %>
+                            </div>
+                        </div>
+                        <div class="about__text-content">
+                            <div class="about__icon-wrapper">
+                                <div class="about__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h3 class="about__content-title">Vision</h3>
+                            <p class="about__content-text">
+                                Nuestra visión es ser un referente en la incubación de empresas, promoviendo la innovación y el emprendimiento sostenible en la región.
+                            </p>
+                            <p class="about__content-text">
+                                Buscamos crear un entorno propicio para el desarrollo de ideas disruptivas que generen un impacto positivo en la sociedad y el medio ambiente.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="about__vertical-title">
+                        <h2>Nuestra Vision</h2>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Goals Section -->
+            <div class="about__section about__section--goals">
+                <div class="about__content-wrapper">
+                    <div class="about__vertical-title">
+                        <h2>Nuestras Metas</h2>
+                    </div>
+                    <div class="about__content">
+                        <div class="about__text-content">
+                            <div class="about__icon-wrapper">
+                                <div class="about__icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
+                                </div>
+                            </div>
+                            <h3 class="about__content-title">Our Goals</h3>
+                            <p class="about__content-text">
+                                Nuestras metas son claras: fomentar la innovación, promover la sostenibilidad y crear un impacto positivo en la comunidad. Nos esforzamos por ser un catalizador de cambio, apoyando a emprendedores y startups en su camino hacia el éxito.
+                                
+                            </p>
+                            <p class="about__content-text">
+                                A través de programas de incubación, mentoría y acceso a recursos, buscamos empoderar a los emprendedores para que puedan desarrollar soluciones creativas y sostenibles que beneficien a la sociedad en su conjunto.
+                            </p>
+                        </div>
+                        <div class="about__image-wrapper">
+                            <div class="about__image-grid">
+                                <%= image_tag "goals-bg.jpg", alt: "Goals Image", class: "about__image" %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Aquí Values -->
+    <section class="values">
+        <div class="values__container">
+            <h2 class="values__title">VALORES</h2>
+            <p class="values__subtitle">Los principios que guían nuestras acciones y decisiones</p>
+
+            <div class="values__grid">
+                <!-- Valor 1: Excelencia -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--excellence">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polygon
+                                    points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                                </polygon>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Excelencia</h3>
+                    <p class="values__description">Buscamos la perfección en todo lo que hacemos, superando
+                        expectativas y
+                        estableciendo nuevos estándares.</p>
+                </div>
+
+                <!-- Valor 2: Transparencia -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--transparency">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Transparencia</h3>
+                    <p class="values__description">Actuamos con honestidad y claridad, compartiendo información de
+                        manera
+                        abierta y sincera.</p>
+                </div>
+
+                <!-- Valor 3: Compromiso -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--commitment">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Compromiso</h3>
+                    <p class="values__description">Nos dedicamos plenamente a nuestros clientes, colaboradores y a
+                        la
+                        sociedad, cumpliendo nuestras promesas.</p>
+                </div>
+
+                <!-- Valor 4: Innovación continua -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--innovation">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M12 2a9 9 0 0 1 9 9c0 3.18-1.65 6.17-4.35 7.84L12 22l-4.65-3.16C4.65 17.17 3 14.18 3 11a9 9 0 0 1 9-9z">
+                                </path>
+                                <path d="M12 6v6l3 3"></path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Innovación continua</h3>
+                    <p class="values__description">Exploramos constantemente nuevas ideas y soluciones para
+                        adaptarnos y
+                        liderar el cambio.</p>
+                </div>
+
+                <!-- Valor 5: Responsabilidad -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--responsibility">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Responsabilidad</h3>
+                    <p class="values__description">Asumimos las consecuencias de nuestras acciones y decisiones,
+                        actuando
+                        con ética y compromiso social.</p>
+                </div>
+
+                <!-- Valor 6: Calidad -->
+                <div class="values__item">
+                    <div class="values__icon-wrapper">
+                        <div class="values__icon values__icon--quality">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </div>
+                    </div>
+                    <h3 class="values__name">Calidad</h3>
+                    <p class="values__description">Nos esforzamos por ofrecer servicios excepcionales
+                        que
+                        satisfagan y superen las expectativas.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Elementos decorativos -->
+        <div class="values__decoration values__decoration--top-right"></div>
+        <div class="values__decoration values__decoration--bottom-left"></div>
+    </section>
+
+</body>
+
+<footer class="footer">
+    <div class="footer__decoration footer__decoration--top-left"></div>
+    <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+    <div class="footer__container">
+        <!-- Columna izquierda: Logo y suscripción -->
+        <div class="footer__column footer__column--main">
+            <div class="footer__logo-container">
+                <div class="footer__logo">
+                    <span class="footer__logo-icon">I</span>NCUBA UNAS
+                </div>
+                <p class="footer__description">
+                        Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                        emprendimientos innovadores y sostenibles en la región.
+                </p>
+            </div>
+
+            <form class="footer__subscribe">
+                <input type="email" class="footer__input" placeholder="Enter email">
+                <button type="submit" class="footer__button">
+                    <i class="fas fa-arrow-right"></i>
+                    Contacto
+                </button>
+            </form>
+
+            <div class="footer__social">
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-instagram'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-twitter'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-facebook'></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Columnas de enlaces -->
+        <div class="footer__column">
+            <h3 class="footer__heading">Principal</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Nosotros</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Enlaces de Interés </h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>

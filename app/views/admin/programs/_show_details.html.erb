@@ -1,0 +1,130 @@
+<div class="space-y-6">
+  <!-- Título y estado -->
+  <div class="flex justify-between items-start">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900"><%= program.titulo %></h1>
+      <p class="text-sm text-gray-500">Creado el <%= program.created_at.strftime("%d/%m/%Y") %></p>
+    </div>
+    <div>
+      <% case program.estado %>
+      <% when 'activo' %>
+        <span class="px-3 py-1 inline-flex text-sm font-medium rounded-full bg-green-100 text-green-800">Activo</span>
+      <% when 'inactivo' %>
+        <span class="px-3 py-1 inline-flex text-sm font-medium rounded-full bg-red-100 text-red-800">Inactivo</span>
+      <% when 'pendiente' %>
+        <span class="px-3 py-1 inline-flex text-sm font-medium rounded-full bg-yellow-100 text-yellow-800">Pendiente</span>
+      <% when 'finalizado' %>
+        <span class="px-3 py-1 inline-flex text-sm font-medium rounded-full bg-gray-100 text-gray-800">Finalizado</span>
+      <% else %>
+        <span class="px-3 py-1 inline-flex text-sm font-medium rounded-full bg-gray-100 text-gray-800"><%= program.estado.humanize %></span>
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Descripción -->
+  <div class="bg-gray-50 p-4 rounded-lg">
+    <h2 class="text-lg font-semibold text-gray-800 mb-2">Descripción</h2>
+    <p class="text-gray-700"><%= program.descripcion.presence || "No hay descripción disponible" %></p>
+  </div>
+  
+  <!-- Detalles del programa -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Información del Programa</h2>
+      <div class="bg-white p-4 rounded-lg border border-gray-200">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-sm text-gray-500">Tipo de Programa</p>
+            <p class="font-medium"><%= program.tipo_humanizado %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Encargado</p>
+            <p class="font-medium"><%= program.encargado %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Fecha de Publicación</p>
+            <p class="font-medium"><%= program.fecha_publicacion.strftime("%d/%m/%Y %H:%M") %></p>
+          </div>
+          <div>
+            <p class="text-sm text-gray-500">Fecha de Vencimiento</p>
+            <p class="font-medium"><%= program.fecha_vencimiento.strftime("%d/%m/%Y %H:%M") %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Imagen del programa -->
+    <div>
+  <h2 class="text-lg font-semibold text-gray-800 mb-2">Imagen</h2>
+  <div class="bg-white p-4 rounded-lg border border-gray-200 flex items-center justify-center" style="height: 200px;">
+    <% if program.image.attached? %>
+      <div class="image-preview-container">
+        <%= image_tag program.image, class: "max-w-full max-h-full object-contain" %>
+      </div>
+    <% else %>
+      <div class="flex items-center justify-center h-full w-full bg-gray-100 rounded">
+        <span class="text-gray-400">Sin imagen</span>
+      </div>
+    <% end %>
+  </div>
+</div>
+  </div>
+  
+  <!-- Objetivos, Beneficios y Requisitos -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Objetivos -->
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Objetivos</h2>
+      <div class="bg-white p-4 rounded-lg border border-gray-200 h-full">
+        <% if program.objetivos.any? %>
+          <ul class="list-disc list-inside space-y-2">
+            <% program.objetivos.each do |objetivo| %>
+              <li class="text-gray-700"><%= objetivo.descripcion %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-500">No hay objetivos definidos</p>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Beneficios -->
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Beneficios</h2>
+      <div class="bg-white p-4 rounded-lg border border-gray-200 h-full">
+        <% if program.beneficios.any? %>
+          <ul class="list-disc list-inside space-y-2">
+            <% program.beneficios.each do |beneficio| %>
+              <li class="text-gray-700"><%= beneficio.descripcion %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-500">No hay beneficios definidos</p>
+        <% end %>
+      </div>
+    </div>
+    
+    <!-- Requisitos -->
+    <div>
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">Requisitos</h2>
+      <div class="bg-white p-4 rounded-lg border border-gray-200 h-full">
+        <% if program.requisitos.any? %>
+          <ul class="list-disc list-inside space-y-2">
+            <% program.requisitos.each do |requisito| %>
+              <li class="text-gray-700"><%= requisito.descripcion %></li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-gray-500">No hay requisitos definidos</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Botones de acción -->
+  <div class="flex justify-end space-x-4 mt-6 pt-4 border-t border-gray-200">
+    <%= link_to edit_admin_program_path(program), class: "inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+      <i class="fas fa-edit mr-2"></i> Editar
+    <% end %>
+  </div>
+</div>

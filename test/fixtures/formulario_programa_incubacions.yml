@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  program: one
+  nombre_lider: MyString
+  apellido_lider: MyString
+  dni_lider: MyString
+  telefono_lider: MyString
+  correo_lider: MyString
+  nombre_proyecto: MyString
+
+two:
+  program: two
+  nombre_lider: MyString
+  apellido_lider: MyString
+  dni_lider: MyString
+  telefono_lider: MyString
+  correo_lider: MyString
+  nombre_proyecto: MyString

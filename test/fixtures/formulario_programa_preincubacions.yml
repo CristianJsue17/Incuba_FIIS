@@ -1,0 +1,29 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  program: one
+  nombre_emprendimiento: MyString
+  descripcion: MyText
+  propuesta_valor: MyText
+  numero_integrantes_equipo: 1
+  nombre_apellidos_lider: MyString
+  dni_lider: MyString
+  correo_lider: MyString
+  telefono_lider: MyString
+  ocupacion_lider: MyString
+  enteraste_programa: MyString
+  expectativas_programa: MyText
+
+two:
+  program: two
+  nombre_emprendimiento: MyString
+  descripcion: MyText
+  propuesta_valor: MyText
+  numero_integrantes_equipo: 1
+  nombre_apellidos_lider: MyString
+  dni_lider: MyString
+  correo_lider: MyString
+  telefono_lider: MyString
+  ocupacion_lider: MyString
+  enteraste_programa: MyString
+  expectativas_programa: MyText

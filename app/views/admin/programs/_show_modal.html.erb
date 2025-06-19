@@ -1,0 +1,149 @@
+<!-- app/views/admin/programs/_show_modal.html.erb -->
+<div id="programModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center hidden transition-opacity duration-300 ease-in-out">
+  <div class="bg-white rounded-lg shadow-xl w-11/12 md:w-3/4 lg:w-2/3 max-h-[90vh] overflow-y-auto transform transition-transform duration-300 ease-in-out">
+    <!-- Cabecera del modal -->
+    <div class="sticky top-0 bg-white z-10 flex justify-between items-center p-4 border-b border-gray-200">
+      <h2 class="text-xl font-bold text-gray-800">
+        Detalles del Programa
+      </h2>
+      <button id="closeModal" class="text-gray-400 hover:text-gray-600 focus:outline-none">
+        <i class="fas fa-times text-xl"></i>
+      </button>
+    </div>
+    
+    <!-- Contenido del modal -->
+    <div class="p-6" id="modalContent">
+      <div class="animate-pulse">
+        <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6 mb-6"></div>
+        <div class="h-48 bg-gray-200 rounded mb-6"></div>
+        <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript para manejar el modal -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  setupProgramModal();
+});
+
+document.addEventListener('turbo:load', function() {
+  setupProgramModal();
+});
+
+function setupProgramModal() {
+  const modal = document.getElementById('programModal');
+  if (!modal) return;
+  
+  // Cerrar modal con botón de cerrar
+  const closeButton = document.getElementById('closeModal');
+  if (closeButton) {
+    closeButton.addEventListener('click', function() {
+      closeModal();
+    });
+  }
+  
+  // Cerrar modal con clic fuera
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+  
+  // Cerrar modal con la tecla ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+  
+  // Vincular botones de "Ver detalles"
+  const detailButtons = document.querySelectorAll('[data-action="click->program#showDetails"]');
+  detailButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const programId = this.getAttribute('data-id');
+      if (programId) {
+        showProgramDetails(programId);
+      }
+    });
+  });
+}
+
+function showProgramDetails(programId) {
+  const modal = document.getElementById('programModal');
+  const modalContent = document.getElementById('modalContent');
+  
+  if (!modal || !modalContent) return;
+  
+  // Mostrar modal con animación
+  document.body.classList.add('overflow-hidden');
+  modal.classList.remove('hidden');
+  
+  // Animación de entrada
+  setTimeout(() => {
+    const modalDialog = modal.querySelector('div');
+    if (modalDialog) {
+      modalDialog.classList.add('scale-100');
+      modalDialog.classList.remove('scale-95');
+    }
+  }, 10);
+  
+  // Cargar detalles del programa con AJAX
+  modalContent.innerHTML = `
+    <div class="animate-pulse">
+      <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+      <div class="h-4 bg-gray-200 rounded w-5/6 mb-6"></div>
+      <div class="h-48 bg-gray-200 rounded mb-6"></div>
+      <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+    </div>
+  `;
+  
+  fetch(`/admin/programs/${programId}`, {
+    headers: {
+      'Accept': 'text/html',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
+  .then(html => {
+    modalContent.innerHTML = html;
+  })
+  .catch(error => {
+    modalContent.innerHTML = `
+      <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <p>Error al cargar los detalles: ${error.message}</p>
+      </div>
+    `;
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('programModal');
+  if (!modal) return;
+  
+  // Animación de salida
+  const modalDialog = modal.querySelector('div');
+  if (modalDialog) {
+    modalDialog.classList.add('scale-95');
+    modalDialog.classList.remove('scale-100');
+  }
+  
+  // Ocultar modal después de la animación
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }, 200);
+}
+</script>

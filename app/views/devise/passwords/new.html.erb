@@ -1,0 +1,68 @@
+<!-- Estilos propios de login -->
+<% content_for :stylesheets do %>
+<%= stylesheet_link_tag "login" %> 
+<% end %>
+
+<%= javascript_include_tag "sing-up", defer: true %>
+
+<div class="login">
+<div class="login__left">
+    <div class="login__logo">
+        <%= link_to root_path, data: { turbo: false } do %>
+            <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+        <% end %>
+    </div>
+    <div class="login__content">
+        <h1 class="login__title">Olvidaste tu Contraseña</h1>
+        <p class="login__subtitle">Ingresa tu Email para Continuar</p>
+        <div class="login__website">incubaunas.unas.edu.pe</div>
+    </div>
+    
+    <!-- Círculos animados -->
+    <div class="login__circles">
+        <div class="login__circle login__circle--small login__circle--blue"></div>
+        <div class="login__circle login__circle--medium login__circle--orange"></div>
+        <div class="login__circle login__circle--large login__circle--pink"></div>
+        <div class="login__circle login__circle--small login__circle--purple"></div>
+        <div class="login__circle login__circle--medium login__circle--blue-light"></div>
+    </div>
+</div>
+
+<div class="login__right">
+    <div class="login__form-container">
+        <div class="login__form-header">
+            <h2 class="login__form-title">Cambiar Contraseña</h2>
+            <p class="login__form-subtitle">¡Bienvenido! Por favor, Tu E-mail para Continuar.</p>
+        </div>
+
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "login__form" }) do |f| %>    
+            <%= render "devise/shared/error_messages", resource: resource %>
+            <div class="login__form-group">
+                <%= f.label :email,"Correo" ,class: "login__form-label" %>
+                <%= f.email_field :email, 
+                autofocus: true,
+                id: "email", 
+                autocomplete: "email", 
+                placeholder: "Prueba@gmail.com", 
+                class: "login__form-input"
+                     %>
+            </div>
+
+            <%= f.submit "Enviar", class: "login__submit-btn", id:"signupButton", disabled: false %>
+            
+            <div class="login-forgot__signup">
+                <%= link_to "Iniciar Sesión", new_session_path(resource_name), class: "login__signup-link" %>
+                
+            </div>
+        <% end %>
+    </div>
+    
+    <!-- Círculos decorativos en el lado derecho -->
+    <div class="login__decoration">
+        <div class="login__dot login__dot--orange"></div>
+        <div class="login__dot login__dot--blue"></div>
+        <div class="login__dot login__dot--red"></div>
+    </div>
+</div>
+
+</div>

@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  event: one
+  equipo: one
+  project: one
+
+two:
+  user: two
+  event: two
+  equipo: two
+  project: two

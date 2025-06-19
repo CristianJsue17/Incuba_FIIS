@@ -1,0 +1,966 @@
+<!-- app/views/inscripciones/confirmacion.html.erb -->
+<!-- Font Awesome y Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <% content_for :stylesheets do %>
+      <%= stylesheet_link_tag "home" %>
+    <% end %>
+
+<!-- Header reestructurado con dropdowns completos -->
+<header class="header" role="banner">
+    <div class="header__container">
+       <div class="header__logo">
+            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+                <!-- DIV SEPARADO PARA EL LOGO -->
+                <div class="header__logo-container">
+                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+                </div>
+                <!-- DIV SEPARADO PARA EL TEXTO -->
+                <div class="header__text-container">
+                    <span class="header__logo-text">INCUBA UNAS</span>
+                </div>
+            </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+            <ul class="header__menu">
+                <!-- PROGRAMAS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- EVENTOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- SERVICIOS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- NOSOTROS -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- MENTORES -->
+                <li class="header__menu-item header__menu-item--has-dropdown">
+                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+                    <div class="header__dropdown" role="menu">
+                        <ul class="header__dropdown-menu">
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                            </li>
+                            <li class="header__dropdown-item">
+                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+                <!-- CONTACTO -->
+                <li class="header__menu-item">
+                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+                </li>
+
+                <!-- LOGIN MÓVIL -->
+                <li class="header__menu-item">
+                    <a href="<%= new_user_session_path %>"
+                        class="header__action-btn header__action-btn--mobile"
+                        data-turbo="false"
+                        aria-label="Iniciar sesión">
+                        <i class="fas fa-user" aria-hidden="true"></i>
+                        INICIAR SESIÓN
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+<div class="header__actions">
+    <!-- SELECTOR DE IDIOMA -->
+    <%= render 'shared/language_switcher' %>
+    
+    <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    </div>
+</div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+            <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+</header>
+
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-dots"></div>
+  <div class="bg-line bg-line-1"></div>
+  <div class="bg-line bg-line-2"></div>
+</div>
+
+<div class="confirmacion-container">
+  <!-- Cabecera -->
+  <div class="confirmacion-header">
+    <div class="tipo-icono">
+      <% if @tipo == 'preincubacion' %>
+        <i class="fas fa-lightbulb"></i>
+      <% elsif @tipo == 'incubacion' %>
+        <i class="fas fa-rocket"></i>
+      <% elsif @tipo == 'innovacion' %>
+        <i class="fas fa-cogs"></i>
+      <% else %>
+        <i class="fas fa-check-circle"></i>
+      <% end %>
+    </div>
+    <div class="confirmacion-info">
+      <div class="confirmacion-badge">INSCRIPCIÓN COMPLETADA</div>
+      <h1>¡Gracias por tu inscripción!</h1>
+      <p>Hemos recibido tu solicitud correctamente.</p>
+    </div>
+  </div>
+  
+  <!-- Progreso y navegación -->
+  <div class="confirmacion-nav">
+    <div class="nav-progress">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 100%;"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="step completed">
+          <div class="step-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <div class="step-label">Información básica</div>
+        </div>
+        <div class="step active">
+          <div class="step-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="step-label">Confirmación</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Tarjeta de confirmación -->
+  <div class="confirmacion-card">
+    <div class="card-header">
+      <h2>
+        <% if @tipo == 'preincubacion' %>
+          <i class="fas fa-lightbulb"></i> Inscripción para Preincubación
+        <% elsif @tipo == 'incubacion' %>
+          <i class="fas fa-rocket"></i> Inscripción para Incubación
+        <% elsif @tipo == 'innovacion' %>
+          <i class="fas fa-cogs"></i> Inscripción para Innovación
+        <% else %>
+          <i class="fas fa-check-circle"></i> Inscripción completada
+        <% end %>
+      </h2>
+      <p>Tu inscripción ha sido recibida y será revisada por nuestro equipo.</p>
+    </div>
+    
+    <div class="card-body">
+      <div class="confirmation-message">
+        <div class="confirmation-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>¡Inscripción Exitosa!</h3>
+        <p>Hemos recibido tu solicitud para el programa de 
+          <% if @tipo == 'preincubacion' %>
+            <strong>Preincubación</strong>
+          <% elsif @tipo == 'incubacion' %>
+            <strong>Incubación</strong>
+          <% elsif @tipo == 'innovacion' %>
+            <strong>Innovación</strong>
+          <% else %>
+            <strong>Emprendimiento</strong>
+          <% end %>
+        </p>
+        <p>Te contactaremos pronto con los siguientes pasos a seguir.</p>
+      </div>
+      
+      <div class="next-steps">
+        <h4><i class="fas fa-list-ol"></i> Próximos Pasos</h4>
+        <ol>
+          <li>Recibirás un correo electrónico de confirmación con los detalles de tu inscripción.</li>
+          <li>Nuestro equipo revisará tu solicitud en los próximos días.</li>
+          <li>Te informaremos sobre el estado de tu solicitud y los siguientes pasos a seguir.</li>
+          <li>Prepárate para comenzar tu viaje emprendedor con nosotros.</li>
+        </ol>
+      </div>
+      
+      <div class="contact-info">
+        <h4><i class="fas fa-address-card"></i> Información de Contacto</h4>
+        <p>Si tienes alguna pregunta, no dudes en contactarnos:</p>
+        <ul>
+          <li><i class="fas fa-envelope"></i> Email: <a href="mailto:contacto@incubaunas.edu.pe">contacto@incubaunas.edu.pe</a></li>
+          <li><i class="fas fa-phone"></i> Teléfono: (51) 999-999-999</li>
+          <li><i class="fas fa-map-marker-alt"></i> Dirección: Av. Universitaria, Tingo María, Perú</li>
+        </ul>
+      </div>
+      
+      <!-- Botones de acción -->
+      <div class="form-actions">
+        <a href="<%= @tipo.present? ? programas_tipo_path(@tipo) : servicios_path %>" class="btn-secundario">
+          <i class="fas fa-arrow-left"></i> Volver a programas
+        </a>
+        <a href="<%= root_path %>" class="btn-primario">
+          <i class="fas fa-home"></i> Ir al inicio
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Variables */
+:root {
+  --azul: #000099;
+  --azul-hover: #0000cc;
+  --azul-claro: #3333ff;
+  --verde: #00CC66;
+  --verde-claro: #33ff99;
+  --blanco: #FFFFFF;
+  --gris-claro: #f8f9fa;
+  --gris-medio: #e9ecef;
+  --fondo: #F9FBFF;
+  --sombra: 0 10px 30px rgba(0, 0, 153, 0.08);
+  --sombra-hover: 0 15px 35px rgba(0, 0, 153, 0.15);
+  --transicion: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --borde-radius: 16px;
+  --borde-radius-sm: 8px;
+  --preincubacion-color: #2196F3;
+  --incubacion-color: #009688;
+  --innovacion-color: #CDDC39;
+  --success-color: #4CAF50;
+}
+
+/* Reset básico */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background-color: var(--fondo);
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Elementos decorativos de fondo */
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+  filter: blur(60px);
+}
+
+.bg-circle-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, var(--success-color), #1a1a1a);
+  top: -100px;
+  right: 5%;
+}
+
+.bg-circle-2 {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--success-color), var(--azul));
+  bottom: -200px;
+  left: -200px;
+  opacity: 0.1;
+}
+
+.bg-circle-3 {
+  width: 200px;
+  height: 200px;
+  background: var(--success-color);
+  top: 30%;
+  left: 10%;
+  opacity: 0.1;
+}
+
+.bg-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(rgba(0, 0, 153, 0.1) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.bg-line {
+  position: absolute;
+  background: linear-gradient(90deg, rgba(0, 0, 153, 0) 0%, rgba(0, 0, 153, 0.1) 50%, rgba(0, 0, 153, 0) 100%);
+  height: 1px;
+  width: 100%;
+}
+
+.bg-line-1 {
+  top: 25%;
+  transform: rotate(-5deg);
+}
+
+.bg-line-2 {
+  bottom: 30%;
+  transform: rotate(3deg);
+}
+
+/* Estilos para la página de confirmación */
+.confirmacion-container {
+  max-width: 1000px;
+  margin: 40px auto 60px;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.confirmacion-header {
+  display: flex;
+  align-items: center;
+  padding: 30px;
+  border-radius: var(--borde-radius);
+  margin-bottom: 30px;
+  color: white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--success-color), #2e8b57);
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.confirmacion-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.1' fill-rule='evenodd'/%3E%3C/svg%3E");
+  opacity: 0.5;
+}
+
+.tipo-icono {
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 25px;
+  position: relative;
+  z-index: 1;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+
+.tipo-icono i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+.confirmacion-info {
+  flex: 1;
+  z-index: 1;
+}
+
+.confirmacion-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+  animation: fadeInRight 0.8s ease-in-out;
+}
+
+.confirmacion-info h1 {
+  font-size: 2.2rem;
+  margin: 0 0 10px;
+  font-weight: 700;
+  animation: fadeInLeft 0.8s ease-in-out;
+}
+
+.confirmacion-info p {
+  font-size: 1rem;
+  margin: 0;
+  max-width: 700px;
+  opacity: 0.9;
+  line-height: 1.5;
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+/* Barra de navegación y progreso */
+.confirmacion-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.nav-progress {
+  flex: 1;
+  max-width: 600px;
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: var(--gris-medio);
+  border-radius: 3px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  background-color: var(--success-color);
+  animation: progressFill 1.2s ease-in-out;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 120px;
+  text-align: center;
+}
+
+.step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: var(--gris-medio);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.step.active .step-icon {
+  background-color: var(--success-color);
+}
+
+.step.completed .step-icon {
+  background-color: var(--success-color);
+  position: relative;
+}
+
+.step.completed .step-icon::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.2rem;
+  color: white;
+}
+
+.step-label {
+  font-size: 0.85rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.step.active .step-label, .step.completed .step-label {
+  color: #333;
+  font-weight: 600;
+}
+
+/* Tarjeta de confirmación */
+.confirmacion-card {
+  background: white;
+  border-radius: var(--borde-radius);
+  overflow: hidden;
+  box-shadow: var(--sombra);
+  animation: fadeInUp 0.8s forwards;
+}
+
+.card-header {
+  padding: 25px 30px;
+  border-bottom: 1px solid var(--gris-claro);
+  background-color: #fcfcfc;
+}
+
+.card-header h2 {
+  font-size: 1.5rem;
+  color: #333;
+  margin: 0 0 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-header h2 i {
+  color: var(--success-color);
+}
+
+.card-header p {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.card-body {
+  padding: 30px;
+}
+
+/* Mensaje de confirmación */
+.confirmation-message {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px;
+  background-color: rgba(76, 175, 80, 0.05);
+  border-radius: var(--borde-radius);
+  border: 1px dashed rgba(76, 175, 80, 0.3);
+}
+
+.confirmation-icon {
+  width: 100px;
+  height: 100px;
+  background: rgba(76, 175, 80, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  animation: pulse 2s infinite;
+}
+
+.confirmation-icon i {
+  font-size: 3rem;
+  color: var(--success-color);
+}
+
+.confirmation-message h3 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0 0 15px;
+}
+
+.confirmation-message p {
+  font-size: 1.1rem;
+  color: #666;
+  margin: 0 0 10px;
+  line-height: 1.6;
+}
+
+.confirmation-message strong {
+  color: #333;
+}
+
+/* Próximos pasos */
+.next-steps {
+  margin-bottom: 30px;
+  animation: fadeInLeft 1s ease-in-out;
+}
+
+.next-steps h4, .contact-info h4 {
+  font-size: 1.2rem;
+  color: #333;
+  margin: 0 0 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.next-steps h4 i, .contact-info h4 i {
+  color: var(--success-color);
+}
+
+.next-steps ol {
+  padding-left: 25px;
+  margin: 0;
+}
+
+.next-steps li {
+  margin-bottom: 10px;
+  padding-left: 5px;
+  line-height: 1.5;
+  color: #555;
+}
+
+/* Información de contacto */
+.contact-info {
+  margin-bottom: 30px;
+  animation: fadeInRight 1s ease-in-out;
+}
+
+.contact-info p {
+  margin: 0 0 15px;
+  color: #555;
+}
+
+.contact-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-info li {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contact-info li i {
+  color: var(--success-color);
+  width: 20px;
+  text-align: center;
+}
+
+.contact-info a {
+  color: var(--success-color);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+/* Botones de acción */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-secundario, .btn-primario {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 25px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: var(--transicion);
+  cursor: pointer;
+  border: none;
+  text-decoration: none;
+}
+
+.btn-secundario {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-secundario:hover {
+  background: #e9e9e9;
+  transform: translateY(-2px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primario {
+  background: var(--success-color);
+  color: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primario:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primario i, .btn-secundario i {
+  transition: transform 0.3s ease;
+}
+
+.btn-primario:hover i {
+  transform: translateX(3px);
+}
+
+.btn-secundario:hover i {
+  transform: translateX(-3px);
+}
+
+/* Animación de confeti */
+.confetti-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  top: -10px;
+  border-radius: 0;
+  animation: confetti 5s ease-in-out infinite;
+}
+
+@keyframes confetti {
+  0% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Otras animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0);
+  }
+}
+
+@keyframes progressFill {
+  0% {
+    width: 25%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+/* Media queries */
+@media (max-width: 992px) {
+  .confirmacion-header {
+    flex-direction: column;
+    padding: 25px;
+    text-align: center;
+  }
+  
+  .tipo-icono {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+  
+  .confirmacion-info h1 {
+    font-size: 1.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .confirmacion-nav {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .btn-secundario, .btn-primario {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .confirmacion-header {
+    padding: 20px;
+  }
+  
+  .tipo-icono {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .tipo-icono i {
+    font-size: 1.8rem;
+  }
+</style>
+
+<script>
+  // Función para crear confeti
+  function createConfetti() {
+    const confettiContainer = document.createElement('div');
+    confettiContainer.className = 'confetti-container';
+    document.body.appendChild(confettiContainer);
+    
+    const colors = ['#f94144', '#f3722c', '#f8961e', '#f9c74f', '#90be6d', '#43aa8b', '#577590'];
+    
+    for (let i = 0; i < 100; i++) {
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      confetti.style.left = Math.random() * 100 + 'vw';
+      confetti.style.animationDelay = Math.random() * 3 + 's';
+      confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      confettiContainer.appendChild(confetti);
+    }
+    
+    // Eliminar confeti después de la animación
+    setTimeout(() => {
+      confettiContainer.remove();
+    }, 6000);
+  }
+
+  // Ejecutar inmediatamente, sin esperar a DOMContentLoaded
+  createConfetti();
+
+  // También configurar el evento parallax en DOMContentLoaded
+  document.addEventListener('DOMContentLoaded', function() {
+    // Efecto parallax para elementos de fondo
+    window.addEventListener('mousemove', function(e) {
+      const circles = document.querySelectorAll('.bg-circle');
+      const moveX = (e.clientX - window.innerWidth / 2) / 50;
+      const moveY = (e.clientY - window.innerHeight / 2) / 50;
+      
+      circles.forEach((circle, index) => {
+        const factor = (index + 1) * 0.4;
+        circle.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+      });
+    });
+  });
+</script>

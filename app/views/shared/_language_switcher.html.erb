@@ -1,0 +1,13 @@
+<div class="language-switcher">
+  <%= link_to change_locale_path(locale: :es), 
+              class: "lang-link #{'active' if I18n.locale == :es}",
+              title: "Español" do %>
+    🇪🇸 ES
+  <% end %>
+  
+  <%= link_to change_locale_path(locale: :en), 
+              class: "lang-link #{'active' if I18n.locale == :en}",
+              title: "English" do %>
+    🇺🇸 EN
+  <% end %>
+</div>

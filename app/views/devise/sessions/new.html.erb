@@ -1,0 +1,125 @@
+<!-- Estilos propios de login -->
+<% content_for :stylesheets do %>
+    <%= stylesheet_link_tag "login" %> 
+<% end %>
+
+<%= javascript_include_tag "login", defer: true %>
+
+<div class="login">
+    <div class="login__left">
+        <div class="login__logo">
+            <%= link_to root_path, data: { turbo: false } do %>
+                <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+            <% end %>
+        </div>
+        <div class="login__content">
+            <h1 class="login__title">Bienvenido</h1>
+            <p class="login__subtitle">Rellena los Campos para Continuar</p>
+            <div class="login__website">incubaunas.unas.edu.pe</div>
+        </div>
+        
+        <!-- Círculos animados -->
+        <div class="login__circles">
+            <div class="login__circle login__circle--small login__circle--blue"></div>
+            <div class="login__circle login__circle--medium login__circle--orange"></div>
+            <div class="login__circle login__circle--large login__circle--pink"></div>
+            <div class="login__circle login__circle--small login__circle--purple"></div>
+            <div class="login__circle login__circle--medium login__circle--blue-light"></div>
+        </div>
+    </div>
+
+    <div class="login__right">
+        <div class="login__form-container">
+            <!-- Botón para volver al home -->
+            <div class="login__back-home">
+                <%= link_to root_path, class: "login__back-home-btn", data: { turbo: false } do %>
+                    <i class="fas fa-arrow-left" style="margin-right: 8px;"></i>
+                    Volver al Home
+                <% end %>
+            </div>
+
+            <div class="login__form-header">
+                <h2 class="login__form-title">Iniciar Sesión</h2>
+                <p class="login__form-subtitle">¡Bienvenido! Por favor, Rellena los campos para iniciar sesión.</p>
+            </div>
+
+            <% if flash.alert %>
+              <div class="alert" style="
+                background: linear-gradient(135deg, #ff6b6b, #ee5a52) !important;
+                color: white !important;
+                border: 1px solid #ff4757 !important;
+                border-radius: 8px !important;
+                padding: 12px 16px !important;
+                margin-bottom: 20px !important;
+                font-size: 14px !important;
+                font-weight: 500 !important;
+                box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2) !important;">
+                <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+                <%= flash.alert %>
+              </div>
+            <% end %>
+
+            <% if flash.notice %>
+                <div class="notice" style="
+                  background: linear-gradient(135deg, #51cf66, #40c057) !important;
+                  color: white !important;
+                  border: 1px solid #37b24d !important;
+                  border-radius: 8px !important;
+                  padding: 12px 16px !important;
+                  margin-bottom: 20px !important;
+                  font-size: 14px !important;
+                  font-weight: 500 !important;
+                  box-shadow: 0 4px 12px rgba(81, 207, 102, 0.2) !important;">
+                <i class="fas fa-check-circle" style="margin-right: 8px;"></i>
+              <%= flash.notice %>
+            </div>
+          <% end %>
+
+            <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "login__form" }) do |f| %>    
+                <%= render "devise/shared/error_messages", resource: resource %>
+                
+                <div class="login__form-group">
+                    <%= f.label :email,"Correo" ,class: "login__form-label" %>
+                    <%= f.email_field :email, 
+                    autofocus: true, 
+                    autocomplete: "email", 
+                    placeholder: "Prueba@gmail.com", 
+                    class: "login__form-input" %>
+                </div>
+                
+                <div class="login__form-group">
+                    <%= f.label :password,"Contraseña" ,class: "login__form-label" %>
+                    <div class="login__password-container">
+                        <%= f.password_field :password, autocomplete: "current-password", class: "login__form-input", id: "password", placeholder: "**********" %>
+                        
+                        <button type="button" class="login__password-toggle" id="passwordToggle">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <% if devise_mapping.rememberable? %>
+                    <div class="login__form-options">
+                        <div class="login__remember">
+                            <%= f.check_box :remember_me, id: "remember", class: "login__checkbox" %>
+                            <%= f.label :remember_me, "Remember me", class: "login__checkbox-label", for: "remember" %>
+                        </div>
+                        <%= link_to "Olvidaste tu contraseña", new_password_path(resource_name), class: "login__forgot" %>
+                    </div>
+                <% end %>
+
+                <%= f.submit "Log in", class: "login__submit-btn" %>
+            <% end %>
+        </div>
+        
+        <!-- Círculos decorativos en el lado derecho -->
+        <div class="login__decoration">
+            <div class="login__dot login__dot--orange"></div>
+            <div class="login__dot login__dot--blue"></div>
+            <div class="login__dot login__dot--red"></div>
+        </div>
+    </div>
+</div>

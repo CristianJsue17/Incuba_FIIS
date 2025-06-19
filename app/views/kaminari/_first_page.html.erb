@@ -1,0 +1,7 @@
+<%# app/views/kaminari/_first_page.html.erb %>
+
+<span class="first">
+  <%= link_to_unless current_page.first?, t('views.pagination.first').html_safe, url,
+    remote: remote,
+    class: "px-3 py-1 bg-white border border-gray-300 text-gray-500 rounded hover:bg-gray-100 #{current_page.first? ? 'cursor-not-allowed opacity-50' : ''}" %>
+</span>

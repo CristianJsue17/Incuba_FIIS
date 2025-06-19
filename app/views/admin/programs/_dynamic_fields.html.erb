@@ -1,0 +1,55 @@
+<div data-controller="dynamic-fields"
+     data-dynamic-fields-max-fields-value="6"
+     data-dynamic-fields-field-type-value="<%= field_type.singularize %>">
+  
+  <div class="flex justify-between items-center mb-2">
+    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800" data-dynamic-fields-target="counter">
+      <%= program.send(field_type).reject(&:marked_for_destruction?).count %>/6
+    </span>
+  </div>
+  
+  <% if program.errors[field_type].any? %>
+    <small class="text-red-600 block mb-2"><%= program.errors[field_type].join(', ') %></small>
+  <% end %>
+  
+  <button type="button"
+          class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mb-3"
+          data-dynamic-fields-target="addButton">
+    <i class="fas fa-plus mr-1.5"></i> Añadir
+  </button>
+  
+  <div data-dynamic-fields-target="container" class="space-y-3">
+    <% program.send(field_type).each_with_index do |item, index| %>
+      <% next if item.marked_for_destruction? %>
+      <div class="mb-3 dynamic-field">
+        <div class="flex">
+          <input type="text"
+                 name="program[<%= field_type %>_attributes][<%= index %>][descripcion]"
+                 class="flex-1 px-3 py-2 border <%= item.errors[:descripcion].any? ? 'border-red-500' : 'border-gray-300' %> rounded-l-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                 value="<%= item.descripcion %>"
+                 placeholder="Ingrese <%= field_type.singularize %>"
+                 required>
+          <% if item.persisted? %>
+            <input type="hidden"
+                   name="program[<%= field_type %>_attributes][<%= index %>][id]"
+                   value="<%= item.id %>">
+          <% end %>
+          <input type="hidden"
+                 name="program[<%= field_type %>_attributes][<%= index %>][_destroy]"
+                 value="0"
+                 data-destroy-input>
+          <button type="button"
+                  class="px-3 py-2 text-red-600 bg-white border border-gray-300 border-l-0 rounded-r-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+                  onclick="removeField(this)">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <% if item.errors[:descripcion].any? %>
+          <div class="mt-1 text-sm text-red-600">
+            <%= item.errors[:descripcion].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

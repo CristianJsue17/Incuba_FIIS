@@ -1,0 +1,39 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  event: one
+  nombre_lider: MyString
+  apellidos_lider: MyString
+  dni_lider: MyString
+  correo_lider: MyString
+  telefono_lider: MyString
+  numero_integrantes_equipo: 1
+  nombre_emprendimiento: MyString
+  descripcion: MyText
+  cuentanos_proyecto: MyText
+  atributos_ventaja_diferenciacion: MyText
+  modelo_negocio: MyText
+  indicadores_metas_6meses: MyText
+  redes_sociales: MyText
+  web_startup: MyString
+  sector_economico: MyString
+  categoria: MyString
+
+two:
+  event: two
+  nombre_lider: MyString
+  apellidos_lider: MyString
+  dni_lider: MyString
+  correo_lider: MyString
+  telefono_lider: MyString
+  numero_integrantes_equipo: 1
+  nombre_emprendimiento: MyString
+  descripcion: MyText
+  cuentanos_proyecto: MyText
+  atributos_ventaja_diferenciacion: MyText
+  modelo_negocio: MyText
+  indicadores_metas_6meses: MyText
+  redes_sociales: MyText
+  web_startup: MyString
+  sector_economico: MyString
+  categoria: MyString

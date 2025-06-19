@@ -1,0 +1,623 @@
+<style>
+/* Estilos para la página de gestión de programas */
+
+/* Estilos para el encabezado y controles */
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-gray-800 {
+  color: #1f2937;
+}
+
+/* Estilos para el botón de filtro */
+.relative {
+  position: relative;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-gray-300 {
+  border-color: #e5e7eb;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Botón de crear programa */
+.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #1d4ed8;
+}
+
+/* Menú desplegable de filtro */
+.hidden {
+  display: none;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.w-48 {
+  width: 12rem;
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.block {
+  display: block;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+/* Estilos para la tabla */
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
+.divide-y {
+  border-top-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+.divide-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+/* Estilos para las etiquetas de estado */
+.inline-flex {
+  display: inline-flex;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.bg-blue-100 {
+  background-color: #dbeafe;
+}
+
+.text-blue-800 {
+  color: #1e40af;
+}
+
+.bg-green-100 {
+  background-color: #dcfce7;
+}
+
+.text-green-800 {
+  color: #166534;
+}
+
+.bg-red-100 {
+  background-color: #fee2e2;
+}
+
+.text-red-800 {
+  color: #991b1b;
+}
+
+.bg-yellow-100 {
+  background-color: #fef3c7;
+}
+
+.text-yellow-800 {
+  color: #854d0e;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+/* Estilos para botones de acción */
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+.text-blue-600 {
+  color: #2563eb;
+}
+
+.hover\:text-blue-900:hover {
+  color: #1e3a8a;
+}
+
+.text-indigo-600 {
+  color: #4f46e5;
+}
+
+.hover\:text-indigo-900:hover {
+  color: #312e81;
+}
+
+/* Estilos para el estado vacío */
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.text-gray-400 {
+  color: #9ca3af;
+}
+
+/* Responsive */
+@media (min-width: 640px) {
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 768px) {
+  .md\:flex-row {
+    flex-direction: row;
+  }
+  
+  .md\:items-center {
+    align-items: center;
+  }
+  
+  .md\:mb-0 {
+    margin-bottom: 0;
+  }
+}
+
+/* Iconos de Font Awesome */
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+/* Efectos de hover en las filas de la tabla */
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+}
+
+/* Animaciones suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Estilos para mejorar la experiencia de usuario */
+.hover\:shadow-md:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilo específico para el botón de filtro cuando está activo */
+.filtro-activo {
+  background-color: #e5edff;
+  border-color: #93c5fd;
+}
+
+/* Mejora para el espaciado en dispositivos móviles */
+@media (max-width: 640px) {
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+}
+
+/* Efectos de enfoque para accesibilidad */
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: #3b82f6;
+}
+
+.focus\:border-blue-500:focus {
+  border-color: #3b82f6;
+}
+</style>
+
+
+<% if flash[:notice] %>
+  <div class="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:notice] %></p>
+    </div>
+  </div>
+
+  <script>
+    // Ocultar el mensaje de éxito después de 5 segundos
+    setTimeout(function() {
+      const flashMessage = document.querySelector('.bg-green-100');
+      if (flashMessage) {
+        flashMessage.style.transition = 'opacity 0.5s, transform 0.5s';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transform = 'translateY(-10px)';
+        
+        // Eliminar del DOM después de la transición
+        setTimeout(function() {
+          flashMessage.remove();
+        }, 500);
+      }
+    }, 5000);
+  </script>
+<% end %>
+
+<div class="mb-6">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+    <h1 class="text-2xl font-bold text-gray-800 mb-3 md:mb-0">Gestión de Programas</h1>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="relative" id="filtroEstadoDropdown">
+        <button id="filtroEstadoBtn" class="flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+          <i class="fas fa-filter mr-2"></i> Filtrar por Estado
+          <i class="fas fa-chevron-down ml-2 text-gray-500"></i>
+        </button>
+        <div id="filtroEstadoMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+          <%= link_to "Todos", admin_programs_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Activos", admin_programs_path(estado: 'activo'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Inactivos", admin_programs_path(estado: 'inactivo'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Pendientes", admin_programs_path(estado: 'pendiente'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Finalizados", admin_programs_path(estado: 'finalizado'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+        </div>
+      </div>
+      <%= link_to new_admin_program_path, class: "flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors" do %>
+        <i class="fas fa-plus-circle mr-2"></i> Crear Programa
+      <% end %>
+    </div>
+  </div>
+  
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+          <tr class="bg-gray-50">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tipo</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Encargado</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publicación</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimiento</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @programs.each do |program| %>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="font-medium text-gray-900"><%= program.titulo %></div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  <%= program.tipo_humanizado %>
+                </span>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <%= program.encargado %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <%= program.fecha_publicacion.strftime("%d/%m/%Y - %H:%M") %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <%= program.fecha_vencimiento.strftime("%d/%m/%Y - %H:%M") %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <% case program.estado %>
+                <% when 'activo' %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Activo</span>
+                <% when 'inactivo' %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Inactivo</span>
+                <% when 'pendiente' %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pendiente</span>
+                <% when 'finalizado' %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Finalizado</span>
+                <% else %>
+                  <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800"><%= program.estado.humanize %></span>
+                <% end %>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <%= link_to edit_admin_program_path(program), 
+                              class: "text-blue-600 hover:text-blue-900", 
+                              title: "Editar programa" do %>
+                    <i class="fas fa-edit"></i>
+                  <% end %>
+                  
+                  <%= link_to "#", 
+                        class: "text-indigo-600 hover:text-indigo-900",
+                        title: "Ver detalles",
+                        data: { action: "click->program#showDetails", id: program.id } do %>
+                    <i class="fas fa-eye"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          
+          <% if @programs.empty? %>
+            <tr>
+              <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                <div class="flex flex-col items-center justify-center">
+                  <i class="fas fa-folder-open text-gray-400 text-5xl mb-3"></i>
+                  <p>No hay programas disponibles</p>
+                  <p class="text-sm mt-1">Crea un nuevo programa para comenzar</p>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <% if @programs.present? && @programs.total_pages > 1 %>
+        <div class="px-6 py-4 bg-white border-t border-gray-200">
+          <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-700">
+              Mostrando programas <%= @programs.offset_value + 1 %> a <%= @programs.offset_value + @programs.count %> de <%= @programs.total_count %>
+            </div>
+            <div class="flex space-x-2">
+              <%= paginate @programs %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Esta función se ejecutará cuando la página se cargue y después de cada navegación con Turbo
+  function initFilterDropdown() {
+    const filtroBtn = document.getElementById('filtroEstadoBtn');
+    const filtroMenu = document.getElementById('filtroEstadoMenu');
+    
+    if (!filtroBtn || !filtroMenu) return;
+    
+    // Función para alternar la visibilidad del menú
+    function toggleFilterMenu(e) {
+      e.stopPropagation();
+      filtroMenu.classList.toggle('hidden');
+    }
+    
+    // Función para cerrar el menú cuando se hace clic fuera
+    function handleOutsideClick(e) {
+      if (!filtroBtn.contains(e.target) && !filtroMenu.contains(e.target)) {
+        filtroMenu.classList.add('hidden');
+      }
+    }
+    
+    // Limpiar event listeners previos (importante para evitar duplicados)
+    const newFiltroBtn = filtroBtn.cloneNode(true);
+    filtroBtn.parentNode.replaceChild(newFiltroBtn, filtroBtn);
+    
+    // Añadir nuevos event listeners al botón clonado
+    newFiltroBtn.addEventListener('click', toggleFilterMenu);
+    document.addEventListener('click', handleOutsideClick);
+  }
+  
+  // Ejecutar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', initFilterDropdown);
+  
+  // También ejecutar después de cada carga con Turbo
+  document.addEventListener('turbo:load', initFilterDropdown);
+  document.addEventListener('turbo:render', initFilterDropdown);
+  
+  // Por si el documento ya está cargado
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    initFilterDropdown();
+  }
+</script>

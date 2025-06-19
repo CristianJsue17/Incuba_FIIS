@@ -1,0 +1,1753 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Panel Admin - Incuba UNAS</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  
+
+  <!-- Javascript de la aplicación -->
+  <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true, type: "module" %>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- CSS plano de Tailwind directamente en el HTML -->
+  <style>
+  /* Estilos base de Tailwind */
+  *, ::before, ::after {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: #e5e7eb;
+  }
+  
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+  
+  body {
+    margin: 0;
+    line-height: inherit;
+  }
+  
+  /* Flexbox */
+  .flex {
+    display: flex;
+  }
+  
+  .flex-1 {
+    flex: 1 1 0%;
+  }
+  
+  .flex-shrink-0 {
+    flex-shrink: 0;
+  }
+  
+  .flex-col {
+    flex-direction: column;
+  }
+  
+  .items-center {
+    align-items: center;
+  }
+  
+  .items-start {
+    align-items: flex-start;
+  }
+  
+  .justify-between {
+    justify-content: space-between;
+  }
+  
+  .justify-center {
+    justify-content: center;
+  }
+  
+  /* Espaciado */
+  .p-1 {
+    padding: 0.25rem;
+  }
+  
+  .p-2 {
+    padding: 0.5rem;
+  }
+  
+  .p-3 {
+    padding: 0.75rem;
+  }
+  
+  .p-4 {
+    padding: 1rem;
+  }
+  
+  .p-5 {
+    padding: 1.25rem;
+  }
+  
+  .p-6 {
+    padding: 1.5rem;
+  }
+  
+  .py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  
+  .py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .py-3 {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  
+  .py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  
+  .px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .pr-8 {
+    padding-right: 2rem;
+  }
+  
+  .mt-1 {
+    margin-top: 0.25rem;
+  }
+  
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+  
+  .mt-3 {
+    margin-top: 0.75rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+  
+  .mb-1 {
+    margin-bottom: 0.25rem;
+  }
+  
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+  
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  .mb-8 {
+    margin-bottom: 2rem;
+  }
+  
+  .mr-1 {
+    margin-right: 0.25rem;
+  }
+  
+  .mr-2 {
+    margin-right: 0.5rem;
+  }
+  
+  .mr-3 {
+    margin-right: 0.75rem;
+  }
+  
+  .ml-1 {
+    margin-left: 0.25rem;
+  }
+  
+  .ml-2 {
+    margin-left: 0.5rem;
+  }
+  
+  .ml-3 {
+    margin-left: 0.75rem;
+  }
+  
+  .space-x-4 > * + * {
+    margin-left: 1rem;
+  }
+  
+  .space-y-0 > * + * {
+    margin-top: 0;
+  }
+  
+  /* Tamaños */
+  .w-4 {
+    width: 1rem;
+  }
+  
+  .w-5 {
+    width: 1.25rem;
+  }
+  
+  .w-6 {
+    width: 1.5rem;
+  }
+  
+  .w-9 {
+    width: 2.25rem;
+  }
+  
+  .w-12 {
+    width: 3rem;
+  }
+  
+  .w-48 {
+    width: 12rem;
+  }
+  
+  .w-64 {
+    width: 16rem;
+  }
+  
+  .h-4 {
+    height: 1rem;
+  }
+  
+  .h-5 {
+    height: 1.25rem;
+  }
+  
+  .h-6 {
+    height: 1.5rem;
+  }
+  
+  .h-9 {
+    height: 2.25rem;
+  }
+  
+  .h-12 {
+    height: 3rem;
+  }
+  
+  .h-64 {
+    height: 16rem;
+  }
+  
+  .h-screen {
+    height: 100vh;
+  }
+  
+  .min-h-screen {
+    min-height: 100vh;
+  }
+  
+  /* Bordes y bordes redondeados */
+  .border {
+    border-width: 1px;
+  }
+  
+  .border-b {
+    border-bottom-width: 1px;
+  }
+  
+  .border-blue-700 {
+    border-color: #1d4ed8;
+  }
+  
+  .rounded {
+    border-radius: 0.25rem;
+  }
+  
+  .rounded-lg {
+    border-radius: 0.5rem;
+  }
+  
+  .rounded-md {
+    border-radius: 0.375rem;
+  }
+  
+  .rounded-full {
+    border-radius: 9999px;
+  }
+  
+  /* Colores de fondo */
+  .bg-blue-100 {
+    background-color: #dbeafe;
+  }
+  
+  .bg-blue-600 {
+    background-color: #2563eb;
+  }
+  
+  .bg-blue-700 {
+    background-color: #1d4ed8;
+  }
+  
+  .bg-blue-800 {
+    background-color: #1e40af;
+  }
+  
+  .bg-green-100 {
+    background-color: #dcfce7;
+  }
+  
+  .bg-green-600 {
+    background-color: #16a34a;
+  }
+  
+  .bg-gray-50 {
+    background-color: #f9fafb;
+  }
+  
+  .bg-gray-100 {
+    background-color: #f3f4f6;
+  }
+  
+  .bg-white {
+    background-color: #ffffff;
+  }
+  
+  .bg-red-100 {
+    background-color: #fee2e2;
+  }
+  
+  .bg-red-500 {
+    background-color: #ef4444;
+  }
+  
+  .bg-yellow-100 {
+    background-color: #fef3c7;
+  }
+  
+  .bg-purple-100 {
+    background-color: #f3e8ff;
+  }
+  
+  /* Colores de texto */
+  .text-blue-200 {
+    color: #bfdbfe;
+  }
+  
+  .text-blue-600 {
+    color: #2563eb;
+  }
+  
+  .text-white {
+    color: #ffffff;
+  }
+  
+  .text-gray-400 {
+    color: #9ca3af;
+  }
+  
+  .text-gray-500 {
+    color: #6b7280;
+  }
+  
+  .text-gray-600 {
+    color: #4b5563;
+  }
+  
+  .text-gray-700 {
+    color: #374151;
+  }
+  
+  .text-gray-800 {
+    color: #1f2937;
+  }
+  
+  .text-green-500 {
+    color: #22c55e;
+  }
+  
+  .text-green-600 {
+    color: #16a34a;
+  }
+  
+  .text-green-700 {
+    color: #15803d;
+  }
+  
+  .text-red-500 {
+    color: #ef4444;
+  }
+  
+  .text-red-700 {
+    color: #b91c1c;
+  }
+  
+  .text-yellow-600 {
+    color: #ca8a04;
+  }
+  
+  .text-yellow-700 {
+    color: #a16207;
+  }
+  
+  .text-purple-600 {
+    color: #9333ea;
+  }
+  
+  /* Tipografía */
+  .text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .text-lg {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+  
+  .text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  .font-bold {
+    font-weight: 700;
+  }
+  
+  /* Grid */
+  .grid {
+    display: grid;
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
+  
+  .gap-6 {
+    gap: 1.5rem;
+  }
+  
+  /* Efectos */
+  .shadow-sm {
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  }
+  
+  .shadow-md {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .shadow-lg {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .shadow-inner {
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  }
+  
+  .focus\:outline-none:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+  
+  .focus\:ring-2:focus {
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+  }
+  
+  .focus\:ring-blue-500:focus {
+    --tw-ring-color: #3b82f6;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .hover\:bg-gray-100:hover {
+    background-color: #f3f4f6;
+  }
+  
+  .hover\:text-gray-700:hover {
+    color: #374151;
+  }
+  
+  /* Posicionamiento */
+  .relative {
+    position: relative;
+  }
+  
+  .absolute {
+    position: absolute;
+  }
+  
+  .top-1 {
+    top: 0.25rem;
+  }
+  
+  .top-2 {
+    top: 0.5rem;
+  }
+  
+  .right-0 {
+    right: 0;
+  }
+  
+  .right-1 {
+    right: 0.25rem;
+  }
+  
+  .right-2 {
+    right: 0.5rem;
+  }
+  
+  .right-3 {
+    right: 0.75rem;
+  }
+  
+  .-top-1 {
+    top: -0.25rem;
+  }
+  
+  .-right-1 {
+    right: -0.25rem;
+  }
+  
+  /* Transiciones */
+  .transition-colors {
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  
+  .duration-200 {
+    transition-duration: 200ms;
+  }
+  
+  /* Desbordamiento */
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
+  
+  .overflow-x-auto {
+    overflow-x: auto;
+  }
+  
+  /* Específicos para tablas */
+  .min-w-full {
+    min-width: 100%;
+  }
+  
+  .text-left {
+    text-align: left;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  /* Display */
+  .block {
+    display: block;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  /* Z-index */
+  .z-50 {
+    z-index: 50;
+  }
+  
+  /* Media queries para responsive */
+  @media (min-width: 640px) {
+    .sm\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .lg\:grid-cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    
+    .lg\:grid-cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  
+  /* Estilos personalizados para el dashboard */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    color: inherit;
+  }
+  
+  /* Cursor */
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  /* Estilo específico para el sidebar similar a la imagen 1 */
+  .bg-blue-800 {
+    background-color: #2446c7; /* Ajuste exacto para el azul de la imagen */
+  }
+  
+  /* Estilo para los enlaces de navegación */
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
+    font-size: 0.95rem;
+    border-left: 4px solid transparent;
+    transition: all 0.2s ease;
+    letter-spacing: 0.01em;
+    height: 3rem; /* Altura fija para que sean todas iguales */
+  }
+  
+  .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-left-color: white;
+  }
+  
+  .nav-link i {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+    font-size: 1.125rem;
+  }
+  
+  /* Reducir el tamaño del texto para evitar desbordamiento */
+  .font-medium {
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+  
+  /* Espaciado nulo entre opciones para un diseño más compacto */
+  .space-y-0 > * {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+  
+  /* Estilo para el encabezado del sidebar */
+  .border-b.border-blue-700 {
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Ocultar la barra de desplazamiento pero permitir el scroll */
+  .py-3 {
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+  }
+  
+  .py-3::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+  
+  /* Estilo para el texto del título del sidebar (igual a la imagen 1) */
+  .text-xl {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  
+  .text-blue-200 {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  
+  /* Mejoras para el menú de usuario */
+  #userMenu {
+    transition: all 0.2s ease;
+    transform-origin: top right;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  /* Agregar animación suave al menú desplegable */
+  #userMenu {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  
+  #userMenu.hidden {
+    display: none;
+  }
+  
+  #userMenu:not(.hidden) {
+    opacity: 1;
+    transform: scale(1);
+  }
+  
+  /* Estilos para lograr que el sidebar tenga un tamaño compacto */
+  /* Para que todas las opciones quepan sin barra de desplazamiento */
+  .w-6, .h-6 {
+    width: 1.35rem;
+    height: 1.35rem;
+  }
+  
+  .mr-3 {
+    margin-right: 0.675rem;
+  }
+  
+  .py-2 {
+    padding-top: 0.375rem;
+    padding-bottom: 0.375rem;
+  }
+  
+  .px-4 {
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+  }
+  
+  /* Ajuste específico para opciones con texto más largo */
+  .nav-link span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+/* ESTILO EL MODAL DE VER DETALLES DE PROGRAMA  */
+/* Modal - Estructura principal */
+#programModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#programModal.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#programModal.hidden {
+  display: none;
+}
+
+/* Contenido del modal */
+#programModal > div {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 91.666667%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.3s ease-in-out;
+  margin: 1.5rem auto;
+}
+
+#programModal > div.scale-100 {
+  transform: scale(1);
+}
+
+/* Tamaños responsive */
+@media (min-width: 768px) {
+  #programModal > div {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1024px) {
+  #programModal > div {
+    width: 75%;
+  }
+}
+
+@media (min-width: 1280px) {
+  #programModal > div {
+    width: 66.666667%;
+  }
+}
+
+/* Cabecera del modal */
+#programModal .sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#programModal h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+#closeModal {
+  color: #9ca3af;
+  transition: color 0.2s;
+  font-size: 1.25rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+}
+
+#closeModal:hover {
+  color: #ef4444;
+}
+
+/* Contenido del modal */
+#modalContent {
+  padding: 1.5rem;
+}
+
+/* Animación de carga */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Control de scroll */
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+.overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 20px;
+}
+
+/* Estilos para el contenido del modal */
+#modalContent .space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+#modalContent .text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+#modalContent .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+#modalContent .text-gray-500 {
+  color: #6b7280;
+}
+
+#modalContent .text-gray-700 {
+  color: #374151;
+}
+
+#modalContent .text-gray-800 {
+  color: #1f2937;
+}
+
+#modalContent .text-gray-900 {
+  color: #111827;
+}
+
+#modalContent .font-medium {
+  font-weight: 500;
+}
+
+#modalContent .font-semibold {
+  font-weight: 600;
+}
+
+#modalContent .font-bold {
+  font-weight: 700;
+}
+
+#modalContent .bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+#modalContent .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+#modalContent .p-4 {
+  padding: 1rem;
+}
+
+#modalContent .mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Grid y estructura */
+#modalContent .grid {
+  display: grid;
+  margin-bottom: 1.5rem;
+}
+
+#modalContent .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#modalContent .gap-4 {
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  #modalContent .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  #modalContent .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Estilos para listas */
+#modalContent .list-disc {
+  list-style-type: disc;
+}
+
+#modalContent .list-inside {
+  list-style-position: inside;
+}
+
+#modalContent .space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+/* Estilos para botones */
+#modalContent .bg-blue-600 {
+  background-color: #2563eb;
+}
+
+#modalContent .bg-blue-600:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#modalContent .text-white {
+  color: #ffffff;
+}
+
+/* Estilos de badges de estado */
+#modalContent .rounded-full {
+  border-radius: 9999px;
+}
+
+#modalContent .bg-green-100 {
+  background-color: #dcfce7;
+}
+
+#modalContent .text-green-800 {
+  color: #166534;
+}
+
+#modalContent .bg-red-100 {
+  background-color: #fee2e2;
+}
+
+#modalContent .text-red-800 {
+  color: #991b1b;
+}
+
+#modalContent .bg-yellow-100 {
+  background-color: #fef3c7;
+}
+
+#modalContent .text-yellow-800 {
+  color: #92400e;
+}
+
+/* Control específico para la imagen */
+#modalContent .bg-white.p-4.rounded-lg.border.border-gray-200.flex.items-center.justify-center {
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#modalContent .image-preview-container {
+  margin-top: 0.5rem;
+  max-width: 100%;
+  max-height: 200px;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modalContent .image-preview-container img,
+#modalContent .max-w-full.max-h-full.object-contain {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Corregir altura de las tarjetas */
+#modalContent .h-full {
+  height: 100% !important;
+  min-height: 100px !important;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 640px) {
+  #programModal > div {
+    width: 95% !important;
+    max-height: 85vh !important;
+  }
+  
+  #modalContent .grid.grid-cols-1.md\:grid-cols-2,
+  #modalContent .grid.grid-cols-1.md\:grid-cols-3 {
+    display: block !important;
+  }
+  
+  #modalContent .grid.grid-cols-1.md\:grid-cols-2 > div,
+  #modalContent .grid.grid-cols-1.md\:grid-cols-3 > div {
+    margin-bottom: 1rem !important;
+  }
+}
+
+/* Prevenir scroll en el body cuando el modal está abierto */
+body.overflow-hidden {
+  overflow: hidden;
+}
+
+
+
+</style>
+  
+
+  <!-- jQuery para el menú desplegable -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+</head>
+<body class="bg-gray-100">
+  <div class="flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <div class="bg-blue-800 text-white w-64 flex-shrink-0 flex flex-col">
+      <div class="p-4 border-b border-blue-700 flex items-center justify-between">
+        <div>
+          <h1 class="text-xl font-bold">Incuba UNAS</h1>
+          <p class="text-xs text-blue-200">Panel de Administración</p>
+        </div>
+        <button class="text-white">
+          <i class="fas fa-bars"></i>
+        </button>
+      </div>
+      
+      <nav class="flex-1 py-3">
+        <ul class="space-y-0">
+          <li>
+            <a href="<%= admin_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+              <i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>
+              <span class="font-medium">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="<%= admin_programs_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'programs' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+              <i class="fas fa-graduation-cap w-6 h-6 mr-3"></i>
+              <span class="font-medium">Programas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-calendar-alt w-6 h-6 mr-3"></i>
+              <span class="font-medium">Eventos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-user-plus w-6 h-6 mr-3"></i>
+              <span class="font-medium">Crear Cuentas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-clipboard-list w-6 h-6 mr-3"></i>
+              <span class="font-medium">Inscripciones Recibidas</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-building w-6 h-6 mr-3"></i>
+              <span class="font-medium">Subir Patrocinadores</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-link w-6 h-6 mr-3"></i>
+              <span class="font-medium">Asociar Patrocinadores</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-users w-6 h-6 mr-3"></i>
+              <span class="font-medium">Usuarios</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-comment-dots w-6 h-6 mr-3"></i>
+              <span class="font-medium">Subir Testimonios</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-book w-6 h-6 mr-3"></i>
+              <span class="font-medium">Recursos Académicos</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-chalkboard-teacher w-6 h-6 mr-3"></i>
+              <span class="font-medium">Mentores</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-trophy w-6 h-6 mr-3"></i>
+              <span class="font-medium">Ganadores</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-users-cog w-6 h-6 mr-3"></i>
+              <span class="font-medium">Equipo Incuba</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+              <i class="fas fa-envelope w-6 h-6 mr-3"></i>
+              <span class="font-medium">Contáctanos</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col overflow-hidden">
+      <!-- Top Navigation -->
+      <header class="bg-white shadow-sm">
+        <div class="flex items-center justify-between p-4">
+          <div class="flex items-center">
+            <h1 class="text-lg font-semibold text-gray-700">Dashboard</h1>
+            <span class="text-gray-500 ml-3">Bienvenido a tu panel de administración</span>
+          </div>
+          
+          <div class="flex items-center space-x-4">
+            <div class="relative">
+              <input type="text" placeholder="Buscar..." class="border rounded-lg py-2 px-3 pr-8 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm w-64" />
+              <button class="absolute right-2 top-2 text-gray-400">
+                <i class="fas fa-search"></i>
+              </button>
+            </div>
+            
+            <div class="relative">
+              <button class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-bell text-xl"></i>
+                <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">3</span>
+              </button>
+            </div>
+            
+            <div class="relative">
+              <div class="flex items-center cursor-pointer" id="userMenuButton">
+                <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center text-white mr-2">
+                  <%= current_user.nombre[0].upcase %>
+                </div>
+                <span class="text-gray-700"><%= current_user.nombre %></span>
+                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
+              </div>
+              
+<!-- Menú desplegable de usuario -->
+<div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+  <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
+    <i class="fas fa-user mr-2 text-blue-600"></i> Ver Perfil
+  </a>
+  <div class="border-t border-gray-100"></div>
+  
+  <%= button_to destroy_user_session_path, 
+      method: :delete,
+      form: { 
+        style: "margin: 0; display: block;" 
+      },
+      class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors border-0 bg-transparent cursor-pointer",
+      data: { 
+        confirm: "¿Estás seguro que quieres cerrar sesión?" 
+      } do %>
+    <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+  <% end %>
+</div>
+            </div>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Page Content -->
+      <main class="flex-1 overflow-y-auto p-6">
+        <%= yield %>
+      </main>
+      
+      <!-- Footer -->
+      <footer class="bg-white p-4 shadow-inner text-center text-gray-500 text-sm">
+        © <%= Date.today.year %> Incuba UNAS. Todos los derechos reservados.
+      </footer>
+    </div>
+  </div>
+
+<!-- JavaScript mejorado para el menú desplegable de usuario -->
+<script>
+  // Función para inicializar el dropdown
+  function initializeUserDropdown() {
+    // Remover event listeners existentes para evitar duplicados
+    $("#userMenuButton").off('click');
+    $(document).off('click.userMenu');
+    
+    // Event listener para el botón del menú
+    $("#userMenuButton").on('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      console.log("Click en userMenuButton"); // Debug
+      $("#userMenu").toggleClass("hidden");
+    });
+    
+    // Event listener para cerrar el menú al hacer click fuera
+    $(document).on('click.userMenu', function(e) {
+      if (!$(e.target).closest("#userMenu").length && !$(e.target).closest("#userMenuButton").length) {
+        $("#userMenu").addClass("hidden");
+      }
+    });
+    
+    console.log("Dropdown de usuario inicializado"); // Debug
+  }
+
+  // Inicializar cuando el DOM esté listo
+  $(document).ready(function() {
+    console.log("DOM ready - inicializando dropdown"); // Debug
+    initializeUserDropdown();
+  });
+
+  // También inicializar después de navegación Turbo (si aplica)
+  $(document).on('turbo:load', function() {
+    console.log("Turbo load - reinicializando dropdown"); // Debug
+    initializeUserDropdown();
+  });
+
+  // Fallback: inicializar después de un delay
+  setTimeout(function() {
+    if ($("#userMenuButton").length && !$("#userMenuButton").data('initialized')) {
+      console.log("Fallback initialization"); // Debug
+      initializeUserDropdown();
+      $("#userMenuButton").data('initialized', true);
+    }
+  }, 500);
+</script>
+
+  <!-- JavaScript DE INPUT DINAMICO DE BENEFICIO... SELECT Y PREVISUALIZER IMAGEN EN PROGRAMAS -->
+  <script>
+    // Función principal que configura todas las funcionalidades
+    function initializeFormFunctionality() {
+      console.log("Inicializando funcionalidades con JavaScript puro");
+      
+      // 1. Funcionalidad de Select para mensaje de tipo de programa
+      function setupSelectMessages() {
+        const typeSelects = document.querySelectorAll('select[name="program[tipo]"]');
+        
+        typeSelects.forEach(select => {
+          // Eliminar event listeners previos para evitar duplicación
+          const newSelect = select.cloneNode(true);
+          select.parentNode.replaceChild(newSelect, select);
+          
+          newSelect.addEventListener('change', function() {
+            // Buscar el elemento de salida (small tag) cercano al select
+            const outputElement = this.parentElement.querySelector('small');
+            
+            if (outputElement) {
+              const selectedValue = this.value;
+              if (selectedValue) {
+                const tipoText = {
+                  'preincubacion': 'Preincubación',
+                  'incubacion': 'Incubación',
+                  'innovacion': 'Innovación'
+                }[selectedValue] || selectedValue;
+                
+                outputElement.textContent = `Formulario del Programa: ${tipoText}`;
+                outputElement.className = "text-sm text-green-600 font-medium mt-1";
+              } else {
+                outputElement.textContent = "Seleccione un tipo de programa";
+                outputElement.className = "text-sm text-gray-500 mt-1";
+              }
+            }
+          });
+        });
+      }
+      
+      // 2. Funcionalidad de campos dinámicos (objetivos, beneficios, requisitos)
+      function setupDynamicFields() {
+        // Encontrar todos los contenedores de campos dinámicos
+        const fieldContainers = document.querySelectorAll('[data-controller="dynamic-fields"]');
+        
+        fieldContainers.forEach(container => {
+          // Obtener datos importantes del contenedor
+          const fieldType = container.getAttribute('data-dynamic-fields-field-type-value');
+          const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
+          
+          // Encontrar elementos importantes dentro del contenedor
+          const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
+          const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
+          const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
+          
+          if (addButton && fieldsContainer) {
+            // Eliminar event listeners previos para evitar duplicación
+            const newAddButton = addButton.cloneNode(true);
+            addButton.parentNode.replaceChild(newAddButton, addButton);
+            
+            // Añadir evento al botón de agregar
+            newAddButton.addEventListener('click', function() {
+              // Contar campos visibles actuales
+              const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
+                .filter(field => field.style.display !== 'none').length;
+              
+              // Verificar si se alcanzó el máximo
+              if (visibleFields >= maxFields) {
+                console.log(`Máximo de ${maxFields} campos alcanzado para ${fieldType}`);
+                return;
+              }
+              
+              // Generar un nuevo índice único
+              const newIndex = new Date().getTime();
+              
+              // Crear el HTML para el nuevo campo
+              const fieldHtml = `
+                <div class="mb-3 dynamic-field">
+                  <div class="flex">
+                    <input type="text"
+                           name="program[${fieldType}s_attributes][${newIndex}][descripcion]"
+                           class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                           placeholder="Ingrese ${fieldType}"
+                           required>
+                    <input type="hidden"
+                           name="program[${fieldType}s_attributes][${newIndex}][_destroy]"
+                           value="0"
+                           data-destroy-input>
+                    <button type="button"
+                           class="px-3 py-2 text-red-600 bg-white border border-gray-300 border-l-0 rounded-r-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+                           onclick="removeField(this)">
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+                </div>
+              `;
+              
+              // Agregar el nuevo campo al contenedor
+              fieldsContainer.insertAdjacentHTML('beforeend', fieldHtml);
+              
+              // Actualizar el contador
+              updateFieldCounter(container);
+            });
+          }
+          
+          // Configurar los botones de eliminar existentes
+          const removeButtons = container.querySelectorAll('[data-action*="dynamic-fields#removeField"]');
+          removeButtons.forEach(button => {
+            // Eliminar event listeners previos para evitar duplicación
+            const newButton = button.cloneNode(true);
+            button.parentNode.replaceChild(newButton, button);
+            
+            newButton.addEventListener('click', function() {
+              removeField(this);
+            });
+          });
+          
+          // Actualizar contador inicial
+          updateFieldCounter(container);
+        });
+      }
+      
+      // 3. Configurar preview de imagen (si es necesario)
+      function setupImagePreview() {
+        const imageInputs = document.querySelectorAll('input[type="file"][data-action*="image-preview#preview"]');
+        
+        imageInputs.forEach(input => {
+          // Eliminar event listeners previos para evitar duplicación
+          const newInput = input.cloneNode(true);
+          input.parentNode.replaceChild(newInput, input);
+          
+          newInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (!file) return;
+            
+            const previewContainer = this.closest('[data-controller="image-preview"]')?.querySelector('[data-image-preview-target="preview"]');
+            
+            if (previewContainer) {
+              const reader = new FileReader();
+              reader.onload = function(e) {
+                previewContainer.innerHTML = `
+                  <img src="${e.target.result}" 
+                       class="max-w-full h-auto rounded-md" 
+                       style="max-height: 200px; object-fit: cover;">
+                `;
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        });
+      }
+      
+      // Inicializar todas las funcionalidades
+      setupSelectMessages();
+      setupDynamicFields();
+      setupImagePreview();
+    }
+    
+    // Función para eliminar un campo (global para poder ser llamada desde onclick)
+    window.removeField = function(button) {
+      const field = button.closest('.dynamic-field');
+      const container = button.closest('[data-controller="dynamic-fields"]');
+      const destroyInput = field.querySelector('[data-destroy-input]');
+      
+      if (destroyInput) {
+        // Si es un campo existente (con ID), marcarlo como eliminado
+        destroyInput.value = "1";
+        field.style.display = 'none';
+      } else {
+        // Si es un campo nuevo, eliminarlo del DOM
+        field.remove();
+      }
+      
+      // Actualizar el contador
+      updateFieldCounter(container);
+    };
+    
+    // Función para actualizar el contador de campos
+    function updateFieldCounter(container) {
+      const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
+      const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
+      const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
+      
+      // Contar campos visibles
+      const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
+      const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
+        .filter(field => field.style.display !== 'none').length;
+      
+      // Actualizar texto del contador
+      if (counter) {
+        counter.textContent = `${visibleFields}/${maxFields}`;
+      }
+      
+      // Habilitar/deshabilitar botón según cantidad de campos
+      if (addButton) {
+        if (visibleFields >= maxFields) {
+          addButton.disabled = true;
+          addButton.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+          addButton.disabled = false;
+          addButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+      }
+    }
+    
+    // Inicializar en primer carga
+    document.addEventListener('DOMContentLoaded', initializeFormFunctionality);
+    
+    // Inicializar después de cada navegación con Turbo
+    document.addEventListener('turbo:load', initializeFormFunctionality);
+    
+    // Inicializar después de cada renderizado con Turbo
+    document.addEventListener('turbo:render', initializeFormFunctionality);
+    
+    // También inicializar si el documento ya está cargado
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initializeFormFunctionality();
+    }
+  </script>
+
+ 
+
+
+  <!-- PARA EL MODAL DE VER DETALLES DE PROGRAMAS -->
+  <div id="programModal" class="hidden">
+  <div class="scale-95">
+    <!-- Cabecera del modal -->
+    <div class="sticky">
+      <h2>Detalles del Programa</h2>
+      <button id="closeModal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <!-- Contenido del modal -->
+    <div id="modalContent">
+      <div class="animate-pulse">
+        <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6 mb-6"></div>
+        <div class="h-48 bg-gray-200 rounded mb-6"></div>
+        <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!-- PARA EL MODAL DE VER DETALLES PROGRAMA -->
+  <script>
+  $(document).ready(function() {
+    // Menú desplegable de usuario
+    $("#userMenuButton").click(function(e) {
+      e.stopPropagation();
+      $("#userMenu").toggleClass("hidden");
+    });
+    
+    $(document).click(function(e) {
+      if (!$(e.target).closest("#userMenu").length && !$(e.target).closest("#userMenuButton").length) {
+        $("#userMenu").addClass("hidden");
+      }
+    });
+    
+    // Configurar el modal
+    setupProgramModal();
+  });
+  
+  // Funciones para el modal
+  function setupProgramModal() {
+    const modal = document.getElementById('programModal');
+    if (!modal) return;
+    
+    // Cerrar modal con botón de cerrar
+    const closeButton = document.getElementById('closeModal');
+    if (closeButton) {
+      closeButton.addEventListener('click', function() {
+        closeModal();
+      });
+    }
+    
+    // Cerrar modal con clic fuera
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+    
+    // Cerrar modal con la tecla ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+    
+    // Vincular botones de "Ver detalles"
+    const detailButtons = document.querySelectorAll('[data-action="click->program#showDetails"]');
+    detailButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const programId = this.getAttribute('data-id');
+        if (programId) {
+          showProgramDetails(programId);
+        }
+      });
+    });
+  }
+  
+  function showProgramDetails(programId) {
+    const modal = document.getElementById('programModal');
+    const modalContent = document.getElementById('modalContent');
+    
+    if (!modal || !modalContent) return;
+    
+    // Mostrar modal con animación
+    document.body.classList.add('overflow-hidden');
+    modal.classList.remove('hidden');
+    modal.classList.add('visible');
+    
+    // Animación de entrada
+    setTimeout(() => {
+      const modalDialog = modal.querySelector('div');
+      if (modalDialog) {
+        modalDialog.classList.add('scale-100');
+        modalDialog.classList.remove('scale-95');
+      }
+    }, 10);
+    
+    // Cargar detalles del programa con AJAX
+    modalContent.innerHTML = `
+      <div class="animate-pulse p-4">
+        <div class="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+        <div class="h-32 bg-gray-200 rounded mb-6"></div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="h-24 bg-gray-200 rounded"></div>
+          <div class="h-24 bg-gray-200 rounded"></div>
+        </div>
+        <div class="h-4 bg-gray-200 rounded w-3/4 mt-6"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mt-4"></div>
+      </div>
+    `;
+    
+    fetch(`/admin/programs/${programId}`, {
+      headers: {
+        'Accept': 'text/html',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(html => {
+      modalContent.innerHTML = html;
+    })
+    .catch(error => {
+      modalContent.innerHTML = `
+        <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
+          <div class="flex items-center">
+            <i class="fas fa-exclamation-circle text-xl mr-3"></i>
+            <p class="font-semibold">Error al cargar los detalles</p>
+          </div>
+          <p class="mt-2">${error.message}</p>
+        </div>
+      `;
+    });
+  }
+  
+  function closeModal() {
+    const modal = document.getElementById('programModal');
+    if (!modal) return;
+    
+    // Animación de salida
+    modal.classList.remove('visible');
+    const modalDialog = modal.querySelector('div');
+    if (modalDialog) {
+      modalDialog.classList.add('scale-95');
+      modalDialog.classList.remove('scale-100');
+    }
+    
+    // Ocultar modal después de la animación
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    }, 300);
+  }
+  
+  // Exponer funciones globalmente
+  window.showProgramDetails = showProgramDetails;
+  window.closeModal = closeModal;
+  window.setupProgramModal = setupProgramModal;
+  
+  // Asegurarse de que el modal se configure cuando Turbo cambie la página
+  document.addEventListener('turbo:load', function() {
+    setupProgramModal();
+  });
+</script>
+
+<!-- ------------------------------------------------------------ -->
+
+
+
+<!-- ------------------------------------------------------------ -->
+
+</body>
+</html>

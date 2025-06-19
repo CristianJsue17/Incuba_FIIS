@@ -1,0 +1,692 @@
+<!-- CSS específicos para home -->
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "background" %>
+  <%= stylesheet_link_tag "home" %>
+  <%= stylesheet_link_tag "swiper-bundle.min" %>
+<% end %>
+
+<!-- JavaScript específicos para home -->
+<% content_for :scripts do %>
+  <%= javascript_include_tag "enhanced_home", defer: true %>
+  <%= javascript_include_tag "enhanced_header", defer: true %>
+  <%= javascript_include_tag "carrusel_program", defer: true %>
+  <%= javascript_include_tag "timeline", defer: true %>
+  <%= javascript_include_tag "testimonials", defer: true %>
+  <%= javascript_include_tag "footer", defer: true %>
+  <%= javascript_include_tag "swiper-bundle.min", defer: true %>
+  <%= javascript_include_tag "swiper-init", defer: true %>  
+<% end %>
+
+<!-- Fondo dinámico mejorado -->
+<div class="background">
+  <div class="background__gradient"></div>
+  <canvas id="particles" class="background__particles" aria-hidden="true"></canvas>
+  <div class="background__bubbles" aria-hidden="true"></div>
+  <div class="background__waves" aria-hidden="true"></div>
+  
+  <div class="background__content container">
+    <!-- Header reestructurado con dropdowns completos -->
+    <header class="header" role="banner">
+      <div class="header__container">
+        <div class="header__logo">
+          <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+            <!-- DIV SEPARADO PARA EL LOGO -->
+            <div class="header__logo-container">
+              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+            </div>
+            <!-- DIV SEPARADO PARA EL TEXTO -->
+            <div class="header__text-container">
+              <span class="header__logo-text">INCUBA UNAS</span>
+            </div>
+          </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+          <ul class="header__menu">
+            <!-- PROGRAMAS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- EVENTOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- SERVICIOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- NOSOTROS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- MENTORES -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <!-- CONTACTO -->
+            <li class="header__menu-item">
+              <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+            </li>
+
+            <!-- LOGIN MÓVIL -->
+            <li class="header__menu-item">
+              <a href="<%= new_user_session_path %>"
+                 class="header__action-btn header__action-btn--mobile"
+                 data-turbo="false"
+                 aria-label="Iniciar sesión">
+                <i class="fas fa-user" aria-hidden="true"></i>
+                INICIAR SESIÓN
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+        <div class="header__actions">
+          <!-- SELECTOR DE IDIOMA -->
+          <%= render 'shared/language_switcher' %>
+          
+          <div class="header__login-container">
+            <a href="<%= new_user_session_path %>"
+               class="header__action-btn header__action-btn--login"
+               data-turbo="false"
+               aria-label="<%= t('navigation.iniciar_sesion') %>">
+            </a>
+            <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+          </div>
+        </div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+          <span class="header__hamburger-line" aria-hidden="true"></span>
+          <span class="header__hamburger-line" aria-hidden="true"></span>
+          <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Hero section mejorado -->
+    <main class="main" role="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__content">
+          <h1 id="hero-title" class="hero__title">
+            <span class="hero__title-part hero__title-part--blue">Incuba</span>
+            <span class="hero__title-part hero__title-part--green">Unas</span>
+          </h1>
+          
+          <div class="hero__subtitle-container">
+            <h2 class="hero__subtitle-highlight"><%= t('hero.transformamos') %></h2>
+            <p class="hero__subtitle"><%= t('hero.usando_estrategias') %></p>
+          </div>
+          
+        <div class="hero__social animate-on-scroll">
+  <a href="#" class="hero__social-link" aria-label="Facebook">
+    <i class="fa-brands fa-facebook-f"></i> <!-- Cambio aquí -->
+  </a>
+  <a href="#" class="hero__social-link" aria-label="Twitter">  
+    <i class="fa-brands fa-twitter"></i> <!-- Cambio aquí -->
+  </a>
+  <a href="#" class="hero__social-link" aria-label="Instagram">
+    <i class="fa-brands fa-instagram"></i> <!-- Cambio aquí -->
+  </a>
+  <a href="#" class="hero__social-link" aria-label="LinkedIn">
+    <i class="fa-brands fa-linkedin-in"></i> <!-- Cambio aquí -->
+  </a>
+</div>
+          
+          <div class="hero__buttons animate-on-scroll">
+            <!-- Botón principal -->
+            <%= link_to new_user_registration_path, class: "hero__button hero__button--primary" do %>
+              <i class="fas fa-rocket" aria-hidden="true"></i>
+              <%= t('hero.inscribete') %>
+            <% end %>
+            
+            <!-- Badge de urgencia -->
+            <div class="hero__urgency-badge">
+              <i class="fas fa-fire" aria-hidden="true"></i>
+              <%= t('hero.cupos_limitados') %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="hero__images animate-on-scroll">
+          <div class="hero__image-container hero__image-container--1">
+            <%= image_tag "principal/startap1.jpg", alt: "Pedro - Testimonio de éxito", class: "hero__image", height: 280, width: 280 %>
+          </div>
+          <div class="hero__image-container hero__image-container--2">
+            <%= image_tag "principal/startap2.png", alt: "Melisa Zavala - Emprendedora exitosa", class: "hero__image", height: 240, width: 240 %>
+          </div>
+          <div class="hero__image-container hero__image-container--3">
+            <%= image_tag "principal/startap3.jpg", alt: "Steven - Innovador destacado", class: "hero__image", height: 200, width: 200 %>
+          </div>
+          <div class="hero__image-container hero__image-container--4">
+            <%= image_tag "principal/startap4.jpg", alt: "Carlos Hidalgo - Mentor experto", class: "hero__image", height: 160, width: 160 %>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stats section mejorada -->
+      <section class="stats animate-on-scroll" aria-label="Estadísticas de Incuba UNAS">
+        <!-- TOTAL ESTUDIANTES -->
+        <div class="stats__item stats__item--clients">
+          <div class="stats__main-icon">
+            <i class="fas fa-users"></i>
+          </div>
+          <div class="stats__number">5.0K+</div>
+          <div class="stats__title"><%= t('stats.total_estudiantes') %></div>
+        </div>
+
+        <!-- NUEVOS PARTICIPANTES -->
+        <div class="stats__item stats__item--daily">
+          <div class="stats__main-icon">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="stats__number">54</div>
+          <div class="stats__title"><%= t('stats.nuevos_participantes') %><br><%= t('stats.diarios') %></div>
+        </div>
+
+        <!-- CONTRIBUCIONES -->
+        <div class="stats__item stats__item--contributions">
+          <div class="stats__main-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div class="stats__number">2.5K</div>
+          <div class="stats__subtitle">283 <%= t('stats.contribuciones') %></div>
+          <div class="stats__title"><%= t('stats.ultimo_ano') %></div>
+        </div>
+
+        <!-- EXPLORAR SERVICIOS -->
+        <div class="explore">
+          <div class="explore__text"><%= t('stats.explora_servicios').html_safe %></div>
+          <div class="explore__icon">
+            <i class="fas fa-arrow-right" aria-hidden="true"></i>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- Sección Socios Estratégicos -->
+<section class="partners">
+  <div class="partners__container">
+    <h2 class="partners__title">Socios Estratégicos</h2>
+    <div class="partners__carousel">
+      <div class="partners__track">
+        <% 2.times do %> <!-- Repetimos dos veces los mismos logos -->
+          <% [
+            "aliados/CITE-agroindustrial.webp",
+            "aliados/cite.png",
+            "aliados/cite.png",
+            "aliados/equipu_INCUBA_UNAS_0.png",
+            "aliados/Gobierno_Regional_Huanuco_INCUBA_UNAS_0.png",
+            "aliados/kunan_INCUBA_UNAS_0.png",
+            "aliados/madrid_INCUBA_UNAS.png",
+            "aliados/mentor_day_INCUBA_UNAS_0.png",
+            "aliados/ministerio del peru.png",
+            "aliados/proinnovate.png",
+            "aliados/red_impacto_INCUBA_UNAS_0.png",
+            "aliados/sao_paulo_INCUBA_UNAS.png",
+            "aliados/start_global_INCUBA_UNAS_0.png",
+            "aliados/toilet_INCUBA_UNAS_0.png",
+            "aliados/universida_antofagasta_INCUBA_UNAS.png",
+            "aliados/unsung_INCUBA_UNAS.png",
+            "aliados/wadhwani_INCUBA_UNAS.png"
+          ].each do |logo| %>
+            <div class="partners__item">
+              <%= image_tag logo, alt: "Socio Estratégico", class: "partners__logo" %>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Programas con Carrusel -->
+<section class="programs-section">
+  <div class="programs-container">
+    <h2 class="programs-title">Últimos Programas</h2>
+    
+    <div class="programs-wrapper">
+      <!-- EL JAVASCRIPT CONVERTIRÁ ESTE GRID EN CARRUSEL AUTOMÁTICAMENTE -->
+      <div class="programs-grid">
+        <!-- Programas dinámicos de la base de datos -->
+        <% @datos_home[:programas].each_with_index do |programa, index| %>
+          <article class="program-card" 
+                   data-aos="fade-up" 
+                   data-aos-delay="<%= index * 100 %>"
+                   data-type="<%= programa.tipo %>">
+            
+            <!-- Imagen del programa -->
+            <div class="program-image">
+              <% if programa.image.attached? %>
+                <%= image_tag programa.image, 
+                    alt: programa.titulo, 
+                    class: "program-img" %>
+              <% else %>
+                <div class="program-placeholder">
+                  <i class="fas fa-lightbulb"></i>
+                  <span>Imagen no disponible</span>
+                </div>
+              <% end %>
+              
+              <!-- Badge del tipo de programa -->
+              <div class="program-type-badge program-type-<%= programa.tipo %>">
+                <%= programa.tipo_humanizado %>
+              </div>
+              
+              <!-- Badge del estado del programa -->
+              <div class="program-status-badge program-status-<%= programa.estado %>">
+                <%= programa.estado.capitalize %>
+              </div>
+            </div>
+            
+            <!-- Contenido del programa -->
+            <div class="program-content">
+              <h3 class="program-title"><%= programa.titulo %></h3>
+              <p class="program-description">
+                <%= truncate(programa.descripcion, length: 120, separator: ' ') %>
+              </p>
+              
+              <!-- Información adicional del programa -->
+              <div class="program-meta">
+                <div class="program-date">
+                  <i class="far fa-calendar-alt"></i>
+                  <span>Vence: <%= programa.fecha_vencimiento.strftime("%d/%m/%Y") %></span>
+                </div>
+                <div class="program-manager">
+                  <i class="fas fa-user-tie"></i>
+                  <span><%= programa.encargado %></span>
+                </div>
+              </div>
+              
+              <!-- Botones de acción -->
+              <div class="program-actions">
+                <%= link_to "#", class: "program-btn program-btn-secondary" do %>
+                  <i class="fas fa-info-circle"></i>
+                  Ver detalles
+                <% end %>
+                <%= link_to "#", class: "program-btn program-btn-primary" do %>
+                  <i class="fas fa-rocket"></i>
+                  Inscribirse
+                <% end %>
+              </div>
+            </div>
+          </article>
+        <% end %>
+      </div>
+      
+      <!-- Botón para ver todos los programas -->
+      <div class="programs-cta">
+        <%= link_to "/servicios", class: "programs-view-all-btn" do %>
+          <span>Ver todos los programas</span>
+          <i class="fas fa-arrow-right"></i>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Testimonios -->
+<section class="testimonials">
+  <div class="testimonials__container">
+    <h2 class="testimonials__title">TESTIMONIOS</h2>
+
+    <div class="testimonials__carousel">
+      <button class="testimonials__nav testimonials__nav--prev" aria-label="Previous testimonial">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+      </button>
+
+      <div class="testimonials__track">
+        <!-- Testimonial 1 -->
+        <div class="testimonial testimonial--active">
+          <div class="testimonial__rating">
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+          </div>
+          <p class="testimonial__text">
+            Nuestra experiencia en <strong> INCUBA UNAS </strong> nos ha permitido madurar y
+            orientar adecuadamente la idea y el modelo de negocio que
+            iniciamos hace algunos años, encontrando así un nicho específico donde actualmente
+            estamos comenzando a tener tracción y
+            estamos muy próximo a lanzar nuestro primer producto al mercado."
+          </p>
+          <p class="testimonial__author">KATRINA PARKER</p>
+          <div class="testimonial__avatar">
+            <%= image_tag "testimonios/pedro.png", alt: "Katrina Parker" , class: "testimonial__image" %>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+        <div class="testimonial">
+          <div class="testimonial__rating">
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+          </div>
+          <p class="testimonial__text">
+            "Recomiendo Startup UNI por su compromiso genuino con el éxito de los emprendedores. Su
+            ayuda en la postulación a fondos
+            y su red de mentores marcaron la diferencia para mi proyecto. Gracias a sus sesiones de
+            pitch he aprendido a comunicar
+            mis ideas más efectivamente."
+          </p>
+          <p class="testimonial__author">JAMES WILSON</p>
+          <div class="testimonial__avatar">
+            <%= image_tag "testimonios/melisa_zavala.png", alt: "James Wilson" , class: "testimonial__image" %>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+        <div class="testimonial">
+          <div class="testimonial__rating">
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+          </div>
+          <p class="testimonial__text">
+            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+            architecto
+            beatae vitae dicta sunt explicabo."
+          </p>
+          <p class="testimonial__author">SOPHIA MARTINEZ</p>
+          <div class="testimonial__avatar">
+            <%= image_tag "testimonios/steven.png", alt: "Sophia Martinez" , class: "testimonial__image" %>
+          </div>
+        </div>
+
+        <!-- Testimonial 4 -->
+        <div class="testimonial">
+          <div class="testimonial__rating">
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+            <span>⭐</span>
+          </div>
+          <p class="testimonial__text">
+            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
+            architecto
+            beatae vitae dicta sunt explicabo."
+          </p>
+          <p class="testimonial__author">SOPHIA MARTINEZ</p>
+          <div class="testimonial__avatar">
+            <%= image_tag "testimonios/carlos_hidalgo.png", alt: "Carlos Hidalgo" , class: "testimonial__image" %>
+          </div>
+        </div>
+      </div>
+
+      <button class="testimonials__nav testimonials__nav--next" aria-label="Next testimonial">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <div class="testimonials__indicators">
+      <button class="testimonials__indicator testimonials__indicator--active" data-index="0" aria-label="Go to testimonial 1"></button>
+      <button class="testimonials__indicator" data-index="1" aria-label="Go to testimonial 2"></button>
+      <button class="testimonials__indicator" data-index="2" aria-label="Go to testimonial 3"></button>
+      <button class="testimonials__indicator" data-index="3" aria-label="Go to testimonial 4"></button>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Timeline -->
+<section class="timeline-section">
+  <div class="timeline-section__container">
+    <h2 class="timeline-section__title">Nuestra Historia</h2>
+
+    <div class="timeline">
+      <div class="timeline__progress-bar">
+        <div class="timeline__progress-fill"></div>
+      </div>
+
+      <div class="timeline__items">
+        <!-- Punto 1 -->
+        <div class="timeline__item" data-year="2010">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">2010</div>
+            <h3 class="timeline__title">Fundación</h3>
+            <p class="timeline__subtitle">Inicio de operaciones en un pequeño local</p>
+            <div class="timeline__details">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, sapiente!</p>
+              <ul>
+                <li>Establecimiento de la empresa</li>
+                <li>Desarrollo del primer prototipo</li>
+                <li>Obtención de financiamiento inicial</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Punto 2 -->
+        <div class="timeline__item" data-year="2013">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">2013</div>
+            <h3 class="timeline__title">Expansión Nacional</h3>
+            <p class="timeline__subtitle">Apertura de oficinas en 5 ciudades principales</p>
+            <div class="timeline__details">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, officiis?</p>
+              <ul>
+                <li>Apertura de 5 nuevas oficinas</li>
+                <li>Contratación de 50 nuevos empleados</li>
+                <li>Lanzamiento de 3 nuevas líneas de productos</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Punto 3 -->
+        <div class="timeline__item" data-year="2016">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">2016</div>
+            <h3 class="timeline__title">Innovación Tecnológica</h3>
+            <p class="timeline__subtitle">Lanzamiento de nuestra plataforma digital</p>
+            <div class="timeline__details">
+              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempore.</p>
+              <ul>
+                <li>Desarrollo de plataforma digital propietaria</li>
+                <li>Implementación de inteligencia artificial en nuestros procesos</li>
+                <li>Obtención de 2 patentes tecnológicas</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Punto 4 -->
+        <div class="timeline__item" data-year="2019">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">2019</div>
+            <h3 class="timeline__title">Expansión Internacional</h3>
+            <p class="timeline__subtitle">Apertura de oficinas en 3 continentes</p>
+            <div class="timeline__details">
+              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, eos.</p>
+              <ul>
+                <li>Apertura de oficinas en Madrid, Singapur y São Paulo</li>
+                <li>Adaptación de productos a mercados locales</li>
+                <li>Establecimiento de alianzas estratégicas internacionales</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Punto 5 -->
+        <div class="timeline__item" data-year="2022">
+          <div class="timeline__marker"></div>
+          <div class="timeline__content">
+            <div class="timeline__date">2022</div>
+            <h3 class="timeline__title">Sostenibilidad</h3>
+            <p class="timeline__subtitle">Implementación de iniciativas verdes</p>
+            <div class="timeline__details">
+              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, qui?</p>
+              <ul>
+                <li>Certificación como empresa carbono neutral</li>
+                <li>Rediseño de productos con materiales sostenibles</li>
+                <li>Implementación de energías renovables en todas nuestras instalaciones</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Sección Footer -->
+<footer class="footer">
+  <div class="footer__decoration footer__decoration--top-left"></div>
+  <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+  <div class="footer__container">
+    <!-- Columna izquierda: Logo y suscripción -->
+    <div class="footer__column footer__column--main">
+      <div class="footer__logo-container">
+        <div class="footer__logo">
+          <span class="footer__logo-icon">I</span>NCUBA UNAS
+        </div>
+        <p class="footer__description">
+          Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+          emprendimientos innovadores y sostenibles en la región.
+        </p>
+      </div>
+
+      <form class="footer__subscribe">
+        <input type="email" class="footer__input" placeholder="Enter email">
+        <button type="submit" class="footer__button">
+          <i class="fas fa-arrow-right"></i>
+          Contacto
+        </button>
+      </form>
+
+      <div class="footer__social">
+        <a href="#" class="footer__social-link">
+          <i class='fab fa-instagram'></i>
+        </a>
+        <a href="#" class="footer__social-link">
+          <i class='fab fa-twitter'></i>
+        </a>
+        <a href="#" class="footer__social-link">
+          <i class='fab fa-facebook'></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- Columnas de enlaces -->
+    <div class="footer__column">
+      <h3 class="footer__heading">Principal</h3>
+      <ul class="footer__links">
+        <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__column">
+      <h3 class="footer__heading">Nosotros</h3>
+      <ul class="footer__links">
+        <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+      </ul>
+    </div>
+
+    <div class="footer__column">
+      <h3 class="footer__heading">Enlaces de Interés</h3>
+      <ul class="footer__links">
+        <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+        <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+      </ul>
+    </div>
+  </div>
+</footer>

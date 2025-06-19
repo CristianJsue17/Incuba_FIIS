@@ -1,0 +1,459 @@
+/* app/assets/stylesheets/inscripciones.css */
+/* Estilos para el formulario de inscripción */
+.inscripcion-container {
+  max-width: 1000px;
+  margin: 60px auto 100px;
+  padding: 0 20px;
+}
+
+.inscripcion-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.inscripcion-header h1 {
+  font-size: 2.4rem;
+  background: linear-gradient(90deg, #0028a7, #00c853);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 12px;
+  font-weight: 800;
+}
+
+.inscripcion-header p {
+  font-size: 1.1rem;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 20px;
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 18px;
+  background-color: #f5f5f5;
+  color: #333;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-volver i {
+  margin-right: 6px;
+}
+
+.btn-volver:hover {
+  background-color: #e0e0e0;
+}
+
+.formulario-inscripcion {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.card {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+
+.card-header {
+  background-color: #f8f9fa;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.card-header h3 {
+  font-size: 1.4rem;
+  color: #333;
+  margin: 0;
+  font-weight: 600;
+}
+
+.card-body {
+  padding: 25px;
+}
+
+.programa-detalles .programa-info {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.programa-detalles .programa-imagen {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.programa-info-texto h4 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  color: #333;
+  font-weight: 700;
+}
+
+.programa-info-texto p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+.programa-fecha {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.programa-fecha i {
+  color: #0028a7;
+  margin-right: 8px;
+}
+
+.badge.programa-tipo {
+  display: inline-block;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.badge.programa-tipo.preincubacion {
+  background-color: #2196F3;
+}
+
+.badge.programa-tipo.incubacion {
+  background-color: #009688;
+}
+
+.badge.programa-tipo.innovacion {
+  background-color: #CDDC39;
+  color: #333;
+}
+
+.formulario-campos .form-label {
+  font-weight: 500;
+  color: #444;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.formulario-campos .form-control {
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  transition: border-color 0.2s;
+  width: 100%;
+}
+
+.formulario-campos .form-control:focus {
+  border-color: #0028a7;
+  box-shadow: 0 0 0 3px rgba(0,40,167,0.1);
+  outline: none;
+}
+
+.formulario-campos textarea.form-control {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.terminos-condiciones {
+  margin: 15px 0;
+}
+
+.terminos-condiciones a {
+  color: #0028a7;
+  text-decoration: none;
+}
+
+.terminos-condiciones a:hover {
+  text-decoration: underline;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.btn-enviar-inscripcion {
+  display: inline-block;
+  padding: 14px 32px;
+  background: linear-gradient(90deg, #0028a7, #004dd5);
+  color: white;
+  text-decoration: none;
+  border-radius: 30px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(0,40,167,0.2);
+}
+
+.btn-enviar-inscripcion:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 15px rgba(0,40,167,0.3);
+}
+
+.btn-enviar-inscripcion:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Estilos para estructura de formulario */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.col-md-6 {
+  flex: 0 0 50%;
+  max-width: 50%;
+  padding: 0 15px;
+}
+
+.col-md-4 {
+  flex: 0 0 33.333333%;
+  max-width: 33.333333%;
+  padding: 0 15px;
+}
+
+.col-12 {
+  flex: 0 0 100%;
+  max-width: 100%;
+  padding: 0 15px;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
+
+.g-3 {
+  gap: 1rem;
+}
+
+.form-select {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+}
+
+.form-check {
+  display: block;
+  min-height: 1.5rem;
+  padding-left: 1.5em;
+  margin-bottom: 0.125rem;
+}
+
+.form-check-input {
+  width: 1em;
+  height: 1em;
+  margin-top: 0.25em;
+  vertical-align: top;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  appearance: none;
+  -webkit-appearance: none;
+  transition: background-color 0.2s ease-in-out, background-position 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.form-check-input:checked {
+  background-color: #0028a7;
+  border-color: #0028a7;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+}
+
+.form-check-label {
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+/* Estilos para modales */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 0;
+  border-radius: 10px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 30px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.2s;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.modal-body {
+  padding: 20px;
+}
+
+/* Estilos para alertas */
+.alert {
+  padding: 15px;
+  margin-bottom: 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+}
+
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+}
+
+.alert ul {
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+/* Loading y errores */
+.loading-container {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 20px;
+  border: 3px solid rgba(0, 40, 167, 0.1);
+  border-radius: 50%;
+  border-top-color: #0028a7;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.error-container {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 30px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.error-container h3 {
+  color: #e53935;
+  margin-bottom: 15px;
+}
+
+.error-container .btn-volver {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 20px;
+  padding: 10px 18px;
+  background-color: #f5f5f5;
+  color: #333;
+  text-decoration: none;
+  border-radius: 25px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.error-container .btn-volver i {
+  margin-right: 6px;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+  .inscripcion-container {
+    margin: 40px auto;
+  }
+  
+  .inscripcion-header h1 {
+    font-size: 2rem;
+  }
+  
+  .programa-detalles .programa-info {
+    flex-direction: column;
+  }
+  
+  .programa-detalles .programa-imagen {
+    width: 100%;
+    height: auto;
+    max-height: 200px;
+    margin-bottom: 15px;
+  }
+  
+  .col-md-6, .col-md-4 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 0 10px;
+  }
+}

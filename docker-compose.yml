@@ -1,0 +1,42 @@
+services:
+  web:
+    build: .
+    container_name: incuba-fiis-web
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3200:3200"
+    depends_on:
+      - db
+    environment:
+      RAILS_ENV: development
+      DATABASE_HOST: db
+      DATABASE_USERNAME: cristian
+      DATABASE_PASSWORD: cristian
+    networks:
+      - incuba-fiis-net
+    tty: true
+    stdin_open: true
+
+  db:
+    image: postgres:15
+    container_name: incuba-fiis-db
+    environment:
+      POSTGRES_USER: cristian
+      POSTGRES_PASSWORD: cristian
+      POSTGRES_DB: incuba_fiis_development
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - incuba-fiis-net
+
+volumes:
+  pgdata:
+  bundle_cache:
+
+networks:
+  incuba-fiis-net:
+    driver: bridge

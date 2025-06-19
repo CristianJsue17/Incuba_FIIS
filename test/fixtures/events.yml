@@ -1,0 +1,21 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  titulo: MyString
+  descripcion: MyText
+  encargado: MyString
+  fecha_publicacion: 2025-04-19 21:54:39
+  fecha_vencimiento: 2025-04-19 21:54:39
+  estado: MyString
+  archivo_bases_pitch: MyString
+  user: one
+
+two:
+  titulo: MyString
+  descripcion: MyText
+  encargado: MyString
+  fecha_publicacion: 2025-04-19 21:54:39
+  fecha_vencimiento: 2025-04-19 21:54:39
+  estado: MyString
+  archivo_bases_pitch: MyString
+  user: two
