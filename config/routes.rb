@@ -4,23 +4,32 @@ Rails.application.routes.draw do
   # AGREGAR RUTA PARA CAMBIO DE IDIOMA
   get '/change_locale/:locale', to: 'application#change_locale', as: :change_locale
 
-  authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
-    namespace :admin do
-      get 'dashboard', to: 'dashboard#index', as: :dashboard
-      resources :programs do
-        member do
-          patch :cambiar_estado
-        end
-        collection do
-          get 'tipo_formulario'
-        end
+authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+    resources :programs do
+      member do
+        patch :cambiar_estado
+      end
+      collection do
+        get 'tipo_formulario'
+      end
+    end
+    
+    # AGREGAR ESTA LÍNEA:
+    resources :events do
+      member do
+        patch :cambiar_estado
       end
     end
   end
+end
 
   # Rutas para servicios y programas
   get 'servicios', to: 'home#servicios', as: 'servicios'
   get 'servicios/:tipo', to: 'home#programas_tipo', as: 'programas_tipo'
+  # ruta ver detalles de un programa específico
+  get 'programas/:id', to: 'home#programa_detalle', as: 'programa_detalle'
      
   # Rutas para inscripciones con soporte para JSON
   get 'programas/:id/inscripcion', to: 'inscripciones#new', as: 'inscripcion_programa'

@@ -1,0 +1,708 @@
+/* ===========================================
+   PROGRAMA DETALLE - VERSIÓN INFORMATIVA FINAL
+   =========================================== */
+
+/* Contenedor principal */
+.programa-detalle-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  background: transparent;
+}
+
+/* Navegación superior */
+.programa-navegacion {
+  margin-bottom: 30px;
+}
+
+.btn-volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: var(--color-gray-100);
+  color: var(--color-gray-700);
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border: 1px solid var(--color-gray-200);
+}
+
+.btn-volver:hover {
+  background: var(--color-gray-200);
+  transform: translateY(-1px);
+}
+
+.btn-volver i {
+  font-size: 0.8rem;
+}
+
+/* Header informativo profesional con degradados específicos por tipo */
+.programa-header-info {
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Degradado CELESTE para PREINCUBACIÓN */
+.programa-header-info.tipo-preincubacion {
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 25%, #bae6fd 50%, #e0f2fe 75%, #f0f9ff 100%);
+  border: 1px solid rgba(59, 130, 246, 0.1);
+}
+
+.programa-header-info.tipo-preincubacion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(16, 185, 129, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Degradado VERDE para INCUBACIÓN */
+.programa-header-info.tipo-incubacion {
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 25%, #bbf7d0 50%, #dcfce7 75%, #f0fdf4 100%);
+  border: 1px solid rgba(16, 185, 129, 0.1);
+}
+
+.programa-header-info.tipo-incubacion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(34, 197, 94, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Degradado AMARILLO para INNOVACIÓN */
+.programa-header-info.tipo-innovacion {
+  background: linear-gradient(135deg, #fefce8 0%, #fef3c7 25%, #fed7aa 50%, #fef3c7 75%, #fefce8 100%);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+}
+
+.programa-header-info.tipo-innovacion::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(245, 158, 11, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Badge específico por tipo */
+.programa-badge-info {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  border-radius: 25px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(10px);
+}
+
+/* Badge para PREINCUBACIÓN - Azul */
+.tipo-preincubacion .programa-badge-info {
+  background: rgba(59, 130, 246, 0.15);
+  color: #1e40af;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+/* Badge para INCUBACIÓN - Verde */
+.tipo-incubacion .programa-badge-info {
+  background: rgba(16, 185, 129, 0.15);
+  color: #065f46;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+/* Badge para INNOVACIÓN - Amarillo/Naranja */
+.tipo-innovacion .programa-badge-info {
+  background: rgba(245, 158, 11, 0.15);
+  color: #92400e;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+
+.programa-titulo {
+  font-size: 3rem;
+  font-weight: 900;
+  margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+  color: #1e293b;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.programa-descripcion-main {
+  font-size: 1.2rem;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  font-weight: 500;
+}
+
+/* Meta información en línea */
+.programa-meta-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 30px;
+}
+
+/* Meta items específicos por tipo */
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Meta items para PREINCUBACIÓN - Azul */
+.tipo-preincubacion .meta-item {
+  border: 1px solid rgba(59, 130, 246, 0.15);
+}
+
+.tipo-preincubacion .meta-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+
+.tipo-preincubacion .meta-item i {
+  color: #3b82f6;
+}
+
+/* Meta items para INCUBACIÓN - Verde */
+.tipo-incubacion .meta-item {
+  border: 1px solid rgba(16, 185, 129, 0.15);
+}
+
+.tipo-incubacion .meta-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.25);
+}
+
+.tipo-incubacion .meta-item i {
+  color: #10b981;
+}
+
+/* Meta items para INNOVACIÓN - Amarillo/Naranja */
+.tipo-innovacion .meta-item {
+  border: 1px solid rgba(245, 158, 11, 0.15);
+}
+
+.tipo-innovacion .meta-item:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.25);
+}
+
+.tipo-innovacion .meta-item i {
+  color: #f59e0b;
+}
+
+.meta-item i {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.meta-item span {
+  font-size: 0.95rem;
+  color: #334155;
+  font-weight: 600;
+}
+
+.meta-item span strong {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* Imagen principal grande */
+.programa-imagen-principal {
+  margin-bottom: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: var(--color-gray-100);
+}
+
+.imagen-programa {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.programa-imagen-principal:hover .imagen-programa {
+  transform: scale(1.02);
+}
+
+/* Grid para objetivos, beneficios y requisitos */
+.programa-contenido-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 25px;
+  margin-bottom: 50px;
+}
+
+/* Objetivos - izquierda */
+.seccion-objetivos {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+/* Beneficios - derecha */
+.seccion-beneficios {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/* Requisitos - centrado abajo */
+.seccion-requisitos {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Estilos para las secciones */
+.seccion-detalle {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--color-gray-100);
+  transition: all 0.3s ease;
+}
+
+.seccion-detalle:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1);
+}
+
+.seccion-detalle h2 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--color-gray-800);
+}
+
+.seccion-detalle h2 i {
+  font-size: 1.2rem;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-primary);
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+/* Colores específicos para cada sección */
+.seccion-objetivos h2 i {
+  background: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.seccion-beneficios h2 i {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.seccion-requisitos h2 i {
+  background: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+/* Listas de items */
+.lista-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.lista-items li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 15px;
+  background: var(--color-gray-50);
+  border-radius: 12px;
+  border-left: 4px solid var(--color-primary);
+  transition: all 0.3s ease;
+}
+
+.lista-items li:hover {
+  background: rgba(59, 130, 246, 0.05);
+  transform: translateX(8px);
+}
+
+/* Colores específicos para cada tipo de lista */
+.seccion-objetivos .lista-items li {
+  border-left-color: #3b82f6;
+}
+
+.seccion-objetivos .lista-items li:hover {
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.seccion-beneficios .lista-items li {
+  border-left-color: #10b981;
+}
+
+.seccion-beneficios .lista-items li:hover {
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.seccion-requisitos .lista-items li {
+  border-left-color: #f59e0b;
+}
+
+.seccion-requisitos .lista-items li:hover {
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.lista-items li i {
+  font-size: 1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.seccion-objetivos .lista-items li i {
+  color: #3b82f6;
+}
+
+.seccion-beneficios .lista-items li i {
+  color: #10b981;
+}
+
+.seccion-requisitos .lista-items li i {
+  color: #f59e0b;
+}
+
+.lista-items li span {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--color-gray-700);
+  font-weight: 500;
+}
+
+/* Sección de acción final */
+.programa-accion-final {
+  background: linear-gradient(135deg, #f8fafc, #ffffff);
+  border: 2px solid var(--color-gray-100);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.accion-disponible h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--color-gray-900);
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.accion-disponible p {
+  font-size: 1.1rem;
+  color: var(--color-gray-600);
+  margin-bottom: 30px;
+}
+
+.btn-inscribirse-grande {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 40px;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: white;
+  text-decoration: none;
+  border-radius: 16px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 15px 35px rgba(59, 130, 246, 0.3);
+  border: none;
+  margin-bottom: 20px;
+}
+
+.btn-inscribirse-grande:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(59, 130, 246, 0.4);
+}
+
+.btn-inscribirse-grande i {
+  font-size: 1.1rem;
+}
+
+.disponibilidad-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--color-gray-600);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.disponibilidad-info i {
+  color: var(--color-secondary);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Estado no disponible */
+.accion-no-disponible {
+  background: #fef2f2;
+  border: 2px solid #fecaca;
+  border-radius: 16px;
+  padding: 30px;
+  text-align: center;
+}
+
+.accion-no-disponible i {
+  font-size: 3rem;
+  color: #dc2626;
+  margin-bottom: 15px;
+  display: block;
+}
+
+.accion-no-disponible h3 {
+  color: #dc2626;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.accion-no-disponible p {
+  color: #7f1d1d;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+   =========================================== */
+
+@media (max-width: 1024px) {
+  .programa-titulo {
+    font-size: 2.5rem;
+  }
+  
+  .programa-descripcion-main {
+    font-size: 1.1rem;
+  }
+  
+  .imagen-programa {
+    height: 350px;
+  }
+}
+
+@media (max-width: 768px) {
+  .programa-detalle-container {
+    padding: 0 15px;
+  }
+  
+  .programa-header-info {
+    padding: 25px 20px;
+  }
+  
+  .programa-titulo {
+    font-size: 2rem;
+  }
+  
+  .programa-descripcion-main {
+    font-size: 1rem;
+  }
+  
+  .programa-meta-info {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .imagen-programa {
+    height: 300px;
+  }
+  
+  /* Grid se vuelve una columna en móvil */
+  .programa-contenido-grid {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+  }
+  
+  .seccion-objetivos {
+    grid-column: 1;
+    grid-row: 1;
+  }
+  
+  .seccion-beneficios {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  
+  .seccion-requisitos {
+    grid-column: 1;
+    grid-row: 3;
+    max-width: none;
+  }
+  
+  .seccion-detalle {
+    padding: 20px;
+  }
+  
+  .programa-accion-final {
+    padding: 30px 20px;
+  }
+  
+  .btn-inscribirse-grande {
+    padding: 16px 32px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .programa-titulo {
+    font-size: 1.8rem;
+  }
+  
+  .programa-badge-info {
+    padding: 6px 12px;
+    font-size: 0.75rem;
+  }
+  
+  .seccion-detalle h2 {
+    font-size: 1.2rem;
+  }
+  
+  .lista-items li {
+    padding: 12px;
+    flex-direction: column;
+    gap: 8px;
+    text-align: left;
+  }
+  
+  .accion-disponible h3 {
+    font-size: 1.5rem;
+  }
+  
+  .btn-inscribirse-grande {
+    padding: 14px 28px;
+    font-size: 0.95rem;
+  }
+}
+
+/* ===========================================
+   ANIMACIONES
+   =========================================== */
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Animación de entrada para las secciones */
+.seccion-detalle {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: slideUpFadeIn 0.6s ease-out forwards;
+}
+
+.seccion-objetivos { animation-delay: 0.1s; }
+.seccion-beneficios { animation-delay: 0.2s; }
+.seccion-requisitos { animation-delay: 0.3s; }
+
+@keyframes slideUpFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados de foco para accesibilidad */
+.btn-volver:focus,
+.btn-inscribirse-grande:focus {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Mejoras para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .programa-header-info,
+  .seccion-detalle {
+    background: var(--color-gray-800);
+    color: white;
+    border-color: var(--color-gray-700);
+  }
+  
+  .meta-item {
+    background: var(--color-gray-700);
+    border-color: var(--color-gray-600);
+  }
+  
+  .lista-items li {
+    background: var(--color-gray-700);
+    color: white;
+  }
+  
+  .btn-volver {
+    background: var(--color-gray-700);
+    color: white;
+    border-color: var(--color-gray-600);
+  }
+}

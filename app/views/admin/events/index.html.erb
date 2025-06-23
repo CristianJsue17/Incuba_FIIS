@@ -1,0 +1,1040 @@
+<style>
+/* Estilos para la página de gestión de eventos */
+
+/* Estilos para el encabezado y controles */
+.mb-6 {
+  margin-bottom: 1.5rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.gap-3 {
+  gap: 0.75rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.text-gray-400 {
+  color: #9ca3af;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+/* Estilos para el botón de filtro */
+.relative {
+  position: relative;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-5 {
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.border-t {
+  border-top-width: 1px;
+}
+
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.border-gray-300 {
+  border-color: #e5e7eb;
+}
+
+.border-green-200 {
+  border-color: #bbf7d0;
+}
+
+.border-red-200 {
+  border-color: #fecaca;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-lg {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.bg-white {
+  background-color: #ffffff;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+.bg-gray-200 {
+  background-color: #e5e7eb;
+}
+
+.bg-blue-600 {
+  background-color: #2563eb;
+}
+
+.bg-blue-400 {
+  background-color: #60a5fa;
+}
+
+.bg-green-100 {
+  background-color: #dcfce7;
+}
+
+.bg-green-400 {
+  background-color: #4ade80;
+}
+
+.bg-green-600 {
+  background-color: #16a34a;
+}
+
+.bg-red-100 {
+  background-color: #fee2e2;
+}
+
+.bg-yellow-100 {
+  background-color: #fef3c7;
+}
+
+.bg-yellow-400 {
+  background-color: #facc15;
+}
+
+.text-white {
+  color: #ffffff;
+}
+
+.text-blue-600 {
+  color: #2563eb;
+}
+
+.text-blue-800 {
+  color: #1e40af;
+}
+
+.text-green-600 {
+  color: #16a34a;
+}
+
+.text-green-800 {
+  color: #166534;
+}
+
+.text-red-600 {
+  color: #dc2626;
+}
+
+.text-red-800 {
+  color: #991b1b;
+}
+
+.text-yellow-600 {
+  color: #d97706;
+}
+
+.text-yellow-800 {
+  color: #854d0e;
+}
+
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+}
+
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #1d4ed8;
+}
+
+.hover\:text-blue-900:hover {
+  color: #1e3a8a;
+}
+
+.hover\:text-yellow-900:hover {
+  color: #713f12;
+}
+
+.hover\:text-red-900:hover {
+  color: #7f1d1d;
+}
+
+.hover\:text-gray-600:hover {
+  color: #4b5563;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Menú desplegable de filtro */
+.hidden {
+  display: none;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.mt-1 {
+  margin-top: 0.25rem;
+}
+
+.mt-2 {
+  margin-top: 0.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.mr-4 {
+  margin-right: 1rem;
+}
+
+.ml-2 {
+  margin-left: 0.5rem;
+}
+
+.ml-4 {
+  margin-left: 1rem;
+}
+
+.ml-5 {
+  margin-left: 1.25rem;
+}
+
+.-mr-1 {
+  margin-right: -0.25rem;
+}
+
+.w-0 {
+  width: 0px;
+}
+
+.w-10 {
+  width: 2.5rem;
+}
+
+.w-32 {
+  width: 8rem;
+}
+
+.w-48 {
+  width: 12rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
+}
+
+.block {
+  display: block;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.flex-shrink-0 {
+  flex-shrink: 0;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+/* Estilos para la tabla */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.min-w-full {
+  min-width: 100%;
+}
+
+.divide-y {
+  border-top-width: 0px;
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+.divide-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.text-5xl {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+.leading-5 {
+  line-height: 1.25rem;
+}
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.object-cover {
+  object-fit: cover;
+}
+
+/* Estilos para botones de acción */
+.space-x-2 > * + * {
+  margin-left: 0.5rem;
+}
+
+/* Estilos específicos para dropdowns de estado */
+.estado-dropdown-btn {
+  cursor: pointer;
+  transition: color 0.15s ease-in-out;
+}
+
+.estado-dropdown-menu {
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive para estadísticas */
+@media (min-width: 768px) {
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  
+  .md\:flex-row {
+    flex-direction: row;
+  }
+  
+  .md\:items-center {
+    align-items: center;
+  }
+  
+  .md\:mb-0 {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+}
+
+/* Animaciones para mensajes flash */
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efectos de hover en las filas de la tabla */
+.hover\:bg-gray-50:hover {
+  background-color: #f9fafb;
+}
+
+/* Animaciones suaves */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Estilos para mejorar la experiencia de usuario */
+.hover\:shadow-md:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* Estilo específico para el botón de filtro cuando está activo */
+.filtro-activo {
+  background-color: #e5edff;
+  border-color: #93c5fd;
+}
+
+/* Mejora para el espaciado en dispositivos móviles */
+@media (max-width: 640px) {
+  .px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .text-2xl {
+    font-size: 1.25rem;
+  }
+  
+  .grid-cols-1 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+}
+
+/* Efectos de enfoque para accesibilidad */
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
+.focus\:ring-blue-500:focus {
+  --tw-ring-color: #3b82f6;
+}
+
+.focus\:border-blue-500:focus {
+  border-color: #3b82f6;
+}
+
+/* Estilos específicos para eventos */
+.estado-dropdown-btn:hover {
+  color: #4b5563;
+}
+
+/* Mejoras para imágenes pequeñas */
+.rounded-full {
+  border-radius: 9999px;
+}
+
+/* Espaciado para estadísticas */
+.dl {
+  display: block;
+}
+
+dt {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+dd {
+  font-weight: 500;
+  color: #111827;
+  font-size: 1.125rem;
+}
+</style>
+
+<% if flash[:notice] %>
+  <div class="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:notice] %></p>
+    </div>
+  </div>
+
+  <script>
+    // Ocultar el mensaje de éxito después de 5 segundos
+    setTimeout(function() {
+      const flashMessage = document.querySelector('.bg-green-100');
+      if (flashMessage) {
+        flashMessage.style.transition = 'opacity 0.5s, transform 0.5s';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transform = 'translateY(-10px)';
+        
+        // Eliminar del DOM después de la transición
+        setTimeout(function() {
+          flashMessage.remove();
+        }, 500);
+      }
+    }, 5000);
+  </script>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="bg-red-100 border border-red-200 text-red-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-red-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:alert] %></p>
+    </div>
+  </div>
+
+  <script>
+    // Ocultar el mensaje de error después de 5 segundos
+    setTimeout(function() {
+      const flashMessage = document.querySelector('.bg-red-100');
+      if (flashMessage) {
+        flashMessage.style.transition = 'opacity 0.5s, transform 0.5s';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transform = 'translateY(-10px)';
+        
+        // Eliminar del DOM después de la transición
+        setTimeout(function() {
+          flashMessage.remove();
+        }, 500);
+      }
+    }, 5000);
+  </script>
+<% end %>
+
+<div class="mb-6">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+    <h1 class="text-2xl font-bold text-gray-800 mb-3 md:mb-0">Gestión de Eventos</h1>
+    <div class="flex flex-col sm:flex-row gap-3">
+      <div class="relative" id="filtroEstadoDropdown">
+        <button id="filtroEstadoBtn" class="flex items-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 transition-colors">
+          <i class="fas fa-filter mr-2"></i> Filtrar por Estado
+          <i class="fas fa-chevron-down ml-2 text-gray-500"></i>
+        </button>
+        <div id="filtroEstadoMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+          <%= link_to "Todos", admin_events_path, class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Activos", admin_events_path(estado: 'activo'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Inactivos", admin_events_path(estado: 'inactivo'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Pendientes", admin_events_path(estado: 'pendiente'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+          <%= link_to "Finalizados", admin_events_path(estado: 'finalizado'), class: "block px-4 py-2 text-gray-700 hover:bg-gray-100" %>
+        </div>
+      </div>
+      <%= link_to new_admin_event_path, class: "flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors" do %>
+        <i class="fas fa-plus-circle mr-2"></i> Crear Evento
+      <% end %>
+    </div>
+  </div>
+  
+  <!-- Estadísticas rápidas -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="fas fa-calendar-alt text-gray-400 text-2xl"></i>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Eventos</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= Event.count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="fas fa-play-circle text-green-400 text-2xl"></i>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Eventos Activos</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= Event.activos.count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="fas fa-clock text-yellow-400 text-2xl"></i>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Eventos Pendientes</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= Event.pendientes.count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow rounded-lg">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <i class="fas fa-users text-blue-400 text-2xl"></i>
+          </div>
+          <div class="ml-5 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Inscripciones</dt>
+              <dd class="text-lg font-medium text-gray-900"><%= FormularioEvento.where(es_plantilla: false).count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+          <tr class="bg-gray-50">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Título</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Encargado</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Publicación</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vencimiento</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Inscripciones</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @events.each do |event| %>
+            <tr class="hover:bg-gray-50 transition-colors">
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 h-10 w-10">
+                    <% if event.image.attached? %>
+                      <%= image_tag event.image, class: "h-10 w-10 rounded-full object-cover" %>
+                    <% else %>
+                      <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                        <i class="fas fa-calendar-alt text-gray-400"></i>
+                      </div>
+                    <% end %>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-sm font-medium text-gray-900"><%= event.titulo %></div>
+                    <div class="text-sm text-gray-500"><%= truncate(event.descripcion, length: 50) %></div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="flex items-center text-gray-700">
+                  <i class="fas fa-user mr-2 text-gray-400"></i>
+                  <%= event.encargado %>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <div class="text-sm"><%= event.fecha_publicacion&.strftime("%d/%m/%Y") %></div>
+                <div class="text-xs text-gray-500"><%= event.fecha_publicacion&.strftime("%H:%M") %></div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <div class="text-sm"><%= event.fecha_vencimiento&.strftime("%d/%m/%Y") %></div>
+                <div class="text-xs text-gray-500"><%= event.fecha_vencimiento&.strftime("%H:%M") %></div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="relative">
+                  <% case event.estado %>
+                  <% when 'activo' %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                      <i class="fas fa-play-circle mr-1"></i>Activo
+                    </span>
+                  <% when 'inactivo' %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                      <i class="fas fa-ban mr-1"></i>Inactivo
+                    </span>
+                  <% when 'pendiente' %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                      <i class="fas fa-clock mr-1"></i>Pendiente
+                    </span>
+                  <% when 'finalizado' %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      <i class="fas fa-flag-checkered mr-1"></i>Finalizado
+                    </span>
+                  <% else %>
+                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                      <%= event.estado.humanize %>
+                    </span>
+                  <% end %>
+                  
+                  <!-- Dropdown para cambiar estado -->
+                  <div class="absolute top-0 right-0 -mr-1">
+                    <button class="estado-dropdown-btn text-gray-400 hover:text-gray-600 p-1" data-event-id="<%= event.id %>">
+                      <i class="fas fa-chevron-down text-xs"></i>
+                    </button>
+                    <div class="estado-dropdown-menu hidden absolute right-0 mt-1 w-32 bg-white rounded-md shadow-lg py-1 z-20 border">
+                      <% %w[activo pendiente finalizado inactivo].each do |estado| %>
+                        <% unless estado == event.estado %>
+                          <%= link_to cambiar_estado_admin_event_path(event), 
+                              method: :patch,
+                              data: { 
+                                confirm: "¿Cambiar estado a #{estado}?",
+                                params: { estado: estado }.to_param
+                              },
+                              class: "block px-3 py-1 text-xs text-gray-700 hover:bg-gray-100" do %>
+                            <i class="fas <%= 
+                              case estado
+                              when 'pendiente' then 'fa-clock'
+                              when 'activo' then 'fa-play-circle'
+                              when 'finalizado' then 'fa-flag-checkered'
+                              when 'inactivo' then 'fa-ban'
+                              end
+                            %> mr-1"></i>
+                            <%= estado.humanize %>
+                          <% end %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
+                <div class="flex items-center">
+                  <i class="fas fa-users mr-2 text-gray-400"></i>
+                  <span class="text-sm font-medium"><%= event.total_inscripciones %></span>
+                </div>
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <%= link_to admin_event_path(event), 
+                              class: "text-blue-600 hover:text-blue-900", 
+                              title: "Ver detalles" do %>
+                    <i class="fas fa-eye"></i>
+                  <% end %>
+                  
+                  <%= link_to edit_admin_event_path(event), 
+                              class: "text-yellow-600 hover:text-yellow-900", 
+                              title: "Editar evento" do %>
+                    <i class="fas fa-edit"></i>
+                  <% end %>
+                  
+                  <%= link_to admin_event_path(event), 
+                              method: :delete,
+                              data: { 
+                                confirm: "¿Estás seguro de eliminar este evento?\n\nEsta acción eliminará:\n- El evento\n- Todas las inscripciones asociadas\n\nEsta acción no se puede deshacer." 
+                              },
+                              class: "text-red-600 hover:text-red-900",
+                              title: "Eliminar evento" do %>
+                    <i class="fas fa-trash"></i>
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          
+          <% if @events.empty? %>
+            <tr>
+              <td colspan="7" class="px-6 py-10 text-center text-gray-500">
+                <div class="flex flex-col items-center justify-center">
+                  <i class="fas fa-calendar-alt text-gray-400 text-5xl mb-3"></i>
+                  <p class="text-lg font-medium">No hay eventos disponibles</p>
+                  <p class="text-sm mt-1">Crea un nuevo evento para comenzar</p>
+                  <%= link_to new_admin_event_path, class: "mt-4 inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-700 transition-colors" do %>
+                    <i class="fas fa-plus-circle mr-2"></i> Crear primer evento
+                  <% end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <% if @events.present? && @events.respond_to?(:total_pages) && @events.total_pages > 1 %>
+        <div class="px-6 py-4 bg-white border-t border-gray-200">
+          <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-700">
+              Mostrando eventos <%= @events.offset_value + 1 %> a <%= @events.offset_value + @events.count %> de <%= @events.total_count %>
+            </div>
+            <div class="flex space-x-2">
+              <%= paginate @events %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Esta función se ejecutará cuando la página se cargue y después de cada navegación con Turbo
+  function initEventFilters() {
+    // Filtro de estado
+    const filtroBtn = document.getElementById('filtroEstadoBtn');
+    const filtroMenu = document.getElementById('filtroEstadoMenu');
+    
+    if (filtroBtn && filtroMenu) {
+      // Función para alternar la visibilidad del menú
+      function toggleFilterMenu(e) {
+        e.stopPropagation();
+        filtroMenu.classList.toggle('hidden');
+      }
+      
+      // Función para cerrar el menú cuando se hace clic fuera
+      function handleOutsideClick(e) {
+        if (!filtroBtn.contains(e.target) && !filtroMenu.contains(e.target)) {
+          filtroMenu.classList.add('hidden');
+        }
+      }
+      
+      // Limpiar event listeners previos (importante para evitar duplicados)
+      const newFiltroBtn = filtroBtn.cloneNode(true);
+      filtroBtn.parentNode.replaceChild(newFiltroBtn, filtroBtn);
+      
+      // Añadir nuevos event listeners al botón clonado
+      newFiltroBtn.addEventListener('click', toggleFilterMenu);
+      document.addEventListener('click', handleOutsideClick);
+    }
+
+    // Dropdowns de estado en cada fila
+    initEstadoDropdowns();
+  }
+
+  function initEstadoDropdowns() {
+    document.querySelectorAll('.estado-dropdown-btn').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const menu = this.nextElementSibling;
+        
+        // Cerrar otros menús
+        document.querySelectorAll('.estado-dropdown-menu').forEach(otherMenu => {
+          if (otherMenu !== menu) {
+            otherMenu.classList.add('hidden');
+          }
+        });
+        
+        // Toggle del menú actual
+        menu.classList.toggle('hidden');
+      });
+    });
+
+    // Cerrar dropdowns al hacer click fuera
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.estado-dropdown-btn')) {
+        document.querySelectorAll('.estado-dropdown-menu').forEach(menu => {
+          menu.classList.add('hidden');
+        });
+      }
+    });
+  }
+  
+  // Ejecutar cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', initEventFilters);
+  
+  // También ejecutar después de cada carga con Turbo
+  document.addEventListener('turbo:load', initEventFilters);
+  document.addEventListener('turbo:render', initEventFilters);
+  
+  // Por si el documento ya está cargado
+  if (document.readyState === 'interactive' || document.readyState === 'complete') {
+    initEventFilters();
+  }
+</script>

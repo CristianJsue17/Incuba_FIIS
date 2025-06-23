@@ -13,153 +13,151 @@
 <% end %>
 
 <!-- Header reestructurado con dropdowns completos -->
-<header class="header" role="banner">
-    <div class="header__container">
-       <div class="header__logo">
-            <a href="/" class="header__logo-link" aria-label="Ir al inicio">
-                <!-- DIV SEPARADO PARA EL LOGO -->
-                <div class="header__logo-container">
-                    <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
-                </div>
-                <!-- DIV SEPARADO PARA EL TEXTO -->
-                <div class="header__text-container">
-                    <span class="header__logo-text">INCUBA UNAS</span>
-                </div>
-            </a>
+    <header class="header" role="banner">
+      <div class="header__container">
+        <div class="header__logo">
+          <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+            <!-- DIV SEPARADO PARA EL LOGO -->
+            <div class="header__logo-container">
+              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+            </div>
+            <!-- DIV SEPARADO PARA EL TEXTO -->
+            <div class="header__text-container">
+              <span class="header__logo-text">INCUBA UNAS</span>
+            </div>
+          </a>
         </div>
 
         <nav class="header__nav" role="navigation" aria-label="Navegación principal">
-            <ul class="header__menu">
-                <!-- PROGRAMAS -->
-                <li class="header__menu-item header__menu-item--has-dropdown">
-                    <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
-                    <div class="header__dropdown" role="menu">
-                        <ul class="header__dropdown-menu">
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+          <ul class="header__menu">
+            <!-- PROGRAMAS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
-                <!-- EVENTOS -->
-                <li class="header__menu-item header__menu-item--has-dropdown">
-                    <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
-                    <div class="header__dropdown" role="menu">
-                        <ul class="header__dropdown-menu">
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+            <!-- EVENTOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
-                <!-- SERVICIOS -->
-                <li class="header__menu-item header__menu-item--has-dropdown">
-                    <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-                    <div class="header__dropdown" role="menu">
-                        <ul class="header__dropdown-menu">
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+            <!-- SERVICIOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
-                <!-- NOSOTROS -->
-                <li class="header__menu-item header__menu-item--has-dropdown">
-                    <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-                    <div class="header__dropdown" role="menu">
-                        <ul class="header__dropdown-menu">
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+            <!-- NOSOTROS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
-                <!-- MENTORES -->
-                <li class="header__menu-item header__menu-item--has-dropdown">
-                    <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-                    <div class="header__dropdown" role="menu">
-                        <ul class="header__dropdown-menu">
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
-                            </li>
-                            <li class="header__dropdown-item">
-                                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
-                            </li>
-                        </ul>
-                    </div>
-                </li>
+            <!-- MENTORES -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+              <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+              <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                  </li>
+                  <li class="header__dropdown-item">
+                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
 
-                <!-- CONTACTO -->
-                <li class="header__menu-item">
-                    <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
-                </li>
-
-                <!-- LOGIN MÓVIL -->
-                <li class="header__menu-item">
-                    <a href="<%= new_user_session_path %>"
-                        class="header__action-btn header__action-btn--mobile"
-                        data-turbo="false"
-                        aria-label="Iniciar sesión">
-                        <i class="fas fa-user" aria-hidden="true"></i>
-                        INICIAR SESIÓN
-                    </a>
-                </li>
-            </ul>
+            <!-- CONTACTO -->
+            <li class="header__menu-item">
+              <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+            </li>
+          </ul>
         </nav>
 
-<!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
-<div class="header__actions">
-    <!-- SELECTOR DE IDIOMA -->
-    <%= render 'shared/language_switcher' %>
-    
-    <div class="header__login-container">
-        <a href="<%= new_user_session_path %>"
-            class="header__action-btn header__action-btn--login"
-            data-turbo="false"
-            aria-label="<%= t('navigation.iniciar_sesion') %>">
-        </a>
-        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
-    </div>
-</div>
+        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP + LOGIN MÓVIL -->
+        <div class="header__actions">
+          <!-- SELECTOR DE IDIOMA -->
+          <%= render 'shared/language_switcher' %>
+          
+          <!-- LOGIN DESKTOP -->
+          <div class="header__login-container">
+            <a href="<%= new_user_session_path %>"
+               class="header__action-btn header__action-btn--login"
+               data-turbo="false"
+               aria-label="<%= t('navigation.iniciar_sesion') %>">
+            </a>
+            <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+          </div>
+
+          <!-- LOGIN MÓVIL - AHORA AQUÍ FUERA DEL MENÚ -->
+          <a href="<%= new_user_session_path %>"
+             class="header__action-btn header__action-btn--mobile"
+             data-turbo="false"
+             aria-label="Iniciar sesión">
+            <i class="fas fa-user" aria-hidden="true"></i>
+          </a>
+        </div>
 
         <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
-            <span class="header__hamburger-line" aria-hidden="true"></span>
-            <span class="header__hamburger-line" aria-hidden="true"></span>
-            <span class="header__hamburger-line" aria-hidden="true"></span>
+          <span class="header__hamburger-line" aria-hidden="true"></span>
+          <span class="header__hamburger-line" aria-hidden="true"></span>
+          <span class="header__hamburger-line" aria-hidden="true"></span>
         </button>
-    </div>
-</header>
+      </div>
+    </header>
 
 
 

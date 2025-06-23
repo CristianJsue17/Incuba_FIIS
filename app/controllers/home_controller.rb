@@ -61,7 +61,66 @@ class HomeController < ApplicationController
     end
   end
 
-  def react_test
-    @datos_react = ReactTestService.call
+  
+# # Método para mostrar los detalles de un programa específico
+def programa_detalle
+  @program = Program.includes(
+    :objetivos, 
+    :beneficios, 
+    :requisitos,
+    :user,
+    :created_by
+  ).find(params[:id])
+  
+  # Actualizar estado automáticamente antes de mostrar
+  @program.actualizar_estado_automatico!
+  
+  # Verificar si el programa debe ser visible (no inactivo)
+  if @program.estado == 'inactivo'
+    redirect_to servicios_path, alert: 'Este programa ya no está disponible'
+    return
   end
+  
+  # Obtener información del tipo para estilos
+  @tipo_actual = ServiciosService.call(@program.tipo)[:tipo_actual]
+  
+  # Contar inscripciones actuales
+  @total_inscripciones = @program.total_inscripciones
+  
+  # Verificar disponibilidad para inscripciones según estado
+  @puede_inscribirse = @program.puede_inscribirse?
+  @mensaje_disponibilidad = @program.mensaje_disponibilidad
+  @estado_css_class = @program.estado_css_class
+  
+  respond_to do |format|
+    format.html # Renderiza programa_detalle.html.erb
+    format.json do
+      render json: {
+        program: {
+          id: @program.id,
+          titulo: @program.titulo,
+          descripcion: @program.descripcion,
+          tipo: @program.tipo,
+          tipo_humanizado: @program.tipo_humanizado,
+          encargado: @program.encargado,
+          estado: @program.estado,
+          fecha_publicacion: @program.fecha_publicacion,
+          fecha_vencimiento: @program.fecha_vencimiento,
+          objetivos: @program.objetivos.map(&:descripcion),
+          beneficios: @program.beneficios.map(&:descripcion),
+          requisitos: @program.requisitos.map(&:descripcion),
+          total_inscripciones: @total_inscripciones,
+          puede_inscribirse: @puede_inscribirse,
+          mensaje_disponibilidad: @mensaje_disponibilidad,
+          image_url: @program.image.attached? ? url_for(@program.image) : asset_path('program-placeholder.png')
+        },
+        tipo_actual: @tipo_actual
+      }
+    end
+  end
+rescue ActiveRecord::RecordNotFound
+  redirect_to servicios_path, alert: 'Programa no encontrado'
+end
+
+ 
 end

@@ -1,0 +1,387 @@
+<!-- app/views/home/programa_detalle.html.erb -->
+
+<!-- Font Awesome y Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<% content_for :stylesheets do %>
+  <%= stylesheet_link_tag "home" %>
+  <%= stylesheet_link_tag "programa_detalle" %>
+<% end %>
+
+<% content_for :scripts do %>
+  <%= javascript_include_tag "enhanced_header", defer: true %>
+  <%= javascript_include_tag "footer", defer: true %>
+<% end %>
+
+<!-- Header igual que en programas_tipo.html.erb -->
+<header class="header" role="banner">
+  <div class="header__container">
+    <div class="header__logo">
+      <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+        <div class="header__logo-container">
+          <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+        </div>
+        <div class="header__text-container">
+          <span class="header__logo-text">INCUBA UNAS</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+      <ul class="header__menu">
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item">
+          <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <%= render 'shared/language_switcher' %>
+      
+      <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+           class="header__action-btn header__action-btn--login"
+           data-turbo="false"
+           aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+      </div>
+
+      <a href="<%= new_user_session_path %>"
+         class="header__action-btn header__action-btn--mobile"
+         data-turbo="false"
+         aria-label="Iniciar sesión">
+        <i class="fas fa-user" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-dots"></div>
+  <div class="bg-line bg-line-1"></div>
+  <div class="bg-line bg-line-2"></div>
+</div>
+
+<!-- Contenido principal del detalle del programa -->
+<div class="programa-detalle-container">
+  
+  <!-- Navegación superior -->
+  <div class="programa-navegacion">
+    <%= link_to programas_tipo_path(@program.tipo), class: "btn-volver" do %>
+      <i class="fas fa-arrow-left"></i> Volver a <%= @program.tipo_humanizado %>
+    <% end %>
+  </div>
+
+  <!-- Header informativo del programa con clase específica por tipo -->
+  <div class="programa-header-info tipo-<%= @program.tipo %>">
+    <div class="programa-badge-info">
+      <i class="fas <%= @tipo_actual[:icono] %>"></i>
+      <%= @program.tipo_humanizado %>
+    </div>
+    <h1 class="programa-titulo"><%= @program.titulo %></h1>
+    <p class="programa-descripcion-main"><%= @program.descripcion %></p>
+    
+    <!-- Información en línea -->
+    <div class="programa-meta-info">
+      <div class="meta-item">
+        <i class="fas fa-user-tie"></i>
+        <span><strong>Encargado:</strong> <%= @program.encargado %></span>
+      </div>
+      <div class="meta-item">
+        <i class="fas fa-calendar-alt"></i>
+        <span><strong>Disponible hasta:</strong> <%= @program.fecha_vencimiento.strftime("%d de %B del %Y") %></span>
+      </div>
+      <div class="meta-item">
+        <i class="fas fa-users"></i>
+        <span><strong>Inscripciones:</strong> <%= @total_inscripciones %></span>
+      </div>
+      <div class="meta-item">
+        <i class="fas fa-circle" style="color: <%= @program.estado == 'activo' ? '#10b981' : '#dc2626' %>"></i>
+        <span><strong>Estado:</strong> <%= @program.estado.humanize %></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen grande del programa -->
+  <div class="programa-imagen-principal">
+    <img 
+      src="<%= @program.image.attached? ? url_for(@program.image) : asset_path('program-placeholder.png') %>" 
+      alt="<%= @program.titulo %>"
+      class="imagen-programa"
+    >
+  </div>
+
+  <!-- Grid de objetivos, beneficios y requisitos -->
+  <div class="programa-contenido-grid">
+    
+    <!-- Objetivos (izquierda) -->
+    <% if @program.objetivos.any? %>
+      <div class="seccion-detalle seccion-objetivos">
+        <h2>
+          <i class="fas fa-bullseye"></i>
+          Objetivos
+        </h2>
+        <ul class="lista-items">
+          <% @program.objetivos.each do |objetivo| %>
+            <li>
+              <i class="fas fa-check-circle"></i>
+              <span><%= objetivo.descripcion %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <!-- Beneficios (derecha) -->
+    <% if @program.beneficios.any? %>
+      <div class="seccion-detalle seccion-beneficios">
+        <h2>
+          <i class="fas fa-gift"></i>
+          Beneficios
+        </h2>
+        <ul class="lista-items">
+          <% @program.beneficios.each do |beneficio| %>
+            <li>
+              <i class="fas fa-star"></i>
+              <span><%= beneficio.descripcion %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <!-- Requisitos (centrado abajo) -->
+    <% if @program.requisitos.any? %>
+      <div class="seccion-detalle seccion-requisitos">
+        <h2>
+          <i class="fas fa-clipboard-list"></i>
+          Requisitos
+        </h2>
+        <ul class="lista-items">
+          <% @program.requisitos.each do |requisito| %>
+            <li>
+              <i class="fas fa-exclamation-circle"></i>
+              <span><%= requisito.descripcion %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+  </div>
+
+  <!-- Acción de inscripción según estado -->
+  <div class="programa-accion-final">
+    <% if @puede_inscribirse %>
+      <div class="accion-disponible">
+        <h3>¿Listo para inscribirte?</h3>
+        <p>Únete a este programa y lleva tu proyecto al siguiente nivel</p>
+        <%= link_to inscripcion_programa_path(@program), class: "btn-inscribirse-grande" do %>
+          <i class="fas fa-paper-plane"></i>
+          Inscribirse Ahora
+        <% end %>
+        <div class="disponibilidad-info estado-activo">
+          <i class="fas fa-clock"></i>
+          <%= @mensaje_disponibilidad %>
+        </div>
+      </div>
+    <% elsif @program.estado == 'pendiente' %>
+      <div class="accion-pendiente">
+        <i class="fas fa-hourglass-half"></i>
+        <h3>Inscripciones Próximamente</h3>
+        <p>Este programa estará disponible para inscripciones pronto.</p>
+        <div class="disponibilidad-info estado-pendiente">
+          <i class="fas fa-calendar-alt"></i>
+          <%= @mensaje_disponibilidad %>
+        </div>
+      </div>
+    <% elsif @program.estado == 'finalizado' %>
+      <div class="accion-finalizada">
+        <i class="fas fa-flag-checkered"></i>
+        <h3>Inscripciones Finalizadas</h3>
+        <p>Este programa ya no acepta nuevas inscripciones.</p>
+        <div class="disponibilidad-info estado-finalizado">
+          <i class="fas fa-calendar-times"></i>
+          <%= @mensaje_disponibilidad %>
+        </div>
+      </div>
+    <% else %>
+      <div class="accion-no-disponible">
+        <i class="fas fa-exclamation-triangle"></i>
+        <h3>Programa no disponible</h3>
+        <p>Este programa no está disponible actualmente.</p>
+      </div>
+    <% end %>
+  </div>
+
+</div>
+
+    <!-- Sección Footer -->
+    <footer class="footer">
+        <div class="footer__decoration footer__decoration--top-left"></div>
+        <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+        <div class="footer__container">
+            <!-- Columna izquierda: Logo y suscripción -->
+            <div class="footer__column footer__column--main">
+                <div class="footer__logo-container">
+                    <div class="footer__logo">
+                        <span class="footer__logo-icon">I</span>NCUBA UNAS
+                    </div>
+                    <p class="footer__description">
+                        Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                        emprendimientos innovadores y sostenibles en la región.
+                    </p>
+                </div>
+
+                <form class="footer__subscribe">
+                    <input type="email" class="footer__input" placeholder="Enter email">
+                    <button type="submit" class="footer__button">
+                        <i class="fas fa-arrow-right"></i>
+                        Contacto
+                    </button>
+                </form>
+
+                <div class="footer__social">
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-instagram'></i>
+                    </a>
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-twitter'></i>
+                    </a>
+                    <a href="#" class="footer__social-link">
+                        <i class='fab fa-facebook'></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Columnas de enlaces -->
+            <div class="footer__column">
+                <h3 class="footer__heading">Principal</h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__column">
+                <h3 class="footer__heading">Nosotros</h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+                </ul>
+            </div>
+
+            <div class="footer__column">
+                <h3 class="footer__heading">Enlaces de Interés </h3>
+                <ul class="footer__links">
+                    <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                    <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>

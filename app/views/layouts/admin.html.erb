@@ -774,6 +774,7 @@
     text-overflow: ellipsis;
   }
 
+
 /* ESTILO EL MODAL DE VER DETALLES DE PROGRAMA  */
 /* Modal - Estructura principal */
 #programModal {
@@ -1112,14 +1113,14 @@
 body.overflow-hidden {
   overflow: hidden;
 }
-
+/*------------------------------------------------------------------*/
 
 
 </style>
   
 
-  <!-- jQuery para el menú desplegable -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- jQuery para el menú desplegable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 <body class="bg-gray-100">
   <div class="flex h-screen overflow-hidden">
@@ -1150,7 +1151,7 @@ body.overflow-hidden {
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
+            <a href="<%= admin_events_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'events' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
               <i class="fas fa-calendar-alt w-6 h-6 mr-3"></i>
               <span class="font-medium">Eventos</span>
             </a>
@@ -1745,7 +1746,316 @@ body.overflow-hidden {
 
 <!-- ------------------------------------------------------------ -->
 
+<!-- AGREGAR DESPUÉS DEL MODAL DE PROGRAMAS EN ADMIN LAYOUT -->
 
+<!-- PARA EL MODAL DE VER DETALLES DE EVENTOS -->
+<div id="eventModal" class="hidden">
+  <div class="scale-95">
+    <!-- Cabecera del modal -->
+    <div class="sticky">
+      <h2>Detalles del Evento</h2>
+      <button id="closeEventModal">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    
+    <!-- Contenido del modal -->
+    <div id="eventModalContent">
+      <div class="animate-pulse">
+        <div class="h-6 bg-gray-200 rounded w-3/4 mb-4"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-5/6 mb-6"></div>
+        <div class="h-48 bg-gray-200 rounded mb-6"></div>
+        <div class="h-4 bg-gray-200 rounded w-3/4 mb-2"></div>
+        <div class="h-4 bg-gray-200 rounded w-1/2 mb-6"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AGREGAR AL SCRIPT EXISTENTE (DESPUÉS DE LAS FUNCIONES DE PROGRAMAS) -->
+<script>
+$(document).ready(function() {
+  // Menú desplegable de usuario
+  $("#userMenuButton").click(function(e) {
+    e.stopPropagation();
+    $("#userMenu").toggleClass("hidden");
+  });
+  
+  $(document).click(function(e) {
+    if (!$(e.target).closest("#userMenu").length && !$(e.target).closest("#userMenuButton").length) {
+      $("#userMenu").addClass("hidden");
+    }
+  });
+  
+  // Configurar los modales
+  setupProgramModal();
+  setupEventModal(); // NUEVO
+});
+
+// Funciones para el modal de PROGRAMAS (mantener las existentes)
+function setupProgramModal() {
+  const modal = document.getElementById('programModal');
+  if (!modal) return;
+  
+  // Cerrar modal con botón de cerrar
+  const closeButton = document.getElementById('closeModal');
+  if (closeButton) {
+    closeButton.addEventListener('click', function() {
+      closeModal();
+    });
+  }
+  
+  // Cerrar modal con clic fuera
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeModal();
+    }
+  });
+  
+  // Cerrar modal con la tecla ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeModal();
+    }
+  });
+  
+  // Vincular botones de "Ver detalles"
+  const detailButtons = document.querySelectorAll('[data-action="click->program#showDetails"]');
+  detailButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const programId = this.getAttribute('data-id');
+      if (programId) {
+        showProgramDetails(programId);
+      }
+    });
+  });
+}
+
+function showProgramDetails(programId) {
+  const modal = document.getElementById('programModal');
+  const modalContent = document.getElementById('modalContent');
+  
+  if (!modal || !modalContent) return;
+  
+  // Mostrar modal con animación
+  document.body.classList.add('overflow-hidden');
+  modal.classList.remove('hidden');
+  modal.classList.add('visible');
+  
+  // Animación de entrada
+  setTimeout(() => {
+    const modalDialog = modal.querySelector('div');
+    if (modalDialog) {
+      modalDialog.classList.add('scale-100');
+      modalDialog.classList.remove('scale-95');
+    }
+  }, 10);
+  
+  // Cargar detalles del programa con AJAX
+  modalContent.innerHTML = `
+    <div class="animate-pulse p-4">
+      <div class="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+      <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+      <div class="h-32 bg-gray-200 rounded mb-6"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="h-24 bg-gray-200 rounded"></div>
+        <div class="h-24 bg-gray-200 rounded"></div>
+      </div>
+      <div class="h-4 bg-gray-200 rounded w-3/4 mt-6"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mt-4"></div>
+    </div>
+  `;
+  
+  fetch(`/admin/programs/${programId}`, {
+    headers: {
+      'Accept': 'text/html',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
+  .then(html => {
+    modalContent.innerHTML = html;
+  })
+  .catch(error => {
+    modalContent.innerHTML = `
+      <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
+        <div class="flex items-center">
+          <i class="fas fa-exclamation-circle text-xl mr-3"></i>
+          <p class="font-semibold">Error al cargar los detalles</p>
+        </div>
+        <p class="mt-2">${error.message}</p>
+      </div>
+    `;
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('programModal');
+  if (!modal) return;
+  
+  // Animación de salida
+  modal.classList.remove('visible');
+  const modalDialog = modal.querySelector('div');
+  if (modalDialog) {
+    modalDialog.classList.add('scale-95');
+    modalDialog.classList.remove('scale-100');
+  }
+  
+  // Ocultar modal después de la animación
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }, 300);
+}
+
+// NUEVAS FUNCIONES PARA EL MODAL DE EVENTOS
+function setupEventModal() {
+  const modal = document.getElementById('eventModal');
+  if (!modal) return;
+  
+  // Cerrar modal con botón de cerrar
+  const closeButton = document.getElementById('closeEventModal');
+  if (closeButton) {
+    closeButton.addEventListener('click', function() {
+      closeEventModal();
+    });
+  }
+  
+  // Cerrar modal con clic fuera
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      closeEventModal();
+    }
+  });
+  
+  // Cerrar modal con la tecla ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeEventModal();
+    }
+  });
+  
+  // Vincular botones de "Ver detalles" de eventos
+  const detailButtons = document.querySelectorAll('a[href*="/admin/events/"][title="Ver detalles"]');
+  detailButtons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const href = this.getAttribute('href');
+      const eventId = href.split('/').pop(); // Extraer ID de la URL
+      if (eventId) {
+        showEventDetails(eventId);
+      }
+    });
+  });
+}
+
+function showEventDetails(eventId) {
+  const modal = document.getElementById('eventModal');
+  const modalContent = document.getElementById('eventModalContent');
+  
+  if (!modal || !modalContent) return;
+  
+  // Mostrar modal con animación
+  document.body.classList.add('overflow-hidden');
+  modal.classList.remove('hidden');
+  modal.classList.add('visible');
+  
+  // Animación de entrada
+  setTimeout(() => {
+    const modalDialog = modal.querySelector('div');
+    if (modalDialog) {
+      modalDialog.classList.add('scale-100');
+      modalDialog.classList.remove('scale-95');
+    }
+  }, 10);
+  
+  // Cargar detalles del evento con AJAX
+  modalContent.innerHTML = `
+    <div class="animate-pulse p-4">
+      <div class="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
+      <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
+      <div class="h-32 bg-gray-200 rounded mb-6"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="h-24 bg-gray-200 rounded"></div>
+        <div class="h-24 bg-gray-200 rounded"></div>
+      </div>
+      <div class="h-4 bg-gray-200 rounded w-3/4 mt-6"></div>
+      <div class="h-4 bg-gray-200 rounded w-1/2 mt-4"></div>
+    </div>
+  `;
+  
+  fetch(`/admin/events/${eventId}`, {
+    headers: {
+      'Accept': 'text/html',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  })
+  .then(html => {
+    modalContent.innerHTML = html;
+  })
+  .catch(error => {
+    modalContent.innerHTML = `
+      <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
+        <div class="flex items-center">
+          <i class="fas fa-exclamation-circle text-xl mr-3"></i>
+          <p class="font-semibold">Error al cargar los detalles del evento</p>
+        </div>
+        <p class="mt-2">${error.message}</p>
+      </div>
+    `;
+  });
+}
+
+function closeEventModal() {
+  const modal = document.getElementById('eventModal');
+  if (!modal) return;
+  
+  // Animación de salida
+  modal.classList.remove('visible');
+  const modalDialog = modal.querySelector('div');
+  if (modalDialog) {
+    modalDialog.classList.add('scale-95');
+    modalDialog.classList.remove('scale-100');
+  }
+  
+  // Ocultar modal después de la animación
+  setTimeout(() => {
+    modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }, 300);
+}
+
+// Exponer funciones globalmente
+window.showProgramDetails = showProgramDetails;
+window.closeModal = closeModal;
+window.setupProgramModal = setupProgramModal;
+
+// NUEVAS FUNCIONES GLOBALES PARA EVENTOS
+window.showEventDetails = showEventDetails;
+window.closeEventModal = closeEventModal;
+window.setupEventModal = setupEventModal;
+
+// Asegurarse de que los modales se configuren cuando Turbo cambie la página
+document.addEventListener('turbo:load', function() {
+  setupProgramModal();
+  setupEventModal(); // NUEVO
+});
+</script>
 
 <!-- ------------------------------------------------------------ -->
 

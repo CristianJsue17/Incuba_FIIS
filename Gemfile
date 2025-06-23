@@ -17,11 +17,8 @@ gem "puma", ">= 5.0"
 # Autenticación
 gem 'devise'
 
-# Otros
+# para paginacion
 gem 'kaminari'
-gem 'whenever', require: false
-gem 'rufus-scheduler'
-
 
 # Use JavaScript with ESM import maps 
 gem "importmap-rails"

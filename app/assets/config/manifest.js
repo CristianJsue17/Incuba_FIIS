@@ -33,7 +33,8 @@
 //= link login.css
 //= link mentores.css
 //= link reset.css
-//= link services.css
 //= link servicios.css
 //= link swiper-bundle.min.css
 //= link background.css
+//= link programa_tipo.css
+//= link programa_detalle.css

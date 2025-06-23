@@ -3,14 +3,22 @@ class ServiciosService < ApplicationService
   def initialize(tipo = nil)
     @tipo = tipo
   end
-    
+       
   def call
     if @tipo.present?
       # Si se proporciona un tipo, obtener programas de ese tipo
+      # FILTRAR: Solo mostrar programas que NO estén inactivos
+      programas = Program.where(tipo: @tipo)
+                         .where.not(estado: 'inactivo')
+                         .order(fecha_publicacion: :desc)
+      
+      # Actualizar estados automáticamente antes de mostrar
+      programas.each(&:actualizar_estado_automatico!)
+      
       {
         tipo: @tipo,
         tipo_actual: obtener_info_tipo(@tipo),
-        programas: Program.where(tipo: @tipo, estado: 'activo').order(fecha_publicacion: :desc)
+        programas: programas
       }
     else
       # Si no hay tipo, devolver datos generales para la vista de servicios
@@ -50,13 +58,13 @@ class ServiciosService < ApplicationService
       }
     end
   end
-    
+       
   private
-    
+       
   def obtener_info_tipo(tipo)
     # Normalizar el tipo para evitar problemas con mayúsculas/minúsculas
     tipo_normalizado = tipo.to_s.downcase.strip
-    
+         
     case tipo_normalizado
     when 'preincubacion'
       {

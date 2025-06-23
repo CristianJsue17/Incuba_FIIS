@@ -5441,11 +5441,11 @@ html {
 }
 
 .mision {
-  background-image: url("/assets/mision.jpg"); /* Ajusta con tu imagen */
+  background-image: url(/assets/mision.jpg); /* Ajusta con tu imagen */
 }
 
 .vision {
-  background-image: url("/assets/vision.jpg"); /* Ajusta con tu imagen */
+  background-image: url(/assets/vision.jpg); /* Ajusta con tu imagen */
 }
 
 .valores {

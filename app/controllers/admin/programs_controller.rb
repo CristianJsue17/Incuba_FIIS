@@ -94,44 +94,56 @@ end
     end
 
 
+  
+
+def update
+  adjusted_params = prepare_program_params(program_params)
+  old_tipo = @program.tipo
+  new_tipo = adjusted_params[:tipo]
+  
+  # VALIDACIÓN PREVIA: Verificar si se puede cambiar el tipo
+  if old_tipo != new_tipo && @program.total_inscripciones > 0
+    @program.errors.add(:tipo, "no se puede cambiar porque ya hay #{@program.total_inscripciones} inscripción(es) registrada(s)")
     
-    def update
-      adjusted_params = prepare_program_params(program_params)
-      old_tipo = @program.tipo # Guardar el tipo anterior para comparar
+    # Asegurar que hay al menos un campo de cada tipo para renderizar la vista
+    @program.objetivos.build if @program.objetivos.empty?
+    @program.beneficios.build if @program.beneficios.empty?
+    @program.requisitos.build if @program.requisitos.empty?
+    
+    render :edit, status: :unprocessable_entity
+    return
+  end
+  
+  # Si llegamos aquí, el cambio es válido
+  if @program.update(adjusted_params.merge(updated_by: current_user))
+    # Si el tipo ha cambiado, eliminar la plantilla anterior y crear nueva
+    if old_tipo != @program.tipo
+      case old_tipo
+      when 'preincubacion'
+        @program.formulario_plantilla_preincubacion&.destroy
+      when 'incubacion'
+        @program.formulario_plantilla_incubacion&.destroy
+      when 'innovacion'
+        @program.formulario_plantilla_innovacion&.destroy
+      end
       
-      # Actualizar el programa
-      if @program.update(adjusted_params.merge(updated_by: current_user))
-        # Comprobar si el tipo ha cambiado
-        if old_tipo != @program.tipo
-          # Eliminar la asociación anterior si existe
-          case old_tipo
-          when 'preincubacion'
-            @program.formulario_programa_preincubacion&.destroy
-          when 'incubacion'
-            @program.formulario_programa_incubacion&.destroy
-          when 'innovacion'
-            @program.formulario_programa_innovacion&.destroy
-          end
-          
-          # Crear la nueva asociación según el nuevo tipo
-          case @program.tipo
-          when 'preincubacion'
-            @program.create_formulario_programa_preincubacion!
-          when 'incubacion'
-            @program.create_formulario_programa_incubacion!
-          when 'innovacion'
-            @program.create_formulario_programa_innovacion!
-          end
-        end
-        
-        # Actualizar otras asociaciones si es necesario
-        update_associations(@program)
-        
-        redirect_to admin_programs_path, notice: 'Programa actualizado correctamente.'
-      else
-        render :edit, status: :unprocessable_entity
+      # Crear nueva plantilla según el nuevo tipo
+      case @program.tipo
+      when 'preincubacion'
+        @program.create_formulario_plantilla_preincubacion!(es_plantilla: true)
+      when 'incubacion'
+        @program.create_formulario_plantilla_incubacion!(es_plantilla: true)
+      when 'innovacion'
+        @program.create_formulario_plantilla_innovacion!(es_plantilla: true)
       end
     end
+    
+    update_associations(@program)
+    redirect_to admin_programs_path, notice: 'Programa actualizado correctamente.'
+  else
+    render :edit, status: :unprocessable_entity
+  end
+end
 
 
     def cambiar_estado
@@ -161,9 +173,9 @@ end
         :objetivos, 
         :beneficios, 
         :requisitos,
-        :formulario_programa_preincubacion,
-        :formulario_programa_incubacion,
-        :formulario_programa_innovacion
+        :formulario_plantilla_preincubacion,
+        :formulario_plantilla_incubacion,
+        :formulario_plantilla_innovacion
       ).find(params[:id])
     end
     
@@ -176,32 +188,33 @@ end
       adjusted_params
     end
     
-    def program_params
-      params.require(:program).permit(
-        :titulo, :descripcion, :encargado, :tipo, 
-        :fecha_publicacion, :fecha_vencimiento, :estado, :image,
-        objetivos_attributes: [:id, :descripcion, :_destroy],
-        beneficios_attributes: [:id, :descripcion, :_destroy],
-        requisitos_attributes: [:id, :descripcion, :_destroy],
-        formulario_programa_preincubacion_attributes: [
-          :id, :_destroy, :nombre_emprendimiento, :descripcion, :propuesta_valor,
-          :numero_integrantes_equipo, :nombre_lider, :apellidos_lider,
-          :dni_lider, :correo_lider, :telefono_lider, :ocupacion_lider,
-          :enteraste_programa, :expectativas_programa
-        ],
-        formulario_programa_incubacion_attributes: [
-          :id, :_destroy, :nombre_lider, :apellido_lider, :dni_lider,
-          :telefono_lider, :correo_lider, :nombre_proyecto
-        ],
-        formulario_programa_innovacion_attributes: [
-          :id, :_destroy, :nombre_lider, :apellido_lider, :dni_lider,
-          :telefono_lider, :correo_lider, :nombre_proyecto
-        ],
-        programs_patrocinadors_attributes: [
-          :id, :_destroy, :patrocinador_id
-        ]
-      )
-    end
+def program_params
+  params.require(:program).permit(
+    :titulo, :descripcion, :encargado, :tipo, 
+    :fecha_publicacion, :fecha_vencimiento, :estado, :image,
+    objetivos_attributes: [:id, :descripcion, :_destroy],
+    beneficios_attributes: [:id, :descripcion, :_destroy],
+    requisitos_attributes: [:id, :descripcion, :_destroy],
+    # CAMBIO: Usar las relaciones de plantilla
+    formulario_plantilla_preincubacion_attributes: [
+      :id, :_destroy, :nombre_emprendimiento, :descripcion, :propuesta_valor,
+      :numero_integrantes_equipo, :nombre_lider, :apellidos_lider,
+      :dni_lider, :correo_lider, :telefono_lider, :ocupacion_lider,
+      :enteraste_programa, :expectativas_programa, :es_plantilla
+    ],
+    formulario_plantilla_incubacion_attributes: [
+      :id, :_destroy, :nombre_lider, :apellido_lider, :dni_lider,
+      :telefono_lider, :correo_lider, :nombre_proyecto, :es_plantilla
+    ],
+    formulario_plantilla_innovacion_attributes: [
+      :id, :_destroy, :nombre_lider, :apellido_lider, :dni_lider,
+      :telefono_lider, :correo_lider, :nombre_proyecto, :es_plantilla
+    ],
+    programs_patrocinadors_attributes: [
+      :id, :_destroy, :patrocinador_id
+    ]
+  )
+end
     
     def safe_parse_datetime(datetime_string)
       return if datetime_string.blank?

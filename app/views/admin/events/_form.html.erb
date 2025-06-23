@@ -1,0 +1,712 @@
+<!-- app/views/admin/events/_form.html.erb -->
+<% if event.errors.any? %>
+  <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+    <h5 class="font-semibold mb-2">Corrige los siguientes errores:</h5>
+    <ul class="list-disc pl-5">
+      <% event.errors.each do |error| %>
+        <% if error.attribute.to_s == 'fecha_vencimiento' && error.message.include?('posterior') %>
+          <li class="font-bold"><%= error.full_message %> 
+            <a href="#fechas-section" class="text-blue-600 underline">Ir a la sección de fechas</a>
+          </li>
+        <% else %>
+          <li><%= error.full_message %></li>
+        <% end %>
+
+<!-- Script para funcionalidades del formulario -->
+<script>
+// Inicialización común para funcionalidades
+document.addEventListener('turbo:load', function() {
+  console.log("Turbo load - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+document.addEventListener('turbo:render', function() {
+  console.log("Turbo render - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOMContentLoaded - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+// FUNCIONALIDAD 1: Previsualización de imágenes para eventos
+function setupEventImagePreview() {
+  const imageInput = document.getElementById('event-image-input');
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (imageInput && previewContainer) {
+    console.log("Event form: Elements found for image preview");
+    
+    // Eliminar listeners anteriores para evitar duplicados
+    imageInput.removeEventListener('change', handleEventImageChange);
+    imageInput.addEventListener('change', handleEventImageChange);
+    
+    // Si hay un archivo ya seleccionado, mostrarlo
+    if (imageInput.files && imageInput.files[0]) {
+      handleEventImageChange({ target: imageInput });
+    }
+  }
+}
+
+function handleEventImageChange(event) {
+  console.log("Event form: Image file changed");
+  const file = event.target.files[0];
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (file && previewContainer) {
+    console.log("Event form: Processing image file", file.name);
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      console.log("Event form: Image file loaded");
+      previewContainer.innerHTML = `
+        <img src="${e.target.result}" 
+             class="img-thumbnail" 
+             style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 0.375rem;">
+      `;
+    };
+    
+    reader.readAsDataURL(file);
+  }
+}
+
+// FUNCIONALIDAD 2: Validación de fechas para eventos
+function setupEventDateValidation() {
+  console.log("Validación de fechas del evento: Iniciando");
+  
+  const form = document.querySelector('form.event-form');
+  const pubDateInput = document.querySelector('input[name="event[fecha_publicacion]"]');
+  const expDateInput = document.querySelector('input[name="event[fecha_vencimiento]"]');
+  
+  if (!form || !pubDateInput || !expDateInput) {
+    console.error("No se encontraron los elementos necesarios para validación de fechas del evento");
+    return;
+  }
+  
+  console.log("Elementos encontrados, configurando validación de fechas del evento");
+  
+  function validateEventDates() {
+    if (pubDateInput.value && expDateInput.value) {
+      const pubDate = new Date(pubDateInput.value);
+      const expDate = new Date(expDateInput.value);
+      
+      console.log("Validando fechas del evento:");
+      console.log("- Fecha publicación:", pubDateInput.value);
+      console.log("- Fecha cierre:", expDateInput.value);
+      
+      if (expDate <= pubDate) {
+        console.error("ERROR: Fecha de cierre debe ser posterior");
+        
+        expDateInput.style.borderColor = '#dc3545';
+        
+        let errorMsg = document.getElementById('date-error-msg');
+        if (!errorMsg) {
+          errorMsg = document.createElement('div');
+          errorMsg.id = 'date-error-msg';
+          errorMsg.style.color = '#dc3545';
+          errorMsg.style.fontWeight = 'bold';
+          errorMsg.style.marginTop = '5px';
+          expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+        }
+        
+        errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
+        errorMsg.style.display = 'block';
+        
+        return false;
+      } else {
+        console.log("Validación de fechas del evento correcta");
+        
+        expDateInput.style.borderColor = '';
+        
+        const errorMsg = document.getElementById('date-error-msg');
+        if (errorMsg) {
+          errorMsg.style.display = 'none';
+        }
+        
+        return true;
+      }
+    }
+    return true;
+  }
+
+  function updateEventEstadoSuggestion() {
+    const estadoSelect = document.querySelector('select[name="event[estado]"]');
+    if (!estadoSelect) return;
+    
+    const now = new Date();
+    const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
+    const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
+    
+    if (!pubDate || !expDate) return;
+    
+    let suggestedEstado = '';
+    let estadoReason = '';
+    
+    if (now < pubDate) {
+      suggestedEstado = 'pendiente';
+      estadoReason = 'aún no ha llegado la fecha de publicación';
+    } else if (now >= pubDate && now < expDate) {
+      suggestedEstado = 'activo';
+      estadoReason = 'está dentro del período de inscripciones';
+    } else if (now >= expDate) {
+      const finalizedUntil = new Date(expDate);
+      finalizedUntil.setHours(finalizedUntil.getHours() + 12);
+      
+      if (now < finalizedUntil) {
+        suggestedEstado = 'finalizado';
+        estadoReason = 'han finalizado las inscripciones (menos de 12 horas)';
+      } else {
+        suggestedEstado = 'inactivo';
+        estadoReason = 'han finalizado las inscripciones (más de 12 horas)';
+      }
+    }
+    
+    if (suggestedEstado) {
+      let estadoInfo = document.getElementById('evento-estado-sugerido-info');
+      if (!estadoInfo) {
+        estadoInfo = document.createElement('div');
+        estadoInfo.id = 'evento-estado-sugerido-info';
+        estadoInfo.style.marginTop = '10px';
+        estadoInfo.style.padding = '8px 12px';
+        estadoInfo.style.borderRadius = '4px';
+        estadoSelect.parentNode.appendChild(estadoInfo);
+      }
+      
+      if (estadoSelect.value !== suggestedEstado) {
+        estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).`;
+        estadoInfo.style.backgroundColor = '#fff3cd';
+        estadoInfo.style.color = '#856404';
+        estadoInfo.style.border = '1px solid #ffeeba';
+      } else {
+        estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado (${estadoReason}).`;
+        estadoInfo.style.backgroundColor = '#d4edda';
+        estadoInfo.style.color = '#155724';
+        estadoInfo.style.border = '1px solid #c3e6cb';
+      }
+    }
+  }
+  
+  // Event listeners
+  pubDateInput.addEventListener('change', function() {
+    validateEventDates();
+    updateEventEstadoSuggestion();
+  });
+  
+  expDateInput.addEventListener('change', function() {
+    validateEventDates();
+    updateEventEstadoSuggestion();
+  });
+  
+  const estadoSelect = document.querySelector('select[name="event[estado]"]');
+  if (estadoSelect) {
+    estadoSelect.addEventListener('change', function() {
+      updateEventEstadoSuggestion();
+    });
+  }
+  
+  // Validar al enviar formulario
+  form.addEventListener('submit', function(event) {
+    const isValid = validateEventDates();
+    if (!isValid) {
+      event.preventDefault();
+      
+      let errorMsg = document.getElementById('date-error-msg');
+      if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.id = 'date-error-msg';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.fontWeight = 'bold';
+        errorMsg.style.marginTop = '5px';
+        expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+      }
+      
+      errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
+      errorMsg.style.display = 'block';
+      
+      expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      return false;
+    }
+    
+    return true;
+  });
+  
+  // Validación inicial
+  validateEventDates();
+  updateEventEstadoSuggestion();
+}
+</script>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<%= form_with model: [:admin, event],
+              html: { class: "event-form", novalidate: true, multipart: true } do |f| %>
+
+  <!-- Información básica del evento -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-info-circle"></i> Información Básica</h3>
+    
+    <div class="grid-cols-2">
+      <div class="form-group">
+        <%= f.label :titulo, "Título del Evento*", class: "form-label" %>
+        <%= f.text_field :titulo, class: "form-control #{'is-invalid' if event.errors[:titulo].any?}", required: true %>
+        <% if event.errors[:titulo].any? %>
+          <div class="invalid-feedback">
+            <%= event.errors[:titulo].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :encargado, "Encargado*", class: "form-label" %>
+        <%= f.text_field :encargado, class: "form-control #{'is-invalid' if event.errors[:encargado].any?}", required: true %>
+        <% if event.errors[:encargado].any? %>
+          <div class="invalid-feedback">
+            <%= event.errors[:encargado].join(', ') %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="form-group mt-4">
+      <%= f.label :descripcion, "Descripción*", class: "form-label" %>
+      <%= f.text_area :descripcion, class: "form-control #{'is-invalid' if event.errors[:descripcion].any?}", rows: 4, required: true %>
+      <% if event.errors[:descripcion].any? %>
+        <div class="invalid-feedback">
+          <%= event.errors[:descripcion].join(', ') %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :archivo_bases_pitch, "Archivo de Bases (Opcional)", class: "form-label" %>
+      <%= f.text_field :archivo_bases_pitch, 
+          class: "form-control", 
+          placeholder: "URL del archivo de bases del evento (Google Drive, Dropbox, etc.)" %>
+      <small class="text-gray-500 mt-1 block">Enlace a documento con las bases o reglas del evento</small>
+    </div>
+  </div>
+
+  <!-- Configuración del evento -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-cogs"></i> Configuración</h3>
+    
+    <div class="grid-cols-1">
+      <div class="form-group">
+        <%= f.label :estado, "Estado*", class: "form-label" %>
+        <%= f.select :estado, 
+                  [['Activo', 'activo'], ['Inactivo', 'inactivo'], ['Pendiente', 'pendiente'], ['Finalizado', 'finalizado']], 
+                  { prompt: nil, selected: event.estado || 'pendiente' }, 
+                  { class: "form-select #{'is-invalid' if event.errors[:estado].any?}", 
+                    required: true } %>
+        <% if event.errors[:estado].any? %>
+          <div class="invalid-feedback">
+            <%= event.errors[:estado].join(', ') %>
+          </div>
+        <% end %>
+        <small class="text-gray-500 mt-1 block">El estado se puede ajustar automáticamente según las fechas</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fechas del evento -->
+  <div class="form-section" id="fechas-section">
+    <h3 class="section-title"><i class="fas fa-calendar-alt"></i> Período del Evento</h3>
+    
+    <div class="grid-cols-2">
+      <div class="form-group">
+        <%= f.label :fecha_publicacion, "Fecha de Publicación*", class: "form-label" %>
+        <%= f.datetime_local_field :fecha_publicacion, 
+                           value: event.fecha_publicacion&.strftime("%Y-%m-%dT%H:%M") || Time.current.strftime("%Y-%m-%dT%H:%M"),
+                           class: "form-control #{'is-invalid' if event.errors[:fecha_publicacion].any?}",
+                           id: "fecha_publicacion_field",
+                           required: true %>
+        <% if event.errors[:fecha_publicacion].any? %>
+          <div class="invalid-feedback">
+            <%= event.errors[:fecha_publicacion].join(', ') %>
+          </div>
+        <% end %>
+        <small class="text-gray-500 mt-1 block">Cuándo se publicará y estará visible el evento</small>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :fecha_vencimiento, "Fecha de Cierre*", class: "form-label" %>
+        <%= f.datetime_local_field :fecha_vencimiento, 
+                           value: event.fecha_vencimiento&.strftime("%Y-%m-%dT%H:%M") || (Time.current + 1.week).strftime("%Y-%m-%dT%H:%M"),
+                           class: "form-control #{'is-invalid' if event.errors[:fecha_vencimiento].any?}",
+                           id: "fecha_vencimiento_field",
+                           required: true %>
+        <% if event.errors[:fecha_vencimiento].any? %>
+          <div class="invalid-feedback">
+            <%= event.errors[:fecha_vencimiento].join(', ') %>
+          </div>
+        <% end %>
+        <div id="date-error-msg" style="color: #dc3545; font-weight: bold; margin-top: 5px; display: none;">
+          La fecha de cierre debe ser posterior a la fecha de publicación
+        </div>
+        <small class="text-gray-500 mt-1 block">Cuándo cerrarán las inscripciones al evento</small>
+      </div>
+    </div>
+  </div>
+
+  <!-- Imagen del evento -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-image"></i> Imagen del Evento</h3>
+    
+    <div data-controller="image-preview">
+      <%= f.label :image, "Imagen del Evento", class: "form-label" %>
+      
+      <%= f.file_field :image, 
+                     id: "event-image-input",
+                     class: "form-control #{'is-invalid' if event.errors[:image].any?}",
+                     accept: "image/jpeg, image/png, image/gif",
+                     data: { action: "change->image-preview#preview" } %>
+      
+      <% if event.errors[:image].any? %>
+        <div class="invalid-feedback">
+          <%= event.errors[:image].join(', ') %>
+        </div>
+      <% end %>
+      
+      <div class="image-preview-container mt-3" id="image-preview-container" data-image-preview-target="preview">
+        <% if event.image.attached? %>
+          <%= image_tag event.image, style: "max-width: 100%; height: auto;" %>
+        <% else %>
+          <img src="<%= asset_path('event_placeholder.png') %>" 
+               style="max-width: 100%; height: auto; opacity: 0.5;"
+               alt="Vista previa del evento">
+        <% end %>
+      </div>
+      
+      <small class="text-gray-500 mt-2 block">Formatos aceptados: JPEG, PNG, GIF (Máx. 5MB). Resolución recomendada: 1200x600px</small>
+    </div>
+  </div>
+
+  <!-- Información sobre el formulario de inscripción -->
+  <div class="form-section">
+    <h3 class="section-title"><i class="fas fa-clipboard-list"></i> Formulario de Inscripción</h3>
+    
+    <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded mb-4">
+      <div class="flex items-center">
+        <i class="fas fa-info-circle mr-2"></i>
+        <div>
+          <p class="font-medium">Formulario automático</p>
+          <p class="text-sm">Se creará automáticamente un formulario de inscripción para este evento. Los usuarios podrán inscribirse sin necesidad de crear una cuenta.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-50 border border-gray-200 rounded p-4">
+      <h4 class="font-medium text-gray-800 mb-3">Campos del formulario de inscripción:</h4>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-gray-600">
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Nombre del líder
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Apellidos del líder
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          DNI
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Correo electrónico
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Teléfono
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Número de integrantes
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Nombre del emprendimiento
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Descripción del proyecto
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Cuéntanos sobre tu proyecto
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Ventajas competitivas
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Modelo de negocio
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Metas a 6 meses
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Redes sociales
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Web del startup
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Sector económico
+        </div>
+        <div class="flex items-center">
+          <i class="fas fa-check text-green-500 mr-2"></i>
+          Categoría
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Acciones del formulario -->
+  <div class="form-actions">
+    <%= link_to "Cancelar", admin_events_path, class: "btn btn-outline-danger" %>
+    <%= f.submit event.persisted? ? "Actualizar Evento" : "Crear Evento", 
+                class: "btn btn-primary" %>
+  </div>
+  
+<% end %>
+
+<!-- Script para funcionalidades del formulario -->
+<script>
+// Inicialización común para funcionalidades
+document.addEventListener('turbo:load', function() {
+  console.log("Turbo load - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+document.addEventListener('turbo:render', function() {
+  console.log("Turbo render - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  console.log("DOMContentLoaded - Inicializando funcionalidades del evento");
+  setupEventImagePreview();
+  setupEventDateValidation();
+});
+
+// FUNCIONALIDAD 1: Previsualización de imágenes para eventos
+function setupEventImagePreview() {
+  const imageInput = document.getElementById('event-image-input');
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (imageInput && previewContainer) {
+    console.log("Event form: Elements found for image preview");
+    
+    // Eliminar listeners anteriores para evitar duplicados
+    imageInput.removeEventListener('change', handleEventImageChange);
+    imageInput.addEventListener('change', handleEventImageChange);
+    
+    // Si hay un archivo ya seleccionado, mostrarlo
+    if (imageInput.files && imageInput.files[0]) {
+      handleEventImageChange({ target: imageInput });
+    }
+  }
+}
+
+function handleEventImageChange(event) {
+  console.log("Event form: Image file changed");
+  const file = event.target.files[0];
+  const previewContainer = document.getElementById('image-preview-container');
+  
+  if (file && previewContainer) {
+    console.log("Event form: Processing image file", file.name);
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      console.log("Event form: Image file loaded");
+      previewContainer.innerHTML = `
+        <img src="${e.target.result}" 
+             class="img-thumbnail" 
+             style="max-width: 300px; max-height: 200px; object-fit: cover; border-radius: 0.375rem;">
+      `;
+    };
+    
+    reader.readAsDataURL(file);
+  }
+}
+
+// FUNCIONALIDAD 2: Validación de fechas para eventos
+function setupEventDateValidation() {
+  console.log("Validación de fechas del evento: Iniciando");
+  
+  const form = document.querySelector('form.event-form');
+  const pubDateInput = document.querySelector('input[name="event[fecha_publicacion]"]');
+  const expDateInput = document.querySelector('input[name="event[fecha_vencimiento]"]');
+  
+  if (!form || !pubDateInput || !expDateInput) {
+    console.error("No se encontraron los elementos necesarios para validación de fechas del evento");
+    return;
+  }
+  
+  console.log("Elementos encontrados, configurando validación de fechas del evento");
+  
+  function validateEventDates() {
+    if (pubDateInput.value && expDateInput.value) {
+      const pubDate = new Date(pubDateInput.value);
+      const expDate = new Date(expDateInput.value);
+      
+      console.log("Validando fechas del evento:");
+      console.log("- Fecha publicación:", pubDateInput.value);
+      console.log("- Fecha cierre:", expDateInput.value);
+      
+      if (expDate <= pubDate) {
+        console.error("ERROR: Fecha de cierre debe ser posterior");
+        
+        expDateInput.style.borderColor = '#dc3545';
+        
+        let errorMsg = document.getElementById('date-error-msg');
+        if (!errorMsg) {
+          errorMsg = document.createElement('div');
+          errorMsg.id = 'date-error-msg';
+          errorMsg.style.color = '#dc3545';
+          errorMsg.style.fontWeight = 'bold';
+          errorMsg.style.marginTop = '5px';
+          expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+        }
+        
+        errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
+        errorMsg.style.display = 'block';
+        
+        return false;
+      } else {
+        console.log("Validación de fechas del evento correcta");
+        
+        expDateInput.style.borderColor = '';
+        
+        const errorMsg = document.getElementById('date-error-msg');
+        if (errorMsg) {
+          errorMsg.style.display = 'none';
+        }
+        
+        return true;
+      }
+    }
+    return true;
+  }
+
+  function updateEventEstadoSuggestion() {
+    const estadoSelect = document.querySelector('select[name="event[estado]"]');
+    if (!estadoSelect) return;
+    
+    const now = new Date();
+    const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
+    const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
+    
+    if (!pubDate || !expDate) return;
+    
+    let suggestedEstado = '';
+    let estadoReason = '';
+    
+    if (now < pubDate) {
+      suggestedEstado = 'pendiente';
+      estadoReason = 'aún no ha llegado la fecha de publicación';
+    } else if (now >= pubDate && now < expDate) {
+      suggestedEstado = 'activo';
+      estadoReason = 'está dentro del período de inscripciones';
+    } else if (now >= expDate) {
+      const finalizedUntil = new Date(expDate);
+      finalizedUntil.setHours(finalizedUntil.getHours() + 12);
+      
+      if (now < finalizedUntil) {
+        suggestedEstado = 'finalizado';
+        estadoReason = 'han finalizado las inscripciones (menos de 12 horas)';
+      } else {
+        suggestedEstado = 'inactivo';
+        estadoReason = 'han finalizado las inscripciones (más de 12 horas)';
+      }
+    }
+    
+    if (suggestedEstado) {
+      let estadoInfo = document.getElementById('evento-estado-sugerido-info');
+      if (!estadoInfo) {
+        estadoInfo = document.createElement('div');
+        estadoInfo.id = 'evento-estado-sugerido-info';
+        estadoInfo.style.marginTop = '10px';
+        estadoInfo.style.padding = '8px 12px';
+        estadoInfo.style.borderRadius = '4px';
+        estadoSelect.parentNode.appendChild(estadoInfo);
+      }
+      
+      if (estadoSelect.value !== suggestedEstado) {
+        estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).`;
+        estadoInfo.style.backgroundColor = '#fff3cd';
+        estadoInfo.style.color = '#856404';
+        estadoInfo.style.border = '1px solid #ffeeba';
+      } else {
+        estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado (${estadoReason}).`;
+        estadoInfo.style.backgroundColor = '#d4edda';
+        estadoInfo.style.color = '#155724';
+        estadoInfo.style.border = '1px solid #c3e6cb';
+      }
+    }
+  }
+  
+  // Event listeners
+  pubDateInput.addEventListener('change', function() {
+    validateEventDates();
+    updateEventEstadoSuggestion();
+  });
+  
+  expDateInput.addEventListener('change', function() {
+    validateEventDates();
+    updateEventEstadoSuggestion();
+  });
+  
+  const estadoSelect = document.querySelector('select[name="event[estado]"]');
+  if (estadoSelect) {
+    estadoSelect.addEventListener('change', function() {
+      updateEventEstadoSuggestion();
+    });
+  }
+  
+  // Validar al enviar formulario
+  form.addEventListener('submit', function(event) {
+    const isValid = validateEventDates();
+    if (!isValid) {
+      event.preventDefault();
+      
+      let errorMsg = document.getElementById('date-error-msg');
+      if (!errorMsg) {
+        errorMsg = document.createElement('div');
+        errorMsg.id = 'date-error-msg';
+        errorMsg.style.color = '#dc3545';
+        errorMsg.style.fontWeight = 'bold';
+        errorMsg.style.marginTop = '5px';
+        expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+      }
+      
+      errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
+      errorMsg.style.display = 'block';
+      
+      expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      return false;
+    }
+    
+    return true;
+  });
+  
+  // Validación inicial
+  validateEventDates();
+  updateEventEstadoSuggestion();
+}
+</script>

@@ -25,7 +25,7 @@
   <div class="background__waves" aria-hidden="true"></div>
   
   <div class="background__content container">
-    <!-- Header reestructurado con dropdowns completos -->
+<!-- Header reestructurado con dropdowns completos -->
     <header class="header" role="banner">
       <div class="header__container">
         <div class="header__logo">
@@ -137,25 +137,15 @@
             <li class="header__menu-item">
               <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
             </li>
-
-            <!-- LOGIN MÓVIL -->
-            <li class="header__menu-item">
-              <a href="<%= new_user_session_path %>"
-                 class="header__action-btn header__action-btn--mobile"
-                 data-turbo="false"
-                 aria-label="Iniciar sesión">
-                <i class="fas fa-user" aria-hidden="true"></i>
-                INICIAR SESIÓN
-              </a>
-            </li>
           </ul>
         </nav>
 
-        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
+        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP + LOGIN MÓVIL -->
         <div class="header__actions">
           <!-- SELECTOR DE IDIOMA -->
           <%= render 'shared/language_switcher' %>
           
+          <!-- LOGIN DESKTOP -->
           <div class="header__login-container">
             <a href="<%= new_user_session_path %>"
                class="header__action-btn header__action-btn--login"
@@ -164,6 +154,14 @@
             </a>
             <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
           </div>
+
+          <!-- LOGIN MÓVIL - AHORA AQUÍ FUERA DEL MENÚ -->
+          <a href="<%= new_user_session_path %>"
+             class="header__action-btn header__action-btn--mobile"
+             data-turbo="false"
+             aria-label="Iniciar sesión">
+            <i class="fas fa-user" aria-hidden="true"></i>
+          </a>
         </div>
 
         <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">

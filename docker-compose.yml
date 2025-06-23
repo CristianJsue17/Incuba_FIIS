@@ -27,7 +27,7 @@ services:
       POSTGRES_PASSWORD: cristian
       POSTGRES_DB: incuba_fiis_development
     ports:
-      - "5433:5432"
+      - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
