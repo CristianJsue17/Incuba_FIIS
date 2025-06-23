@@ -145,19 +145,19 @@
         </nav>
 
 <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP -->
-<div class="header__actions">
-    <!-- SELECTOR DE IDIOMA -->
-    <%= render 'shared/language_switcher' %>
-    
-    <div class="header__login-container">
-        <a href="<%= new_user_session_path %>"
-            class="header__action-btn header__action-btn--login"
-            data-turbo="false"
-            aria-label="<%= t('navigation.iniciar_sesion') %>">
-        </a>
-        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    <div class="header__actions">
+        <!-- SELECTOR DE IDIOMA -->
+        <%= render 'shared/language_switcher' %>
+        
+        <div class="header__login-container">
+            <a href="<%= new_user_session_path %>"
+                class="header__action-btn header__action-btn--login"
+                data-turbo="false"
+                aria-label="<%= t('navigation.iniciar_sesion') %>">
+            </a>
+            <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+        </div>
     </div>
-</div>
 
         <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
             <span class="header__hamburger-line" aria-hidden="true"></span>

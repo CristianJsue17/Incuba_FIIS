@@ -45,7 +45,7 @@
           <ul class="header__menu">
             <!-- PROGRAMAS -->
             <li class="header__menu-item header__menu-item--has-dropdown">
-              <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+              <%= link_to t('navigation.programas'), programas_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
@@ -178,6 +178,7 @@
     <main class="main" role="main">
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero__content">
+
           <h1 id="hero-title" class="hero__title">
             <span class="hero__title-part hero__title-part--blue">Incuba</span>
             <span class="hero__title-part hero__title-part--green">Unas</span>
@@ -188,20 +189,20 @@
             <p class="hero__subtitle"><%= t('hero.usando_estrategias') %></p>
           </div>
           
-        <div class="hero__social animate-on-scroll">
-  <a href="#" class="hero__social-link" aria-label="Facebook">
-    <i class="fa-brands fa-facebook-f"></i> <!-- Cambio aquí -->
-  </a>
-  <a href="#" class="hero__social-link" aria-label="Twitter">  
-    <i class="fa-brands fa-twitter"></i> <!-- Cambio aquí -->
-  </a>
-  <a href="#" class="hero__social-link" aria-label="Instagram">
-    <i class="fa-brands fa-instagram"></i> <!-- Cambio aquí -->
-  </a>
-  <a href="#" class="hero__social-link" aria-label="LinkedIn">
-    <i class="fa-brands fa-linkedin-in"></i> <!-- Cambio aquí -->
-  </a>
-</div>
+            <div class="hero__social animate-on-scroll">
+            <a href="#" class="hero__social-link" aria-label="Facebook">
+              <i class="fa-brands fa-facebook-f"></i> <!-- Cambio aquí -->
+            </a>
+            <a href="#" class="hero__social-link" aria-label="Twitter">  
+              <i class="fa-brands fa-twitter"></i> <!-- Cambio aquí -->
+            </a>
+            <a href="#" class="hero__social-link" aria-label="Instagram">
+              <i class="fa-brands fa-instagram"></i> <!-- Cambio aquí -->
+            </a>
+            <a href="#" class="hero__social-link" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin-in"></i> <!-- Cambio aquí -->
+            </a>
+          </div>
           
           <div class="hero__buttons animate-on-scroll">
             <!-- Botón principal -->
@@ -420,15 +421,11 @@
             <span>⭐</span>
           </div>
           <p class="testimonial__text">
-            Nuestra experiencia en <strong> INCUBA UNAS </strong> nos ha permitido madurar y
-            orientar adecuadamente la idea y el modelo de negocio que
-            iniciamos hace algunos años, encontrando así un nicho específico donde actualmente
-            estamos comenzando a tener tracción y
-            estamos muy próximo a lanzar nuestro primer producto al mercado."
+            Nuestra participación en <strong>INCUBA UNAS</strong> ha sido clave para profesionalizar nuestro emprendimiento. Gracias a la asesoría especializada y al acompañamiento constante, hoy contamos con una propuesta de valor clara, un pitch validado y una hoja de ruta sólida para escalar nuestro negocio en los próximos meses.
           </p>
           <p class="testimonial__author">KATRINA PARKER</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/pedro.png", alt: "Katrina Parker" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/melisa_zavala.png", alt: "Katrina Parker" , class: "testimonial__image" %>
           </div>
         </div>
 
@@ -442,15 +439,11 @@
             <span>⭐</span>
           </div>
           <p class="testimonial__text">
-            "Recomiendo Startup UNI por su compromiso genuino con el éxito de los emprendedores. Su
-            ayuda en la postulación a fondos
-            y su red de mentores marcaron la diferencia para mi proyecto. Gracias a sus sesiones de
-            pitch he aprendido a comunicar
-            mis ideas más efectivamente."
+            Gracias a <strong>INCUBA UNAS</strong>, logramos convertir una idea inicial en un proyecto estructurado con validación real en el mercado. El acceso a mentores, redes de contacto y herramientas de gestión ha sido fundamental para definir con precisión nuestro modelo de ingresos y proyectar el crecimiento de nuestra startup.
           </p>
-          <p class="testimonial__author">JAMES WILSON</p>
+          <p class="testimonial__author">CARLOS HIDALGO</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/melisa_zavala.png", alt: "James Wilson" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/carlos_hidalgo.png", alt: "Katrina Parker" , class: "testimonial__image" %>
           </div>
         </div>
 
@@ -464,18 +457,16 @@
             <span>⭐</span>
           </div>
           <p class="testimonial__text">
-            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-            architecto
-            beatae vitae dicta sunt explicabo."
+             El proceso con <strong>INCUBA UNAS</strong> nos permitió identificar nuestras debilidades y convertirlas en oportunidades. Recibimos retroalimentación constante y acompañamiento técnico que nos ayudó a redefinir nuestro modelo de negocio y prepararnos para futuras rondas de inversión.
           </p>
-          <p class="testimonial__author">SOPHIA MARTINEZ</p>
+          <p class="testimonial__author">CARLOS HIDALGO</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/steven.png", alt: "Sophia Martinez" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/pedro.png", alt: "Pedro" , class: "testimonial__image" %>
           </div>
         </div>
 
-        <!-- Testimonial 4 -->
+        
+        <!-- Testimonial 3 -->
         <div class="testimonial">
           <div class="testimonial__rating">
             <span>⭐</span>
@@ -485,16 +476,14 @@
             <span>⭐</span>
           </div>
           <p class="testimonial__text">
-            "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
-            laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi
-            architecto
-            beatae vitae dicta sunt explicabo."
+            Participar en <strong>INCUBA UNAS</strong> ha sido una experiencia transformadora. No solo fortalecimos nuestras capacidades emprendedoras, sino que también conectamos con otros equipos y actores clave del ecosistema. Hoy sentimos que estamos mejor preparados para enfrentar los desafíos del mercado y seguir creciendo.
           </p>
-          <p class="testimonial__author">SOPHIA MARTINEZ</p>
+          <p class="testimonial__author">CARLOS HIDALGO</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/carlos_hidalgo.png", alt: "Carlos Hidalgo" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/steven.png", alt: "Steven" , class: "testimonial__image" %>
           </div>
         </div>
+        
       </div>
 
       <button class="testimonials__nav testimonials__nav--next" aria-label="Next testimonial">

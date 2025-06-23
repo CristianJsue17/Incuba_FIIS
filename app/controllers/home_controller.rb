@@ -29,6 +29,16 @@ class HomeController < ApplicationController
   def mentores
   end
 
+  def programas
+    
+  end
+
+  def preincubacion; end
+  def incubacion; end
+  def innovacion; end
+
+
+ 
   def programas_tipo
     @tipo = params[:tipo]
     

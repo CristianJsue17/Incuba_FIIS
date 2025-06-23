@@ -21,6 +21,12 @@ Rails.application.routes.draw do
   # Rutas para servicios y programas
   get 'servicios', to: 'home#servicios', as: 'servicios'
   get 'servicios/:tipo', to: 'home#programas_tipo', as: 'programas_tipo'
+  get 'programas', to: 'home#programas', as: 'programas'
+
+  get 'programas/preincubacion', to: 'home#preincubacion', as: :programa_preincubacion
+  get 'programas/incubacion', to: 'home#incubacion', as: :programa_incubacion
+  get 'programas/innovacion', to: 'home#innovacion', as: :programa_innovacion
+
      
   # Rutas para inscripciones con soporte para JSON
   get 'programas/:id/inscripcion', to: 'inscripciones#new', as: 'inscripcion_programa'
