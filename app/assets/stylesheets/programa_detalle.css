@@ -5,7 +5,7 @@
 /* Contenedor principal */
 .programa-detalle-container {
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 120px auto;
   padding: 0 20px;
   background: transparent;
 }
