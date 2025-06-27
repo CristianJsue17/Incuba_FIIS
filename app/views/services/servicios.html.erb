@@ -67,7 +67,7 @@
 
             <!-- EVENTOS -->
             <li class="header__menu-item header__menu-item--has-dropdown">
-              <a href="#" class="header__menu-link" aria-haspopup="true" aria-expanded="false"><%= t('navigation.eventos') %></a>
+              <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">

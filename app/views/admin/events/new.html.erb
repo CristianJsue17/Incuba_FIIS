@@ -1,4 +1,4 @@
-<!-- app/views/admin/events/new.html.erb -->
+<!-- app/views/admin/events/edit.html.erb -->
 <style>
 /* Estilos para el formulario de eventos */
 
@@ -158,7 +158,7 @@ input[type="datetime-local"] {
   font-size: 0.75rem;
 }
 
-/* Previsualización de imagen */
+/* Previsualización de imagen - SOLO PARA PLACEHOLDER INICIAL */
 .image-preview-container {
   margin-top: 0.5rem;
   max-width: 300px;
@@ -424,77 +424,210 @@ input:focus, select:focus, textarea:focus {
   .md\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}/* Estilos para el formulario de eventos */
-
-/* Contenedor principal del formulario */
-.event-form {
-  background-color: #ffffff;
-  border-radius: 0.5rem;
 }
 
-/* Estilos para las secciones del formulario */
-.form-section {
-  margin-bottom: 1.5rem;
-  padding: 1.25rem;
-  background-color: #f9fafb;
+/* CSS ADICIONAL PARA MÚLTIPLES IMÁGENES - NUEVO Y MEJORADO */
+
+/* Contenedor de carga de imágenes */
+.images-upload-container {
+  border: 2px dashed #e5e7eb;
   border-radius: 0.5rem;
-  border: 1px solid #e5e7eb;
+  padding: 1.5rem;
+  background-color: #fafafa;
   transition: all 0.3s ease;
 }
 
-.form-section:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+.images-upload-container:hover {
+  border-color: #3b82f6;
+  background-color: #f0f9ff;
 }
 
-/* Títulos de sección */
-.section-title {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1f2937;
+/* Grids para imágenes */
+.current-images-grid,
+.preview-images-grid {
+  display: grid !important;
+  gap: 1rem !important;
+  margin-top: 1rem !important;
+}
+
+/* Grids específicos por cantidad */
+.preview-images-grid.single-image {
+  grid-template-columns: 1fr !important;
+  max-width: 300px !important;
+}
+
+.preview-images-grid.two-images {
+  grid-template-columns: repeat(2, 1fr) !important;
+  max-width: 620px !important;
+}
+
+.preview-images-grid.three-images {
+  grid-template-columns: repeat(3, 1fr) !important;
+  max-width: 940px !important;
+}
+
+/* Items de imagen */
+.current-image-item,
+.preview-image-item {
+  position: relative !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  border: 2px solid #e5e7eb !important;
+  background: white !important;
+  transition: all 0.3s ease !important;
+  min-height: 200px !important;
+  width: 100% !important;
+}
+
+.current-image-item:hover,
+.preview-image-item:hover {
+  border-color: #3b82f6 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Imágenes de vista previa */
+.current-image-preview,
+.preview-image {
+  width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+  display: block !important;
+}
+
+/* Información de imagen */
+.image-info {
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  background: linear-gradient(transparent, rgba(0,0,0,0.8)) !important;
+  color: white !important;
+  padding: 0.75rem !important;
+  font-size: 0.875rem !important;
+}
+
+.image-number {
+  font-weight: 600 !important;
+  display: block !important;
+  font-size: 1rem !important;
+}
+
+.main-image-badge {
+  display: inline-block !important;
+  background: #10b981 !important;
+  color: white !important;
+  padding: 0.25rem 0.5rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.75rem !important;
+  margin-top: 0.5rem !important;
+  font-weight: 600 !important;
+}
+
+/* Información de carga */
+.upload-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.upload-info small {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* CORREGIDO: Contenedor específico para vista previa de eventos */
+.event-image-preview-container {
+  margin-top: 0.5rem;
+  border-radius: 0.375rem;
+  overflow: visible; /* Cambio importante */
+  border: none; /* Sin borde para no interferir */
+  max-width: none; /* Sin límite de ancho */
+  max-height: none; /* Sin límite de altura */
+}
+
+/* CORREGIDO: Solo aplicar estilos restrictivos al placeholder inicial */
+.event-image-preview-container > img[alt="Vista previa del evento"] {
+  max-width: 300px !important;
+  max-height: 200px !important;
+  width: auto !important;
+  height: auto !important;
+  opacity: 0.5 !important;
+  border-radius: 0.375rem !important;
+  border: 1px solid #e5e7eb !important;
+  object-fit: contain !important;
+  background-color: #f9fafb !important;
+}
+
+/* Estados de imagen vacía o sin imágenes */
+.no-images-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f9fafb;
+  border: 2px dashed #d1d5db;
+  border-radius: 0.5rem;
+  color: #6b7280;
+  text-align: center;
+}
+
+.no-images-placeholder i {
+  font-size: 3rem;
   margin-bottom: 1rem;
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid #e5e7eb;
+  color: #d1d5db;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  .current-images-grid,
+  .preview-images-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+  
+  .images-upload-container {
+    padding: 1rem;
+  }
+  
+  .current-image-preview,
+  .preview-image {
+    height: 180px !important;
+  }
+  
+  .preview-images-grid.single-image,
+  .preview-images-grid.two-images,
+  .preview-images-grid.three-images {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+  }
+}
+
+/* Estilos para manejo de errores de imagen */
+.image-error {
   display: flex;
   align-items: center;
-}
-
-.section-title i {
-  margin-right: 0.5rem;
-  color: #2563eb;
-}
-
-/* Campos del formulario */
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.form-label {
-  display: block;
-  font-weight: 500;
-  color: #374151;
-  margin-bottom: 0.5rem;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.625rem 0.75rem;
-  border: 1px solid #d1d5db;
-  border-radius: 0.375rem;
+  justify-content: center;
+  height: 200px !important;
+  background-color: #fef2f2;
+  border: 2px dashed #fca5a5;
+  color: #dc2626;
   font-size: 0.875rem;
-  color: #1f2937;
-  transition: border-color 0.2s ease;
+  border-radius: 0.5rem;
 }
 
-.form-control:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3
+.image-error i {
+  margin-right: 0.5rem;
+}
 </style>
 
 <div class="bg-white rounded-lg shadow-md overflow-hidden mb-6">
   <div class="flex justify-between items-center p-4 border-b border-gray-200">
     <h2 class="text-xl font-bold text-gray-800">
-      <i class="fas fa-plus-circle mr-2 text-blue-600"></i>Crear Nuevo Evento
+      <i class="fas fa-edit mr-2 text-blue-600"></i>Editar Evento: <%= @event.titulo %>
     </h2>
     <%= link_to admin_events_path, class: "flex items-center px-3 py-2 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors" do %>
       <i class="fas fa-arrow-left mr-2"></i> Volver

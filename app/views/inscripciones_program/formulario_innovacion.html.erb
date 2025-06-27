@@ -1,0 +1,1577 @@
+<!-- app/views/inscripciones_program/formulario_innovacion.html.erb -->
+
+<!-- Font Awesome y Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<% content_for :stylesheets do %>
+<%= stylesheet_link_tag "home" %>
+<% end %>
+
+<% content_for :scripts do %>
+  <%= javascript_include_tag "enhanced_header", defer: true %>
+  <%= javascript_include_tag "footer", defer: true %>
+<% end %>
+
+<!-- Header -->
+<header class="header" role="banner">
+  <div class="header__container">
+    <div class="header__logo">
+      <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+        <div class="header__logo-container">
+          <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+        </div>
+        <div class="header__text-container">
+          <span class="header__logo-text">INCUBA UNAS</span>
+        </div>
+      </a>
+    </div>
+
+    <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+      <ul class="header__menu">
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="header__menu-item">
+          <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <%= render 'shared/language_switcher' %>
+      
+      <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+           class="header__action-btn header__action-btn--login"
+           data-turbo="false"
+           aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+      </div>
+
+      <a href="<%= new_user_session_path %>"
+         class="header__action-btn header__action-btn--mobile"
+         data-turbo="false"
+         aria-label="Iniciar sesión">
+        <i class="fas fa-user" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+  <div class="bg-circle bg-circle-1"></div>
+  <div class="bg-circle bg-circle-2"></div>
+  <div class="bg-circle bg-circle-3"></div>
+  <div class="bg-dots"></div>
+  <div class="bg-line bg-line-1"></div>
+  <div class="bg-line bg-line-2"></div>
+</div>
+
+<!-- Main Container -->
+<div class="inscription-container">
+  <!-- Hero Section -->
+  <div class="inscription-hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <i class="fas fa-cogs"></i>
+        <span>Formulario de Inscripción</span>
+      </div>
+      <h1 class="hero-title">Programa: <%= @program.titulo %></h1>
+      <p class="hero-description"><%= @program.descripcion %></p>
+    </div>
+    <div class="hero-decoration">
+      <div class="decoration-circle"></div>
+      <div class="decoration-dots"></div>
+    </div>
+  </div>
+
+  <!-- Progress Navigation -->
+  <div class="progress-section">
+    <div class="progress-wrapper">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 30%"></div>
+      </div>
+      <div class="progress-steps">
+        <div class="step active">
+          <div class="step-circle">
+            <i class="fas fa-user"></i>
+          </div>
+          <span class="step-label">Información Personal</span>
+        </div>
+        <div class="step">
+          <div class="step-circle">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <span class="step-label">Innovación</span>
+        </div>
+        <div class="step">
+          <div class="step-circle">
+            <i class="fas fa-check"></i>
+          </div>
+          <span class="step-label">Confirmación</span>
+        </div>
+      </div>
+    </div>
+    
+    <a href="<%= programas_tipo_path(@program.tipo) %>" class="back-button">
+      <i class="fas fa-arrow-left"></i>
+      <span>Volver a programas</span>
+    </a>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+    <%= form_with(model: @formulario, url: inscripcion_programa_path(@program), method: :post, local: true, class: "inscription-form") do |f| %>
+      <%= hidden_field_tag :id, @program.id %>
+      
+      <!-- Error Messages -->
+      <% if @formulario.errors.any? %>
+        <div class="alert alert-error">
+          <div class="alert-icon">
+            <i class="fas fa-exclamation-triangle"></i>
+          </div>
+          <div class="alert-content">
+            <h3>Se encontraron errores en el formulario</h3>
+            <ul>
+              <% @formulario.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        </div>
+      <% end %>
+
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-user-circle"></i>
+          </div>
+          <div class="section-title">
+            <h2>Información Personal del Líder</h2>
+            <p>Completa tus datos personales. Los campos con * son obligatorios.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <!-- DNI Field (First) -->
+          <div class="form-group full-width dni-group">
+            <%= f.label :dni_lider, "Documento de Identidad (DNI) *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.text_field :dni_lider, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "Ingresa tu DNI de 8 dígitos",
+                  maxlength: "8",
+                  pattern: "[0-9]{8}" %>
+              <div class="input-icon">
+                <i class="fas fa-id-card"></i>
+              </div>
+            </div>
+            <small class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              Automáticamente buscaremos tus datos en RENIEC
+            </small>
+          </div>
+
+          <!-- Nombres Field -->
+          <div class="form-group">
+            <%= f.label :nombre_lider, "Nombres *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.text_field :nombre_lider, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "Se completará automáticamente" %>
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Apellidos Field -->
+          <div class="form-group">
+            <%= f.label :apellidos_lider, "Apellidos *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.text_field :apellidos_lider, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "Se completará automáticamente" %>
+              <div class="input-icon">
+                <i class="fas fa-user"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-group">
+            <%= f.label :correo_lider, "Correo Electrónico *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.email_field :correo_lider, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "ejemplo@correo.com" %>
+              <div class="input-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Phone Field -->
+          <div class="form-group">
+            <%= f.label :telefono_lider, "Teléfono *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.telephone_field :telefono_lider, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "999 888 777" %>
+              <div class="input-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Innovation Project Section -->
+      <div class="form-section">
+        <div class="section-header">
+          <div class="section-icon">
+            <i class="fas fa-cogs"></i>
+          </div>
+          <div class="section-title">
+            <h2>Proyecto de Innovación</h2>
+            <p>Cuéntanos sobre tu proyecto innovador y disruptivo.</p>
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-group full-width">
+            <%= f.label :nombre_proyecto, "Nombre del Proyecto *", class: "form-label" %>
+            <div class="input-container">
+              <%= f.text_field :nombre_proyecto, 
+                  class: "form-input", 
+                  required: true, 
+                  placeholder: "Nombre de tu proyecto de innovación" %>
+              <div class="input-icon">
+                <i class="fas fa-lightbulb"></i>
+              </div>
+            </div>
+            <small class="form-hint">
+              <i class="fas fa-info-circle"></i>
+              Escribe el nombre que identificará tu proyecto innovador durante el programa
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Terms and Conditions -->
+      <div class="form-section">
+        <div class="terms-container">
+          <div class="checkbox-container">
+            <%= check_box_tag :acepta_terminos, '1', false, required: true, id: "acepta_terminos", class: "form-checkbox" %>
+            <label for="acepta_terminos" class="checkbox-label">
+              <span class="checkbox-custom"></span>
+              <span class="checkbox-text">Acepto los términos y condiciones *</span>
+            </label>
+          </div>
+          <p class="terms-info">
+            Al enviar este formulario, aceptas que tus datos serán procesados de acuerdo con nuestra 
+            <a href="#" class="terms-link">Política de Privacidad</a>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" onclick="window.history.back();">
+          <i class="fas fa-times"></i>
+          <span>Cancelar</span>
+        </button>
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-paper-plane"></i>
+          <span>Enviar Inscripción</span>
+        </button>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer__decoration footer__decoration--top-left"></div>
+    <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+    <div class="footer__container">
+        <div class="footer__column footer__column--main">
+            <div class="footer__logo-container">
+                <div class="footer__logo">
+                    <span class="footer__logo-icon">I</span>NCUBA UNAS
+                </div>
+                <p class="footer__description">
+                    Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                    emprendimientos innovadores y sostenibles en la región.
+                </p>
+            </div>
+
+            <form class="footer__subscribe">
+                <input type="email" class="footer__input" placeholder="Enter email">
+                <button type="submit" class="footer__button">
+                    <i class="fas fa-arrow-right"></i>
+                    Contacto
+                </button>
+            </form>
+
+            <div class="footer__social">
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-instagram'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-twitter'></i>
+                </a>
+                <a href="#" class="footer__social-link">
+                    <i class='fab fa-facebook'></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Principal</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Nosotros</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+            </ul>
+        </div>
+
+        <div class="footer__column">
+            <h3 class="footer__heading">Enlaces de Interés</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+
+<!-- CSS Placeholder -->
+<style>
+/* CSS para Formulario de Innovación Modernizado */
+
+/* Reset y base */
+* {
+  box-sizing: border-box;
+}
+
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #f8fafc;
+  color: #0f172a;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* Elementos decorativos de fondo */
+.background-decoration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.bg-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.08;
+  filter: blur(80px);
+}
+
+.bg-circle-1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, #CDDC39, #0f172a);
+  top: -200px;
+  right: -100px;
+}
+
+.bg-circle-2 {
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, #AFB42B, #3b82f6);
+  bottom: -300px;
+  left: -300px;
+  opacity: 0.05;
+}
+
+.bg-circle-3 {
+  width: 300px;
+  height: 300px;
+  background: #CDDC39;
+  top: 40%;
+  left: 5%;
+  opacity: 0.06;
+}
+
+.bg-dots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.4;
+}
+
+.bg-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent 0%, #e2e8f0 50%, transparent 100%);
+  height: 1px;
+  width: 100%;
+  opacity: 0.5;
+}
+
+.bg-line-1 {
+  top: 30%;
+  transform: rotate(-1deg);
+}
+
+.bg-line-2 {
+  bottom: 35%;
+  transform: rotate(1deg);
+}
+
+/* Container principal */
+.inscription-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  margin-top: 240px;
+  margin-bottom: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hero Section */
+.inscription-hero {
+  background: linear-gradient(135deg, #CDDC39 0%, #AFB42B 100%);
+  border-radius: 1.5rem;
+  padding: 3rem;
+  margin-bottom: 2rem;
+  color: #333;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(205, 220, 57, 0.3);
+}
+
+.inscription-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  opacity: 0.3;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.hero-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  line-height: 1.2;
+}
+
+.hero-description {
+  font-size: 1.125rem;
+  margin: 0;
+  opacity: 0.85;
+  max-width: 600px;
+  line-height: 1.6;
+}
+
+.hero-decoration {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 120px;
+  height: 120px;
+  opacity: 0.1;
+}
+
+.decoration-circle {
+  width: 80px;
+  height: 80px;
+  border: 2px solid #333;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.decoration-dots {
+  width: 60px;
+  height: 60px;
+  background: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Ccircle cx='3' cy='3' r='1'/%3E%3Ccircle cx='13' cy='13' r='1'/%3E%3C/g%3E%3C/svg%3E");
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+/* Progress Section */
+.progress-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+  gap: 1.5rem;
+}
+
+.progress-wrapper {
+  flex: 1;
+  max-width: 500px;
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: #f3f4f6;
+  border-radius: 0.375rem;
+  margin-bottom: 1rem;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #CDDC39, #AFB42B);
+  border-radius: 0.375rem;
+  transition: width 500ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 120px;
+}
+
+.step-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+  color: #64748b;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 0.875rem;
+}
+
+.step.active .step-circle {
+  background: linear-gradient(135deg, #CDDC39, #AFB42B);
+  color: #333;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.step-label {
+  font-size: 0.8rem;
+  color: #64748b;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.step.active .step-label {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #ffffff;
+  color: #475569;
+  text-decoration: none;
+  border-radius: 1rem;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.back-button:hover {
+  background: #f9fafb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  color: #0f172a;
+}
+
+.back-button i {
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.back-button:hover i {
+  transform: translateX(-2px);
+}
+
+/* Form Card */
+.form-card {
+  background: #ffffff;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.inscription-form {
+  padding: 2rem;
+}
+
+/* Alert Messages */
+.alert {
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  gap: 1rem;
+  border: 1px solid;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  border-color: #fecaca;
+  color: #ef4444;
+}
+
+.alert-icon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-content h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.alert-content ul {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.alert-content li {
+  margin-bottom: 0.25rem;
+}
+
+/* Form Sections */
+.form-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.form-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, #CDDC39, #AFB42B);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.section-title h2 {
+  margin: 0 0 0.25rem;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.section-title p {
+  margin: 0;
+  color: #475569;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Form Grid */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+/* Form Groups */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  display: block;
+}
+
+/* Input Containers */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #0f172a;
+  background-color: #ffffff;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: #CDDC39;
+  box-shadow: 0 0 0 3px rgba(205, 220, 57, 0.1);
+  background-color: #fffffe;
+}
+
+.form-input:hover {
+  border-color: #cbd5e1;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.form-input:focus + .input-icon {
+  color: #AFB42B;
+}
+
+/* Special styles for DNI group */
+.dni-group .input-container {
+  margin-bottom: 0.5rem;
+}
+
+.form-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: #f9fafb;
+  border-radius: 0.375rem;
+}
+
+/* Terms and Conditions */
+.terms-container {
+  padding: 1.5rem;
+  background: #f9fafb;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-checkbox {
+  display: none;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.checkbox-custom {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 0.375rem;
+  background: #ffffff;
+  position: relative;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.checkbox-custom::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  width: 6px;
+  height: 10px;
+  border: solid #333;
+  border-width: 0 2px 2px 0;
+  rotate: 45deg;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-checkbox:checked + .checkbox-label .checkbox-custom {
+  background: #CDDC39;
+  border-color: #CDDC39;
+}
+
+.form-checkbox:checked + .checkbox-label .checkbox-custom::after {
+  transform: translate(-50%, -50%) scale(1) rotate(45deg);
+}
+
+.checkbox-text {
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.terms-info {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.terms-link {
+  color: #AFB42B;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.terms-link:hover {
+  color: #827717;
+  text-decoration: underline;
+}
+
+/* Form Actions */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 2rem;
+  border-radius: 1rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border: 2px solid transparent;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #475569;
+  border-color: #e2e8f0;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  color: #0f172a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #CDDC39, #AFB42B);
+  color: #333;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #AFB42B, #827717);
+  opacity: 0;
+  transition: opacity 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-primary:hover::before {
+  opacity: 1;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.btn i {
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
+}
+
+.btn-primary:hover i {
+  transform: translateX(2px);
+}
+
+.btn-secondary:hover i {
+  transform: translateX(-2px);
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Aplicar animaciones */
+.inscription-hero {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.progress-section {
+  animation: fadeInLeft 0.6s ease-out 0.2s both;
+}
+
+.form-section {
+  animation: fadeInUp 0.6s ease-out calc(0.1s * var(--section-index, 1)) both;
+}
+
+.form-section:nth-child(1) { --section-index: 1; }
+.form-section:nth-child(2) { --section-index: 2; }
+.form-section:nth-child(3) { --section-index: 3; }
+
+/* Efectos hover mejorados */
+.form-input:focus {
+  transform: translateY(-1px);
+}
+
+.section-icon:hover {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Estados de validación */
+.form-input:valid:not(:placeholder-shown) {
+  border-color: #10b981;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+}
+
+.form-input:invalid:not(:placeholder-shown):not(:focus) {
+  border-color: #ef4444;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ef4444' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+  padding-right: 2.5rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .inscription-container {
+    padding: 1rem;
+    margin-top: 200px;
+  }
+
+  .inscription-hero {
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-decoration {
+    display: none;
+  }
+
+  .progress-section {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .back-button {
+    align-self: flex-start;
+  }
+
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .progress-steps {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .inscription-container {
+    padding: 0.5rem;
+  }
+
+  .inscription-hero {
+    padding: 1rem;
+  }
+
+  .hero-title {
+    font-size: 1.75rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .inscription-form {
+    padding: 1.5rem;
+  }
+
+  .section-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .section-title h2 {
+    font-size: 1.25rem;
+  }
+
+  .form-input {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Mejoras de accesibilidad */
+.form-input:focus,
+.btn:focus {
+  outline: 2px solid #CDDC39;
+  outline-offset: 2px;
+}
+
+/* Efectos de micro-interacciones */
+.input-container:hover .input-icon {
+  transform: scale(1.1);
+  transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estilos para campos auto-completados */
+.form-input:-webkit-autofill,
+.form-input:-webkit-autofill:hover,
+.form-input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #ffffff inset;
+  -webkit-text-fill-color: #0f172a;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Loading states */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:disabled:hover {
+  transform: none !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+</style>
+
+<!-- JavaScript con API DNI para Programas de Innovación -->
+<script>
+setTimeout(function() {
+  function inicializarConsultaDNI() {
+    const dniField = document.querySelector('input[name="formulario_programa_innovacion[dni_lider]"]');
+    const nombresField = document.querySelector('input[name="formulario_programa_innovacion[nombre_lider]"]');
+    const apellidosField = document.querySelector('input[name="formulario_programa_innovacion[apellidos_lider]"]');
+    const programIdField = document.querySelector('input[name="id"]');
+
+    if (!dniField || !nombresField || !apellidosField || !programIdField) {
+      return;
+    }
+
+    const programId = programIdField.value;
+
+    if (!programId) {
+      return;
+    }
+
+    let consultaTimeout;
+    const loadingIndicator = crearIndicadorCarga();
+    dniField.parentNode.appendChild(loadingIndicator);
+
+    dniField.addEventListener('input', function() {
+      const dni = this.value.trim();
+      
+      clearTimeout(consultaTimeout);
+      ocultarIndicadorCarga(loadingIndicator, dniField);
+      
+      if (dni.length === 8 && /^\d{8}$/.test(dni)) {
+        consultaTimeout = setTimeout(() => {
+          realizarConsultaDNI(dni, programId, loadingIndicator, dniField, nombresField, apellidosField);
+        }, 1000);
+      } else if (dni.length > 0) {
+        mostrarErrorCampo(dniField, 'El DNI debe tener exactamente 8 dígitos');
+      } else {
+        limpiarCamposPersonales(nombresField, apellidosField);
+        limpiarErrorCampo(dniField);
+      }
+    });
+  }
+
+  function realizarConsultaDNI(dni, programId, loadingIndicator, dniField, nombresField, apellidosField) {
+    mostrarIndicadorCarga(loadingIndicator, dniField);
+    limpiarErrorCampo(dniField);
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]');
+    const token = csrfToken ? csrfToken.getAttribute('content') : '';
+
+    fetch(`/programas/${programId}/consultar_dni`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRF-Token': token
+      },
+      body: JSON.stringify({ dni: dni })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.data) {
+        llenarCamposPersonales(data.data, nombresField, apellidosField);
+        mostrarMensajeExito('Datos encontrados y completados automáticamente');
+      } else {
+        mostrarErrorCampo(dniField, data.error || 'No se encontraron datos para este DNI');
+        habilitarEdicionManual(nombresField, apellidosField);
+      }
+    })
+    .catch(error => {
+      mostrarErrorCampo(dniField, 'Error de conexión. Puedes llenar los datos manualmente.');
+      habilitarEdicionManual(nombresField, apellidosField);
+    })
+    .finally(() => {
+      ocultarIndicadorCarga(loadingIndicator, dniField);
+    });
+  }
+
+  function llenarCamposPersonales(data, nombresField, apellidosField) {
+    if (data.nombres) {
+      nombresField.value = data.nombres;
+      animarExitoCampo(nombresField);
+    }
+
+    if (data.apellidos_completos) {
+      apellidosField.value = data.apellidos_completos;
+      animarExitoCampo(apellidosField);
+    }
+  }
+
+  function animarExitoCampo(field) {
+    field.style.backgroundColor = '#f0f9ff';
+    field.style.borderColor = '#0ea5e9';
+    field.style.transition = 'all 0.3s ease';
+
+    setTimeout(() => {
+      field.style.backgroundColor = '';
+      field.style.borderColor = '#10b981';
+    }, 1000);
+
+    setTimeout(() => {
+      field.style.borderColor = '';
+    }, 4000);
+  }
+
+  function limpiarCamposPersonales(nombresField, apellidosField) {
+    if (nombresField.style.backgroundColor === 'rgb(240, 249, 255)' || 
+        !nombresField.value.trim()) {
+      nombresField.value = '';
+    }
+    if (apellidosField.style.backgroundColor === 'rgb(240, 249, 255)' || 
+        !apellidosField.value.trim()) {
+      apellidosField.value = '';
+    }
+  }
+
+  function habilitarEdicionManual(nombresField, apellidosField) {
+    [nombresField, apellidosField].forEach(field => {
+      field.style.backgroundColor = '#fffbeb';
+      field.style.borderColor = '#f59e0b';
+    });
+    
+    nombresField.placeholder = 'Ingresa el nombre manualmente';
+    apellidosField.placeholder = 'Ingresa los apellidos manualmente';
+    
+    setTimeout(() => {
+      nombresField.style.backgroundColor = '';
+      apellidosField.style.backgroundColor = '';
+      nombresField.style.borderColor = '';
+      apellidosField.style.borderColor = '';
+    }, 3000);
+  }
+
+  function crearIndicadorCarga() {
+    const indicator = document.createElement('div');
+    indicator.className = 'dni-loading-indicator';
+    indicator.style.cssText = `
+      display: none;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #0ea5e9;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: white;
+      padding: 4px 8px;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      z-index: 10;
+      border: 1px solid #e0f2fe;
+    `;
+    indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+    return indicator;
+  }
+
+  function mostrarIndicadorCarga(indicator, dniField) {
+    dniField.parentNode.style.position = 'relative';
+    indicator.style.display = 'block';
+    dniField.style.paddingRight = '120px';
+  }
+
+  function ocultarIndicadorCarga(indicator, dniField) {
+    indicator.style.display = 'none';
+    dniField.style.paddingRight = '';
+  }
+
+  function mostrarErrorCampo(field, message) {
+    limpiarErrorCampo(field);
+    
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'dni-error-message';
+    errorDiv.style.cssText = `
+      color: #dc2626;
+      font-size: 0.8rem;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      background: #fef2f2;
+      border-radius: 6px;
+      border: 1px solid #fecaca;
+    `;
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    
+    field.style.borderColor = '#dc2626';
+    field.parentNode.appendChild(errorDiv);
+  }
+
+  function limpiarErrorCampo(field) {
+    const errorMsg = field.parentNode.querySelector('.dni-error-message');
+    if (errorMsg) {
+      errorMsg.remove();
+    }
+    field.style.borderColor = '';
+  }
+
+  function mostrarMensajeExito(message) {
+    const existingMessage = document.querySelector('.dni-success-toast');
+    if (existingMessage) {
+      existingMessage.remove();
+    }
+
+    const successDiv = document.createElement('div');
+    successDiv.className = 'dni-success-toast';
+    successDiv.style.cssText = `
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #CDDC39, #AFB42B);
+      color: #333;
+      padding: 16px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(205, 220, 57, 0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      max-width: 350px;
+      transform: translateX(400px);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    `;
+    successDiv.innerHTML = `
+      <div style="
+        width: 24px;
+        height: 24px;
+        background: rgba(0, 0, 0, 0.1);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+      ">
+        <i class="fas fa-check"></i>
+      </div>
+      <span>${message}</span>
+    `;
+    
+    document.body.appendChild(successDiv);
+    
+    setTimeout(() => {
+      successDiv.style.transform = 'translateX(0)';
+    }, 100);
+    
+    setTimeout(() => {
+      successDiv.style.transform = 'translateX(400px)';
+      setTimeout(() => {
+        successDiv.remove();
+      }, 300);
+    }, 3000);
+  }
+
+  inicializarConsultaDNI();
+
+}, 1000);
+</script>

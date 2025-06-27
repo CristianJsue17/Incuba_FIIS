@@ -76,17 +76,70 @@
       </div>
     </div>
     
-    <!-- Imagen del evento -->
+    <!-- ACTUALIZADO: Imágenes del evento (múltiples) -->
     <div>
-      <h2 class="text-lg font-semibold text-gray-800 mb-2">Imagen</h2>
-      <div class="bg-white p-4 rounded-lg border border-gray-200 flex items-center justify-center" style="height: 200px;">
-        <% if event.image.attached? %>
-          <div class="image-preview-container">
-            <%= image_tag event.image, class: "max-w-full max-h-full object-contain" %>
+      <h2 class="text-lg font-semibold text-gray-800 mb-2">
+        Imágenes del Evento 
+        <% if event.images.attached? %>
+          <span class="text-sm font-normal text-gray-500">(<%= event.images.count %>)</span>
+        <% end %>
+      </h2>
+      <div class="bg-white p-4 rounded-lg border border-gray-200">
+        <% if event.images.attached? %>
+          <% if event.images.count == 1 %>
+            <!-- Una sola imagen - mostrar grande -->
+            <div class="flex items-center justify-center" style="height: 200px;">
+              <%= image_tag event.imagen_principal, 
+                  class: "max-w-full max-h-full object-contain rounded-lg border" %>
+            </div>
+          <% elsif event.images.count == 2 %>
+            <!-- Dos imágenes - mostrar en grid 2x1 -->
+            <div class="grid grid-cols-2 gap-3">
+              <% event.images.each_with_index do |image, index| %>
+                <div class="relative group cursor-pointer" onclick="openImageModal('<%= url_for(image) %>', '<%= event.titulo %>', <%= index + 1 %>)">
+                  <%= image_tag image, 
+                      class: "w-full h-24 object-cover rounded-lg border hover:opacity-90 transition-opacity" %>
+                  <div class="absolute bottom-1 left-1">
+                    <span class="bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
+                      <%= index + 1 %>
+                      <%= ' - Principal' if index == 0 %>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <!-- Tres imágenes - mostrar en grid 3x1 -->
+            <div class="grid grid-cols-3 gap-2">
+              <% event.images.each_with_index do |image, index| %>
+                <div class="relative group cursor-pointer" onclick="openImageModal('<%= url_for(image) %>', '<%= event.titulo %>', <%= index + 1 %>)">
+                  <%= image_tag image, 
+                      class: "w-full h-20 object-cover rounded-lg border hover:opacity-90 transition-opacity" %>
+                  <div class="absolute bottom-1 left-1">
+                    <span class="bg-black bg-opacity-70 text-white text-xs px-1 py-0.5 rounded text-xs">
+                      <%= index + 1 %>
+                      <%= ' - P' if index == 0 %>
+                    </span>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+          
+          <!-- Información adicional -->
+          <div class="mt-3 pt-3 border-t border-gray-100">
+            <p class="text-xs text-gray-500">
+              <i class="fas fa-info-circle mr-1"></i>
+              <%= event.images.count == 1 ? 'Imagen principal del evento' : "#{event.images.count} imágenes" %>
+            </p>
           </div>
         <% else %>
-          <div class="flex items-center justify-center h-full w-full bg-gray-100 rounded">
-            <span class="text-gray-400">Sin imagen</span>
+          <!-- Sin imágenes -->
+          <div class="flex items-center justify-center h-32 bg-gray-100 rounded">
+            <div class="text-center">
+              <i class="fas fa-image text-gray-400 text-2xl mb-2"></i>
+              <span class="text-gray-500 text-sm">Sin imágenes</span>
+            </div>
           </div>
         <% end %>
       </div>
@@ -187,3 +240,49 @@
     <% end %>
   </div>
 </div>
+
+<!-- NUEVO: Modal para ampliar imágenes -->
+<div id="imageModal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4">
+  <div class="relative max-w-4xl max-h-full">
+    <button onclick="closeImageModal()" class="absolute top-4 right-4 text-white hover:text-gray-300 z-10">
+      <i class="fas fa-times text-2xl"></i>
+    </button>
+    <img id="modalImage" class="max-w-full max-h-full object-contain rounded-lg" alt="">
+    <div id="modalImageInfo" class="absolute bottom-4 left-4 bg-black bg-opacity-70 text-white px-3 py-2 rounded">
+      <!-- Info de la imagen -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Funciones para el modal de imágenes
+function openImageModal(imageUrl, eventTitle, imageNumber) {
+  const modal = document.getElementById('imageModal');
+  const modalImage = document.getElementById('modalImage');
+  const modalInfo = document.getElementById('modalImageInfo');
+  
+  if (modal && modalImage && modalInfo) {
+    modalImage.src = imageUrl;
+    modalImage.alt = `${eventTitle} - Imagen ${imageNumber}`;
+    modalInfo.innerHTML = `<strong>${eventTitle}</strong><br>Imagen ${imageNumber}`;
+    
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeImageModal() {
+  const modal = document.getElementById('imageModal');
+  if (modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+// Cerrar modal con ESC
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeImageModal();
+  }
+});
+</script>

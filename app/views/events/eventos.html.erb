@@ -1,0 +1,776 @@
+<!-- app/views/events/eventos.html.erb - VISTA COMPLETA -->
+
+<!-- Font Awesome y Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<% content_for :stylesheets do %>
+ <%= stylesheet_link_tag "home" %>
+ <%= stylesheet_link_tag "eventos" %>
+<% end %>
+
+<% content_for :scripts do %>
+ <%= javascript_include_tag "enhanced_header", defer: true %>
+ <%= javascript_include_tag "footer", defer: true %>
+<% end %>
+
+<!-- Header igual que en las otras vistas -->
+<header class="header" role="banner">
+ <div class="header__container">
+   <div class="header__logo">
+     <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+       <div class="header__logo-container">
+         <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+       </div>
+       <div class="header__text-container">
+         <span class="header__logo-text">INCUBA UNAS</span>
+       </div>
+     </a>
+   </div>
+
+   <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+     <ul class="header__menu">
+       <li class="header__menu-item header__menu-item--has-dropdown">
+         <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+         <div class="header__dropdown" role="menu">
+           <ul class="header__dropdown-menu">
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+             </li>
+           </ul>
+         </div>
+       </li>
+
+       <li class="header__menu-item header__menu-item--has-dropdown">
+         <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+         <div class="header__dropdown" role="menu">
+           <ul class="header__dropdown-menu">
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+             </li>
+           </ul>
+         </div>
+       </li>
+
+       <li class="header__menu-item header__menu-item--has-dropdown">
+         <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+         <div class="header__dropdown" role="menu">
+           <ul class="header__dropdown-menu">
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+             </li>
+           </ul>
+         </div>
+       </li>
+
+       <li class="header__menu-item header__menu-item--has-dropdown">
+         <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+         <div class="header__dropdown" role="menu">
+           <ul class="header__dropdown-menu">
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+             </li>
+           </ul>
+         </div>
+       </li>
+
+       <li class="header__menu-item header__menu-item--has-dropdown">
+         <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+         <div class="header__dropdown" role="menu">
+           <ul class="header__dropdown-menu">
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+             </li>
+             <li class="header__dropdown-item">
+               <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+             </li>
+           </ul>
+         </div>
+       </li>
+
+       <li class="header__menu-item">
+         <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+       </li>
+     </ul>
+   </nav>
+
+   <div class="header__actions">
+     <%= render 'shared/language_switcher' %>
+     
+     <div class="header__login-container">
+       <a href="<%= new_user_session_path %>"
+          class="header__action-btn header__action-btn--login"
+          data-turbo="false"
+          aria-label="<%= t('navigation.iniciar_sesion') %>">
+       </a>
+       <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+     </div>
+
+     <a href="<%= new_user_session_path %>"
+        class="header__action-btn header__action-btn--mobile"
+        data-turbo="false"
+        aria-label="Iniciar sesión">
+       <i class="fas fa-user" aria-hidden="true"></i>
+     </a>
+   </div>
+
+   <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+     <span class="header__hamburger-line" aria-hidden="true"></span>
+     <span class="header__hamburger-line" aria-hidden="true"></span>
+     <span class="header__hamburger-line" aria-hidden="true"></span>
+   </button>
+ </div>
+</header>
+
+<!-- Decoración de fondo -->
+<div class="background-decoration">
+ <div class="bg-circle bg-circle-1"></div>
+ <div class="bg-circle bg-circle-2"></div>
+ <div class="bg-circle bg-circle-3"></div>
+ <div class="bg-dots"></div>
+ <div class="bg-line bg-line-1"></div>
+ <div class="bg-line bg-line-2"></div>
+</div>
+
+<div class="eventos-container">
+ <div class="eventos-header">
+   <div class="tipo-icono">
+     <i class="fas fa-calendar-alt"></i>
+   </div>
+   <div class="tipo-info">
+     <div class="tipo-badge">EVENTOS</div>
+     <h1>Nuestros Eventos</h1>
+     <p>Descubre todos los eventos disponibles y únete a nosotros para impulsar tu emprendimiento.</p>
+   </div>
+ </div>
+ 
+ <!-- EVENTOS ACTUALES (ACTIVOS Y FINALIZADOS) -->
+ <div class="eventos-section">
+   <div class="section-header">
+     <h2><i class="fas fa-play-circle"></i> Eventos Actuales</h2>
+     <p>Eventos que están disponibles o recientemente finalizados</p>
+   </div>
+   
+   <div class="eventos-grid">
+     <% if @eventos_actuales && @eventos_actuales.length > 0 %>
+       <% @eventos_actuales.each do |evento| %>
+         <div class="evento-card" data-evento-id="<%= evento.id %>" data-estado="<%= evento.estado %>">
+           <!-- SECCIÓN IMAGEN DEL EVENTO -->
+           <div class="evento-imagen">
+             <div class="imagen-overlay"></div>
+             <img 
+               src="<%= evento.images.attached? ? url_for(evento.imagen_principal) : asset_path('event-placeholder.png') %>" 
+               alt="<%= evento.titulo %>"
+               loading="lazy"
+             >
+             
+             <!-- Indicador de estado en la esquina superior derecha -->
+             <div class="evento-estado">
+               <span class="estado-badge estado-<%= evento.estado %>" style="background-color: <%= evento.color_estado %>;">
+                 <i class="fas <%= 
+                   case evento.estado
+                   when 'pendiente' then 'fa-clock'
+                   when 'activo' then 'fa-play-circle'
+                   when 'finalizado' then 'fa-flag-checkered'
+                   when 'inactivo' then 'fa-ban'
+                   else 'fa-question-circle'
+                   end
+                 %>"></i>
+                 <%= evento.estado.humanize %>
+               </span>
+             </div>
+             
+             <!-- Fecha -->
+             <div class="evento-fecha">
+               <i class="far fa-calendar-alt"></i>
+               <%= evento.fecha_vencimiento ? evento.fecha_vencimiento.strftime("%d/%m/%Y") : "Disponible" %>
+             </div>
+             
+             <!-- Indicador de múltiples imágenes si las hay -->
+             <% if evento.images.attached? && evento.images.count > 1 %>
+               <div class="multiple-images-indicator">
+                 <i class="fas fa-images"></i>
+                 <span><%= evento.images.count %></span>
+               </div>
+             <% end %>
+           </div>
+           
+           <div class="evento-content">
+             <h2><%= evento.titulo %></h2>
+             <p><%= evento.descripcion %></p>
+             
+             <div class="evento-encargado">
+               <i class="fas fa-user-tie"></i>
+               <span><strong>Encargado:</strong> <%= evento.encargado %></span>
+             </div>
+             
+             <!-- Mensaje de disponibilidad -->
+             <div class="disponibilidad-info estado-<%= evento.estado %>">
+               <i class="fas <%= 
+                 case evento.estado
+                 when 'pendiente' then 'fa-clock'
+                 when 'activo' then 'fa-check-circle'
+                 when 'finalizado' then 'fa-flag-checkered'
+                 when 'inactivo' then 'fa-ban'
+                 else 'fa-info-circle'
+                 end
+               %>"></i>
+               <span><%= evento.mensaje_disponibilidad %></span>
+             </div>
+             
+             <div class="evento-actions">
+               <a href="<%= evento_detalle_path(evento) %>" class="btn-ver-detalles">
+                 Ver detalles
+                 <i class="fas fa-info-circle"></i>
+               </a>
+               
+               <!-- Mostrar botón de inscripción solo si puede inscribirse -->
+               <% if evento.puede_inscribirse? %>
+                 <a href="<%= inscripcion_evento_path(evento) %>" class="btn-inscribirse">
+                   Inscribirse
+                   <i class="fas fa-arrow-right"></i>
+                 </a>
+               <% else %>
+                 <!-- Mostrar botón deshabilitado con mensaje según el estado -->
+                 <% case evento.estado %>
+                 <% when 'pendiente' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones aún no están disponibles">
+                     Próximamente
+                     <i class="fas fa-clock"></i>
+                   </span>
+                 <% when 'finalizado' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones han finalizado">
+                     Finalizado
+                     <i class="fas fa-flag-checkered"></i>
+                   </span>
+                 <% when 'inactivo' %>
+                   <span class="btn-inscribirse btn-disabled" title="Este evento ya no está disponible">
+                     No disponible
+                     <i class="fas fa-ban"></i>
+                   </span>
+                 <% else %>
+                   <span class="btn-inscribirse btn-disabled" title="Inscripciones no disponibles">
+                     No disponible
+                     <i class="fas fa-exclamation-triangle"></i>
+                   </span>
+                 <% end %>
+               <% end %>
+             </div>
+           </div>
+         </div>
+       <% end %>
+     <% else %>
+       <div class="no-eventos">
+         <div class="no-eventos-icon">
+           <i class="fas fa-calendar-check"></i>
+         </div>
+         <h3>No hay eventos actuales</h3>
+         <p>Actualmente no hay eventos activos o finalizados disponibles.</p>
+       </div>
+     <% end %>
+   </div>
+ </div>
+
+ <!-- PRÓXIMOS EVENTOS (PENDIENTES) -->
+ <div class="eventos-section">
+   <div class="section-header">
+     <h2><i class="fas fa-clock"></i> Próximos Eventos</h2>
+     <p>Eventos que estarán disponibles próximamente</p>
+   </div>
+   
+   <div class="eventos-grid">
+     <% if @eventos_proximos && @eventos_proximos.length > 0 %>
+       <% @eventos_proximos.each do |evento| %>
+         <div class="evento-card" data-evento-id="<%= evento.id %>" data-estado="<%= evento.estado %>">
+           <!-- SECCIÓN IMAGEN DEL EVENTO -->
+           <div class="evento-imagen">
+             <div class="imagen-overlay"></div>
+             <img 
+               src="<%= evento.images.attached? ? url_for(evento.imagen_principal) : asset_path('event-placeholder.png') %>" 
+               alt="<%= evento.titulo %>"
+               loading="lazy"
+             >
+             
+             <!-- Indicador de estado en la esquina superior derecha -->
+             <div class="evento-estado">
+               <span class="estado-badge estado-<%= evento.estado %>" style="background-color: <%= evento.color_estado %>;">
+                 <i class="fas <%= 
+                   case evento.estado
+                   when 'pendiente' then 'fa-clock'
+                   when 'activo' then 'fa-play-circle'
+                   when 'finalizado' then 'fa-flag-checkered'
+                   when 'inactivo' then 'fa-ban'
+                   else 'fa-question-circle'
+                   end
+                 %>"></i>
+                 <%= evento.estado.humanize %>
+               </span>
+             </div>
+             
+             <!-- Fecha -->
+             <div class="evento-fecha">
+               <i class="far fa-calendar-alt"></i>
+               <%= evento.fecha_vencimiento ? evento.fecha_vencimiento.strftime("%d/%m/%Y") : "Disponible" %>
+             </div>
+             
+             <!-- Indicador de múltiples imágenes si las hay -->
+             <% if evento.images.attached? && evento.images.count > 1 %>
+               <div class="multiple-images-indicator">
+                 <i class="fas fa-images"></i>
+                 <span><%= evento.images.count %></span>
+               </div>
+             <% end %>
+           </div>
+           
+           <div class="evento-content">
+             <h2><%= evento.titulo %></h2>
+             <p><%= evento.descripcion %></p>
+             
+             <div class="evento-encargado">
+               <i class="fas fa-user-tie"></i>
+               <span><strong>Encargado:</strong> <%= evento.encargado %></span>
+             </div>
+             
+             <!-- Mensaje de disponibilidad -->
+             <div class="disponibilidad-info estado-<%= evento.estado %>">
+               <i class="fas <%= 
+                 case evento.estado
+                 when 'pendiente' then 'fa-clock'
+                 when 'activo' then 'fa-check-circle'
+                 when 'finalizado' then 'fa-flag-checkered'
+                 when 'inactivo' then 'fa-ban'
+                 else 'fa-info-circle'
+                 end
+               %>"></i>
+               <span><%= evento.mensaje_disponibilidad %></span>
+             </div>
+             
+             <div class="evento-actions">
+               <a href="<%= evento_detalle_path(evento) %>" class="btn-ver-detalles">
+                 Ver detalles
+                 <i class="fas fa-info-circle"></i>
+               </a>
+               
+               <!-- Mostrar botón de inscripción solo si puede inscribirse -->
+               <% if evento.puede_inscribirse? %>
+                 <a href="<%= inscripcion_evento_path(evento) %>" class="btn-inscribirse">
+                   Inscribirse
+                   <i class="fas fa-arrow-right"></i>
+                 </a>
+               <% else %>
+                 <!-- Mostrar botón deshabilitado con mensaje según el estado -->
+                 <% case evento.estado %>
+                 <% when 'pendiente' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones aún no están disponibles">
+                     Próximamente
+                     <i class="fas fa-clock"></i>
+                   </span>
+                 <% when 'finalizado' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones han finalizado">
+                     Finalizado
+                     <i class="fas fa-flag-checkered"></i>
+                   </span>
+                 <% when 'inactivo' %>
+                   <span class="btn-inscribirse btn-disabled" title="Este evento ya no está disponible">
+                     No disponible
+                     <i class="fas fa-ban"></i>
+                   </span>
+                 <% else %>
+                   <span class="btn-inscribirse btn-disabled" title="Inscripciones no disponibles">
+                     No disponible
+                     <i class="fas fa-exclamation-triangle"></i>
+                   </span>
+                 <% end %>
+               <% end %>
+             </div>
+           </div>
+         </div>
+       <% end %>
+     <% else %>
+       <div class="no-eventos">
+         <div class="no-eventos-icon">
+           <i class="fas fa-hourglass-half"></i>
+         </div>
+         <h3>No hay próximos eventos</h3>
+         <p>No hay eventos programados para el futuro en este momento.</p>
+       </div>
+     <% end %>
+   </div>
+ </div>
+
+ <!-- EVENTOS PASADOS (INACTIVOS) -->
+ <div class="eventos-section">
+   <div class="section-header">
+     <h2><i class="fas fa-history"></i> Eventos Pasados</h2>
+     <p>Eventos que ya han concluido</p>
+   </div>
+   
+   <div class="eventos-grid">
+     <% if @eventos_pasados && @eventos_pasados.length > 0 %>
+       <% @eventos_pasados.each do |evento| %>
+         <div class="evento-card" data-evento-id="<%= evento.id %>" data-estado="<%= evento.estado %>">
+           <!-- SECCIÓN IMAGEN DEL EVENTO -->
+           <div class="evento-imagen">
+             <div class="imagen-overlay"></div>
+             <img 
+               src="<%= evento.images.attached? ? url_for(evento.imagen_principal) : asset_path('event-placeholder.png') %>" 
+               alt="<%= evento.titulo %>"
+               loading="lazy"
+             >
+             
+             <!-- Indicador de estado en la esquina superior derecha -->
+             <div class="evento-estado">
+               <span class="estado-badge estado-<%= evento.estado %>" style="background-color: <%= evento.color_estado %>;">
+                 <i class="fas <%= 
+                   case evento.estado
+                   when 'pendiente' then 'fa-clock'
+                   when 'activo' then 'fa-play-circle'
+                   when 'finalizado' then 'fa-flag-checkered'
+                   when 'inactivo' then 'fa-ban'
+                   else 'fa-question-circle'
+                   end
+                 %>"></i>
+                 <%= evento.estado.humanize %>
+               </span>
+             </div>
+             
+             <!-- Fecha -->
+             <div class="evento-fecha">
+               <i class="far fa-calendar-alt"></i>
+               <%= evento.fecha_vencimiento ? evento.fecha_vencimiento.strftime("%d/%m/%Y") : "Disponible" %>
+             </div>
+             
+             <!-- Indicador de múltiples imágenes si las hay -->
+             <% if evento.images.attached? && evento.images.count > 1 %>
+               <div class="multiple-images-indicator">
+                 <i class="fas fa-images"></i>
+                 <span><%= evento.images.count %></span>
+               </div>
+             <% end %>
+           </div>
+           
+           <div class="evento-content">
+             <h2><%= evento.titulo %></h2>
+             <p><%= evento.descripcion %></p>
+             
+             <div class="evento-encargado">
+               <i class="fas fa-user-tie"></i>
+               <span><strong>Encargado:</strong> <%= evento.encargado %></span>
+             </div>
+             
+             <!-- Mensaje de disponibilidad -->
+             <div class="disponibilidad-info estado-<%= evento.estado %>">
+               <i class="fas <%= 
+                 case evento.estado
+                 when 'pendiente' then 'fa-clock'
+                 when 'activo' then 'fa-check-circle'
+                 when 'finalizado' then 'fa-flag-checkered'
+                 when 'inactivo' then 'fa-ban'
+                 else 'fa-info-circle'
+                 end
+               %>"></i>
+               <span><%= evento.mensaje_disponibilidad %></span>
+             </div>
+             
+             <div class="evento-actions">
+               <a href="<%= evento_detalle_path(evento) %>" class="btn-ver-detalles">
+                 Ver detalles
+                 <i class="fas fa-info-circle"></i>
+               </a>
+               
+               <!-- Mostrar botón de inscripción solo si puede inscribirse -->
+               <% if evento.puede_inscribirse? %>
+                 <a href="<%= inscripcion_evento_path(evento) %>" class="btn-inscribirse">
+                   Inscribirse
+                   <i class="fas fa-arrow-right"></i>
+                 </a>
+               <% else %>
+                 <!-- Mostrar botón deshabilitado con mensaje según el estado -->
+                 <% case evento.estado %>
+                 <% when 'pendiente' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones aún no están disponibles">
+                     Próximamente
+                     <i class="fas fa-clock"></i>
+                   </span>
+                 <% when 'finalizado' %>
+                   <span class="btn-inscribirse btn-disabled" title="Las inscripciones han finalizado">
+                     Finalizado
+                     <i class="fas fa-flag-checkered"></i>
+                   </span>
+                 <% when 'inactivo' %>
+                   <span class="btn-inscribirse btn-disabled" title="Este evento ya no está disponible">
+                     No disponible
+                     <i class="fas fa-ban"></i>
+                   </span>
+                 <% else %>
+                   <span class="btn-inscribirse btn-disabled" title="Inscripciones no disponibles">
+                     No disponible
+                     <i class="fas fa-exclamation-triangle"></i>
+                   </span>
+                 <% end %>
+               <% end %>
+             </div>
+           </div>
+         </div>
+       <% end %>
+     <% else %>
+       <div class="no-eventos">
+         <div class="no-eventos-icon">
+           <i class="fas fa-archive"></i>
+         </div>
+         <h3>No hay eventos pasados</h3>
+         <p>Aún no hay eventos que hayan concluido.</p>
+       </div>
+     <% end %>
+   </div>
+ </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+   <div class="footer__decoration footer__decoration--top-left"></div>
+   <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+   <div class="footer__container">
+       <div class="footer__column footer__column--main">
+           <div class="footer__logo-container">
+               <div class="footer__logo">
+                   <span class="footer__logo-icon">I</span>NCUBA UNAS
+               </div>
+               <p class="footer__description">
+                   Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                   emprendimientos innovadores y sostenibles en la región.
+               </p>
+           </div>
+
+           <form class="footer__subscribe">
+               <input type="email" class="footer__input" placeholder="Enter email">
+               <button type="submit" class="footer__button">
+                   <i class="fas fa-arrow-right"></i>
+                   Contacto
+               </button>
+           </form>
+
+           <div class="footer__social">
+               <a href="#" class="footer__social-link">
+                   <i class='fab fa-instagram'></i>
+               </a>
+               <a href="#" class="footer__social-link">
+                   <i class='fab fa-twitter'></i>
+               </a>
+               <a href="#" class="footer__social-link">
+                   <i class='fab fa-facebook'></i>
+               </a>
+           </div>
+       </div>
+
+       <div class="footer__column">
+           <h3 class="footer__heading">Principal</h3>
+           <ul class="footer__links">
+               <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+           </ul>
+       </div>
+
+       <div class="footer__column">
+           <h3 class="footer__heading">Nosotros</h3>
+           <ul class="footer__links">
+               <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+           </ul>
+       </div>
+
+       <div class="footer__column">
+           <h3 class="footer__heading">Enlaces de Interés</h3>
+           <ul class="footer__links">
+               <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+               <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+           </ul>
+       </div>
+   </div>
+</footer>
+
+<!-- CSS adicional para el indicador de múltiples imágenes -->
+<style>
+.multiple-images-indicator {
+ position: absolute;
+ top: 12px;
+ right: 12px;
+ background: rgba(0, 0, 0, 0.7);
+ color: white;
+ padding: 4px 8px;
+ border-radius: 12px;
+ font-size: 12px;
+ display: flex;
+ align-items: center;
+ gap: 4px;
+ z-index: 10;
+}
+
+.multiple-images-indicator i {
+ font-size: 10px;
+}
+</style>
+
+<!-- Script JavaScript -->
+<script>
+  // Función para manejar el efecto de ripple en botones
+  function setupButtonRipples() {
+    const buttons = document.querySelectorAll('.btn-inscribirse');
+    
+    buttons.forEach(button => {
+      button.addEventListener('mouseenter', function(e) {
+        const ripple = document.createElement('span');
+        const rect = this.getBoundingClientRect();
+        
+        ripple.style.position = 'absolute';
+        ripple.style.top = '50%';
+        ripple.style.left = '50%';
+        ripple.style.width = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
+        ripple.style.transform = 'translate(-50%, -50%) scale(0)';
+        ripple.style.borderRadius = '50%';
+        ripple.style.background = 'rgba(255, 255, 255, 0.3)';
+        ripple.style.opacity = '1';
+        ripple.style.transition = 'all 0.6s ease-out';
+        ripple.style.pointerEvents = 'none';
+        
+        this.appendChild(ripple);
+        
+        setTimeout(() => {
+          ripple.style.transform = 'translate(-50%, -50%) scale(1)';
+          ripple.style.opacity = '0';
+        }, 10);
+        
+        setTimeout(() => {
+          if (ripple && ripple.parentNode) {
+            ripple.parentNode.removeChild(ripple);
+          }
+        }, 600);
+      });
+    });
+  }
+  
+  // Crear efecto paralaje para los elementos de fondo
+  function setupParallaxEffect() {
+    window.addEventListener('mousemove', function(e) {
+      const circles = document.querySelectorAll('.bg-circle');
+      const moveX = (e.clientX - window.innerWidth / 2) / 50;
+      const moveY = (e.clientY - window.innerHeight / 2) / 50;
+      
+      circles.forEach((circle, index) => {
+        const factor = (index + 1) * 0.4;
+        circle.style.transform = `translate(${moveX * factor}px, ${moveY * factor}px)`;
+      });
+    });
+  }
+  
+  // Animar las tarjetas de eventos secuencialmente
+  function animateEventCards() {
+    const cards = document.querySelectorAll('.evento-card');
+    
+    cards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.1}s`;
+    });
+  }
+  
+  // Configurar animaciones para tarjetas al hacer hover
+  function setupCardHoverEffects() {
+    const cards = document.querySelectorAll('.evento-card');
+    
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', function() {
+        const otherCards = Array.from(cards).filter(c => c !== card);
+        
+        otherCards.forEach(otherCard => {
+          otherCard.style.opacity = '0.7';
+          otherCard.style.filter = 'blur(2px)';
+          otherCard.style.transform = 'scale(0.98)';
+        });
+      });
+      
+      card.addEventListener('mouseleave', function() {
+        cards.forEach(c => {
+          c.style.opacity = '1';
+          c.style.filter = 'blur(0)';
+          c.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  }
+  
+  function initPage() {
+    animateEventCards();
+    setupButtonRipples();
+    setupParallaxEffect();
+    setupCardHoverEffects();
+    document.body.offsetHeight;
+  }
+  
+  document.addEventListener('DOMContentLoaded', initPage);
+  
+  if (typeof Turbo !== 'undefined') {
+    document.addEventListener('turbo:load', initPage);
+    document.addEventListener('turbo:render', initPage);
+    document.addEventListener('turbo:visit', initPage);
+  }
+  
+  window.addEventListener('load', function() {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    setTimeout(initPage, 100);
+  });
+</script>
+
+<script>
+// Contar y mostrar cantidad de eventos en cada sección
+document.addEventListener('DOMContentLoaded', function() {
+  const sections = document.querySelectorAll('.eventos-section');
+  
+  sections.forEach((section, index) => {
+    const eventCards = section.querySelectorAll('.evento-card');
+    const sectionHeader = section.querySelector('.section-header h2');
+    
+    if (eventCards.length > 0 && sectionHeader) {
+      const countBadge = document.createElement('span');
+      countBadge.className = 'event-count';
+      countBadge.textContent = eventCards.length;
+      sectionHeader.appendChild(countBadge);
+    }
+  });
+});
+</script>

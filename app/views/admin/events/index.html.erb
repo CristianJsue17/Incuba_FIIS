@@ -1,5 +1,5 @@
 <style>
-/* Estilos para la página de gestión de eventos */
+/* Estilos para la página de gestión de eventos*/
 
 /* Estilos para el encabezado y controles */
 .mb-6 {
@@ -813,8 +813,9 @@ dd {
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
                   <div class="flex-shrink-0 h-10 w-10">
-                    <% if event.image.attached? %>
-                      <%= image_tag event.image, class: "h-10 w-10 rounded-full object-cover" %>
+                    <!-- CORREGIDO: Manejo seguro de imágenes -->
+                    <% if event.images.attached? && event.imagen_principal %>
+                      <%= image_tag event.imagen_principal, class: "h-10 w-10 rounded-full object-cover" %>
                     <% else %>
                       <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                         <i class="fas fa-calendar-alt text-gray-400"></i>
@@ -835,11 +836,11 @@ dd {
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-700">
                 <div class="text-sm"><%= event.fecha_publicacion&.strftime("%d/%m/%Y") %></div>
-                <div class="text-xs text-gray-500"><%= event.fecha_publicacion&.strftime("%H:%M") %></div>
+                <div class="text-xs text-gray-500"><%= event.fecha_publicacion&.strftime("%H:%M") %> Hora</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-gray-700">
                 <div class="text-sm"><%= event.fecha_vencimiento&.strftime("%d/%m/%Y") %></div>
-                <div class="text-xs text-gray-500"><%= event.fecha_vencimiento&.strftime("%H:%M") %></div>
+                <div class="text-xs text-gray-500"><%= event.fecha_vencimiento&.strftime("%H:%M") %> Hora</div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="relative">
@@ -917,15 +918,7 @@ dd {
                     <i class="fas fa-edit"></i>
                   <% end %>
                   
-                  <%= link_to admin_event_path(event), 
-                              method: :delete,
-                              data: { 
-                                confirm: "¿Estás seguro de eliminar este evento?\n\nEsta acción eliminará:\n- El evento\n- Todas las inscripciones asociadas\n\nEsta acción no se puede deshacer." 
-                              },
-                              class: "text-red-600 hover:text-red-900",
-                              title: "Eliminar evento" do %>
-                    <i class="fas fa-trash"></i>
-                  <% end %>
+
                 </div>
               </td>
             </tr>

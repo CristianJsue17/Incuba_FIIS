@@ -775,7 +775,7 @@
   }
 
 
-/* ESTILO EL MODAL DE VER DETALLES DE PROGRAMA  */
+/* ============== ESTILOS PARA EL MODAL DE PROGRAMAS ============== */
 /* Modal - Estructura principal */
 #programModal {
   position: fixed;
@@ -1115,6 +1115,582 @@ body.overflow-hidden {
 }
 /*------------------------------------------------------------------*/
 
+/* ============== ESTILOS PARA EL MODAL DE EVENTOS ============== */
+
+/* Modal de eventos - Estructura principal */
+#eventModal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#eventModal.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+#eventModal.hidden {
+  display: none;
+}
+
+/* Contenido del modal de eventos */
+#eventModal > div {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  width: 91.666667%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95);
+  transition: transform 0.3s ease-in-out;
+  margin: 1.5rem auto;
+}
+
+#eventModal > div.scale-100 {
+  transform: scale(1);
+}
+
+/* Tamaños responsive para modal de eventos */
+@media (min-width: 768px) {
+  #eventModal > div {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1024px) {
+  #eventModal > div {
+    width: 75%;
+  }
+}
+
+@media (min-width: 1280px) {
+  #eventModal > div {
+    width: 66.666667%;
+  }
+}
+
+/* Cabecera del modal de eventos */
+#eventModal .sticky {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #ffffff;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#eventModal h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+#closeEventModal {
+  color: #9ca3af;
+  transition: color 0.2s;
+  font-size: 1.25rem;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0.25rem;
+}
+
+#closeEventModal:hover {
+  color: #ef4444;
+}
+
+/* Contenido del modal de eventos */
+#eventModalContent {
+  padding: 1.5rem;
+}
+
+/* Estilos específicos para el contenido del modal de eventos */
+#eventModalContent .space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+#eventModalContent .text-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+#eventModalContent .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+#eventModalContent .text-gray-500 {
+  color: #6b7280;
+}
+
+#eventModalContent .text-gray-700 {
+  color: #374151;
+}
+
+#eventModalContent .text-gray-800 {
+  color: #1f2937;
+}
+
+#eventModalContent .text-gray-900 {
+  color: #111827;
+}
+
+#eventModalContent .font-medium {
+  font-weight: 500;
+}
+
+#eventModalContent .font-semibold {
+  font-weight: 600;
+}
+
+#eventModalContent .font-bold {
+  font-weight: 700;
+}
+
+#eventModalContent .bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+#eventModalContent .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+#eventModalContent .p-4 {
+  padding: 1rem;
+}
+
+#eventModalContent .mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Grid y estructura para eventos */
+#eventModalContent .grid {
+  display: grid;
+  margin-bottom: 1.5rem;
+}
+
+#eventModalContent .grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+#eventModalContent .gap-4 {
+  gap: 1rem;
+}
+
+/* NUEVO: Grids específicos para imágenes múltiples */
+#eventModalContent .grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#eventModalContent .grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#eventModalContent .gap-2 {
+  gap: 0.5rem;
+}
+
+#eventModalContent .gap-3 {
+  gap: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  #eventModalContent .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  #eventModalContent .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Estilos para badges de estado de eventos */
+#eventModalContent .rounded-full {
+  border-radius: 9999px;
+}
+
+#eventModalContent .bg-green-100 {
+  background-color: #dcfce7;
+}
+
+#eventModalContent .text-green-800 {
+  color: #166534;
+}
+
+#eventModalContent .bg-red-100 {
+  background-color: #fee2e2;
+}
+
+#eventModalContent .text-red-800 {
+  color: #991b1b;
+}
+
+#eventModalContent .bg-yellow-100 {
+  background-color: #fef3c7;
+}
+
+#eventModalContent .text-yellow-800 {
+  color: #92400e;
+}
+
+#eventModalContent .bg-blue-50 {
+  background-color: #eff6ff;
+}
+
+#eventModalContent .text-blue-800 {
+  color: #1e40af;
+}
+
+/* ACTUALIZADO: Estilos para contenedor de imágenes de eventos */
+#eventModalContent .bg-white.p-4.rounded-lg.border.border-gray-200 {
+  background-color: #ffffff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+/* NUEVO: Estilos para imagen única (centrada) */
+#eventModalContent .flex.items-center.justify-center[style*="height: 200px"] {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 200px !important;
+  width: 100% !important;
+}
+
+#eventModalContent .flex.items-center.justify-center[style*="height: 200px"] img {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+/* NUEVO: Estilos para grid de múltiples imágenes */
+#eventModalContent .grid.grid-cols-2.gap-3 {
+  display: grid !important;
+  grid-template-columns: repeat(2, 1fr) !important;
+  gap: 0.75rem !important;
+}
+
+#eventModalContent .grid.grid-cols-3.gap-2 {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 0.5rem !important;
+}
+
+/* NUEVO: Estilos para items individuales de imagen */
+#eventModalContent .relative.group.cursor-pointer {
+  position: relative !important;
+  cursor: pointer !important;
+  border-radius: 0.5rem !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+}
+
+#eventModalContent .relative.group.cursor-pointer:hover {
+  transform: scale(1.02) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* NUEVO: Imágenes en grid - tamaños específicos */
+#eventModalContent .grid.grid-cols-2.gap-3 img {
+  width: 100% !important;
+  height: 96px !important; /* h-24 equivale a 96px */
+  object-fit: cover !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #e5e7eb !important;
+  transition: opacity 0.3s ease !important;
+}
+
+#eventModalContent .grid.grid-cols-3.gap-2 img {
+  width: 100% !important;
+  height: 80px !important; /* h-20 equivale a 80px */
+  object-fit: cover !important;
+  border-radius: 0.5rem !important;
+  border: 1px solid #e5e7eb !important;
+  transition: opacity 0.3s ease !important;
+}
+
+#eventModalContent .relative.group.cursor-pointer:hover img {
+  opacity: 0.9 !important;
+}
+
+/* NUEVO: Badges sobre las imágenes */
+#eventModalContent .absolute.bottom-1.left-1 {
+  position: absolute !important;
+  bottom: 0.25rem !important;
+  left: 0.25rem !important;
+}
+
+#eventModalContent .bg-black.bg-opacity-70.text-white {
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: #ffffff !important;
+  padding: 0.125rem 0.5rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+/* NUEVO: Información adicional debajo de las imágenes */
+#eventModalContent .mt-3.pt-3.border-t.border-gray-100 {
+  margin-top: 0.75rem !important;
+  padding-top: 0.75rem !important;
+  border-top: 1px solid #f3f4f6 !important;
+}
+
+#eventModalContent .text-xs.text-gray-500 {
+  font-size: 0.75rem !important;
+  color: #6b7280 !important;
+}
+
+#eventModalContent .fas.fa-info-circle {
+  margin-right: 0.25rem !important;
+}
+
+/* NUEVO: Estado sin imágenes */
+#eventModalContent .flex.items-center.justify-center.h-32.bg-gray-100.rounded {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 128px !important;
+  background-color: #f3f4f6 !important;
+  border-radius: 0.5rem !important;
+}
+
+#eventModalContent .text-center .fas.fa-image {
+  font-size: 2rem !important;
+  color: #d1d5db !important;
+  margin-bottom: 0.5rem !important;
+}
+
+#eventModalContent .text-gray-500.text-sm {
+  color: #6b7280 !important;
+  font-size: 0.875rem !important;
+}
+
+/* NUEVO: Modal de imagen ampliada */
+#imageModal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  z-index: 10000 !important; /* Mayor que el modal de eventos */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 1rem !important;
+}
+
+#imageModal.hidden {
+  display: none !important;
+}
+
+#imageModal .relative {
+  position: relative !important;
+  max-width: 4rem !important; /* max-w-4xl */
+  max-height: 100% !important;
+}
+
+#imageModal button {
+  position: absolute !important;
+  top: 1rem !important;
+  right: 1rem !important;
+  color: #ffffff !important;
+  z-index: 10 !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: color 0.3s ease !important;
+}
+
+#imageModal button:hover {
+  color: #d1d5db !important;
+}
+
+#imageModal button .fas.fa-times {
+  font-size: 2rem !important;
+}
+
+#modalImage {
+  max-width: 100% !important;
+  max-height: 100% !important;
+  object-fit: contain !important;
+  border-radius: 0.5rem !important;
+}
+
+#modalImageInfo {
+  position: absolute !important;
+  bottom: 1rem !important;
+  left: 1rem !important;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  color: #ffffff !important;
+  padding: 0.75rem !important;
+  border-radius: 0.25rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* Control específico para la imagen de eventos (legacy - mantener por compatibilidad) */
+#eventModalContent .image-preview-container {
+  margin-top: 0.5rem;
+  max-width: 100%;
+  max-height: 200px;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  overflow: hidden;
+  background-color: #f9fafb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#eventModalContent .image-preview-container img,
+#eventModalContent .max-w-full.max-h-full.object-contain {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 200px;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Corregir altura de las tarjetas de eventos */
+#eventModalContent .h-full {
+  height: 100% !important;
+  min-height: 100px !important;
+}
+
+/* Estilos para botones en modal de eventos */
+#eventModalContent .bg-blue-600 {
+  background-color: #2563eb;
+}
+
+#eventModalContent .bg-blue-600:hover {
+  background-color: #1d4ed8;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+#eventModalContent .text-white {
+  color: #ffffff;
+}
+
+/* Ajustes para pantallas pequeñas - modal de eventos */
+@media (max-width: 640px) {
+  #eventModal > div {
+    width: 95% !important;
+    max-height: 85vh !important;
+  }
+  
+  #eventModalContent .grid.grid-cols-1.md\:grid-cols-2 {
+    display: block !important;
+  }
+  
+  #eventModalContent .grid.grid-cols-1.md\:grid-cols-2 > div {
+    margin-bottom: 1rem !important;
+  }
+  
+  /* Responsive para imágenes múltiples en móvil */
+  #eventModalContent .grid.grid-cols-2.gap-3,
+  #eventModalContent .grid.grid-cols-3.gap-2 {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+  
+  #eventModalContent .grid.grid-cols-3.gap-2 img {
+    height: 60px !important;
+  }
+}
+
+/* Control de scroll para modal de eventos */
+#eventModalContent .overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+#eventModalContent .overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+#eventModalContent .overflow-y-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#eventModalContent .overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: rgba(156, 163, 175, 0.5);
+  border-radius: 20px;
+}
+
+/* Estilos específicos para iconos en badges de estado de eventos */
+#eventModalContent .fas.fa-play-circle,
+#eventModalContent .fas.fa-ban,
+#eventModalContent .fas.fa-clock,
+#eventModalContent .fas.fa-flag-checkered {
+  margin-right: 0.25rem;
+}
+
+/* Estilos para enlaces externos en modal de eventos */
+#eventModalContent .text-blue-600 {
+  color: #2563eb;
+}
+
+#eventModalContent .text-blue-600:hover {
+  color: #1d4ed8;
+}
+
+#eventModalContent .fas.fa-external-link-alt {
+  margin-right: 0.5rem;
+}
+
+/* Estilos para información de auditoría en eventos */
+#eventModalContent code {
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+}
+
+/* Estilos para secciones de información en modal de eventos */
+#eventModalContent .space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+/* Animación de carga para modal de eventos */
+#eventModalContent .animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Prevenir scroll en el body cuando el modal de eventos está abierto */
+body.overflow-hidden {
+  overflow: hidden;
+}
 
 </style>
   
@@ -1344,230 +1920,227 @@ body.overflow-hidden {
   }, 500);
 </script>
 
-  <!-- JavaScript DE INPUT DINAMICO DE BENEFICIO... SELECT Y PREVISUALIZER IMAGEN EN PROGRAMAS -->
-  <script>
-    // Función principal que configura todas las funcionalidades
-    function initializeFormFunctionality() {
-      console.log("Inicializando funcionalidades con JavaScript puro");
+<!-- JavaScript DE INPUT DINAMICO DE BENEFICIO... SELECT Y PREVISUALIZER IMAGEN EN PROGRAMAS -->
+<script>
+  // Función principal que configura todas las funcionalidades
+  function initializeFormFunctionality() {
+    console.log("Inicializando funcionalidades con JavaScript puro");
+    
+    // 1. Funcionalidad de Select para mensaje de tipo de programa
+    function setupSelectMessages() {
+      const typeSelects = document.querySelectorAll('select[name="program[tipo]"]');
       
-      // 1. Funcionalidad de Select para mensaje de tipo de programa
-      function setupSelectMessages() {
-        const typeSelects = document.querySelectorAll('select[name="program[tipo]"]');
+      typeSelects.forEach(select => {
+        // Eliminar event listeners previos para evitar duplicación
+        const newSelect = select.cloneNode(true);
+        select.parentNode.replaceChild(newSelect, select);
         
-        typeSelects.forEach(select => {
-          // Eliminar event listeners previos para evitar duplicación
-          const newSelect = select.cloneNode(true);
-          select.parentNode.replaceChild(newSelect, select);
+        newSelect.addEventListener('change', function() {
+          // Buscar el elemento de salida (small tag) cercano al select
+          const outputElement = this.parentElement.querySelector('small');
           
-          newSelect.addEventListener('change', function() {
-            // Buscar el elemento de salida (small tag) cercano al select
-            const outputElement = this.parentElement.querySelector('small');
-            
-            if (outputElement) {
-              const selectedValue = this.value;
-              if (selectedValue) {
-                const tipoText = {
-                  'preincubacion': 'Preincubación',
-                  'incubacion': 'Incubación',
-                  'innovacion': 'Innovación'
-                }[selectedValue] || selectedValue;
-                
-                outputElement.textContent = `Formulario del Programa: ${tipoText}`;
-                outputElement.className = "text-sm text-green-600 font-medium mt-1";
-              } else {
-                outputElement.textContent = "Seleccione un tipo de programa";
-                outputElement.className = "text-sm text-gray-500 mt-1";
-              }
+          if (outputElement) {
+            const selectedValue = this.value;
+            if (selectedValue) {
+              const tipoText = {
+                'preincubacion': 'Preincubación',
+                'incubacion': 'Incubación',
+                'innovacion': 'Innovación'
+              }[selectedValue] || selectedValue;
+              
+              outputElement.textContent = `Formulario del Programa: ${tipoText}`;
+              outputElement.className = "text-sm text-green-600 font-medium mt-1";
+            } else {
+              outputElement.textContent = "Seleccione un tipo de programa";
+              outputElement.className = "text-sm text-gray-500 mt-1";
             }
-          });
-        });
-      }
-      
-      // 2. Funcionalidad de campos dinámicos (objetivos, beneficios, requisitos)
-      function setupDynamicFields() {
-        // Encontrar todos los contenedores de campos dinámicos
-        const fieldContainers = document.querySelectorAll('[data-controller="dynamic-fields"]');
-        
-        fieldContainers.forEach(container => {
-          // Obtener datos importantes del contenedor
-          const fieldType = container.getAttribute('data-dynamic-fields-field-type-value');
-          const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
-          
-          // Encontrar elementos importantes dentro del contenedor
-          const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
-          const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
-          const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
-          
-          if (addButton && fieldsContainer) {
-            // Eliminar event listeners previos para evitar duplicación
-            const newAddButton = addButton.cloneNode(true);
-            addButton.parentNode.replaceChild(newAddButton, addButton);
-            
-            // Añadir evento al botón de agregar
-            newAddButton.addEventListener('click', function() {
-              // Contar campos visibles actuales
-              const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
-                .filter(field => field.style.display !== 'none').length;
-              
-              // Verificar si se alcanzó el máximo
-              if (visibleFields >= maxFields) {
-                console.log(`Máximo de ${maxFields} campos alcanzado para ${fieldType}`);
-                return;
-              }
-              
-              // Generar un nuevo índice único
-              const newIndex = new Date().getTime();
-              
-              // Crear el HTML para el nuevo campo
-              const fieldHtml = `
-                <div class="mb-3 dynamic-field">
-                  <div class="flex">
-                    <input type="text"
-                           name="program[${fieldType}s_attributes][${newIndex}][descripcion]"
-                           class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:ring-blue-500 focus:border-blue-500"
-                           placeholder="Ingrese ${fieldType}"
-                           required>
-                    <input type="hidden"
-                           name="program[${fieldType}s_attributes][${newIndex}][_destroy]"
-                           value="0"
-                           data-destroy-input>
-                    <button type="button"
-                           class="px-3 py-2 text-red-600 bg-white border border-gray-300 border-l-0 rounded-r-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
-                           onclick="removeField(this)">
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-                </div>
-              `;
-              
-              // Agregar el nuevo campo al contenedor
-              fieldsContainer.insertAdjacentHTML('beforeend', fieldHtml);
-              
-              // Actualizar el contador
-              updateFieldCounter(container);
-            });
           }
-          
-          // Configurar los botones de eliminar existentes
-          const removeButtons = container.querySelectorAll('[data-action*="dynamic-fields#removeField"]');
-          removeButtons.forEach(button => {
-            // Eliminar event listeners previos para evitar duplicación
-            const newButton = button.cloneNode(true);
-            button.parentNode.replaceChild(newButton, button);
-            
-            newButton.addEventListener('click', function() {
-              removeField(this);
-            });
-          });
-          
-          // Actualizar contador inicial
-          updateFieldCounter(container);
         });
-      }
+      });
+    }
+    
+    // 2. Funcionalidad de campos dinámicos (objetivos, beneficios, requisitos)
+    function setupDynamicFields() {
+      // Encontrar todos los contenedores de campos dinámicos
+      const fieldContainers = document.querySelectorAll('[data-controller="dynamic-fields"]');
       
-      // 3. Configurar preview de imagen (si es necesario)
-      function setupImagePreview() {
-        const imageInputs = document.querySelectorAll('input[type="file"][data-action*="image-preview#preview"]');
+      fieldContainers.forEach(container => {
+        // Obtener datos importantes del contenedor
+        const fieldType = container.getAttribute('data-dynamic-fields-field-type-value');
+        const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
         
-        imageInputs.forEach(input => {
+        // Encontrar elementos importantes dentro del contenedor
+        const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
+        const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
+        const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
+        
+        if (addButton && fieldsContainer) {
           // Eliminar event listeners previos para evitar duplicación
-          const newInput = input.cloneNode(true);
-          input.parentNode.replaceChild(newInput, input);
+          const newAddButton = addButton.cloneNode(true);
+          addButton.parentNode.replaceChild(newAddButton, addButton);
           
-          newInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (!file) return;
+          // Añadir evento al botón de agregar
+          newAddButton.addEventListener('click', function() {
+            // Contar campos visibles actuales
+            const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
+              .filter(field => field.style.display !== 'none').length;
             
-            const previewContainer = this.closest('[data-controller="image-preview"]')?.querySelector('[data-image-preview-target="preview"]');
-            
-            if (previewContainer) {
-              const reader = new FileReader();
-              reader.onload = function(e) {
-                previewContainer.innerHTML = `
-                  <img src="${e.target.result}" 
-                       class="max-w-full h-auto rounded-md" 
-                       style="max-height: 200px; object-fit: cover;">
-                `;
-              };
-              reader.readAsDataURL(file);
+            // Verificar si se alcanzó el máximo
+            if (visibleFields >= maxFields) {
+              console.log(`Máximo de ${maxFields} campos alcanzado para ${fieldType}`);
+              return;
             }
+            
+            // Generar un nuevo índice único
+            const newIndex = new Date().getTime();
+            
+            // Crear el HTML para el nuevo campo
+            const fieldHtml = `
+              <div class="mb-3 dynamic-field">
+                <div class="flex">
+                  <input type="text"
+                         name="program[${fieldType}s_attributes][${newIndex}][descripcion]"
+                         class="flex-1 px-3 py-2 border border-gray-300 rounded-l-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                         placeholder="Ingrese ${fieldType}"
+                         required>
+                  <input type="hidden"
+                         name="program[${fieldType}s_attributes][${newIndex}][_destroy]"
+                         value="0"
+                         data-destroy-input>
+                  <button type="button"
+                         class="px-3 py-2 text-red-600 bg-white border border-gray-300 border-l-0 rounded-r-md hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-500"
+                         onclick="removeField(this)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+            `;
+            
+            // Agregar el nuevo campo al contenedor
+            fieldsContainer.insertAdjacentHTML('beforeend', fieldHtml);
+            
+            // Actualizar el contador
+            updateFieldCounter(container);
+          });
+        }
+        
+        // Configurar los botones de eliminar existentes
+        const removeButtons = container.querySelectorAll('[data-action*="dynamic-fields#removeField"]');
+        removeButtons.forEach(button => {
+          // Eliminar event listeners previos para evitar duplicación
+          const newButton = button.cloneNode(true);
+          button.parentNode.replaceChild(newButton, button);
+          
+          newButton.addEventListener('click', function() {
+            removeField(this);
           });
         });
-      }
-      
-      // Inicializar todas las funcionalidades
-      setupSelectMessages();
-      setupDynamicFields();
-      setupImagePreview();
+        
+        // Actualizar contador inicial
+        updateFieldCounter(container);
+      });
     }
     
-    // Función para eliminar un campo (global para poder ser llamada desde onclick)
-    window.removeField = function(button) {
-      const field = button.closest('.dynamic-field');
-      const container = button.closest('[data-controller="dynamic-fields"]');
-      const destroyInput = field.querySelector('[data-destroy-input]');
+    // 3. Configurar preview de imagen (si es necesario)
+    function setupImagePreview() {
+      const imageInputs = document.querySelectorAll('input[type="file"][data-action*="image-preview#preview"]');
       
-      if (destroyInput) {
-        // Si es un campo existente (con ID), marcarlo como eliminado
-        destroyInput.value = "1";
-        field.style.display = 'none';
+      imageInputs.forEach(input => {
+        // Eliminar event listeners previos para evitar duplicación
+        const newInput = input.cloneNode(true);
+        input.parentNode.replaceChild(newInput, input);
+        
+        newInput.addEventListener('change', function() {
+          const file = this.files[0];
+          if (!file) return;
+          
+          const previewContainer = this.closest('[data-controller="image-preview"]')?.querySelector('[data-image-preview-target="preview"]');
+          
+          if (previewContainer) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+              previewContainer.innerHTML = `
+                <img src="${e.target.result}" 
+                     class="max-w-full h-auto rounded-md" 
+                     style="max-height: 200px; object-fit: cover;">
+              `;
+            };
+            reader.readAsDataURL(file);
+          }
+        });
+      });
+    }
+    
+    // Inicializar todas las funcionalidades
+    setupSelectMessages();
+    setupDynamicFields();
+    setupImagePreview();
+  }
+  
+  // Función para eliminar un campo (global para poder ser llamada desde onclick)
+  window.removeField = function(button) {
+    const field = button.closest('.dynamic-field');
+    const container = button.closest('[data-controller="dynamic-fields"]');
+    const destroyInput = field.querySelector('[data-destroy-input]');
+    
+    if (destroyInput) {
+      // Si es un campo existente (con ID), marcarlo como eliminado
+      destroyInput.value = "1";
+      field.style.display = 'none';
+    } else {
+      // Si es un campo nuevo, eliminarlo del DOM
+      field.remove();
+    }
+    
+    // Actualizar el contador
+    updateFieldCounter(container);
+  };
+  
+  // Función para actualizar el contador de campos
+  function updateFieldCounter(container) {
+    const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
+    const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
+    const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
+    
+    // Contar campos visibles
+    const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
+    const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
+      .filter(field => field.style.display !== 'none').length;
+    
+    // Actualizar texto del contador
+    if (counter) {
+      counter.textContent = `${visibleFields}/${maxFields}`;
+    }
+    
+    // Habilitar/deshabilitar botón según cantidad de campos
+    if (addButton) {
+      if (visibleFields >= maxFields) {
+        addButton.disabled = true;
+        addButton.classList.add('opacity-50', 'cursor-not-allowed');
       } else {
-        // Si es un campo nuevo, eliminarlo del DOM
-        field.remove();
-      }
-      
-      // Actualizar el contador
-      updateFieldCounter(container);
-    };
-    
-    // Función para actualizar el contador de campos
-    function updateFieldCounter(container) {
-      const counter = container.querySelector('[data-dynamic-fields-target="counter"]');
-      const addButton = container.querySelector('[data-dynamic-fields-target="addButton"]');
-      const maxFields = parseInt(container.getAttribute('data-dynamic-fields-max-fields-value'), 10) || 6;
-      
-      // Contar campos visibles
-      const fieldsContainer = container.querySelector('[data-dynamic-fields-target="container"]');
-      const visibleFields = Array.from(fieldsContainer.querySelectorAll('.dynamic-field'))
-        .filter(field => field.style.display !== 'none').length;
-      
-      // Actualizar texto del contador
-      if (counter) {
-        counter.textContent = `${visibleFields}/${maxFields}`;
-      }
-      
-      // Habilitar/deshabilitar botón según cantidad de campos
-      if (addButton) {
-        if (visibleFields >= maxFields) {
-          addButton.disabled = true;
-          addButton.classList.add('opacity-50', 'cursor-not-allowed');
-        } else {
-          addButton.disabled = false;
-          addButton.classList.remove('opacity-50', 'cursor-not-allowed');
-        }
+        addButton.disabled = false;
+        addButton.classList.remove('opacity-50', 'cursor-not-allowed');
       }
     }
-    
-    // Inicializar en primer carga
-    document.addEventListener('DOMContentLoaded', initializeFormFunctionality);
-    
-    // Inicializar después de cada navegación con Turbo
-    document.addEventListener('turbo:load', initializeFormFunctionality);
-    
-    // Inicializar después de cada renderizado con Turbo
-    document.addEventListener('turbo:render', initializeFormFunctionality);
-    
-    // También inicializar si el documento ya está cargado
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      initializeFormFunctionality();
-    }
-  </script>
+  }
+  
+  // Inicializar en primer carga
+  document.addEventListener('DOMContentLoaded', initializeFormFunctionality);
+  
+  // Inicializar después de cada navegación con Turbo
+  document.addEventListener('turbo:load', initializeFormFunctionality);
+  
+  // Inicializar después de cada renderizado con Turbo
+  document.addEventListener('turbo:render', initializeFormFunctionality);
+  
+  // También inicializar si el documento ya está cargado
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    initializeFormFunctionality();
+  }
+</script>
 
- 
-
-
-  <!-- PARA EL MODAL DE VER DETALLES DE PROGRAMAS -->
-  <div id="programModal" class="hidden">
+<!-- PARA EL MODAL DE VER DETALLES DE PROGRAMAS -->
+<div id="programModal" class="hidden">
   <div class="scale-95">
     <!-- Cabecera del modal -->
     <div class="sticky">
@@ -1590,163 +2163,6 @@ body.overflow-hidden {
     </div>
   </div>
 </div>
-
-  <!-- PARA EL MODAL DE VER DETALLES PROGRAMA -->
-  <script>
-  $(document).ready(function() {
-    // Menú desplegable de usuario
-    $("#userMenuButton").click(function(e) {
-      e.stopPropagation();
-      $("#userMenu").toggleClass("hidden");
-    });
-    
-    $(document).click(function(e) {
-      if (!$(e.target).closest("#userMenu").length && !$(e.target).closest("#userMenuButton").length) {
-        $("#userMenu").addClass("hidden");
-      }
-    });
-    
-    // Configurar el modal
-    setupProgramModal();
-  });
-  
-  // Funciones para el modal
-  function setupProgramModal() {
-    const modal = document.getElementById('programModal');
-    if (!modal) return;
-    
-    // Cerrar modal con botón de cerrar
-    const closeButton = document.getElementById('closeModal');
-    if (closeButton) {
-      closeButton.addEventListener('click', function() {
-        closeModal();
-      });
-    }
-    
-    // Cerrar modal con clic fuera
-    modal.addEventListener('click', function(e) {
-      if (e.target === modal) {
-        closeModal();
-      }
-    });
-    
-    // Cerrar modal con la tecla ESC
-    document.addEventListener('keydown', function(e) {
-      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-        closeModal();
-      }
-    });
-    
-    // Vincular botones de "Ver detalles"
-    const detailButtons = document.querySelectorAll('[data-action="click->program#showDetails"]');
-    detailButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const programId = this.getAttribute('data-id');
-        if (programId) {
-          showProgramDetails(programId);
-        }
-      });
-    });
-  }
-  
-  function showProgramDetails(programId) {
-    const modal = document.getElementById('programModal');
-    const modalContent = document.getElementById('modalContent');
-    
-    if (!modal || !modalContent) return;
-    
-    // Mostrar modal con animación
-    document.body.classList.add('overflow-hidden');
-    modal.classList.remove('hidden');
-    modal.classList.add('visible');
-    
-    // Animación de entrada
-    setTimeout(() => {
-      const modalDialog = modal.querySelector('div');
-      if (modalDialog) {
-        modalDialog.classList.add('scale-100');
-        modalDialog.classList.remove('scale-95');
-      }
-    }, 10);
-    
-    // Cargar detalles del programa con AJAX
-    modalContent.innerHTML = `
-      <div class="animate-pulse p-4">
-        <div class="h-8 bg-gray-200 rounded w-3/4 mb-6"></div>
-        <div class="h-4 bg-gray-200 rounded w-1/2 mb-4"></div>
-        <div class="h-4 bg-gray-200 rounded w-5/6 mb-4"></div>
-        <div class="h-32 bg-gray-200 rounded mb-6"></div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="h-24 bg-gray-200 rounded"></div>
-          <div class="h-24 bg-gray-200 rounded"></div>
-        </div>
-        <div class="h-4 bg-gray-200 rounded w-3/4 mt-6"></div>
-        <div class="h-4 bg-gray-200 rounded w-1/2 mt-4"></div>
-      </div>
-    `;
-    
-    fetch(`/admin/programs/${programId}`, {
-      headers: {
-        'Accept': 'text/html',
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    })
-    .then(html => {
-      modalContent.innerHTML = html;
-    })
-    .catch(error => {
-      modalContent.innerHTML = `
-        <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
-          <div class="flex items-center">
-            <i class="fas fa-exclamation-circle text-xl mr-3"></i>
-            <p class="font-semibold">Error al cargar los detalles</p>
-          </div>
-          <p class="mt-2">${error.message}</p>
-        </div>
-      `;
-    });
-  }
-  
-  function closeModal() {
-    const modal = document.getElementById('programModal');
-    if (!modal) return;
-    
-    // Animación de salida
-    modal.classList.remove('visible');
-    const modalDialog = modal.querySelector('div');
-    if (modalDialog) {
-      modalDialog.classList.add('scale-95');
-      modalDialog.classList.remove('scale-100');
-    }
-    
-    // Ocultar modal después de la animación
-    setTimeout(() => {
-      modal.classList.add('hidden');
-      document.body.classList.remove('overflow-hidden');
-    }, 300);
-  }
-  
-  // Exponer funciones globalmente
-  window.showProgramDetails = showProgramDetails;
-  window.closeModal = closeModal;
-  window.setupProgramModal = setupProgramModal;
-  
-  // Asegurarse de que el modal se configure cuando Turbo cambie la página
-  document.addEventListener('turbo:load', function() {
-    setupProgramModal();
-  });
-</script>
-
-<!-- ------------------------------------------------------------ -->
-
-<!-- AGREGAR DESPUÉS DEL MODAL DE PROGRAMAS EN ADMIN LAYOUT -->
 
 <!-- PARA EL MODAL DE VER DETALLES DE EVENTOS -->
 <div id="eventModal" class="hidden">
@@ -1773,7 +2189,7 @@ body.overflow-hidden {
   </div>
 </div>
 
-<!-- AGREGAR AL SCRIPT EXISTENTE (DESPUÉS DE LAS FUNCIONES DE PROGRAMAS) -->
+<!-- JavaScript para ambos modales (PROGRAMAS Y EVENTOS) -->
 <script>
 $(document).ready(function() {
   // Menú desplegable de usuario
@@ -1788,39 +2204,41 @@ $(document).ready(function() {
     }
   });
   
-  // Configurar los modales
+  // Configurar ambos modales
   setupProgramModal();
-  setupEventModal(); // NUEVO
+  setupEventModal();
 });
 
-// Funciones para el modal de PROGRAMAS (mantener las existentes)
+// ===================== FUNCIONES PARA MODAL DE PROGRAMAS =====================
 function setupProgramModal() {
   const modal = document.getElementById('programModal');
   if (!modal) return;
+  
+  console.log("Configurando modal de programas");
   
   // Cerrar modal con botón de cerrar
   const closeButton = document.getElementById('closeModal');
   if (closeButton) {
     closeButton.addEventListener('click', function() {
-      closeModal();
+      closeProgramModal();
     });
   }
   
   // Cerrar modal con clic fuera
   modal.addEventListener('click', function(e) {
     if (e.target === modal) {
-      closeModal();
+      closeProgramModal();
     }
   });
   
   // Cerrar modal con la tecla ESC
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-      closeModal();
+      closeProgramModal();
     }
   });
   
-  // Vincular botones de "Ver detalles"
+  // Vincular botones de "Ver detalles" de programas
   const detailButtons = document.querySelectorAll('[data-action="click->program#showDetails"]');
   detailButtons.forEach(button => {
     button.addEventListener('click', function(e) {
@@ -1838,6 +2256,8 @@ function showProgramDetails(programId) {
   const modalContent = document.getElementById('modalContent');
   
   if (!modal || !modalContent) return;
+  
+  console.log("Mostrando detalles del programa:", programId);
   
   // Mostrar modal con animación
   document.body.classList.add('overflow-hidden');
@@ -1889,7 +2309,7 @@ function showProgramDetails(programId) {
       <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
         <div class="flex items-center">
           <i class="fas fa-exclamation-circle text-xl mr-3"></i>
-          <p class="font-semibold">Error al cargar los detalles</p>
+          <p class="font-semibold">Error al cargar los detalles del programa</p>
         </div>
         <p class="mt-2">${error.message}</p>
       </div>
@@ -1897,9 +2317,11 @@ function showProgramDetails(programId) {
   });
 }
 
-function closeModal() {
+function closeProgramModal() {
   const modal = document.getElementById('programModal');
   if (!modal) return;
+  
+  console.log("Cerrando modal de programas");
   
   // Animación de salida
   modal.classList.remove('visible');
@@ -1916,10 +2338,12 @@ function closeModal() {
   }, 300);
 }
 
-// NUEVAS FUNCIONES PARA EL MODAL DE EVENTOS
+// ===================== FUNCIONES PARA MODAL DE EVENTOS =====================
 function setupEventModal() {
   const modal = document.getElementById('eventModal');
   if (!modal) return;
+  
+  console.log("Configurando modal de eventos");
   
   // Cerrar modal con botón de cerrar
   const closeButton = document.getElementById('closeEventModal');
@@ -1944,14 +2368,43 @@ function setupEventModal() {
   });
   
   // Vincular botones de "Ver detalles" de eventos
-  const detailButtons = document.querySelectorAll('a[href*="/admin/events/"][title="Ver detalles"]');
+  // Buscar por diferentes patrones para máxima compatibilidad
+  const detailButtons = document.querySelectorAll(`
+    a[href*="/admin/events/"][title="Ver detalles"],
+    [data-action*="event#showDetails"],
+    [data-action*="click->event#showDetails"]
+  `);
+  
   detailButtons.forEach(button => {
     button.addEventListener('click', function(e) {
       e.preventDefault();
-      const href = this.getAttribute('href');
-      const eventId = href.split('/').pop(); // Extraer ID de la URL
+      
+      let eventId;
+      
+      // Método 1: Si tiene data-id, usarlo
+      if (this.hasAttribute('data-id')) {
+        eventId = this.getAttribute('data-id');
+      }
+      // Método 2: Si tiene data-event-id, usarlo
+      else if (this.hasAttribute('data-event-id')) {
+        eventId = this.getAttribute('data-event-id');
+      }
+      // Método 3: Extraer ID de la URL href
+      else {
+        const href = this.getAttribute('href');
+        if (href) {
+          const matches = href.match(/\/admin\/events\/(\d+)/);
+          if (matches) {
+            eventId = matches[1];
+          }
+        }
+      }
+      
       if (eventId) {
+        console.log("Evento ID encontrado:", eventId);
         showEventDetails(eventId);
+      } else {
+        console.error("No se pudo extraer el ID del evento");
       }
     });
   });
@@ -1962,6 +2415,8 @@ function showEventDetails(eventId) {
   const modalContent = document.getElementById('eventModalContent');
   
   if (!modal || !modalContent) return;
+  
+  console.log("Mostrando detalles del evento:", eventId);
   
   // Mostrar modal con animación
   document.body.classList.add('overflow-hidden');
@@ -2009,6 +2464,7 @@ function showEventDetails(eventId) {
     modalContent.innerHTML = html;
   })
   .catch(error => {
+    console.error("Error al cargar evento:", error);
     modalContent.innerHTML = `
       <div class="bg-red-50 border border-red-200 text-red-700 px-6 py-4 rounded-lg">
         <div class="flex items-center">
@@ -2025,6 +2481,8 @@ function closeEventModal() {
   const modal = document.getElementById('eventModal');
   if (!modal) return;
   
+  console.log("Cerrando modal de eventos");
+  
   // Animación de salida
   modal.classList.remove('visible');
   const modalDialog = modal.querySelector('div');
@@ -2040,20 +2498,31 @@ function closeEventModal() {
   }, 300);
 }
 
-// Exponer funciones globalmente
-window.showProgramDetails = showProgramDetails;
-window.closeModal = closeModal;
-window.setupProgramModal = setupProgramModal;
+// ===================== FUNCIONES GLOBALES Y EVENTOS =====================
 
-// NUEVAS FUNCIONES GLOBALES PARA EVENTOS
+// Exponer funciones globalmente para programas
+window.showProgramDetails = showProgramDetails;
+window.closeProgramModal = closeProgramModal;
+window.setupProgramModal = setupProgramModal;
+// Mantener compatibilidad con closeModal (alias para programas)
+window.closeModal = closeProgramModal;
+
+// Exponer funciones globalmente para eventos
 window.showEventDetails = showEventDetails;
 window.closeEventModal = closeEventModal;
 window.setupEventModal = setupEventModal;
 
 // Asegurarse de que los modales se configuren cuando Turbo cambie la página
 document.addEventListener('turbo:load', function() {
+  console.log("Turbo load - Configurando modales");
   setupProgramModal();
-  setupEventModal(); // NUEVO
+  setupEventModal();
+});
+
+document.addEventListener('turbo:render', function() {
+  console.log("Turbo render - Configurando modales");
+  setupProgramModal();
+  setupEventModal();
 });
 </script>
 

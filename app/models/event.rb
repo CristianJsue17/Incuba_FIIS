@@ -1,4 +1,4 @@
-# app/models/event.rb - ACTUALIZACIÓN
+# app/models/event.rb - ACTUALIZACIÓN CON MÚLTIPLES IMÁGENES
 
 class Event < ApplicationRecord
   # Asociaciones
@@ -11,8 +11,8 @@ class Event < ApplicationRecord
   has_one :formulario_plantilla_evento, -> { where(es_plantilla: true) }, 
           class_name: 'FormularioEvento', dependent: :destroy
   
-  # Active Storage
-  has_one_attached :image
+  # ACTUALIZADO: Active Storage para múltiples imágenes
+  has_many_attached :images
 
   # NUEVO: Nested attributes para plantilla de formulario
   accepts_nested_attributes_for :formulario_plantilla_evento,
@@ -31,8 +31,9 @@ class Event < ApplicationRecord
   validates :fecha_publicacion, presence: { message: "debe seleccionar una fecha" }
   validates :fecha_vencimiento, presence: { message: "debe seleccionar una fecha" }
   
-  # Validaciones personalizadas (mantener las existentes)
-  validate :validate_image_type
+  # Validaciones personalizadas
+  validate :validate_images_type_and_size
+  validate :validate_images_count
   validate :fecha_vencimiento_mayor_publicacion
 
   # Scopes
@@ -48,6 +49,21 @@ class Event < ApplicationRecord
   # NUEVO: Método para obtener o crear plantilla de formulario
   def formulario_asociado
     formulario_plantilla_evento || build_formulario_plantilla_evento(es_plantilla: true)
+  end
+
+  # NUEVO: Método para obtener la imagen principal (primera imagen)
+  def imagen_principal
+    images.attached? ? images.first : nil
+  end
+
+  # NUEVO: Método para obtener todas las imágenes como array
+  def todas_las_imagenes
+    images.attached? ? images : []
+  end
+
+  # NUEVO: Método de compatibilidad para mantener funcionalidad existente
+  def image
+    imagen_principal
   end
 
   # Métodos existentes (mantener todos)
@@ -172,18 +188,33 @@ class Event < ApplicationRecord
 
   private
 
-  def validate_image_type
-    return unless image.attached?
+  # NUEVO: Validación para múltiples imágenes
+  def validate_images_type_and_size
+    return unless images.attached?
 
-    unless image.content_type.in?(%w[image/jpeg image/png image/gif])
-      errors.add(:image, "debe ser un archivo JPEG, PNG o GIF")
-    end
-    
-    if image.blob.byte_size > 5.megabytes
-      errors.add(:image, "no debe superar los 5MB")
+    images.each_with_index do |image, index|
+      unless image.content_type.in?(%w[image/jpeg image/png image/gif])
+        errors.add(:images, "La imagen #{index + 1} debe ser un archivo JPEG, PNG o GIF")
+      end
+      
+      if image.blob.byte_size > 5.megabytes
+        errors.add(:images, "La imagen #{index + 1} no debe superar los 5MB")
+      end
     end
   end
 
+  # NUEVO: Validación para cantidad de imágenes
+  def validate_images_count
+    return unless images.attached?
+
+    if images.count > 3
+      errors.add(:images, "No puedes subir más de 3 imágenes por evento")
+    elsif images.count < 1
+      errors.add(:images, "Debes subir al menos 1 imagen para el evento")
+    end
+  end
+
+  # Validación existente
   def fecha_vencimiento_mayor_publicacion
     return if fecha_vencimiento.blank? || fecha_publicacion.blank?
     
