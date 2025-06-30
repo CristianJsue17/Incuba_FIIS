@@ -129,9 +129,9 @@ i {
 }
 
 .contact__title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  margin: 3rem 0;
   font-weight: 700;
   letter-spacing: 1px;
   position: relative;
@@ -152,11 +152,12 @@ i {
 }
 
 .contact__subtitle {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: #64748b;
   max-width: 600px;
   margin: 0 auto;
   margin-top: 1.5rem;
+  margin-bottom: 6rem;
   font-family: var(--font-body);
 }
 
@@ -236,14 +237,14 @@ i {
 }
 
 .contact__detail-title {
-  font-size: 1.1rem;
+  font-size: 1.4rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   font-family: var(--font-heading);
 }
 
 .contact__detail-text {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   color: rgba(255, 255, 255, 0.8);
   line-height: 1.4;
   font-family: var(--font-body);
@@ -253,6 +254,10 @@ i {
   display: flex;
   gap: 1rem;
   margin-top: 1rem;
+}
+
+.contact__social i {
+  font-size: 2rem;
 }
 
 .contact__social-link {
@@ -298,7 +303,7 @@ i {
 }
 
 .contact__form-title {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: var(--color-primary);
   font-weight: 600;
   font-family: var(--font-heading);
@@ -327,10 +332,17 @@ i {
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   background-color: #f8fafc;
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #0f172a;
   transition: all 0.3s ease;
   font-family: var(--font-body);
+  height: 4.3rem;
+}
+
+.contact__input::placeholder,
+.contact__textarea::placeholder {
+  color: #94a3b8;
+  font-size: 1.2rem;
 }
 
 .contact__textarea {
@@ -355,6 +367,7 @@ i {
   background-color: transparent;
   padding: 0 0.25rem;
   font-family: var(--font-body);
+  font-size: 1.3rem;
 }
 
 .contact__input:focus ~ .contact__label,
@@ -387,13 +400,13 @@ i {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 10px;
   padding: 1rem 2rem;
   background-color: var(--color-primary);
   color: var(--color-white);
   border: none;
   border-radius: 8px;
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;

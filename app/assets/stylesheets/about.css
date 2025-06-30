@@ -40,7 +40,7 @@
 }
 
 .about__title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   font-weight: 700;
   color: var(--color-dark);
   margin-bottom: 15px;
@@ -86,7 +86,6 @@
 .about__vertical-title {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
-  font-size: 4rem;
   font-weight: 800;
   color: var(--color-dark);
   opacity: 0.9;
@@ -98,6 +97,7 @@
 
 .about__vertical-title h2 {
   white-space: nowrap;
+  font-size: 5rem;
 }
 
 .about__content {
@@ -131,13 +131,13 @@
 }
 
 .about__content-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem;
   margin-bottom: 20px;
   color: var(--color-dark);
 }
 
 .about__content-text {
-  font-size: 1rem;
+  font-size: 1.4rem;
   margin-bottom: 15px;
   color: var(--color-dark);
   opacity: 0.8;
