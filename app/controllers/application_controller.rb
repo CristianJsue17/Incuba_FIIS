@@ -1,14 +1,25 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   
+  # ⚠️ SOLO AGREGAR ESTAS 2 LÍNEAS para solucionar CSRF:
+  rescue_from ActionController::InvalidAuthenticityToken, with: :handle_invalid_csrf_token
+  before_action :check_user_status, unless: :devise_controller?  # ← CAMBIO: agregar unless: :devise_controller?
+  
   # AGREGAR ESTAS LÍNEAS PARA MANEJO DE IDIOMAS
   before_action :set_locale
-  before_action :check_user_status  # ← NUEVA LÍNEA PARA VERIFICAR ESTADO DEL USUARIO
+  # before_action :check_user_status  # ← COMENTAR ESTA LÍNEA Y USAR LA DE ARRIBA
   
   # NUEVO: Configuración de caché para roles
   ROLE_CACHE_DURATION = 15.minutes # Duración del caché de roles
   
-  # Método para redirección después de login
+  # ⚠️ SOLO AGREGAR ESTE MÉTODO para manejar errores CSRF:
+  def handle_invalid_csrf_token
+    Rails.logger.error "🚫 CSRF Token inválido - Usuario: #{current_user&.email || 'guest'}"
+    reset_session
+    redirect_to new_user_session_path, alert: 'Tu sesión ha expirado. Por favor, inicia sesión nuevamente.'
+  end
+  
+  # Método para redirección después de login - TU LÓGICA ORIGINAL SIN CAMBIOS
 def after_sign_in_path_for(resource)
   return root_path unless resource.is_a?(User)
   
@@ -65,7 +76,7 @@ end
   
   private
   
-  # NUEVO: Verificar estado del usuario en cada request
+  # NUEVO: Verificar estado del usuario en cada request - TU LÓGICA ORIGINAL SIN CAMBIOS
   def check_user_status
     return unless user_signed_in?
     
@@ -110,7 +121,7 @@ end
   end
   
   # ===========================================
-  # NUEVOS MÉTODOS PARA CACHÉ DE ROLES
+  # NUEVOS MÉTODOS PARA CACHÉ DE ROLES - TU LÓGICA ORIGINAL SIN CAMBIOS
   # ===========================================
   
   # Método principal para verificar roles con caché
