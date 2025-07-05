@@ -119,14 +119,14 @@ class InscripcionesProgramController < ApplicationController
     
   def formulario_incubacion_params
     params.require(:formulario_programa_incubacion).permit(
-      :nombre_lider, :apellidos_lider, :dni_lider,
+      :nombre_lider, :apellido_lider, :dni_lider,
       :telefono_lider, :correo_lider, :nombre_proyecto
     )
   end
     
   def formulario_innovacion_params
     params.require(:formulario_programa_innovacion).permit(
-      :nombre_lider, :apellidos_lider, :dni_lider,
+      :nombre_lider, :apellido_lider, :dni_lider,
       :telefono_lider, :correo_lider, :nombre_proyecto
     )
   end

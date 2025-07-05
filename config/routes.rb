@@ -7,26 +7,65 @@ Rails.application.routes.draw do
   # AGREGAR RUTA PARA CAMBIO DE IDIOMA
   get '/change_locale/:locale', to: 'application#change_locale', as: :change_locale
 
-  authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
-    namespace :admin do
-      get 'dashboard', to: 'dashboard#index', as: :dashboard
-      resources :programs do
+authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+    
+    # RUTAS PARA GESTIÓN DE USUARIOS
+    resources :users do
+      member do
+        patch :cambiar_estado
+        patch :suspender_temporalmente
+        patch :reactivar
+      end
+    end
+            
+    resources :programs do
+      member do
+        patch :cambiar_estado
+      end
+      collection do
+        get 'tipo_formulario'
+      end
+    end
+                        
+    # RUTAS DE EVENTOS
+    resources :events do
+      member do
+        patch :cambiar_estado
+      end
+    end
+
+    # RUTAS PARA INSCRIPCIONES
+    namespace :inscripciones do
+      # Inscripciones de programas (existente)
+      resources :programs, only: [:index, :show] do
         member do
-          patch :cambiar_estado
+          patch :cambiar_estado_inscripcion
+          get :export_pdf
+          get :export_excel
         end
         collection do
-          get 'tipo_formulario'
+          get :export_all_excel
+          get :export_all_pdf
         end
       end
-      
-      # AGREGAR ESTA LÍNEA:
-      resources :events do
+
+      # NUEVO: Inscripciones de eventos
+      resources :events, only: [:index, :show] do
         member do
-          patch :cambiar_estado
+          patch :cambiar_estado_inscripcion
+          get :export_pdf
+          get :export_excel
+        end
+        collection do
+          get :export_all_excel
+          get :export_all_pdf
         end
       end
     end
   end
+end
 
  # Rutas para servicios y programas
   get 'servicios', to: 'services#servicios', as: 'servicios'

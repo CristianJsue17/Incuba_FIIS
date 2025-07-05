@@ -19,13 +19,35 @@ class FormularioProgramaPreincubacion < ApplicationRecord
   validates :ocupacion_lider, presence: true, unless: :es_plantilla?
   validates :enteraste_programa, presence: true, unless: :es_plantilla?
   validates :expectativas_programa, presence: true, unless: :es_plantilla?
+  validates :estado, inclusion: { in: %w[pendiente aprobado rechazado] }
+
 
   # Scopes
   scope :plantillas, -> { where(es_plantilla: true) }
   scope :inscripciones, -> { where.not(es_plantilla: true) }
+  scope :pendientes, -> { where(estado: 'pendiente') }
+  scope :aprobadas, -> { where(estado: 'aprobado') }
+  scope :rechazadas, -> { where(estado: 'rechazado') }
+  scope :recientes, -> { where(created_at: 7.days.ago..Time.current) }
+
+  # Callbacks para asegurar estado por defecto
+  before_validation :set_default_estado, on: :create
 
   def es_plantilla?
     es_plantilla == true
+  end
+
+  def estado_humanizado
+    case estado
+    when 'pendiente'
+      'Pendiente de revisión'
+    when 'aprobado'
+      'Aprobado para el programa'
+    when 'rechazado'
+      'No aprobado'
+    else
+      estado.humanize
+    end
   end
 
   def debug_info
@@ -37,72 +59,28 @@ class FormularioProgramaPreincubacion < ApplicationRecord
       errors: errors.full_messages
     }
   end
+
+  private
+
+  def set_default_estado
+    write_attribute(:estado, 'pendiente') if read_attribute(:estado).blank?
+  end
+
 end
 
-# app/models/formulario_programa_incubacion.rb
-class FormularioProgramaIncubacion < ApplicationRecord
-  belongs_to :program
-  
-  # Validaciones solo para inscripciones reales
-  validates :nombre_lider, presence: true, unless: :es_plantilla?
-  validates :apellido_lider, presence: true, unless: :es_plantilla?
-  validates :dni_lider, presence: true, unless: :es_plantilla?
-  validates :correo_lider, presence: true, 
-            format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }, 
-            unless: :es_plantilla?
-  validates :telefono_lider, presence: true, unless: :es_plantilla?
-  validates :nombre_proyecto, presence: true, unless: :es_plantilla?
 
-  # Scopes
-  scope :plantillas, -> { where(es_plantilla: true) }
-  scope :inscripciones, -> { where.not(es_plantilla: true) }
 
-  def es_plantilla?
-    es_plantilla == true
-  end
 
-  def debug_info
-    {
-      id: id,
-      program_id: program_id,
-      nombre_lider: nombre_lider,
-      nombre_proyecto: nombre_proyecto,
-      es_plantilla: es_plantilla,
-      errors: errors.full_messages
-    }
-  end
-end
 
-# app/models/formulario_programa_innovacion.rb
-class FormularioProgramaInnovacion < ApplicationRecord
-  belongs_to :program
-  
-  # Validaciones solo para inscripciones reales
-  validates :nombre_lider, presence: true, unless: :es_plantilla?
-  validates :apellido_lider, presence: true, unless: :es_plantilla?
-  validates :dni_lider, presence: true, unless: :es_plantilla?
-  validates :correo_lider, presence: true, 
-            format: { with: /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i }, 
-            unless: :es_plantilla?
-  validates :telefono_lider, presence: true, unless: :es_plantilla?
-  validates :nombre_proyecto, presence: true, unless: :es_plantilla?
 
-  # Scopes
-  scope :plantillas, -> { where(es_plantilla: true) }
-  scope :inscripciones, -> { where.not(es_plantilla: true) }
 
-  def es_plantilla?
-    es_plantilla == true
-  end
 
-  def debug_info
-    {
-      id: id,
-      program_id: program_id,
-      nombre_lider: nombre_lider,
-      nombre_proyecto: nombre_proyecto,
-      es_plantilla: es_plantilla,
-      errors: errors.full_messages
-    }
-  end
-end
+
+
+
+
+
+
+
+
+

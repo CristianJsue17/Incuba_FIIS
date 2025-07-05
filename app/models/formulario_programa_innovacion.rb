@@ -30,9 +30,20 @@ class FormularioProgramaInnovacion < ApplicationRecord
             length: { maximum: 200 }, 
             unless: :es_plantilla?
 
+  validates :estado, inclusion: { in: %w[pendiente aprobado rechazado] }
+
+  # Callbacks para asegurar estado por defecto
+  before_validation :set_default_estado, on: :create
+
   # Scopes
   scope :plantillas, -> { where(es_plantilla: true) }
   scope :inscripciones, -> { where.not(es_plantilla: true) }
+  scope :pendientes, -> { where(estado: 'pendiente') }
+  scope :aprobadas, -> { where(estado: 'aprobado') }
+  scope :rechazadas, -> { where(estado: 'rechazado') }
+  scope :recientes, -> { where(created_at: 7.days.ago..Time.current) }
+
+
 
   # Métodos
   def es_plantilla?
@@ -47,6 +58,19 @@ class FormularioProgramaInnovacion < ApplicationRecord
     "#{nombre_lider} #{apellido_lider}".strip
   end
 
+  def estado_humanizado
+    case estado
+    when 'pendiente'
+      'Pendiente de revisión'
+    when 'aprobado'
+      'Aprobado para el programa'
+    when 'rechazado'
+      'No aprobado'
+    else
+      estado.humanize
+    end
+  end
+
   def debug_info
     {
       id: id,
@@ -58,4 +82,11 @@ class FormularioProgramaInnovacion < ApplicationRecord
       errors: errors.full_messages
     }
   end
+
+  private
+
+  def set_default_estado
+    write_attribute(:estado, 'pendiente') if read_attribute(:estado).blank?
+  end
+
 end

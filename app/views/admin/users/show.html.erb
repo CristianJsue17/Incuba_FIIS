@@ -1,0 +1,1025 @@
+<!-- views/admin/users/show.html.erb -->
+
+
+<style>
+/* Estilos para la vista de detalles del usuario */
+.detail-container {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.detail-header {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+.detail-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
+}
+
+.detail-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  transform: translate(-20px, 20px);
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.user-info {
+  flex: 1;
+}
+
+.detail-title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.detail-title i {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+.user-subtitle {
+  font-size: 1rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.user-id {
+  font-size: 0.875rem;
+  opacity: 0.7;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.status-badge.activo {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.status-badge.suspendido {
+  background-color: rgba(245, 158, 11, 0.9);
+  color: white;
+  border: 1px solid rgba(245, 158, 11, 1);
+}
+
+.status-badge.inabilitado {
+  background-color: rgba(239, 68, 68, 0.9);
+  color: white;
+  border: 1px solid rgba(239, 68, 68, 1);
+}
+
+.btn-header {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  backdrop-filter: blur(10px);
+}
+
+.btn-header:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-header i {
+  margin-right: 0.5rem;
+}
+
+.detail-body {
+  padding: 2rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.info-section {
+  background-color: #f8fafc;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.info-section:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transform: translateY(-1px);
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.section-title i {
+  margin-right: 0.75rem;
+  color: #10b981;
+  font-size: 1rem;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.info-table tr {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.info-table tr:last-child {
+  border-bottom: none;
+}
+
+.info-table td {
+  padding: 0.75rem 0;
+  vertical-align: top;
+}
+
+.info-table td:first-child {
+  font-weight: 500;
+  color: #475569;
+  width: 40%;
+}
+
+.info-table td:last-child {
+  color: #1e293b;
+}
+
+.info-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.info-badge i {
+  margin-right: 0.375rem;
+}
+
+.empty-value {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.suspension-alert {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  border: 1px solid #f59e0b;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: start;
+}
+
+.suspension-alert i {
+  color: #d97706;
+  margin-right: 0.75rem;
+  margin-top: 0.125rem;
+  font-size: 1.125rem;
+}
+
+.suspension-content h6 {
+  color: #92400e;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.suspension-content p {
+  color: #92400e;
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+}
+
+.actions-section {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border-radius: 0.5rem;
+  padding: 2rem;
+  margin-top: 2rem;
+  border: 1px solid #cbd5e1;
+}
+
+.actions-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+}
+
+.actions-title i {
+  margin-right: 0.75rem;
+  color: #10b981;
+}
+
+.actions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.action-btn i {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.action-btn.primary {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+}
+
+.action-btn.success {
+  background-color: #10b981;
+  color: white;
+}
+
+.action-btn.success:hover {
+  background-color: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.action-btn.warning {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.action-btn.warning:hover {
+  background-color: #d97706;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+.action-btn.danger {
+  background-color: #ef4444;
+  color: white;
+}
+
+.action-btn.danger:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25);
+}
+
+.action-btn.secondary {
+  background-color: #f1f5f9;
+  color: #475569;
+  border-color: #cbd5e1;
+}
+
+.action-btn.secondary:hover {
+  background-color: #e2e8f0;
+  color: #334155;
+}
+
+.back-btn {
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.back-btn:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+.back-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Modal personalizado */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  overflow-y: auto;
+}
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 1rem;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  max-width: 28rem;
+  width: 100%;
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.modal-title i {
+  margin-right: 0.75rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 0.375rem;
+}
+
+.modal-body {
+  padding: 1.5rem;
+}
+
+.modal-body p {
+  margin-bottom: 1rem;
+  color: #374151;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  transition: border-color 0.15s ease;
+}
+
+.modal-input:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.modal-footer {
+  background-color: #f9fafb;
+  padding: 1rem 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.modal-btn {
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  cursor: pointer;
+}
+
+.modal-btn.primary {
+  background-color: #f59e0b;
+  color: white;
+}
+
+.modal-btn.primary:hover {
+  background-color: #d97706;
+}
+
+.modal-btn.secondary {
+  background-color: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.modal-btn.secondary:hover {
+  background-color: #f3f4f6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-header {
+    padding: 1.5rem;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .header-actions {
+    justify-content: stretch;
+    flex-direction: column;
+  }
+  
+  .detail-body {
+    padding: 1rem;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .actions-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-table td:first-child {
+    width: 100%;
+    font-weight: 600;
+    padding-bottom: 0.25rem;
+  }
+  
+  .info-table td:last-child {
+    padding-top: 0.25rem;
+  }
+}
+
+/* Animaciones */
+.detail-container {
+  animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-section {
+  animation: fadeInStagger 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.info-section:nth-child(1) { animation-delay: 0.1s; }
+.info-section:nth-child(2) { animation-delay: 0.2s; }
+.info-section:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos adicionales para button_to en acciones */
+.action-btn form {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.action-btn input[type="submit"] {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  transition: inherit;
+}
+
+.action-btn input[type="submit"]:hover {
+  background: transparent;
+}
+
+.action-btn input[type="submit"] i {
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+/* Asegurar que los button_to se vean igual que los links */
+.action-btn.success form input,
+.action-btn.danger form input {
+  color: white;
+}
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 offset-md-1">
+      <div class="detail-container">
+        <div class="detail-header">
+          <div class="header-content">
+            <div class="user-info">
+              <h1 class="detail-title">
+                <i class="fas fa-user-circle"></i>
+                <%= @user.nombre_completo %>
+              </h1>
+              <p class="user-subtitle"><%= @user.email %></p>
+              <p class="user-id">ID: <%= @user.id %></p>
+            </div>
+            <div class="header-actions">
+              <span class="status-badge <%= @user.estado %>">
+                <% case @user.estado %>
+                <% when 'activo' %>
+                  <i class="fas fa-check-circle mr-2"></i>Activo
+                <% when 'suspendido' %>
+                  <i class="fas fa-user-clock mr-2"></i>Suspendido
+                  <% if @user.suspension_until %>
+                    (<%= @user.tiempo_restante_suspension %>h)
+                  <% end %>
+                <% when 'inabilitado' %>
+                  <i class="fas fa-user-times mr-2"></i>Inhabilitado
+                <% end %>
+              </span>
+              <%= link_to edit_admin_user_path(@user), class: 'btn-header' do %>
+                <i class="fas fa-edit"></i>
+                Editar
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-body">
+          <!-- Información de suspensión si aplica -->
+          <% if @user.suspendido? && @user.suspension_until %>
+            <div class="suspension-alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <div class="suspension-content">
+                <h6>Usuario Suspendido Temporalmente</h6>
+                <p><strong>Hasta:</strong> <%= @user.suspension_until.strftime('%d/%m/%Y %H:%M') %></p>
+                <p><strong>Tiempo restante:</strong> <%= @user.tiempo_restante_suspension %> horas</p>
+              </div>
+            </div>
+          <% end %>
+
+          <div class="info-grid">
+            <!-- Información Personal -->
+            <div class="info-section">
+              <h3 class="section-title">
+                <i class="fas fa-user"></i>
+                Información Personal
+              </h3>
+              
+              <table class="info-table">
+                <tbody>
+                  <tr>
+                    <td><strong>Nombre Completo:</strong></td>
+                    <td><%= @user.nombre_completo %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Email:</strong></td>
+                    <td><%= @user.email %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>DNI:</strong></td>
+                    <td><%= @user.dni.present? ? @user.dni : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Teléfono:</strong></td>
+                    <td><%= @user.telefono.present? ? @user.telefono : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Estado:</strong></td>
+                    <td>
+                      <span class="status-badge <%= @user.estado %>" style="background-color: <%= @user.activo? ? '#dcfce7' : (@user.suspendido? ? '#fef3c7' : '#fee2e2') %>; color: <%= @user.activo? ? '#166534' : (@user.suspendido? ? '#92400e' : '#991b1b') %>; font-size: 0.75rem; padding: 0.25rem 0.5rem;">
+                        <% case @user.estado %>
+                        <% when 'activo' %>
+                          <i class="fas fa-check-circle mr-1"></i>Activo
+                        <% when 'suspendido' %>
+                          <i class="fas fa-user-clock mr-1"></i>Suspendido
+                        <% when 'inabilitado' %>
+                          <i class="fas fa-user-times mr-1"></i>Inhabilitado
+                        <% end %>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Información Académica/Profesional -->
+            <div class="info-section">
+              <h3 class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                Información Académica/Profesional
+              </h3>
+              
+              <table class="info-table">
+                <tbody>
+                  <tr>
+                    <td><strong>Rol:</strong></td>
+                    <td>
+                      <% if @user.rol_principal %>
+                        <span class="info-badge">
+                          <i class="fas fa-user-tag"></i>
+                          <%= @user.rol_principal %>
+                        </span>
+                      <% else %>
+                        <span class="empty-value">Sin rol asignado</span>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Ocupación:</strong></td>
+                    <td><%= @user.occupation&.nombre || content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Facultad:</strong></td>
+                    <td><%= @user.facultad.present? ? @user.facultad : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Procedencia:</strong></td>
+                    <td><%= @user.proviene.present? ? @user.proviene : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Último Acceso:</strong></td>
+                    <td><%= @user.ultimo_acceso&.strftime('%d/%m/%Y %H:%M') || content_tag(:span, 'Nunca', class: 'empty-value') %></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="info-section">
+              <h3 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Información Adicional
+              </h3>
+              
+              <table class="info-table">
+                <tbody>
+                  <tr>
+                    <td><strong>Descripción:</strong></td>
+                    <td><%= @user.descripcion.present? ? @user.descripcion : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Miembros del Equipo:</strong></td>
+                    <td><%= @user.cantidad_miembros_equipo.present? ? @user.cantidad_miembros_equipo : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Proyectos:</strong></td>
+                    <td><%= @user.nombre_proyectos.present? ? @user.nombre_proyectos : content_tag(:span, 'No especificado', class: 'empty-value') %></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Creado:</strong></td>
+                    <td>
+                      <%= @user.created_at.strftime('%d/%m/%Y %H:%M') %>
+                      <% if @user.created_by %>
+                        <br><small style="color: #64748b;">por <%= @user.created_by.nombre_completo %></small>
+                      <% end %>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Última modificación:</strong></td>
+                    <td>
+                      <%= @user.updated_at.strftime('%d/%m/%Y %H:%M') %>
+                      <% if @user.updated_by %>
+                        <br><small style="color: #64748b;">por <%= @user.updated_by.nombre_completo %></small>
+                      <% end %>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+<!-- Acciones rápidas - VERSIÓN CORREGIDA CON button_to -->
+<div class="actions-section">
+  <h3 class="actions-title">
+    <i class="fas fa-cogs"></i>
+    Acciones Disponibles
+  </h3>
+  <div class="actions-grid">
+    <%= link_to edit_admin_user_path(@user), class: 'action-btn primary' do %>
+      <i class="fas fa-edit"></i>
+      Editar Usuario
+    <% end %>
+    
+    <% unless @user.activo? %>
+      <%= button_to cambiar_estado_admin_user_path(@user), 
+          method: :patch,
+          params: { estado: 'activo' },
+          data: { 
+            confirm: '¿Está seguro de activar este usuario?'
+          },
+          class: 'action-btn success',
+          style: 'background: none; border: none;' do %>
+        <i class="fas fa-user-check"></i>
+        Activar
+      <% end %>
+    <% end %>
+    
+    <% unless @user.suspendido? %>
+      <button type="button" class="action-btn warning" 
+              data-bs-toggle="modal" 
+              data-bs-target="#suspenderModal">
+        <i class="fas fa-user-clock"></i>
+        Suspender
+      </button>
+    <% end %>
+    
+    <% unless @user.inabilitado? %>
+      <%= button_to cambiar_estado_admin_user_path(@user), 
+          method: :patch,
+          params: { estado: 'inabilitado' },
+          data: { 
+            confirm: '¿Está seguro de inhabilitar este usuario? Esta acción es permanente hasta que lo reactive manualmente.'
+          },
+          class: 'action-btn danger',
+          style: 'background: none; border: none;' do %>
+        <i class="fas fa-user-times"></i>
+        Inhabilitar
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+          <!-- Modal para suspensión temporal -->
+          <div class="modal-backdrop hidden" id="modalBackdrop"></div>
+          <div class="modal hidden" id="suspenderModal">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <%= form_with url: suspender_temporalmente_admin_user_path(@user), 
+                    method: :patch, local: true, class: "w-full" do |form| %>
+                  <div class="modal-header">
+                    <h5 class="modal-title">
+                      <i class="fas fa-user-clock"></i>
+                      Suspender Usuario
+                    </h5>
+                  </div>
+                  <div class="modal-body">
+                    <p>¿Por cuántas horas desea suspender a <strong><%= @user.nombre_completo %></strong>?</p>
+                    <%= form.number_field :horas_suspension, 
+                        placeholder: 'Número de horas',
+                        min: 1,
+                        max: 8760,
+                        class: 'modal-input',
+                        required: true %>
+                    <small style="color: #6b7280; font-size: 0.75rem; margin-top: 0.5rem; display: block;">Máximo 8760 horas (1 año)</small>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="modal-btn secondary modal-close">Cancelar</button>
+                    <%= form.submit 'Suspender', class: 'modal-btn primary' %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+
+          <%= link_to admin_users_path, class: 'back-btn' do %>
+            <i class="fas fa-arrow-left"></i>
+            Volver a la lista
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Gestión de modales personalizados
+  initModals();
+  
+  // Inicializar animaciones
+  initAnimations();
+});
+
+function initModals() {
+  // Abrir modal
+  const modalTrigger = document.querySelector('[data-bs-toggle="modal"]');
+  const modal = document.getElementById('suspenderModal');
+  const backdrop = document.getElementById('modalBackdrop');
+  
+  if (modalTrigger && modal && backdrop) {
+    modalTrigger.addEventListener('click', function(e) {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+      backdrop.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      // Focus en el primer input
+      const firstInput = modal.querySelector('input[type="number"]');
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100);
+      }
+    });
+
+    // Cerrar modal
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', function() {
+        modal.classList.add('hidden');
+        backdrop.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
+    }
+
+    // Cerrar modal al hacer click en el backdrop
+    backdrop.addEventListener('click', function() {
+      modal.classList.add('hidden');
+      backdrop.classList.add('hidden');
+      document.body.style.overflow = '';
+    });
+
+    // Cerrar modal con Escape
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        backdrop.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  }
+}
+
+function initAnimations() {
+  // Observador de intersección para animaciones escalonadas
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, {
+    threshold: 0.1
+  });
+
+  // Observar todas las secciones de información
+  document.querySelectorAll('.info-section').forEach((section) => {
+    observer.observe(section);
+  });
+}
+
+// Función para confirmar acciones críticas
+function confirmCriticalAction(action, userName) {
+  const messages = {
+    'activate': `¿Está seguro de activar a ${userName}?`,
+    'suspend': `¿Está seguro de suspender a ${userName}?`,
+    'disable': `¿Está seguro de inhabilitar a ${userName}? Esta acción restringirá completamente el acceso hasta reactivación manual.`
+  };
+  
+  return confirm(messages[action] || '¿Está seguro de realizar esta acción?');
+}
+
+// Efecto de hover mejorado para botones de acción
+document.querySelectorAll('.action-btn').forEach(btn => {
+  btn.addEventListener('mouseenter', function() {
+    this.style.transform = 'translateY(-2px) scale(1.02)';
+  });
+  
+  btn.addEventListener('mouseleave', function() {
+    this.style.transform = 'translateY(0) scale(1)';
+  });
+});
+
+// Auto-hide de mensajes flash si existen
+setTimeout(function() {
+  const flashMessages = document.querySelectorAll('.alert');
+  flashMessages.forEach(function(message) {
+    if (message.classList.contains('alert-success') || message.classList.contains('alert-info')) {
+      message.style.transition = 'opacity 0.5s, transform 0.5s';
+      message.style.opacity = '0';
+      message.style.transform = 'translateY(-10px)';
+      
+      setTimeout(function() {
+        message.remove();
+      }, 500);
+    }
+  });
+}, 5000);
+
+// Validación en tiempo real del formulario de suspensión
+document.addEventListener('input', function(e) {
+  if (e.target && e.target.name === 'horas_suspension') {
+    const value = parseInt(e.target.value);
+    const submitBtn = document.querySelector('.modal-btn.primary');
+    
+    if (value && value >= 1 && value <= 8760) {
+      e.target.style.borderColor = '#10b981';
+      if (submitBtn) submitBtn.disabled = false;
+    } else {
+      e.target.style.borderColor = '#ef4444';
+      if (submitBtn) submitBtn.disabled = true;
+    }
+  }
+});
+</script>

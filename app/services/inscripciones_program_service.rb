@@ -109,7 +109,7 @@ class InscripcionesProgramService < ApplicationService
   end
 
   def self.create_formulario_for_creation(program, formulario_params)
-    base_params = { program: program, es_plantilla: false }
+    base_params = { program: program, es_plantilla: false}
         
     case program.tipo
     when 'preincubacion'

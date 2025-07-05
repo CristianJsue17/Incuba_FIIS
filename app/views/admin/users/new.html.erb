@@ -1,0 +1,802 @@
+<!-- views/admin/users/new.html.erb -->
+
+<style>
+/* === ESTILOS MODERNOS PARA CREAR USUARIOS BASADOS EN EVENTOS === */
+
+/* Contenedor principal del formulario mejorado */
+.form-container {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+}
+
+/* Header mejorado con gradiente azul moderno */
+.form-header {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 2rem;
+  border-bottom: 1px solid #e5e7eb;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Efectos decorativos en el header */
+.form-header::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+}
+
+.form-header::after {
+  content: '';
+  position: absolute;
+  bottom: -30px;
+  left: -30px;
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+}
+
+.form-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.form-title i {
+  margin-right: 1rem;
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+/* Body del formulario */
+.form-body {
+  padding: 2rem;
+}
+
+/* Secciones del formulario mejoradas */
+.form-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background-color: #f8fafc;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.form-section:hover {
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+  border-color: #10b981;
+  transform: translateY(-1px);
+}
+
+/* Títulos de sección mejorados */
+.section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.section-title i {
+  color: #10b981;
+  font-size: 1.125rem;
+}
+
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Etiquetas de formulario mejoradas */
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.form-label.required::after {
+  content: " *";
+  color: #ef4444;
+  font-weight: 700;
+}
+
+/* Controles de formulario mejorados */
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #111827;
+  background-color: #ffffff;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-control:hover:not(:focus):not(:disabled) {
+  border-color: #9ca3af;
+}
+
+.form-control:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  opacity: 0.7;
+}
+
+/* Placeholders mejorados */
+.form-control::placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.form-control:focus::placeholder {
+  color: #d1d5db;
+}
+
+/* Selects mejorados */
+.form-select {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.25em 1.25em;
+  padding-right: 3rem;
+  appearance: none;
+}
+
+.form-select:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23059669' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+}
+
+/* Textarea mejorado */
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/* Texto de ayuda mejorado */
+.help-text {
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.help-text i {
+  color: #10b981;
+}
+
+/* Alertas mejoradas */
+.alert {
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+.alert-title {
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+}
+
+.alert-title i {
+  font-size: 1.125rem;
+}
+
+.alert-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+
+.alert-list li {
+  margin-bottom: 0.25rem;
+}
+
+/* Grupo de botones mejorado */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #e5e7eb;
+  gap: 1rem;
+}
+
+/* Botones mejorados */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+  left: 100%;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-color: #10b981;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(16, 185, 129, 0.3);
+}
+
+.btn-secondary {
+  background-color: #f8fafc;
+  color: #4b5563;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+  background-color: #e5e7eb;
+  color: #374151;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.btn i {
+  font-size: 0.875rem;
+}
+
+/* Layout mejorado */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+}
+
+.col-md-6 {
+  flex: 0 0 auto;
+  width: 50%;
+  padding: 0 1rem;
+}
+
+.col-md-12 {
+  flex: 0 0 auto;
+  width: 100%;
+  padding: 0 1rem;
+}
+
+/* Divisor de sección */
+.section-divider {
+  margin: 2rem 0;
+  border: none;
+  border-top: 2px solid #e5e7eb;
+}
+
+/* Estados de validación mejorados */
+.form-control.is-invalid {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.form-control.is-invalid:focus {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.form-control.is-valid {
+  border-color: #10b981;
+  background-color: #f0fdf4;
+}
+
+.form-control.is-valid:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+/* Responsive mejorado */
+@media (max-width: 768px) {
+  .col-md-6 {
+    width: 100%;
+  }
+  
+  .form-body {
+    padding: 1.5rem;
+  }
+  
+  .form-header {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+    justify-content: center;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .btn {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .section-title {
+    font-size: 1.125rem;
+  }
+  
+  .form-section {
+    padding: 1rem;
+  }
+}
+
+/* Animaciones mejoradas */
+.form-container {
+  animation: slideInUp 0.4s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-section {
+  animation: fadeInStagger 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+.form-section:nth-child(1) { animation-delay: 0.1s; }
+.form-section:nth-child(2) { animation-delay: 0.2s; }
+.form-section:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes fadeInStagger {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Efectos especiales */
+.form-control:focus + .form-label,
+.form-control:not(:placeholder-shown) + .form-label {
+  color: #10b981;
+}
+
+/* Mejoras de accesibilidad */
+.form-control:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Contenedor principal ajustado */
+.container-fluid {
+  padding: 2rem 1rem;
+}
+
+.container-fluid .row {
+  margin: 0;
+}
+
+.container-fluid .col-md-8 {
+  flex: 0 0 auto;
+  width: 66.666667%;
+}
+
+.container-fluid .offset-md-2 {
+  margin-left: 16.666667%;
+}
+
+@media (max-width: 768px) {
+  .container-fluid .col-md-8,
+  .container-fluid .offset-md-2 {
+    width: 100%;
+    margin-left: 0;
+  }
+  
+  .container-fluid {
+    padding: 1rem 0.5rem;
+  }
+}
+
+/* Estados hover para elementos interactivos */
+.form-group:hover .form-label {
+  color: #059669;
+}
+
+/* Scroll suave para elementos con errores */
+.form-control.is-invalid {
+  scroll-margin-top: 100px;
+}
+
+/* Efectos de enfoque mejorados */
+.form-group {
+  position: relative;
+}
+
+.form-group:focus-within {
+  transform: translateY(-1px);
+}
+
+.form-group:focus-within .form-label {
+  color: #10b981;
+  font-weight: 700;
+}
+
+/* Indicadores visuales para campos requeridos */
+.form-label.required {
+  position: relative;
+}
+
+.form-label.required::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 100%;
+  background: linear-gradient(to bottom, #10b981, #059669);
+  border-radius: 1px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.form-group:focus-within .form-label.required::before {
+  opacity: 1;
+}
+
+/* Mejoras en los placeholders */
+.form-control:focus::placeholder {
+  transform: translateY(-2px);
+  font-size: 0.8rem;
+}
+
+/* Efectos de loading para el botón submit */
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+}
+
+/* Separadores visuales mejorados */
+.section-divider {
+  background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+  height: 1px;
+  border: none;
+  margin: 2.5rem 0;
+}
+
+/* Información de ayuda con iconos */
+.help-text {
+  background-color: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Transiciones suaves para todos los elementos interactivos */
+* {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* Mejoras específicas para selects */
+.form-select option {
+  padding: 0.5rem;
+  color: #374151;
+}
+
+.form-select option:checked {
+  background-color: #10b981;
+  color: white;
+}
+</style>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="form-container">
+        <div class="form-header">
+          <h4 class="form-title">
+            <i class="fas fa-user-plus"></i>
+            Crear Nuevo Usuario
+          </h4>
+        </div>
+        
+        <div class="form-body">
+          <%= form_with model: [:admin, @user], local: true do |form| %>
+            <% if @user.errors.any? %>
+              <div class="alert alert-danger">
+                <h6 class="alert-title">
+                  <i class="fas fa-exclamation-triangle mr-2"></i>
+                  <%= pluralize(@user.errors.count, "error") %> impidió que el usuario fuera guardado:
+                </h6>
+                <ul class="alert-list">
+                  <% @user.errors.full_messages.each do |message| %>
+                    <li><%= message %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <div class="row">
+              <!-- Información Personal -->
+              <div class="col-md-6">
+                <h5 class="section-title">
+                  <i class="fas fa-user"></i>
+                  Información Personal
+                </h5>
+                
+                <div class="form-group">
+                  <%= form.label :nombre, class: 'form-label required' %>
+                  <%= form.text_field :nombre, class: 'form-control', placeholder: 'Ingrese el nombre' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :apellido, class: 'form-label required' %>
+                  <%= form.text_field :apellido, class: 'form-control', placeholder: 'Ingrese el apellido' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :email, class: 'form-label required' %>
+                  <%= form.email_field :email, class: 'form-control', placeholder: 'usuario@ejemplo.com' %>
+                  <small class="help-text">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Se generará una contraseña temporal automáticamente
+                  </small>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :dni, 'DNI', class: 'form-label' %>
+                  <%= form.text_field :dni, class: 'form-control', placeholder: '12345678' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :telefono, 'Teléfono', class: 'form-label' %>
+                  <%= form.text_field :telefono, class: 'form-control', placeholder: '+51 999 999 999' %>
+                </div>
+              </div>
+
+              <!-- Información Académica/Profesional -->
+              <div class="col-md-6">
+                <h5 class="section-title">
+                  <i class="fas fa-graduation-cap"></i>
+                  Información Académica/Profesional
+                </h5>
+                
+                <div class="form-group">
+                  <%= label_tag :role_id, 'Rol', class: 'form-label required' %>
+                  <%= select_tag :role_id, 
+                      options_from_collection_for_select(@roles, :id, :nombre), 
+                      { prompt: 'Seleccionar rol...', class: 'form-control form-select' } %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :occupation_id, 'Ocupación', class: 'form-label required' %>
+                  <%= form.collection_select :occupation_id, @occupations, :id, :nombre, 
+                      { prompt: 'Seleccionar ocupación...' }, { class: 'form-control form-select' } %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :facultad, class: 'form-label' %>
+                  <%= form.text_field :facultad, class: 'form-control', placeholder: 'Ej: Ingeniería de Sistemas' %>
+                </div>
+
+                <div class="form-group">
+                  <%= form.label :proviene, 'Procedencia', class: 'form-label' %>
+                  <%= form.text_field :proviene, class: 'form-control', placeholder: 'Ej: Universidad Nacional' %>
+                </div>
+              </div>
+            </div>
+
+            <hr class="section-divider">
+
+            <!-- Información Adicional -->
+            <div class="row">
+              <div class="col-md-12">
+                <h5 class="section-title">
+                  <i class="fas fa-info-circle"></i>
+                  Información Adicional
+                </h5>
+                
+                <div class="form-group">
+                  <%= form.label :descripcion, 'Descripción', class: 'form-label' %>
+                  <%= form.text_area :descripcion, class: 'form-control form-textarea', rows: 3, placeholder: 'Descripción opcional del usuario...' %>
+                  <small class="help-text">Información adicional sobre el usuario (opcional)</small>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <%= form.label :cantidad_miembros_equipo, 'Cantidad de Miembros del Equipo', class: 'form-label' %>
+                      <%= form.number_field :cantidad_miembros_equipo, class: 'form-control', min: 1, placeholder: '1' %>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <%= form.label :nombre_proyectos, 'Nombre de Proyectos', class: 'form-label' %>
+                      <%= form.text_field :nombre_proyectos, class: 'form-control', placeholder: 'Ej: App de delivery, Sistema web...' %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="btn-group">
+              <%= link_to admin_users_path, class: 'btn btn-secondary' do %>
+                <i class="fas fa-times"></i>
+                Cancelar
+              <% end %>
+              <%= form.submit 'Crear Usuario', class: 'btn btn-primary' %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Validación en tiempo real
+  const form = document.querySelector('form');
+  const requiredFields = form.querySelectorAll('input[required], select[required]');
+  
+  requiredFields.forEach(field => {
+    field.addEventListener('blur', function() {
+      validateField(this);
+    });
+    
+    field.addEventListener('input', function() {
+      if (this.classList.contains('is-invalid')) {
+        validateField(this);
+      }
+    });
+  });
+  
+  function validateField(field) {
+    if (field.value.trim() === '') {
+      field.classList.add('is-invalid');
+      field.classList.remove('is-valid');
+    } else {
+      field.classList.remove('is-invalid');
+      field.classList.add('is-valid');
+    }
+  }
+  
+  // Validación del email
+  const emailField = document.querySelector('input[type="email"]');
+  if (emailField) {
+    emailField.addEventListener('blur', function() {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (this.value && !emailRegex.test(this.value)) {
+        this.classList.add('is-invalid');
+        this.classList.remove('is-valid');
+      } else if (this.value) {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      }
+    });
+  }
+  
+  // Validación antes del envío
+  form.addEventListener('submit', function(e) {
+    let hasErrors = false;
+    
+    // Verificar campos requeridos
+    requiredFields.forEach(field => {
+      if (field.value.trim() === '') {
+        field.classList.add('is-invalid');
+        hasErrors = true;
+      }
+    });
+    
+    // Verificar email válido
+    if (emailField && emailField.value) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(emailField.value)) {
+        emailField.classList.add('is-invalid');
+        hasErrors = true;
+      }
+    }
+    
+    if (hasErrors) {
+      e.preventDefault();
+      alert('Por favor, complete todos los campos requeridos correctamente.');
+      return false;
+    }
+  });
+  
+  // Mejorar UX de los selects
+  const selects = document.querySelectorAll('select');
+  selects.forEach(select => {
+    select.addEventListener('change', function() {
+      if (this.value !== '') {
+        this.classList.remove('is-invalid');
+        this.classList.add('is-valid');
+      }
+    });
+  });
+  
+  // Auto-focus en el primer campo
+  const firstInput = form.querySelector('input[type="text"]');
+  if (firstInput) {
+    setTimeout(() => firstInput.focus(), 100);
+  }
+});
+</script>

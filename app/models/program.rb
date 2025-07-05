@@ -279,6 +279,62 @@ class Program < ApplicationRecord
   # Callback para actualizar estado automáticamente
   #before_save :update_estado_automatico
 
+  #PARA PARTE DE INSCRIPCIONES
+  # Método para obtener todas las inscripciones de un programa
+  def todas_inscripciones
+    case tipo
+    when 'preincubacion'
+      formulario_programa_preincubacions.where(es_plantilla: [false, nil]).order(created_at: :asc)
+    when 'incubacion'
+      formulario_programa_incubacions.where(es_plantilla: [false, nil]).order(created_at: :asc)
+    when 'innovacion'
+      formulario_programa_innovacions.where(es_plantilla: [false, nil]).order(created_at: :asc)
+    else
+      []
+    end
+  end
+
+  # Método para contar inscripciones por estado
+def inscripciones_por_estado
+  inscripciones = todas_inscripciones
+  {
+    total: inscripciones.count,
+    pendiente: inscripciones.where(estado: 'pendiente').count,
+    aprobado: inscripciones.where(estado: 'aprobado').count,
+    rechazado: inscripciones.where(estado: 'rechazado').count
+  }
+end
+
+# Método para obtener la inscripción más reciente
+def inscripcion_mas_reciente
+  todas_inscripciones.last
+end
+
+# Método para verificar si tiene inscripciones
+def tiene_inscripciones?
+  todas_inscripciones.any?
+end
+
+# Método para obtener inscripciones recientes (últimos 7 días)
+def inscripciones_recientes
+  todas_inscripciones.where(created_at: 7.days.ago..Time.current)
+end
+
+# Método para exportar datos básicos
+def datos_basicos_inscripciones
+  todas_inscripciones.map do |inscripcion|
+    {
+      id: inscripcion.id,
+      nombre_completo: "#{inscripcion.nombre_lider} #{inscripcion.apellidos_lider}",
+      correo: inscripcion.correo_lider,
+      telefono: inscripcion.telefono_lider,
+      estado: inscripcion.estado,
+      fecha_inscripcion: inscripcion.created_at,
+      tipo_programa: tipo_humanizado
+    }
+  end
+end
+
   private
 
   def fecha_vencimiento_mayor_publicacion
@@ -316,5 +372,7 @@ class Program < ApplicationRecord
       errors.add(:tipo, "no se puede cambiar porque ya hay #{total_inscripciones} inscripción(es) registrada(s)")
     end
   end
+
+
 
 end

@@ -1,0 +1,118 @@
+# app/views/admin/inscripciones/events/export_excel.xlsx.axlsx
+# REEMPLAZA TODO EL ARCHIVO con esta versión simplificada:
+
+wb = xlsx_package.workbook
+
+# Hoja 1: Información del evento
+wb.add_worksheet(name: "Información del Evento") do |sheet|
+  # Estilos
+  title_style = sheet.styles.add_style(
+    sz: 16, b: true, fg_color: "1f2937",
+    alignment: { horizontal: :center }
+  )
+  
+  header_style = sheet.styles.add_style(
+    sz: 12, b: true, fg_color: "1f2937",
+    fill_color: "f3f4f6", border: Axlsx::STYLE_THIN_BORDER
+  )
+  
+  data_style = sheet.styles.add_style(
+    sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+    alignment: { wrap_text: true }
+  )
+  
+  # Título
+  sheet.add_row ["REPORTE DE INSCRIPCIONES - #{@event.titulo.upcase}"], style: title_style
+  sheet.add_row [] # Fila vacía
+  
+  # Información del evento
+  sheet.add_row ["INFORMACIÓN DEL EVENTO"], style: header_style
+  sheet.add_row ["Título:", @event.titulo], style: [header_style, data_style]
+  sheet.add_row ["Encargado:", @event.encargado], style: [header_style, data_style]
+  sheet.add_row ["Estado:", @event.estado.humanize], style: [header_style, data_style]
+  sheet.add_row ["Fecha Creación:", @event.created_at.strftime("%d/%m/%Y %H:%M")], style: [header_style, data_style]
+  sheet.add_row ["Fecha Publicación:", @event.fecha_publicacion&.strftime("%d/%m/%Y %H:%M")], style: [header_style, data_style]
+  sheet.add_row ["Fecha Vencimiento:", @event.fecha_vencimiento&.strftime("%d/%m/%Y %H:%M")], style: [header_style, data_style]
+  sheet.add_row ["Descripción:", @event.descripcion], style: [header_style, data_style]
+  
+  # Estadísticas
+  stats = @event.inscripciones_por_estado
+  sheet.add_row [] # Fila vacía
+  sheet.add_row ["ESTADÍSTICAS DE INSCRIPCIONES"], style: header_style
+  sheet.add_row ["Total Inscripciones:", stats[:total]], style: [header_style, data_style]
+  sheet.add_row ["Pendientes:", stats[:pendiente]], style: [header_style, data_style]
+  sheet.add_row ["Aprobadas:", stats[:aprobado]], style: [header_style, data_style]
+  sheet.add_row ["Rechazadas:", stats[:rechazado]], style: [header_style, data_style]
+  
+  # Ajustar ancho de columnas
+  sheet.column_widths 20, 50
+end
+
+# Hoja 2: Lista de inscripciones
+if @inscripciones.any?
+  wb.add_worksheet(name: "Lista de Inscripciones") do |sheet|
+    # Estilos
+    header_style = sheet.styles.add_style(
+      sz: 11, b: true, fg_color: "000000",
+      fill_color: "3b82f6", border: Axlsx::STYLE_THIN_BORDER,
+      alignment: { horizontal: :center }
+    )
+    
+    data_style = sheet.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      alignment: { wrap_text: true }
+    )
+    
+    estado_pendiente = sheet.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "fef3c7", fg_color: "92400e"
+    )
+    
+    estado_aprobado = sheet.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "dcfce7", fg_color: "166534"
+    )
+    
+    estado_rechazado = sheet.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "fee2e2", fg_color: "991b1b"
+    )
+    
+    # Encabezados - SIMPLIFICADOS para eventos
+    headers = [
+      "ID", "Nombre del Líder", "Apellidos", "Correo Electrónico", 
+      "Teléfono", "Estado", "Fecha de Inscripción"
+    ]
+    
+    sheet.add_row headers, style: header_style
+    
+    # Datos
+    @inscripciones.each do |inscripcion|
+      estado_style = case inscripcion.estado
+                    when 'pendiente' then estado_pendiente
+                    when 'aprobado' then estado_aprobado  
+                    when 'rechazado' then estado_rechazado
+                    else data_style
+                    end
+      
+      row_data = [
+        inscripcion.id,
+        inscripcion.nombre_lider || "N/A",
+        inscripcion.apellidos_lider || "N/A",
+        inscripcion.correo_lider || "N/A",
+        inscripcion.telefono_lider || "N/A",
+        (inscripcion.estado || "Pendiente").humanize,
+        inscripcion.created_at.strftime("%d/%m/%Y %H:%M")
+      ]
+      
+      # Aplicar estilo de estado solo a la columna de estado
+      row_styles = Array.new(row_data.length, data_style)
+      row_styles[5] = estado_style # Columna de estado
+      
+      sheet.add_row row_data, style: row_styles
+    end
+    
+    # Ajustar ancho de columnas
+    sheet.column_widths 5, 20, 20, 25, 15, 12, 18
+  end
+end

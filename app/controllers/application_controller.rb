@@ -3,28 +3,53 @@ class ApplicationController < ActionController::Base
   
   # AGREGAR ESTAS LÍNEAS PARA MANEJO DE IDIOMAS
   before_action :set_locale
+  before_action :check_user_status  # ← NUEVA LÍNEA PARA VERIFICAR ESTADO DEL USUARIO
   
   # NUEVO: Configuración de caché para roles
   ROLE_CACHE_DURATION = 15.minutes # Duración del caché de roles
   
   # Método para redirección después de login
-  def after_sign_in_path_for(resource)
-    return root_path unless resource.is_a?(User)
+def after_sign_in_path_for(resource)
+  return root_path unless resource.is_a?(User)
+  
+  # NUEVO: Verificar estado del usuario al hacer login
+  unless resource.puede_acceder?
+    # NO hacer redirect aquí, solo sign_out y retornar la URL de login
+    sign_out resource
     
-    # Limpiar caché de roles al hacer login para asegurar datos frescos
-    clear_user_roles_cache(resource.id)
-    
-    case
-    when user_has_role?(resource, 'Administrador')
-      admin_dashboard_path
-    when user_has_role?(resource, 'Participante')
-      participante_dashboard_path
-    when user_has_role?(resource, 'Mentor')
-      mentor_dashboard_path
+    # Establecer el mensaje flash para mostrar después del redirect
+    case resource.estado
+    when 'inabilitado'
+      flash[:alert] = 'Su cuenta ha sido inhabilitada. Contacte al administrador.'
+    when 'suspendido'
+      if resource.suspension_activa?
+        flash[:alert] = "Su cuenta está suspendida temporalmente. Tiempo restante: #{resource.tiempo_restante_suspension} horas."
+      else
+        flash[:alert] = 'Su cuenta estaba suspendida pero la suspensión ha expirado. Reintente el login.'
+      end
     else
-      root_path
+      flash[:alert] = 'Su cuenta no está activa. Contacte al administrador.'
     end
+    
+    return new_user_session_path  # ← RETORNAR LA URL, NO HACER REDIRECT
   end
+  
+  # Limpiar caché de roles al hacer login para asegurar datos frescos
+  clear_user_roles_cache(resource.id)
+  
+  case
+  when user_has_role?(resource, 'Administrador')
+    admin_dashboard_path
+  when user_has_role?(resource, 'Participante')
+    participante_dashboard_path
+  when user_has_role?(resource, 'Mentor')
+    mentor_dashboard_path
+  else
+    root_path
+  end
+end
+    
+
   
   # Métodos helper para verificación de roles CON CACHÉ
   helper_method :current_admin?, :current_participante?, :current_mentor?, :user_roles_cached
@@ -39,6 +64,31 @@ class ApplicationController < ActionController::Base
   end
   
   private
+  
+  # NUEVO: Verificar estado del usuario en cada request
+  def check_user_status
+    return unless user_signed_in?
+    
+    if current_user.inabilitado?
+      sign_out current_user
+      redirect_to new_user_session_path, alert: 'Su cuenta ha sido inhabilitada. Contacte al administrador.'
+      return
+    elsif current_user.suspendido?
+      if current_user.suspension_activa?
+        sign_out current_user
+        tiempo_restante = current_user.tiempo_restante_suspension
+        redirect_to new_user_session_path, 
+                   alert: "Su cuenta está suspendida temporalmente. Tiempo restante: #{tiempo_restante} horas."
+        return
+      else
+        # La suspensión expiró, reactivar automáticamente
+        current_user.update(estado: 'activo', suspension_until: nil)
+        # Refrescar caché después del cambio
+        refresh_user_roles_cache(current_user.id)
+        Rails.logger.info "✅ Usuario #{current_user.email} reactivado automáticamente - suspensión expirada"
+      end
+    end
+  end
   
   # AGREGAR MÉTODO PARA ESTABLECER IDIOMA
   def set_locale
@@ -66,6 +116,7 @@ class ApplicationController < ActionController::Base
   # Método principal para verificar roles con caché
   def user_has_role?(user, role_name)
     return false unless user
+    return false unless user.puede_acceder? # ← NUEVA VERIFICACIÓN DE ESTADO
     
     cached_roles = get_user_roles_cached(user.id)
     cached_roles.include?(role_name)
@@ -77,7 +128,7 @@ class ApplicationController < ActionController::Base
     
     Rails.cache.fetch(cache_key, expires_in: ROLE_CACHE_DURATION) do
       user = User.find_by(id: user_id)
-      if user
+      if user && user.puede_acceder? # ← NUEVA VERIFICACIÓN DE ESTADO
         # Cargar roles y crear array de nombres
         roles_array = user.roles.pluck(:nombre)
         Rails.logger.info "🔄 Cargando roles desde BD para usuario #{user_id}: #{roles_array}"
@@ -100,25 +151,25 @@ class ApplicationController < ActionController::Base
     clear_user_roles_cache(current_user.id) if current_user
   end
   
-  # Métodos helper mejorados CON CACHÉ
+  # Métodos helper mejorados CON CACHÉ Y VERIFICACIÓN DE ESTADO
   def current_admin?
-    return false unless current_user
+    return false unless current_user&.puede_acceder?
     user_has_role?(current_user, 'Administrador')
   end
   
   def current_participante?
-    return false unless current_user
+    return false unless current_user&.puede_acceder?
     user_has_role?(current_user, 'Participante')
   end
   
   def current_mentor?
-    return false unless current_user
+    return false unless current_user&.puede_acceder?
     user_has_role?(current_user, 'Mentor')
   end
   
   # Método helper para obtener todos los roles cacheados del usuario actual
   def user_roles_cached
-    return [] unless current_user
+    return [] unless current_user&.puede_acceder?
     get_user_roles_cached(current_user.id)
   end
   
@@ -148,7 +199,9 @@ class ApplicationController < ActionController::Base
     {
       cache_duration: ROLE_CACHE_DURATION,
       current_user_cached: current_user ? Rails.cache.exist?("user_roles_#{current_user.id}") : false,
-      current_user_roles: current_user ? user_roles_cached : []
+      current_user_roles: current_user ? user_roles_cached : [],
+      current_user_status: current_user&.estado,
+      can_access: current_user&.puede_acceder?
     }
   end
   
@@ -174,6 +227,8 @@ class ApplicationController < ActionController::Base
     
     Rails.logger.info "🐛 DEBUG - Roles Cache Info:"
     Rails.logger.info "   Usuario: #{current_user.email}"
+    Rails.logger.info "   Estado: #{current_user.estado}"
+    Rails.logger.info "   Puede acceder: #{current_user.puede_acceder?}"
     Rails.logger.info "   Cache key: user_roles_#{current_user.id}"
     Rails.logger.info "   Cache existe: #{Rails.cache.exist?("user_roles_#{current_user.id}")}"
     Rails.logger.info "   Roles cacheados: #{user_roles_cached}"

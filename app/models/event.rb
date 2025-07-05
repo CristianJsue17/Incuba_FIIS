@@ -1,4 +1,4 @@
-# app/models/event.rb - ACTUALIZACIÓN CON MÚLTIPLES IMÁGENES
+# app/models/event.rb - ACTUALIZACIÓN COMPLETA CON MÉTODOS DE FECHA
 
 class Event < ApplicationRecord
   # Asociaciones
@@ -43,12 +43,58 @@ class Event < ApplicationRecord
 
   # NUEVO: Método para obtener total de inscripciones (formularios completados)
   def total_inscripciones
-    formulario_eventos.where(es_plantilla: false).count
+    formulario_eventos.where(es_plantilla: [false, nil]).count
   end
 
   # NUEVO: Método para obtener o crear plantilla de formulario
   def formulario_asociado
     formulario_plantilla_evento || build_formulario_plantilla_evento(es_plantilla: true)
+  end
+
+  # NUEVO: Método para obtener todas las inscripciones de un evento
+  def todas_inscripciones
+    formulario_eventos.where(es_plantilla: [false, nil]).order(created_at: :asc)
+  end
+
+  # NUEVO: Método para contar inscripciones por estado
+  def inscripciones_por_estado
+    inscripciones = todas_inscripciones
+    {
+      total: inscripciones.count,
+      pendiente: inscripciones.where(estado: 'pendiente').count,
+      aprobado: inscripciones.where(estado: 'aprobado').count,
+      rechazado: inscripciones.where(estado: 'rechazado').count
+    }
+  end
+
+  # NUEVO: Método para obtener la inscripción más reciente
+  def inscripcion_mas_reciente
+    todas_inscripciones.last
+  end
+
+  # NUEVO: Método para verificar si tiene inscripciones
+  def tiene_inscripciones?
+    todas_inscripciones.any?
+  end
+
+  # NUEVO: Método para obtener inscripciones recientes (últimos 7 días)
+  def inscripciones_recientes
+    todas_inscripciones.where(created_at: 7.days.ago..Time.current)
+  end
+
+  # NUEVO: Método para exportar datos básicos
+  def datos_basicos_inscripciones
+    todas_inscripciones.map do |inscripcion|
+      {
+        id: inscripcion.id,
+        nombre_completo: "#{inscripcion.nombre_lider} #{inscripcion.apellidos_lider}",
+        correo: inscripcion.correo_lider,
+        telefono: inscripcion.telefono_lider,
+        estado: inscripcion.estado,
+        fecha_inscripcion: inscripcion.created_at,
+        tipo_evento: titulo
+      }
+    end
   end
 
   # NUEVO: Método para obtener la imagen principal (primera imagen)
@@ -66,7 +112,93 @@ class Event < ApplicationRecord
     imagen_principal
   end
 
-  # Métodos existentes (mantener todos)
+  # =============================================================================
+  # MÉTODOS DE FECHA Y TIEMPO (NUEVOS - SIMILARES A PROGRAM)
+  # =============================================================================
+
+  # Método principal para mostrar tiempo hasta/desde vencimiento
+  def tiempo_hasta_vencimiento
+    return "Sin fecha de vencimiento" if fecha_vencimiento.blank?
+    
+    ahora = Time.current
+    
+    if fecha_vencimiento > ahora
+      diferencia = fecha_vencimiento - ahora
+      "Vence #{formato_tiempo_restante(diferencia)} más"
+    else
+      diferencia = ahora - fecha_vencimiento
+      "Venció #{formato_tiempo_transcurrido(diferencia)} atrás"
+    end
+  end
+
+  # Método para time_ago_in_words personalizado en español
+  def tiempo_transcurrido(fecha)
+    return "Fecha no válida" if fecha.blank?
+    
+    ahora = Time.current
+    return "En el futuro" if fecha > ahora
+    
+    diferencia = ahora - fecha
+    formato_tiempo_transcurrido(diferencia)
+  end
+
+  # Método para calcular tiempo restante hasta una fecha
+  def tiempo_restante_hasta(fecha)
+    return "Fecha no válida" if fecha.blank?
+    
+    ahora = Time.current
+    return "Ya venció" if fecha <= ahora
+    
+    diferencia = fecha - ahora
+    formato_tiempo_restante(diferencia)
+  end
+
+  # Método para obtener estado de disponibilidad
+  def estado_disponibilidad
+    return "Sin fechas configuradas" if fecha_publicacion.blank? || fecha_vencimiento.blank?
+    
+    ahora = Time.current
+    
+    case
+    when ahora < fecha_publicacion
+      "Próximamente disponible"
+    when ahora.between?(fecha_publicacion, fecha_vencimiento)
+      "Inscripciones abiertas"
+    else
+      "Inscripciones cerradas"
+    end
+  end
+
+  # Método para verificar urgencia
+  def es_urgente?
+    return false if fecha_vencimiento.blank?
+    fecha_vencimiento.between?(Time.current, 24.hours.from_now)
+  end
+
+  # Método para obtener clase CSS según estado de tiempo
+  def clase_css_tiempo
+    return "tiempo-indefinido" if fecha_vencimiento.blank?
+    
+    ahora = Time.current
+    diferencia = fecha_vencimiento - ahora
+    
+    if diferencia < 0
+      "tiempo-vencido"
+    elsif diferencia < 2.hours
+      "tiempo-critico"
+    elsif diferencia < 1.day
+      "tiempo-urgente"
+    elsif diferencia < 3.days
+      "tiempo-proximo"
+    else
+      "tiempo-normal"
+    end
+  end
+
+  # =============================================================================
+  # MÉTODOS EXISTENTES (MANTENER)
+  # =============================================================================
+
   def puede_inscribirse?
     estado == 'activo' && fecha_vencimiento.present? && fecha_vencimiento > Time.current
   end
@@ -101,38 +233,35 @@ class Event < ApplicationRecord
     end
   end
 
+  # ACTUALIZADO: Mensaje de disponibilidad mejorado
   def mensaje_disponibilidad
+    return "Fechas no configuradas" if fecha_publicacion.blank? || fecha_vencimiento.blank?
+    
+    ahora = Time.current
+    
     case estado
     when 'pendiente'
-      if fecha_publicacion.present?
+      if fecha_publicacion > ahora
         "Las inscripciones estarán disponibles a partir del #{fecha_publicacion.strftime('%d de %B del %Y a las %H:%M')}"
       else
         "Las inscripciones estarán disponibles próximamente"
       end
     when 'activo'
-      if fecha_vencimiento.present?
-        dias_restantes = ((fecha_vencimiento - Time.current) / 1.day).ceil
-        if dias_restantes > 1
-          "Quedan #{dias_restantes} días para inscribirse (hasta el #{fecha_vencimiento.strftime('%d/%m/%Y a las %H:%M')})"
-        elsif dias_restantes == 1
-          "¡Último día para inscribirse! (hasta el #{fecha_vencimiento.strftime('%d/%m/%Y a las %H:%M')})"
+      if fecha_vencimiento > ahora
+        diferencia = fecha_vencimiento - ahora
+        tiempo_restante = formato_tiempo_restante(diferencia)
+        
+        if diferencia < 1.day
+          "¡#{tiempo_restante} para inscribirse! (hasta el #{fecha_vencimiento.strftime('%d/%m/%Y a las %H:%M')})"
         else
-          horas_restantes = ((fecha_vencimiento - Time.current) / 1.hour).ceil
-          if horas_restantes > 0
-            "¡Quedan #{horas_restantes} horas para inscribirse!"
-          else
-            "Las inscripciones finalizan muy pronto"
-          end
+          "Quedan #{tiempo_restante} para inscribirse (hasta el #{fecha_vencimiento.strftime('%d/%m/%Y a las %H:%M')})"
         end
       else
         "Inscripciones disponibles"
       end
     when 'finalizado'
-      if fecha_vencimiento.present?
-        "Las inscripciones finalizaron el #{fecha_vencimiento.strftime('%d de %B del %Y a las %H:%M')}"
-      else
-        "Las inscripciones han finalizado"
-      end
+      tiempo_transcurrido = formato_tiempo_transcurrido(ahora - fecha_vencimiento)
+      "Las inscripciones finalizaron #{tiempo_transcurrido} atrás (el #{fecha_vencimiento.strftime('%d de %B del %Y a las %H:%M')})"
     when 'inactivo'
       "Este evento ya no está disponible"
     else
@@ -187,6 +316,59 @@ class Event < ApplicationRecord
   end
 
   private
+
+  # =============================================================================
+  # MÉTODOS PRIVADOS PARA FORMATEAR TIEMPO
+  # =============================================================================
+
+  # Formatear tiempo restante de manera legible en español
+  def formato_tiempo_restante(diferencia_segundos)
+    if diferencia_segundos < 1.hour
+      minutos = (diferencia_segundos / 1.minute).round
+      "#{minutos} minuto#{'s' if minutos != 1}"
+    elsif diferencia_segundos < 1.day
+      horas = (diferencia_segundos / 1.hour).round
+      "#{horas} hora#{'s' if horas != 1}"
+    elsif diferencia_segundos < 1.week
+      dias = (diferencia_segundos / 1.day).round
+      "#{dias} día#{'s' if dias != 1}"
+    elsif diferencia_segundos < 1.month
+      semanas = (diferencia_segundos / 1.week).round
+      "#{semanas} semana#{'s' if semanas != 1}"
+    else
+      meses = (diferencia_segundos / 1.month).round
+      "#{meses} mes#{'es' if meses != 1}"
+    end
+  end
+
+  # Formatear tiempo transcurrido de manera legible en español
+  def formato_tiempo_transcurrido(diferencia_segundos)
+    if diferencia_segundos < 1.minute
+      "unos segundos"
+    elsif diferencia_segundos < 1.hour
+      minutos = (diferencia_segundos / 1.minute).round
+      "#{minutos} minuto#{'s' if minutos != 1}"
+    elsif diferencia_segundos < 1.day
+      horas = (diferencia_segundos / 1.hour).round
+      "#{horas} hora#{'s' if horas != 1}"
+    elsif diferencia_segundos < 1.week
+      dias = (diferencia_segundos / 1.day).round
+      "#{dias} día#{'s' if dias != 1}"
+    elsif diferencia_segundos < 1.month
+      semanas = (diferencia_segundos / 1.week).round
+      "#{semanas} semana#{'s' if semanas != 1}"
+    elsif diferencia_segundos < 1.year
+      meses = (diferencia_segundos / 1.month).round
+      "#{meses} mes#{'es' if meses != 1}"
+    else
+      años = (diferencia_segundos / 1.year).round
+      "#{años} año#{'s' if años != 1}"
+    end
+  end
+
+  # =============================================================================
+  # MÉTODOS PRIVADOS EXISTENTES (MANTENER)
+  # =============================================================================
 
   # NUEVO: Validación para múltiples imágenes
   def validate_images_type_and_size

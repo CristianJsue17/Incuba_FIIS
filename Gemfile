@@ -20,6 +20,16 @@ gem 'devise'
 # para paginacion
 gem 'kaminari'
 
+# Para exportar a Excel
+gem 'caxlsx'
+gem 'caxlsx_rails'
+
+# Para exportar a PDF (Prawn - más profesional)
+gem 'prawn'
+gem 'prawn-table'
+gem 'prawn-svg' # Para íconos SVG si los necesitas
+
+
 # Use JavaScript with ESM import maps 
 gem "importmap-rails"
 

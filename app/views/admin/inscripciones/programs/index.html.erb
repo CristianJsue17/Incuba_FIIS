@@ -1,0 +1,1567 @@
+<div class="inscripciones-container">
+  <!-- Header Section -->
+  <div class="inscripciones-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h1 class="title">
+          <i class="fas fa-clipboard-list"></i>
+          Inscripciones Recibidas
+        </h1>
+        <p class="subtitle">Gestiona todas las inscripciones de programas</p>
+      </div>
+      
+      <div class="header-actions">
+        <%= link_to export_all_excel_admin_inscripciones_programs_path(format: :xlsx), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-excel"></i>
+          <span>Exportar Todo Excel</span>
+        <% end %>
+        
+        <%= link_to export_all_pdf_admin_inscripciones_programs_path(format: :pdf), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-pdf"></i>
+          <span>Exportar Todo PDF</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fas fa-clipboard-list"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:total_inscripciones] %></div>
+          <div class="stat-label">Total Inscripciones</div>
+        </div>
+      </div>
+
+      <div class="stat-card pendientes">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:pendientes] %></div>
+          <div class="stat-label">Pendientes</div>
+        </div>
+      </div>
+
+      <div class="stat-card aprobadas">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:aprobadas] %></div>
+          <div class="stat-label">Aprobadas</div>
+        </div>
+      </div>
+
+      <div class="stat-card rechazadas">
+        <div class="stat-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:rechazadas] %></div>
+          <div class="stat-label">Rechazadas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <%= form_with url: admin_inscripciones_programs_path, method: :get, 
+        class: "filters-form", local: true do |f| %>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <%= f.text_field :search, value: params[:search], 
+              placeholder: "Buscar programa por título...", 
+              class: "filter-input" %>
+          <div class="filter-icon">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <%= f.select :tipo, options_for_select([
+            ['Todos los tipos', ''],
+            ['Preincubación', 'preincubacion'],
+            ['Incubación', 'incubacion'],
+            ['Innovación', 'innovacion']
+          ], params[:tipo]), {}, { class: "filter-select" } %>
+          <div class="filter-icon">
+            <i class="fas fa-filter"></i>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <%= f.submit "Filtrar", class: "btn btn-primary" %>
+          <%= link_to "Limpiar", admin_inscripciones_programs_path, 
+              class: "btn btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Programs Grid -->
+  <div class="programs-grid">
+    <% @programs.each do |program| %>
+      <div class="program-card" data-program-id="<%= program.id %>">
+        <div class="program-header">
+          <div class="program-type">
+            <% case program.tipo %>
+            <% when 'preincubacion' %>
+              <span class="type-badge preincubacion">
+                <i class="fas fa-seedling"></i>
+                Preincubación
+              </span>
+            <% when 'incubacion' %>
+              <span class="type-badge incubacion">
+                <i class="fas fa-rocket"></i>
+                Incubación
+              </span>
+            <% when 'innovacion' %>
+              <span class="type-badge innovacion">
+                <i class="fas fa-cogs"></i>
+                Innovación
+              </span>
+            <% end %>
+          </div>
+          
+          <div class="program-status">
+            <span class="status-badge <%= program.estado %>">
+              <%= program.estado.humanize %>
+            </span>
+          </div>
+        </div>
+
+        <div class="program-content">
+          <h3 class="program-title"><%= program.titulo %></h3>
+          <p class="program-description">
+            <%= truncate(program.descripcion, length: 120) %>
+          </p>
+          
+          <div class="program-meta">
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span><%= program.encargado %></span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <span><%= program.created_at.strftime("%d/%m/%Y") %></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="program-stats">
+          <% stats = program.inscripciones_por_estado %>
+          
+          <div class="mini-stats">
+            <div class="mini-stat total">
+              <span class="number"><%= stats[:total] %></span>
+              <span class="label">Total</span>
+            </div>
+            
+            <div class="mini-stat pendientes">
+              <span class="number"><%= stats[:pendiente] %></span>
+              <span class="label">Pendientes</span>
+            </div>
+            
+            <div class="mini-stat aprobadas">
+              <span class="number"><%= stats[:aprobado] %></span>
+              <span class="label">Aprobadas</span>
+            </div>
+            
+            <div class="mini-stat rechazadas">
+              <span class="number"><%= stats[:rechazado] %></span>
+              <span class="label">Rechazadas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="program-actions">
+          <%= link_to admin_inscripciones_program_path(program), 
+              class: "btn btn-primary" do %>
+            <i class="fas fa-eye"></i>
+            <span>Ver Inscripciones (<%= stats[:total] %>)</span>
+          <% end %>
+          
+          <% if stats[:total] > 0 %>
+            <div class="action-group">
+              <%= link_to export_excel_admin_inscripciones_program_path(program, format: :xlsx), 
+                  class: "btn btn-outline", title: "Exportar Excel" do %>
+                <i class="fas fa-file-excel"></i>
+              <% end %>
+              
+              <%= link_to export_pdf_admin_inscripciones_program_path(program, format: :pdf), 
+                  class: "btn btn-outline", title: "Exportar PDF" do %>
+                <i class="fas fa-file-pdf"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+<!-- Pagination Section -->
+  <% if @programs.respond_to?(:current_page) && @programs.total_pages > 1 %>
+  <div class="pagination-wrapper">
+    <div class="pagination-container">
+      <%= paginate @programs, 
+          window: 2,
+          outer_window: 1,
+          left: 1,
+          right: 1,
+          param_name: :page,
+          params: { search: params[:search], tipo: params[:tipo] } %>
+    </div>
+    
+    <!-- Información adicional SIN recuadro -->
+    <div class="pagination-info-clean">
+      Mostrando programas con sus inscripciones <%= @programs.offset_value + 1 %> - <%= [@programs.offset_value + @programs.length, @programs.total_count].min %> 
+      de <%= @programs.total_count %> total
+      (Página <%= @programs.current_page %> de <%= @programs.total_pages %>)
+    </div>
+  </div>
+<% end %>
+
+  <!-- Empty State -->
+  <% if @programs.empty? %>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h3 class="empty-title">No se encontraron programas</h3>
+      <p class="empty-message">
+        <% if params[:search].present? || params[:tipo].present? %>
+          No hay programas que coincidan con los filtros aplicados.
+        <% else %>
+          Aún no hay programas creados en el sistema.
+        <% end %>
+      </p>
+      
+      <% if params[:search].present? || params[:tipo].present? %>
+        <%= link_to admin_inscripciones_programs_path, class: "btn btn-secondary" do %>
+          <i class="fas fa-times"></i>
+          <span>Limpiar filtros</span>
+        <% end %>
+      <% else %>
+        <%= link_to admin_programs_path, class: "btn btn-primary" do %>
+          <i class="fas fa-plus"></i>
+          <span>Crear primer programa</span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+<!-- Recent Activity Sidebar -->
+<% if @stats[:recientes].any? %>
+  <div class="recent-activity" id="recentActivity">
+    <!-- Header con botón de minimizar -->
+    <div class="activity-header">
+      <h4 class="activity-title">
+        <i class="fas fa-clock"></i>
+        <span class="activity-title-text">Inscripciones Recientes</span>
+      </h4>
+      
+      <button class="minimize-btn" id="minimizeBtn" title="Minimizar">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    
+    <!-- Lista de actividades (se oculta/muestra) -->
+    <div class="activity-content" id="activityContent">
+      <div class="activity-list">
+        <% @stats[:recientes].each do |item| %>
+          <div class="activity-item">
+            <div class="activity-icon <%= item[:tipo] %>">
+              <% case item[:tipo] %>
+              <% when 'preincubacion' %>
+                <i class="fas fa-seedling"></i>
+              <% when 'incubacion' %>
+                <i class="fas fa-rocket"></i>
+              <% when 'innovacion' %>
+                <i class="fas fa-cogs"></i>
+              <% end %>
+            </div>
+            
+            <div class="activity-content-item">
+              <div class="activity-name">
+                <%= item[:inscripcion].nombre_lider %> 
+                <%= item[:tipo] == 'preincubacion' ? item[:inscripcion].apellidos_lider : item[:inscripcion].apellido_lider %>
+              </div>
+              <div class="activity-program">
+                <%= item[:inscripcion].program.titulo %>
+              </div>
+              <div class="activity-time">
+                <%= time_ago_in_words(item[:inscripcion].created_at) %> atrás
+              </div>
+            </div>
+            
+            <div class="activity-action">
+              <%= link_to admin_inscripciones_program_path(item[:inscripcion].program), 
+                  class: "btn btn-sm" do %>
+                <i class="fas fa-eye"></i>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+</div>
+
+<style>
+/* CSS para Vista de Inscripciones - Index */
+.inscripciones-container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header */
+.inscripciones-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.header-title .title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title .title i {
+  color: #3b82f6;
+}
+
+.header-title .subtitle {
+  color: #6b7280;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-card.total .stat-icon {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+}
+
+.stat-card.pendientes .stat-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-card.aprobadas .stat-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-card.rechazadas .stat-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.stat-content .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-content .stat-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.filters-form {
+  width: 100%;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 200px auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  position: relative;
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filter-select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.filter-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Programs Grid */
+.programs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.program-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.program-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.program-header {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.type-badge.preincubacion {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.type-badge.incubacion {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.type-badge.innovacion {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-badge.activo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactivo {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.finalizado {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.program-content {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.program-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem;
+  line-height: 1.3;
+}
+
+.program-description {
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.program-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.meta-item i {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.program-stats {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.mini-stat {
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.mini-stat:hover {
+  transform: translateY(-1px);
+}
+
+.mini-stat.total {
+  background: rgba(59, 130, 246, 0.1);
+}
+
+.mini-stat.pendientes {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.mini-stat.aprobadas {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.mini-stat.rechazadas {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.mini-stat .number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.mini-stat .label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.program-actions {
+  padding: 1.5rem;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+  border-color: #3b82f6;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #6b7280;
+  border-color: #d1d5db;
+  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-outline:hover {
+  background: #f9fafb;
+  color: #374151;
+  border-color: #9ca3af;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #9ca3af;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+}
+
+.empty-message {
+  color: #6b7280;
+  margin: 0 0 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Recent Activity */
+.recent-activity {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  max-height: 400px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.activity-title {
+  padding: 1rem 1.5rem;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.activity-title i {
+  color: #3b82f6;
+}
+
+.activity-list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.activity-item {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: background 0.3s ease;
+}
+
+.activity-item:hover {
+  background: #f9fafb;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.activity-icon.preincubacion {
+  background: #2563eb;
+}
+
+.activity-icon.incubacion {
+  background: #059669;
+}
+
+.activity-icon.innovacion {
+  background: #d97706;
+}
+
+.activity-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-name {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-program {
+  color: #6b7280;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.125rem;
+}
+
+.activity-time {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  margin-top: 0.125rem;
+}
+
+.activity-action {
+  flex-shrink: 0;
+}
+
+/* Pagination */
+.pagination-section {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .recent-activity {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .inscripciones-container {
+    padding: 1rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .filter-actions {
+    justify-content: stretch;
+  }
+
+  .filter-actions .btn {
+    flex: 1;
+  }
+
+  .programs-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .mini-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .program-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .stat-content .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .program-card {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .mini-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+}
+
+/* Loading States */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:disabled:hover {
+  transform: none !important;
+}
+
+/* Focus States */
+.btn:focus,
+.filter-input:focus,
+.filter-select:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Animation for new items */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.program-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.stat-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Scrollbar for activity list */
+.activity-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.activity-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.activity-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.activity-list::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Estilos mejorados para Kaminari con tema Tailwind */
+
+/* Override de las clases de Tailwind en la paginación para que se vean mejor */
+.pagination-wrapper nav[role="navigation"] {
+  @apply flex items-center justify-center space-x-1;
+}
+
+/* Estilos para todos los elementos de paginación */
+.pagination-wrapper nav[role="navigation"] a,
+.pagination-wrapper nav[role="navigation"] span {
+  @apply inline-flex items-center justify-center;
+  @apply min-w-[2.5rem] h-10 px-3 py-2;
+  @apply text-sm font-medium;
+  @apply border border-gray-300 rounded-md;
+  @apply bg-white text-gray-700;
+  @apply transition-all duration-200 ease-in-out;
+  @apply no-underline;
+}
+
+/* Hover para enlaces */
+.pagination-wrapper nav[role="navigation"] a:hover {
+  @apply bg-gray-50 border-gray-400 text-gray-900;
+  @apply transform -translate-y-0.5;
+  @apply shadow-sm;
+}
+
+/* Página actual */
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"],
+.pagination-wrapper nav[role="navigation"] .current {
+  @apply bg-blue-600 border-blue-600 text-white;
+  @apply font-semibold cursor-default;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"]:hover,
+.pagination-wrapper nav[role="navigation"] .current:hover {
+  @apply bg-blue-600 border-blue-600 text-white;
+  @apply transform-none shadow-none;
+}
+
+/* Enlaces deshabilitados */
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"],
+.pagination-wrapper nav[role="navigation"] .disabled {
+  @apply bg-gray-100 border-gray-200 text-gray-400;
+  @apply cursor-not-allowed opacity-50;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"]:hover,
+.pagination-wrapper nav[role="navigation"] .disabled:hover {
+  @apply bg-gray-100 border-gray-200 text-gray-400;
+  @apply transform-none;
+}
+
+/* Gap (puntos suspensivos) */
+.pagination-wrapper nav[role="navigation"] .gap {
+  @apply text-gray-500 cursor-default;
+  @apply bg-transparent border-transparent;
+}
+
+.pagination-wrapper nav[role="navigation"] .gap:hover {
+  @apply bg-transparent border-transparent text-gray-500;
+  @apply transform-none;
+}
+
+/* Botones específicos (First, Previous, Next, Last) */
+.pagination-wrapper nav[role="navigation"] .first a,
+.pagination-wrapper nav[role="navigation"] .prev a,
+.pagination-wrapper nav[role="navigation"] .next a,
+.pagination-wrapper nav[role="navigation"] .last a {
+  @apply min-w-auto px-4;
+}
+
+/* SVG icons en botones */
+.pagination-wrapper nav[role="navigation"] svg {
+  @apply w-4 h-4 flex-shrink-0;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .pagination-wrapper nav[role="navigation"] a,
+  .pagination-wrapper nav[role="navigation"] span {
+    @apply min-w-[2.25rem] h-9 px-2 py-1 text-xs;
+  }
+  
+  .pagination-wrapper nav[role="navigation"] .first a,
+  .pagination-wrapper nav[role="navigation"] .prev a,
+  .pagination-wrapper nav[role="navigation"] .next a,
+  .pagination-wrapper nav[role="navigation"] .last a {
+    @apply px-3;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-wrapper nav[role="navigation"] a,
+  .pagination-wrapper nav[role="navigation"] span {
+    @apply min-w-[2rem] h-8 px-1 text-xs;
+  }
+}
+
+/* Fix para elementos con doble contenedor */
+.pagination-wrapper nav[role="navigation"] .flex {
+  @apply contents;
+}
+
+.pagination-wrapper nav[role="navigation"] .items-center {
+  @apply contents;
+}
+
+.pagination-wrapper nav[role="navigation"] .justify-between {
+  @apply contents;
+}
+
+/* Override para elementos anidados problemáticos */
+.pagination-wrapper nav[role="navigation"] .flex > *,
+.pagination-wrapper nav[role="navigation"] .items-center > *,
+.pagination-wrapper nav[role="navigation"] .justify-between > * {
+  @apply inline-flex items-center justify-center;
+  @apply min-w-[2.5rem] h-10 px-3 py-2;
+  @apply text-sm font-medium border border-gray-300 rounded-md;
+  @apply bg-white text-gray-700 no-underline;
+  @apply transition-all duration-200;
+}
+
+/* Espaciado más balanceado para la paginación */
+.pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0 1rem 0; /* Reducido: menos margen superior e inferior */
+  padding: 0.5rem; /* Reducido el padding */
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75rem; /* Reducido: menos separación entre botones y texto */
+}
+
+/* Texto informativo sin recuadro */
+.pagination-info-clean {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0; /* Sin margen superior */
+  font-weight: 400;
+  line-height: 1.4;
+  /* SIN background, border, ni padding para que se vea limpio */
+}
+
+/* Responsivo - espaciado más compacto */
+@media (max-width: 768px) {
+  .pagination-wrapper {
+    margin: 1rem 0 0.75rem 0;
+  }
+  
+  .pagination-container {
+    margin-bottom: 0.5rem;
+  }
+  
+  .pagination-info-clean {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .pagination-wrapper {
+    margin: 0.75rem 0 0.5rem 0;
+  }
+  
+  .pagination-container {
+    margin-bottom: 0.5rem;
+  }
+  
+  .pagination-info-clean {
+    font-size: 0.75rem;
+  }
+}
+
+
+
+
+
+/* Recent Activity Sidebar - Versión Minimizable */
+.recent-activity {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  max-height: 400px;
+  overflow: hidden;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+/* Estado minimizado */
+.recent-activity.minimized {
+  width: 60px;
+}
+
+/* Header del sidebar */
+.activity-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.activity-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-title i {
+  color: #3b82f6;
+  flex-shrink: 0;
+}
+
+.activity-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s ease;
+}
+
+/* Botón de minimizar */
+.minimize-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.minimize-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.minimize-btn i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+/* Contenido de actividades */
+.activity-content {
+  max-height: 320px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.activity-content.hidden {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.activity-list {
+  /* Mantener estilos existentes */
+}
+
+.activity-item {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+  background: #f9fafb;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.activity-icon.preincubacion {
+  background: #2563eb;
+}
+
+.activity-icon.incubacion {
+  background: #059669;
+}
+
+.activity-icon.innovacion {
+  background: #d97706;
+}
+
+.activity-content-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-name {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-program {
+  color: #6b7280;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.125rem;
+}
+
+.activity-time {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  margin-top: 0.125rem;
+}
+
+.activity-action {
+  flex-shrink: 0;
+}
+
+/* Estados del sidebar minimizado */
+.recent-activity.minimized .activity-title-text {
+  opacity: 0;
+}
+
+.recent-activity.minimized .activity-header {
+  padding: 1rem 0.75rem;
+  justify-content: center;
+}
+
+.recent-activity.minimized .minimize-btn {
+  margin: 0;
+}
+
+.recent-activity.minimized .minimize-btn i {
+  transform: rotate(180deg);
+}
+
+/* Tooltip para estado minimizado */
+.recent-activity.minimized .activity-title {
+  position: relative;
+}
+
+.recent-activity.minimized .activity-title::after {
+  content: "Inscripciones Recientes";
+  position: absolute;
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.recent-activity.minimized .activity-title:hover::after {
+  opacity: 1;
+}
+
+/* Flecha del tooltip */
+.recent-activity.minimized .activity-title::before {
+  content: "";
+  position: absolute;
+  left: calc(100% + 0.25rem);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-right-color: #1f2937;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.recent-activity.minimized .activity-title:hover::before {
+  opacity: 1;
+}
+
+/* Scrollbar personalizada */
+.activity-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.activity-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.activity-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.activity-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .recent-activity {
+    display: none;
+  }
+}
+
+/* Animaciones suaves */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.recent-activity {
+  animation: slideIn 0.5s ease-out;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('recentActivity');
+  const minimizeBtn = document.getElementById('minimizeBtn');
+  const activityContent = document.getElementById('activityContent');
+  
+  if (!sidebar || !minimizeBtn || !activityContent) return;
+  
+  // Verificar si hay un estado guardado en localStorage
+  const isMinimized = localStorage.getItem('sidebarMinimized') === 'true';
+  
+  // Aplicar estado inicial
+  if (isMinimized) {
+    sidebar.classList.add('minimized');
+    activityContent.classList.add('hidden');
+    minimizeBtn.title = 'Expandir';
+  }
+  
+  // Función para alternar el estado
+  function toggleSidebar() {
+    const isCurrentlyMinimized = sidebar.classList.contains('minimized');
+    
+    if (isCurrentlyMinimized) {
+      // Expandir
+      sidebar.classList.remove('minimized');
+      activityContent.classList.remove('hidden');
+      minimizeBtn.title = 'Minimizar';
+      localStorage.setItem('sidebarMinimized', 'false');
+    } else {
+      // Minimizar
+      sidebar.classList.add('minimized');
+      activityContent.classList.add('hidden');
+      minimizeBtn.title = 'Expandir';
+      localStorage.setItem('sidebarMinimized', 'true');
+    }
+  }
+  
+  // Event listener para el botón
+  minimizeBtn.addEventListener('click', toggleSidebar);
+  
+  // Permitir expandir haciendo click en el sidebar minimizado
+  sidebar.addEventListener('click', function(e) {
+    if (sidebar.classList.contains('minimized') && e.target.closest('.minimize-btn') === null) {
+      toggleSidebar();
+    }
+  });
+  
+  // Prevenir que el click en elementos internos expanda el sidebar
+  activityContent.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+</script>

@@ -248,18 +248,14 @@
   background-color: #f3f4f6;
 }
 
+/* ACTUALIZADO: Estilos para el contenedor del gráfico */
 .chart-container {
   height: 16rem;
-  background-color: #f9fafb;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #9ca3af;
-  font-size: 0.875rem;
-  background-image: 
-    linear-gradient(rgba(243, 244, 246, 0.5) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(243, 244, 246, 0.5) 1px, transparent 1px);
-  background-size: 20px 20px;
+  background-color: #ffffff;
+  display: block;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  position: relative;
 }
 
 .summary-items {
@@ -428,80 +424,81 @@
 <!-- Stats Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
   <!-- Total Programas Card -->
-  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 stat-card">
     <div class="flex justify-between items-start">
       <div>
         <p class="text-gray-500 text-sm font-medium mb-1">Total Programas</p>
-        <h3 class="text-2xl font-bold"><%= number_with_delimiter(1134) %></h3>
+        <h3 class="text-2xl font-bold"><%= number_with_delimiter(@total_programas) %></h3>
         <div class="flex flex-col mt-2">
           <span class="text-sm flex items-center text-green-500">
             <i class="fas fa-check-circle mr-1"></i>
-            <span>Programas activos: 128</span>
+            <span>Programas activos: <%= @programas_activos %></span>
           </span>
           <span class="text-sm flex items-center text-yellow-500 mt-1">
             <i class="fas fa-clock mr-1"></i>
-            <span>Programas pendientes: 45</span>
+            <span>Programas pendientes: <%= @programas_pendientes %></span>
           </span>
         </div>
       </div>
-      <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600">
+      <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 stat-icon">
         <i class="fas fa-graduation-cap text-xl"></i>
       </div>
     </div>
   </div>
   
   <!-- Total Eventos Card -->
-  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 stat-card">
     <div class="flex justify-between items-start">
       <div>
         <p class="text-gray-500 text-sm font-medium mb-1">Total Eventos</p>
-        <h3 class="text-2xl font-bold"><%= number_with_delimiter(74) %></h3>
+        <h3 class="text-2xl font-bold"><%= number_with_delimiter(@total_eventos) %></h3>
         <div class="flex flex-col mt-2">
           <span class="text-sm flex items-center text-green-500">
             <i class="fas fa-check-circle mr-1"></i>
-            <span>Eventos activos: 12</span>
+            <span>Eventos activos: <%= @eventos_activos %></span>
           </span>
           <span class="text-sm flex items-center text-yellow-500 mt-1">
             <i class="fas fa-clock mr-1"></i>
-            <span>Eventos pendientes: 8</span>
+            <span>Eventos pendientes: <%= @eventos_pendientes %></span>
           </span>
         </div>
       </div>
-      <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600">
+      <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-600 stat-icon">
         <i class="fas fa-calendar-alt text-xl"></i>
       </div>
     </div>
   </div>
   
   <!-- Participantes Card -->
-  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 stat-card">
     <div class="flex justify-between items-start">
       <div>
         <p class="text-gray-500 text-sm font-medium mb-1">Participantes</p>
-        <h3 class="text-2xl font-bold"><%= number_with_delimiter(2540) %></h3>
-        <p class="text-sm mt-2 flex items-center text-green-500">
-          <i class="fas fa-user-plus mr-1"></i>
-          15% desde el mes pasado
+        <h3 class="text-2xl font-bold"><%= number_with_delimiter(@total_participantes) %></h3>
+        <p class="text-sm mt-2 flex items-center <%= @crecimiento_participantes >= 0 ? 'text-green-500' : 'text-red-500' %>">
+          <i class="fas fa-<%= @crecimiento_participantes >= 0 ? 'user-plus' : 'user-minus' %> mr-1"></i>
+          <%= @crecimiento_participantes.abs %>% 
+          <%= @crecimiento_participantes >= 0 ? 'desde el mes pasado' : 'menos que el mes pasado' %>
         </p>
       </div>
-      <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600">
+      <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 stat-icon">
         <i class="fas fa-users text-xl"></i>
       </div>
     </div>
   </div>
   
   <!-- Reportes Card -->
-  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+  <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 stat-card">
     <div class="flex justify-between items-start">
       <div>
         <p class="text-gray-500 text-sm font-medium mb-1">Reportes</p>
-        <h3 class="text-2xl font-bold"><%= number_with_delimiter(42) %></h3>
+        <h3 class="text-2xl font-bold"><%= number_with_delimiter(@total_reportes) %></h3>
         <p class="text-sm mt-2 flex items-center text-gray-500">
           <i class="fas fa-file-alt mr-1"></i>
-          Último generado: Hoy
+          Último generado: <%= @ultimo_reporte %>
         </p>
       </div>
-      <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600">
+      <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 stat-icon">
         <i class="fas fa-chart-bar text-xl"></i>
       </div>
     </div>
@@ -510,90 +507,357 @@
 
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
   <!-- Actividad Reciente -->
-  <div class="bg-white p-6 rounded-lg shadow-md">
+  <div class="bg-white p-6 rounded-lg shadow-md activity-card">
     <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-bold text-gray-800">Actividad Reciente</h3>
-      <a href="#" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver todo</a>
+      <h3 class="text-lg font-bold text-gray-800 card-title">
+        <i class="fas fa-clock"></i>
+        Actividad Reciente
+      </h3>
+      <div class="relative inline-block text-left">
+        <button class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-md hover:bg-blue-100 hover:text-blue-700 hover:border-blue-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1 transition-all duration-200 shadow-sm hover:shadow-md" id="activityDropdown">
+          <span>Ver todo</span>
+          <i class="fas fa-chevron-down ml-2 text-xs transform transition-transform duration-200" id="dropdownIcon"></i>
+        </button>
+        <div id="activityMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10 border">
+          <%= link_to admin_inscripciones_programs_path, class: "flex items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" do %>
+            <i class="fas fa-graduation-cap mr-3 text-blue-600 w-4 text-center"></i>
+            <span>Inscripciones de Programas</span>
+          <% end %>
+          <%= link_to admin_inscripciones_events_path, class: "flex items-center justify-start px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" do %>
+            <i class="fas fa-calendar-alt mr-3 text-purple-600 w-4 text-center"></i>
+            <span>Inscripciones de Eventos</span>
+          <% end %>
+        </div>
+      </div>
     </div>
     
     <div class="space-y-4">
-      <div class="flex items-start">
-        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
-          <i class="fas fa-user-circle"></i>
+      <% @actividades_recientes.each do |actividad| %>
+        <div class="flex items-start activity-item">
+          <div class="w-8 h-8 rounded-full <%= actividad[:color_bg] %> flex items-center justify-center <%= actividad[:color_text] %> mr-3 activity-avatar">
+            <i class="<%= actividad[:icono] %>"></i>
+          </div>
+          <div class="flex-1 activity-content">
+            <p class="text-gray-700">
+              <span class="font-medium activity-user"><%= actividad[:usuario] %></span> 
+              <span class="activity-action"><%= actividad[:accion] %></span> 
+              <span class="font-medium activity-target"><%= actividad[:objetivo] %></span>
+            </p>
+            <p class="text-gray-500 text-sm mt-1 activity-time"><%= actividad[:tiempo] %></p>
+          </div>
         </div>
-        <div class="flex-1">
-          <p class="text-gray-700">
-            <span class="font-medium">María Santos</span> se registró en <span class="font-medium">Startup Acelerado</span>
-          </p>
-          <p class="text-gray-500 text-sm mt-1">Hace 2 horas</p>
-        </div>
-      </div>
-      
-      <div class="flex items-start">
-        <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-600 mr-3">
-          <i class="fas fa-check-circle"></i>
-        </div>
-        <div class="flex-1">
-          <p class="text-gray-700">
-            <span class="font-medium">Juan Valdez</span> completó <span class="font-medium">Innovación Empresarial</span>
-          </p>
-          <p class="text-gray-500 text-sm mt-1">Hace 5 horas</p>
-        </div>
-      </div>
-      
-      <div class="flex items-start">
-        <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 mr-3">
-          <i class="fas fa-graduation-cap"></i>
-        </div>
-        <div class="flex-1">
-          <p class="text-gray-700">
-            <span class="font-medium">Ana Rodriguez</span> solicitó mentoría en <span class="font-medium">Desarrollo Web</span>
-          </p>
-          <p class="text-gray-500 text-sm mt-1">Hace 1 día</p>
-        </div>
-      </div>
-      
-      <div class="flex items-start">
-        <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 mr-3">
-          <i class="fas fa-star"></i>
-        </div>
-        <div class="flex-1">
-          <p class="text-gray-700">
-            <span class="font-medium">Carlos Mendoza</span> publicó un testimonio sobre <span class="font-medium">Marketing Digital</span>
-          </p>
-          <p class="text-gray-500 text-sm mt-1">Hace 2 días</p>
-        </div>
-      </div>
+      <% end %>
     </div>
   </div>
   
   <!-- Resumen Programas -->
-  <div class="bg-white p-6 rounded-lg shadow-md">
-    <div class="flex justify-between items-center mb-4">
-      <h3 class="text-lg font-bold text-gray-800">Resumen Programas</h3>
-      <div class="flex space-x-2">
-        <button class="text-sm px-3 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200">Mensual</button>
-        <button class="text-sm px-3 py-1 text-gray-500 hover:bg-gray-100 rounded">Anual</button>
+  <div class="bg-white p-6 rounded-lg shadow-md summary-card">
+    <div class="flex justify-between items-center mb-4 summary-header">
+      <h3 class="text-lg font-bold text-gray-800 card-title">
+        <i class="fas fa-chart-line"></i>
+        Evolución de Inscripciones
+      </h3>
+      <div class="flex space-x-2 summary-actions">
+        <button class="text-sm px-3 py-1 bg-blue-100 text-blue-600 rounded hover:bg-blue-200 summary-tab active" 
+                id="btn-6-meses" onclick="cambiarPeriodoGrafico('6meses')">6 Meses</button>
+        <button class="text-sm px-3 py-1 text-gray-500 hover:bg-gray-100 rounded summary-tab" 
+                id="btn-12-meses" onclick="cambiarPeriodoGrafico('12meses')">12 Meses</button>
       </div>
     </div>
     
-    <div class="h-64 flex items-center justify-center bg-gray-50 rounded">
-      <p class="text-gray-500">Aquí se mostrará el gráfico</p>
+    <!-- NUEVO: Contenedor del gráfico con Chart.js -->
+    <div class="chart-container">
+      <canvas id="inscripcionesChart" style="width: 100%; height: 100%;"></canvas>
     </div>
     
-    <div class="mt-4 grid grid-cols-3 gap-4">
-      <div class="p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-        <p class="text-gray-500 text-xs mb-1">Emprendimiento</p>
-        <p class="font-bold">42%</p>
+    <div class="mt-4 grid grid-cols-3 gap-4 summary-items">
+      <div class="p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg hover:shadow-md transition-all duration-300 summary-item group cursor-pointer">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+            <i class="fas fa-lightbulb text-white text-lg"></i>
+          </div>
+          <div class="text-right">
+            <p class="text-blue-600 text-2xl font-bold"><%= @porcentaje_preincubacion %>%</p>
+          </div>
+        </div>
+        <p class="text-blue-700 text-sm font-semibold summary-item-label">Preincubación</p>
+        <p class="text-blue-600 text-xs mt-1">Ideas en desarrollo</p>
       </div>
-      <div class="p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-        <p class="text-gray-500 text-xs mb-1">Tecnología</p>
-        <p class="font-bold">28%</p>
+      
+      <div class="p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-lg hover:shadow-md transition-all duration-300 summary-item group cursor-pointer">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+            <i class="fas fa-rocket text-white text-lg"></i>
+          </div>
+          <div class="text-right">
+            <p class="text-green-600 text-2xl font-bold"><%= @porcentaje_incubacion %>%</p>
+          </div>
+        </div>
+        <p class="text-green-700 text-sm font-semibold summary-item-label">Incubación</p>
+        <p class="text-green-600 text-xs mt-1">Proyectos en crecimiento</p>
       </div>
-      <div class="p-3 bg-gray-50 rounded hover:bg-gray-100 transition-colors">
-        <p class="text-gray-500 text-xs mb-1">Marketing</p>
-        <p class="font-bold">30%</p>
+      
+      <div class="p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg hover:shadow-md transition-all duration-300 summary-item group cursor-pointer">
+        <div class="flex items-center justify-between mb-2">
+          <div class="w-10 h-10 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg" style="background-color: #9333ea !important;">
+            <i class="fas fa-flask text-white text-lg"></i>
+          </div>
+          <div class="text-right">
+            <p class="text-purple-600 text-2xl font-bold"><%= @porcentaje_innovacion %>%</p>
+          </div>
+        </div>
+        <p class="text-purple-700 text-sm font-semibold summary-item-label">Innovación</p>
+        <p class="text-purple-600 text-xs mt-1">Soluciones avanzadas</p>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Scripts combinados -->
+<script>
+// Variables globales para el gráfico
+let inscripcionesChart;
+const datosGrafico = {
+  '6meses': {
+    labels: <%= raw @meses_labels.to_json %>,
+    programas: <%= raw @inscripciones_programas_data.to_json %>,
+    eventos: <%= raw @inscripciones_eventos_data.to_json %>
+  },
+  '12meses': {
+    labels: <%= raw @meses_12_labels.to_json %>,
+    programas: <%= raw @inscripciones_programas_12_data.to_json %>,
+    eventos: <%= raw @inscripciones_eventos_12_data.to_json %>
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+  // === SCRIPT PARA EL DROPDOWN DE ACTIVIDAD RECIENTE ===
+  const button = document.getElementById('activityDropdown');
+  const menu = document.getElementById('activityMenu');
+  const icon = document.getElementById('dropdownIcon');
+  
+  if (button && menu && icon) {
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      menu.classList.toggle('hidden');
+      
+      // Rotar el icono cuando se abre/cierra
+      if (menu.classList.contains('hidden')) {
+        icon.style.transform = 'rotate(0deg)';
+        button.classList.remove('ring-2', 'ring-blue-500');
+      } else {
+        icon.style.transform = 'rotate(180deg)';
+        button.classList.add('ring-2', 'ring-blue-500');
+      }
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!button.contains(e.target) && !menu.contains(e.target)) {
+        menu.classList.add('hidden');
+        icon.style.transform = 'rotate(0deg)';
+        button.classList.remove('ring-2', 'ring-blue-500');
+      }
+    });
+  }
+
+  // === SCRIPT PARA EL GRÁFICO DE INSCRIPCIONES ===
+  const ctx = document.getElementById('inscripcionesChart');
+  if (ctx) {
+    crearGrafico('6meses');
+  }
+});
+
+// Función para crear el gráfico
+function crearGrafico(periodo) {
+  const ctx = document.getElementById('inscripcionesChart');
+  const datos = datosGrafico[periodo];
+  
+  if (inscripcionesChart) {
+    inscripcionesChart.destroy();
+  }
+  
+  inscripcionesChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: datos.labels,
+      datasets: [{
+        label: 'Inscripciones de Programas',
+        data: datos.programas,
+        borderColor: '#3b82f6',
+        backgroundColor: 'rgba(59, 130, 246, 0.08)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#3b82f6',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: '#1d4ed8',
+        pointHoverBorderColor: '#ffffff',
+        pointHoverBorderWidth: 3,
+      }, {
+        label: 'Inscripciones de Eventos',
+        data: datos.eventos,
+        borderColor: '#8b5cf6',
+        backgroundColor: 'rgba(139, 92, 246, 0.08)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#8b5cf6',
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 3,
+        pointRadius: 6,
+        pointHoverRadius: 8,
+        pointHoverBackgroundColor: '#7c3aed',
+        pointHoverBorderColor: '#ffffff',
+        pointHoverBorderWidth: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+          align: 'center',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle',
+            padding: 20,
+            font: {
+              size: 12,
+              weight: '600',
+              family: 'ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+            },
+            color: '#374151'
+          }
+        },
+        tooltip: {
+          mode: 'index',
+          intersect: false,
+          backgroundColor: 'rgba(255, 255, 255, 0.96)',
+          titleColor: '#1f2937',
+          bodyColor: '#1f2937',
+          borderColor: '#e5e7eb',
+          borderWidth: 1,
+          cornerRadius: 8,
+          displayColors: true,
+          titleFont: {
+            size: 13,
+            weight: '600'
+          },
+          bodyFont: {
+            size: 12,
+            weight: '500'
+          },
+          padding: 12,
+          caretPadding: 8,
+          callbacks: {
+            title: function(context) {
+              return 'Mes: ' + context[0].label;
+            },
+            label: function(context) {
+              const label = context.dataset.label;
+              const value = context.parsed.y;
+              const pluralText = value === 1 ? 'inscripción' : 'inscripciones';
+              return `${label}: ${value} ${pluralText}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: true,
+            color: 'rgba(156, 163, 175, 0.15)',
+            lineWidth: 1
+          },
+          ticks: {
+            font: {
+              size: 11,
+              weight: '500',
+              family: 'ui-sans-serif, system-ui'
+            },
+            color: '#6b7280',
+            maxRotation: 0,
+            padding: 8
+          },
+          border: {
+            display: false
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            display: true,
+            color: 'rgba(156, 163, 175, 0.15)',
+            lineWidth: 1
+          },
+          ticks: {
+            font: {
+              size: 11,
+              weight: '500',
+              family: 'ui-sans-serif, system-ui'
+            },
+            color: '#6b7280',
+            stepSize: 1,
+            padding: 8,
+            callback: function(value) {
+              return Number.isInteger(value) ? value : '';
+            }
+          },
+          border: {
+            display: false
+          }
+        }
+      },
+      interaction: {
+        mode: 'nearest',
+        axis: 'x',
+        intersect: false
+      },
+      elements: {
+        point: {
+          hoverBackgroundColor: '#ffffff',
+          hitRadius: 8,
+          hoverRadius: 8
+        },
+        line: {
+          borderJoinStyle: 'round',
+          borderCapStyle: 'round'
+        }
+      },
+      animation: {
+        duration: 1000,
+        easing: 'easeInOutQuart'
+      }
+    }
+  });
+}
+
+// Función para cambiar el período del gráfico
+function cambiarPeriodoGrafico(periodo) {
+  // Actualizar botones
+  const btn6Meses = document.getElementById('btn-6-meses');
+  const btn12Meses = document.getElementById('btn-12-meses');
+  
+  if (periodo === '6meses') {
+    btn6Meses.classList.add('bg-blue-100', 'text-blue-600', 'active');
+    btn6Meses.classList.remove('text-gray-500');
+    btn12Meses.classList.remove('bg-blue-100', 'text-blue-600', 'active');
+    btn12Meses.classList.add('text-gray-500');
+  } else {
+    btn12Meses.classList.add('bg-blue-100', 'text-blue-600', 'active');
+    btn12Meses.classList.remove('text-gray-500');
+    btn6Meses.classList.remove('bg-blue-100', 'text-blue-600', 'active');
+    btn6Meses.classList.add('text-gray-500');
+  }
+  
+  // Recrear gráfico con nuevos datos
+  crearGrafico(periodo);
+}
+</script>

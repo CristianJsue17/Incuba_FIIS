@@ -1,0 +1,211 @@
+# app/views/admin/inscripciones/programs/export_all_excel.xlsx.axlsx
+
+wb = xlsx_package.workbook
+
+# Estilos globales
+title_style = wb.styles.add_style(
+  sz: 16, b: true, fg_color: "1f2937",
+  alignment: { horizontal: :center }
+)
+
+header_style = wb.styles.add_style(
+  sz: 12, b: true, fg_color: "000000", # CAMBIADO: negro para ser visible
+  fill_color: "3b82f6", border: Axlsx::STYLE_THIN_BORDER,
+  alignment: { horizontal: :center }
+)
+
+subheader_style = wb.styles.add_style(
+  sz: 11, b: true, fg_color: "1f2937", # CAMBIADO: de "374151" a color más oscuro
+  fill_color: "f3f4f6", border: Axlsx::STYLE_THIN_BORDER
+)
+
+data_style = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  alignment: { wrap_text: true }
+)
+
+# Hoja 1: Resumen General
+wb.add_worksheet(name: "Resumen General") do |sheet|
+  # Título
+  sheet.add_row ["REPORTE GENERAL DE INSCRIPCIONES"], style: title_style
+  sheet.add_row [] # Fila vacía
+  
+  # Estadísticas generales
+  total_programas = @programs.count
+  total_inscripciones = @programs.sum { |p| p.inscripciones_por_estado[:total] }
+  programas_activos = @programs.count { |p| p.estado == 'activo' }
+  
+  sheet.add_row ["ESTADÍSTICAS GENERALES"], style: header_style
+  sheet.add_row ["Total de Programas:", total_programas], style: [subheader_style, data_style]
+  sheet.add_row ["Programas Activos:", programas_activos], style: [subheader_style, data_style]
+  sheet.add_row ["Total de Inscripciones:", total_inscripciones], style: [subheader_style, data_style]
+  sheet.add_row ["Fecha de Generación:", Time.current.strftime("%d/%m/%Y %H:%M")], style: [subheader_style, data_style]
+  
+  sheet.add_row [] # Fila vacía
+  
+  # Resumen por programa
+  sheet.add_row ["RESUMEN POR PROGRAMA"], style: header_style
+  sheet.add_row ["Programa", "Tipo", "Estado", "Encargado", "Total Inscripciones", "Pendientes", "Aprobadas", "Rechazadas"], style: header_style
+  
+  @programs.each do |program|
+    stats = program.inscripciones_por_estado
+    sheet.add_row [
+      program.titulo,
+      program.tipo_humanizado,
+      program.estado.humanize,
+      program.encargado,
+      stats[:total],
+      stats[:pendiente],
+      stats[:aprobado],
+      stats[:rechazado]
+    ], style: data_style
+  end
+  
+  # Ajustar ancho de columnas
+  sheet.column_widths 30, 15, 12, 20, 12, 10, 10, 10
+end
+
+# Hoja por cada programa con inscripciones
+@programs.each do |program|
+  inscripciones = program.todas_inscripciones
+  next if inscripciones.empty?
+  
+  # Crear hoja para el programa (limitar nombre a 31 caracteres)
+  sheet_name = program.titulo.truncate(28, omission: "...")
+  
+  wb.add_worksheet(name: sheet_name) do |sheet|
+    # Información del programa
+    sheet.add_row ["PROGRAMA: #{program.titulo.upcase}"], style: title_style
+    sheet.add_row [] # Fila vacía
+    
+    # Detalles del programa
+    sheet.add_row ["INFORMACIÓN DEL PROGRAMA"], style: header_style
+    sheet.add_row ["Título:", program.titulo], style: [subheader_style, data_style]
+    sheet.add_row ["Tipo:", program.tipo_humanizado], style: [subheader_style, data_style]
+    sheet.add_row ["Encargado:", program.encargado], style: [subheader_style, data_style]
+    sheet.add_row ["Estado:", program.estado.humanize], style: [subheader_style, data_style]
+    sheet.add_row ["Fecha Publicación:", program.fecha_publicacion&.strftime("%d/%m/%Y %H:%M")], style: [subheader_style, data_style]
+    sheet.add_row ["Fecha Vencimiento:", program.fecha_vencimiento&.strftime("%d/%m/%Y %H:%M")], style: [subheader_style, data_style]
+    
+    sheet.add_row [] # Fila vacía
+    
+    # Estadísticas
+    stats = program.inscripciones_por_estado
+    sheet.add_row ["ESTADÍSTICAS"], style: header_style
+    sheet.add_row ["Total:", stats[:total]], style: [subheader_style, data_style]
+    sheet.add_row ["Pendientes:", stats[:pendiente]], style: [subheader_style, data_style]
+    sheet.add_row ["Aprobadas:", stats[:aprobado]], style: [subheader_style, data_style]
+    sheet.add_row ["Rechazadas:", stats[:rechazado]], style: [subheader_style, data_style]
+    
+    sheet.add_row [] # Fila vacía
+    
+    # Lista de inscripciones
+    sheet.add_row ["LISTA DE INSCRIPCIONES"], style: header_style
+    
+    # Encabezados dinámicos según el tipo de programa
+    headers = ["ID", "Nombre", "Apellidos", "Email", "Teléfono", "Estado", "Fecha Inscripción"]
+    
+    case program.tipo
+    when 'preincubacion'
+      headers += ["Nombre Proyecto", "Descripción Proyecto"]
+    when 'incubacion'
+      headers += ["Nombre Empresa", "Descripción Negocio"]
+    when 'innovacion'
+      headers += ["Área Innovación", "Descripción Propuesta"]
+    end
+    
+    # Crear estilo específico para encabezados de tabla con fondo azul
+    table_header_style = wb.styles.add_style(
+      sz: 11, b: true, fg_color: "000000", # Negro para ser visible
+      fill_color: "3b82f6", border: Axlsx::STYLE_THIN_BORDER,
+      alignment: { horizontal: :center }
+    )
+    
+    sheet.add_row headers, style: table_header_style
+    
+    # Estilos para estados
+    estado_pendiente = wb.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "fef3c7", fg_color: "92400e"
+    )
+    
+    estado_aprobado = wb.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "dcfce7", fg_color: "166534"
+    )
+    
+    estado_rechazado = wb.styles.add_style(
+      sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+      fill_color: "fee2e2", fg_color: "991b1b"
+    )
+    
+    # Datos de inscripciones
+    inscripciones.each do |inscripcion|
+      row_data = [
+        inscripcion.id,
+        inscripcion.nombre_lider,
+        inscripcion.respond_to?(:apellidos_lider) ? inscripcion.apellidos_lider : inscripcion.apellido_lider,
+        inscripcion.correo_lider,
+        inscripcion.telefono_lider,
+        inscripcion.estado.humanize,
+        inscripcion.created_at.strftime("%d/%m/%Y %H:%M")
+      ]
+      
+      # Agregar campos específicos
+      case program.tipo
+      when 'preincubacion'
+        row_data += [
+          inscripcion.respond_to?(:nombre_proyecto) ? inscripcion.nombre_proyecto : "N/A",
+          inscripcion.respond_to?(:descripcion_proyecto) ? truncate(inscripcion.descripcion_proyecto, length: 100) : "N/A"
+        ]
+      when 'incubacion'
+        row_data += [
+          inscripcion.respond_to?(:nombre_empresa) ? inscripcion.nombre_empresa : "N/A",
+          inscripcion.respond_to?(:descripcion_negocio) ? truncate(inscripcion.descripcion_negocio, length: 100) : "N/A"
+        ]
+      when 'innovacion'
+        row_data += [
+          inscripcion.respond_to?(:area_innovacion) ? inscripcion.area_innovacion : "N/A",
+          inscripcion.respond_to?(:descripcion_propuesta) ? truncate(inscripcion.descripcion_propuesta, length: 100) : "N/A"
+        ]
+      end
+      
+      # Aplicar estilo según estado
+      estado_style = case inscripcion.estado
+                    when 'pendiente' then estado_pendiente
+                    when 'aprobado' then estado_aprobado
+                    when 'rechazado' then estado_rechazado
+                    else data_style
+                    end
+      
+      row_styles = Array.new(row_data.length, data_style)
+      row_styles[5] = estado_style # Columna de estado
+      
+      sheet.add_row row_data, style: row_styles
+    end
+    
+    # Ajustar anchos de columna
+    base_widths = [5, 15, 15, 25, 12, 10, 15]
+    additional_widths = case program.tipo
+                       when 'preincubacion', 'incubacion', 'innovacion'
+                         [20, 30]
+                       else
+                         []
+                       end
+    
+    sheet.column_widths *(base_widths + additional_widths)
+  end
+end
+
+# Helper method para truncate si no está disponible
+def truncate(text, options = {})
+  return "N/A" if text.blank?
+  length = options[:length] || 50
+  omission = options[:omission] || "..."
+  
+  if text.length > length
+    text[0...(length - omission.length)] + omission
+  else
+    text
+  end
+end

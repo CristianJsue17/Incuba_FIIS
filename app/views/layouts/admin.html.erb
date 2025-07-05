@@ -15,766 +15,839 @@
 
   <!-- CSS plano de Tailwind directamente en el HTML -->
   <style>
-  /* Estilos base de Tailwind */
-  *, ::before, ::after {
-    box-sizing: border-box;
-    border-width: 0;
-    border-style: solid;
-    border-color: #e5e7eb;
-  }
-  
-  html {
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    -moz-tab-size: 4;
-    tab-size: 4;
-    font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  }
-  
-  body {
-    margin: 0;
-    line-height: inherit;
-  }
-  
-  /* Flexbox */
-  .flex {
-    display: flex;
-  }
-  
-  .flex-1 {
-    flex: 1 1 0%;
-  }
-  
-  .flex-shrink-0 {
-    flex-shrink: 0;
-  }
-  
-  .flex-col {
-    flex-direction: column;
-  }
-  
-  .items-center {
-    align-items: center;
-  }
-  
-  .items-start {
-    align-items: flex-start;
-  }
-  
-  .justify-between {
-    justify-content: space-between;
-  }
-  
-  .justify-center {
-    justify-content: center;
-  }
-  
-  /* Espaciado */
-  .p-1 {
-    padding: 0.25rem;
-  }
-  
-  .p-2 {
-    padding: 0.5rem;
-  }
-  
-  .p-3 {
-    padding: 0.75rem;
-  }
-  
-  .p-4 {
+/* ===== ESTILOS BASE DE TAILWIND ===== */
+*, ::before, ::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: #e5e7eb;
+}
+
+html {
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  margin: 0;
+  line-height: inherit;
+}
+
+/* ===== UTILIDADES DE FLEXBOX ===== */
+.flex { display: flex; }
+.flex-1 { flex: 1 1 0%; }
+.flex-shrink-0 { flex-shrink: 0; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.justify-between { justify-content: space-between; }
+.justify-center { justify-content: center; }
+
+/* ===== UTILIDADES DE ESPACIADO ===== */
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 0.75rem; }
+.p-4 { padding: 1rem; }
+.p-5 { padding: 1.25rem; }
+.p-6 { padding: 1.5rem; }
+
+.py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+
+.px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.pr-8 { padding-right: 2rem; }
+.pl-12 { padding-left: 3rem; }
+
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-6 { margin-top: 1.5rem; }
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-8 { margin-bottom: 2rem; }
+
+.mr-1 { margin-right: 0.25rem; }
+.mr-2 { margin-right: 0.5rem; }
+.mr-3 { margin-right: 0.75rem; }
+
+.ml-1 { margin-left: 0.25rem; }
+.ml-2 { margin-left: 0.5rem; }
+.ml-3 { margin-left: 0.75rem; }
+
+.space-x-4 > * + * { margin-left: 1rem; }
+.space-y-0 > * + * { margin-top: 0; }
+
+/* ===== UTILIDADES DE TAMAÑOS ===== */
+.w-4 { width: 1rem; }
+.w-5 { width: 1.25rem; }
+.w-6 { width: 1.5rem; }
+.w-9 { width: 2.25rem; }
+.w-12 { width: 3rem; }
+.w-48 { width: 12rem; }
+.w-64 { width: 16rem; }
+
+.h-4 { height: 1rem; }
+.h-5 { height: 1.25rem; }
+.h-6 { height: 1.5rem; }
+.h-9 { height: 2.25rem; }
+.h-12 { height: 3rem; }
+.h-64 { height: 16rem; }
+.h-screen { height: 100vh; }
+.min-h-screen { min-height: 100vh; }
+
+/* ===== UTILIDADES DE BORDES ===== */
+.border { border-width: 1px; }
+.border-b { border-bottom-width: 1px; }
+.border-blue-700 { border-color: #1d4ed8; }
+
+.rounded { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* ===== UTILIDADES DE COLORES DE FONDO ===== */
+.bg-blue-100 { background-color: #dbeafe; }
+.bg-blue-600 { background-color: #2563eb; }
+.bg-blue-700 { background-color: #1d4ed8; }
+.bg-blue-800 { background-color: #1e40af; }
+.bg-green-100 { background-color: #dcfce7; }
+.bg-green-600 { background-color: #16a34a; }
+.bg-gray-50 { background-color: #f9fafb; }
+.bg-gray-100 { background-color: #f3f4f6; }
+.bg-white { background-color: #ffffff; }
+.bg-red-100 { background-color: #fee2e2; }
+.bg-red-500 { background-color: #ef4444; }
+.bg-yellow-100 { background-color: #fef3c7; }
+.bg-purple-100 { background-color: #f3e8ff; }
+
+/* ===== UTILIDADES DE COLORES DE TEXTO ===== */
+.text-blue-200 { color: #bfdbfe; }
+.text-blue-600 { color: #2563eb; }
+.text-white { color: #ffffff; }
+.text-gray-400 { color: #9ca3af; }
+.text-gray-500 { color: #6b7280; }
+.text-gray-600 { color: #4b5563; }
+.text-gray-700 { color: #374151; }
+.text-gray-800 { color: #1f2937; }
+.text-green-500 { color: #22c55e; }
+.text-green-600 { color: #16a34a; }
+.text-green-700 { color: #15803d; }
+.text-red-500 { color: #ef4444; }
+.text-red-700 { color: #b91c1c; }
+.text-yellow-600 { color: #ca8a04; }
+.text-yellow-700 { color: #a16207; }
+.text-purple-600 { color: #9333ea; }
+
+/* ===== UTILIDADES DE TIPOGRAFÍA ===== */
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.5rem; }
+.text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.font-bold { font-weight: 700; }
+
+/* ===== UTILIDADES DE GRID ===== */
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.gap-4 { gap: 1rem; }
+.gap-6 { gap: 1.5rem; }
+
+/* ===== UTILIDADES DE EFECTOS ===== */
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+.shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.shadow-inner { box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06); }
+
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.focus\:ring-2:focus {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.focus\:ring-blue-500:focus { --tw-ring-color: #3b82f6; }
+
+.hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+.hover\:bg-gray-100:hover { background-color: #f3f4f6; }
+.hover\:text-gray-700:hover { color: #374151; }
+
+/* ===== UTILIDADES DE POSICIONAMIENTO ===== */
+.relative { position: relative; }
+.absolute { position: absolute; }
+
+.top-1 { top: 0.25rem; }
+.top-2 { top: 0.5rem; }
+.right-0 { right: 0; }
+.right-1 { right: 0.25rem; }
+.right-2 { right: 0.5rem; }
+.right-3 { right: 0.75rem; }
+.-top-1 { top: -0.25rem; }
+.-right-1 { right: -0.25rem; }
+
+/* ===== UTILIDADES DE TRANSICIONES ===== */
+.transition-colors {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.duration-200 { transition-duration: 200ms; }
+
+/* ===== UTILIDADES DE DESBORDAMIENTO ===== */
+.overflow-hidden { overflow: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-x-auto { overflow-x: auto; }
+
+/* ===== UTILIDADES ESPECÍFICAS PARA TABLAS ===== */
+.min-w-full { min-width: 100%; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+
+/* ===== UTILIDADES DE DISPLAY ===== */
+.block { display: block; }
+.hidden { display: none; }
+
+/* ===== UTILIDADES DE Z-INDEX ===== */
+.z-50 { z-index: 50; }
+
+/* ===== UTILIDADES DE CURSOR ===== */
+.cursor-pointer { cursor: pointer; }
+
+/* ===== MEDIA QUERIES RESPONSIVE ===== */
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+/* ===== ESTILOS GENERALES PERSONALIZADOS ===== */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+
+/* ===== ESTILOS DEL SIDEBAR PRINCIPAL ===== */
+.bg-blue-800 {
+  background: linear-gradient(180deg, #374151 0%, #1f2937 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Header del sidebar */
+.bg-blue-800 .border-b.border-blue-700 {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: none;
+  padding: 1rem;
+}
+
+/* Título del sidebar */
+.bg-blue-800 .text-xl {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 1.125rem;
+  text-shadow: none;
+}
+
+.bg-blue-800 .text-blue-200 {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+  text-shadow: none;
+}
+
+/* Separador "MENU" */
+.bg-blue-800 nav::before {
+  content: "MENU";
+  display: block;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1rem 1rem 0.5rem 1rem;
+  margin-top: 0.5rem;
+}
+
+/* ===== NAVEGACIÓN PRINCIPAL ===== */
+.bg-blue-800 .nav-link {
+  padding: 0.875rem 1rem;
+  margin: 0 0.5rem 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+  border-left: none;
+  height: auto;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+.bg-blue-800 .nav-link:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Estados activos para enlaces principales */
+.nav-link.active {
+  background: rgba(59, 130, 246, 0.2);
+  border-left: 4px solid #3b82f6;
+  color: #ffffff;
+  margin: 0 0.5rem 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+/* Iconos de navegación principal */
+.bg-blue-800 .nav-link i {
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+  background: none;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.bg-blue-800 .nav-link:hover i,
+.bg-blue-800 .nav-link.active i,
+.nav-link.active i {
+  color: #ffffff;
+}
+
+/* Texto de navegación principal */
+.bg-blue-800 .nav-link span {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+  flex: 1;
+}
+
+.bg-blue-800 .nav-link:hover span,
+.bg-blue-800 .nav-link.active span {
+  color: #ffffff;
+}
+
+/* ===== SUBMENÚS DESPLEGABLES ===== */
+.submenu-item {
+  position: relative;
+}
+
+.bg-blue-800 .submenu-item {
+  margin: 0 0.5rem 0.25rem 0.5rem;
+}
+
+.submenu-header {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+}
+
+.bg-blue-800 .submenu-header {
+  border-radius: 0.5rem;
+  padding: 0.875rem 1rem;
+}
+
+/* Headers de submenú cuando tienen un hijo activo */
+.submenu-header.parent-active {
+  background: rgba(59, 130, 246, 0.15);
+  border-left: 4px solid rgba(59, 130, 246, 0.7);
+  color: #ffffff;
+  margin: 0 0.5rem 0.25rem 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.submenu-header.parent-active i {
+  color: #ffffff;
+}
+
+/* Icono chevron para submenús */
+.submenu-icon {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: auto;
+  flex-shrink: 0;
+  transition: transform 0.8s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.2s ease;
+  transform: rotate(0deg);
+  transform-origin: center;
+}
+
+.bg-blue-800 .submenu-icon {
+  background: none;
+  border-radius: 0;
+  padding: 0;
+}
+
+/* Animaciones del chevron */
+.bg-blue-800 .submenu-item.expanded .submenu-icon,
+.submenu-item.expanded .submenu-icon {
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+.bg-blue-800 .submenu-header:hover .submenu-icon {
+  color: rgba(255, 255, 255, 0.9);
+  transform: rotate(0deg) scale(1.1);
+}
+
+.bg-blue-800 .submenu-item.expanded .submenu-header:hover .submenu-icon {
+  transform: rotate(90deg) scale(1.15);
+}
+
+/* Contenedor de opciones del submenú */
+.submenu-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: all 0.3s ease-in-out;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  margin: 0.25rem 0.5rem 0 0.5rem;
+}
+
+.bg-blue-800 .submenu-content {
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0.25rem 0 0 0;
+  border-radius: 0.375rem;
+}
+
+/* Estado expandido del submenú */
+.submenu-item.expanded .submenu-content {
+  max-height: 200px;
+  padding: 0.375rem 0;
+}
+
+.bg-blue-800 .submenu-item.expanded .submenu-content {
+  padding: 0.25rem 0;
+}
+
+/* ===== ENLACES DE SUBMENÚ ===== */
+.nav-sublink {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  letter-spacing: 0.01em;
+  height: 2.75rem;
+  border-left: none;
+  position: relative;
+  margin: 0 1rem 0.25rem 1.5rem;
+  border-radius: 0.375rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.bg-blue-800 .nav-sublink {
+  padding: 0.75rem 1rem 0.75rem 2.75rem;
+  margin: 0;
+  border-radius: 0;
+  height: auto;
+}
+
+.nav-sublink:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.bg-blue-800 .nav-sublink:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Estados activos para elementos de submenú */
+.nav-sublink.child-active {
+  background: rgba(59, 130, 246, 0.08);
+  border-left: 3px solid rgba(59, 130, 246, 0.4);
+  color: rgba(255, 255, 255, 0.95);
+  font-weight: 500;
+  margin: 0 1rem 0.25rem 1.5rem;
+  border-radius: 0.375rem;
+  padding: 0.625rem 0.875rem;
+  position: relative;
+}
+
+.bg-blue-800 .nav-sublink.active {
+  background: rgba(59, 130, 246, 0.15);
+}
+
+.nav-sublink.child-active i {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Iconos de submenú */
+.nav-sublink i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  margin-right: 0.75rem;
+  font-size: 1rem;
+}
+
+.bg-blue-800 .nav-sublink i {
+  width: 1rem;
+  height: 1rem;
+  font-size: 0.875rem;
+  background: none;
+  border-radius: 0;
+  margin-right: 0.75rem;
+}
+
+/* Texto de submenú */
+.nav-sublink span {
+  font-weight: 400;
+  font-size: 0.875rem;
+}
+
+.bg-blue-800 .nav-sublink span {
+  font-size: 0.8125rem;
+  font-weight: 400;
+}
+
+/* Línea conectora entre submenú y padre */
+.nav-sublink::before {
+  content: '';
+  position: absolute;
+  left: -0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2px;
+  height: 60%;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 1px;
+}
+
+.nav-sublink.child-active::before {
+  background-color: rgba(59, 130, 246, 0.6);
+  width: 3px;
+}
+
+.bg-blue-800 .nav-sublink::before {
+  display: none;
+}
+
+/* ===== AJUSTES DE ESPACIADO ===== */
+.bg-blue-800 .py-3 {
+  padding-top: 0;
+  padding-bottom: 1rem;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.bg-blue-800 .py-3::-webkit-scrollbar {
+  width: 3px;
+}
+
+.bg-blue-800 .py-3::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 1.5px;
+}
+
+/* Ocultar scrollbar pero permitir scroll */
+.py-3::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+/* ===== ESTADOS DE FOCUS PARA ACCESIBILIDAD ===== */
+.nav-link:focus,
+.nav-sublink:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 768px) {
+  .bg-blue-800 .nav-link {
     padding: 1rem;
-  }
-  
-  .p-5 {
-    padding: 1.25rem;
-  }
-  
-  .p-6 {
-    padding: 1.5rem;
-  }
-  
-  .py-1 {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
-  }
-  
-  .py-2 {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-  }
-  
-  .py-3 {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem;
-  }
-  
-  .py-4 {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-  }
-  
-  .px-3 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-  
-  .px-4 {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .pr-8 {
-    padding-right: 2rem;
-  }
-  
-  .mt-1 {
-    margin-top: 0.25rem;
-  }
-  
-  .mt-2 {
-    margin-top: 0.5rem;
-  }
-  
-  .mt-3 {
-    margin-top: 0.75rem;
-  }
-  
-  .mt-4 {
-    margin-top: 1rem;
-  }
-  
-  .mt-6 {
-    margin-top: 1.5rem;
-  }
-  
-  .mb-1 {
-    margin-bottom: 0.25rem;
-  }
-  
-  .mb-2 {
-    margin-bottom: 0.5rem;
-  }
-  
-  .mb-4 {
-    margin-bottom: 1rem;
-  }
-  
-  .mb-6 {
-    margin-bottom: 1.5rem;
-  }
-  
-  .mb-8 {
-    margin-bottom: 2rem;
-  }
-  
-  .mr-1 {
-    margin-right: 0.25rem;
-  }
-  
-  .mr-2 {
-    margin-right: 0.5rem;
-  }
-  
-  .mr-3 {
-    margin-right: 0.75rem;
-  }
-  
-  .ml-1 {
-    margin-left: 0.25rem;
-  }
-  
-  .ml-2 {
-    margin-left: 0.5rem;
-  }
-  
-  .ml-3 {
-    margin-left: 0.75rem;
-  }
-  
-  .space-x-4 > * + * {
-    margin-left: 1rem;
-  }
-  
-  .space-y-0 > * + * {
-    margin-top: 0;
-  }
-  
-  /* Tamaños */
-  .w-4 {
-    width: 1rem;
-  }
-  
-  .w-5 {
-    width: 1.25rem;
-  }
-  
-  .w-6 {
-    width: 1.5rem;
-  }
-  
-  .w-9 {
-    width: 2.25rem;
-  }
-  
-  .w-12 {
-    width: 3rem;
-  }
-  
-  .w-48 {
-    width: 12rem;
-  }
-  
-  .w-64 {
-    width: 16rem;
-  }
-  
-  .h-4 {
-    height: 1rem;
-  }
-  
-  .h-5 {
-    height: 1.25rem;
-  }
-  
-  .h-6 {
-    height: 1.5rem;
-  }
-  
-  .h-9 {
-    height: 2.25rem;
-  }
-  
-  .h-12 {
-    height: 3rem;
-  }
-  
-  .h-64 {
-    height: 16rem;
-  }
-  
-  .h-screen {
-    height: 100vh;
-  }
-  
-  .min-h-screen {
-    min-height: 100vh;
-  }
-  
-  /* Bordes y bordes redondeados */
-  .border {
-    border-width: 1px;
-  }
-  
-  .border-b {
-    border-bottom-width: 1px;
-  }
-  
-  .border-blue-700 {
-    border-color: #1d4ed8;
-  }
-  
-  .rounded {
-    border-radius: 0.25rem;
-  }
-  
-  .rounded-lg {
-    border-radius: 0.5rem;
-  }
-  
-  .rounded-md {
-    border-radius: 0.375rem;
-  }
-  
-  .rounded-full {
-    border-radius: 9999px;
-  }
-  
-  /* Colores de fondo */
-  .bg-blue-100 {
-    background-color: #dbeafe;
-  }
-  
-  .bg-blue-600 {
-    background-color: #2563eb;
-  }
-  
-  .bg-blue-700 {
-    background-color: #1d4ed8;
-  }
-  
-  .bg-blue-800 {
-    background-color: #1e40af;
-  }
-  
-  .bg-green-100 {
-    background-color: #dcfce7;
-  }
-  
-  .bg-green-600 {
-    background-color: #16a34a;
-  }
-  
-  .bg-gray-50 {
-    background-color: #f9fafb;
-  }
-  
-  .bg-gray-100 {
-    background-color: #f3f4f6;
-  }
-  
-  .bg-white {
-    background-color: #ffffff;
-  }
-  
-  .bg-red-100 {
-    background-color: #fee2e2;
-  }
-  
-  .bg-red-500 {
-    background-color: #ef4444;
-  }
-  
-  .bg-yellow-100 {
-    background-color: #fef3c7;
-  }
-  
-  .bg-purple-100 {
-    background-color: #f3e8ff;
-  }
-  
-  /* Colores de texto */
-  .text-blue-200 {
-    color: #bfdbfe;
-  }
-  
-  .text-blue-600 {
-    color: #2563eb;
-  }
-  
-  .text-white {
-    color: #ffffff;
-  }
-  
-  .text-gray-400 {
-    color: #9ca3af;
-  }
-  
-  .text-gray-500 {
-    color: #6b7280;
-  }
-  
-  .text-gray-600 {
-    color: #4b5563;
-  }
-  
-  .text-gray-700 {
-    color: #374151;
-  }
-  
-  .text-gray-800 {
-    color: #1f2937;
-  }
-  
-  .text-green-500 {
-    color: #22c55e;
-  }
-  
-  .text-green-600 {
-    color: #16a34a;
-  }
-  
-  .text-green-700 {
-    color: #15803d;
-  }
-  
-  .text-red-500 {
-    color: #ef4444;
-  }
-  
-  .text-red-700 {
-    color: #b91c1c;
-  }
-  
-  .text-yellow-600 {
-    color: #ca8a04;
-  }
-  
-  .text-yellow-700 {
-    color: #a16207;
-  }
-  
-  .text-purple-600 {
-    color: #9333ea;
-  }
-  
-  /* Tipografía */
-  .text-xs {
-    font-size: 0.75rem;
-    line-height: 1rem;
-  }
-  
-  .text-sm {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  
-  .text-lg {
-    font-size: 1.125rem;
-    line-height: 1.5rem;
-  }
-  
-  .text-xl {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
-  
-  .text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-  
-  .font-medium {
-    font-weight: 500;
-  }
-  
-  .font-semibold {
-    font-weight: 600;
-  }
-  
-  .font-bold {
-    font-weight: 700;
-  }
-  
-  /* Grid */
-  .grid {
-    display: grid;
-  }
-  
-  .grid-cols-1 {
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-  }
-  
-  .grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  
-  .gap-4 {
-    gap: 1rem;
-  }
-  
-  .gap-6 {
-    gap: 1.5rem;
-  }
-  
-  /* Efectos */
-  .shadow-sm {
-    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  }
-  
-  .shadow-md {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  .shadow-lg {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  }
-  
-  .shadow-inner {
-    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  }
-  
-  .focus\:outline-none:focus {
-    outline: 2px solid transparent;
-    outline-offset: 2px;
-  }
-  
-  .focus\:ring-2:focus {
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-  }
-  
-  .focus\:ring-blue-500:focus {
-    --tw-ring-color: #3b82f6;
-  }
-  
-  .hover\:bg-blue-700:hover {
-    background-color: #1d4ed8;
-  }
-  
-  .hover\:bg-gray-100:hover {
-    background-color: #f3f4f6;
-  }
-  
-  .hover\:text-gray-700:hover {
-    color: #374151;
-  }
-  
-  /* Posicionamiento */
-  .relative {
-    position: relative;
-  }
-  
-  .absolute {
-    position: absolute;
-  }
-  
-  .top-1 {
-    top: 0.25rem;
-  }
-  
-  .top-2 {
-    top: 0.5rem;
-  }
-  
-  .right-0 {
-    right: 0;
-  }
-  
-  .right-1 {
-    right: 0.25rem;
-  }
-  
-  .right-2 {
-    right: 0.5rem;
-  }
-  
-  .right-3 {
-    right: 0.75rem;
-  }
-  
-  .-top-1 {
-    top: -0.25rem;
-  }
-  
-  .-right-1 {
-    right: -0.25rem;
-  }
-  
-  /* Transiciones */
-  .transition-colors {
-    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
-  }
-  
-  .duration-200 {
-    transition-duration: 200ms;
-  }
-  
-  /* Desbordamiento */
-  .overflow-hidden {
-    overflow: hidden;
-  }
-  
-  .overflow-y-auto {
-    overflow-y: auto;
-  }
-  
-  .overflow-x-auto {
-    overflow-x: auto;
-  }
-  
-  /* Específicos para tablas */
-  .min-w-full {
-    min-width: 100%;
-  }
-  
-  .text-left {
-    text-align: left;
-  }
-  
-  .text-center {
-    text-align: center;
-  }
-  
-  /* Display */
-  .block {
-    display: block;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  /* Z-index */
-  .z-50 {
-    z-index: 50;
-  }
-  
-  /* Media queries para responsive */
-  @media (min-width: 640px) {
-    .sm\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  
-  @media (min-width: 1024px) {
-    .lg\:grid-cols-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-    
-    .lg\:grid-cols-4 {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-  
-  /* Estilos personalizados para el dashboard */
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  button {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font: inherit;
-    color: inherit;
-  }
-  
-  /* Cursor */
-  .cursor-pointer {
-    cursor: pointer;
-  }
-  
-  /* Estilo específico para el sidebar similar a la imagen 1 */
-  .bg-blue-800 {
-    background-color: #2446c7; /* Ajuste exacto para el azul de la imagen */
-  }
-  
-  /* Estilo para los enlaces de navegación */
-  .nav-link {
-    display: flex;
-    align-items: center;
-    padding: 0.625rem 1rem;
-    font-size: 0.95rem;
-    border-left: 4px solid transparent;
-    transition: all 0.2s ease;
-    letter-spacing: 0.01em;
-    height: 3rem; /* Altura fija para que sean todas iguales */
-  }
-  
-  .nav-link:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  .nav-link.active {
-    background-color: rgba(255, 255, 255, 0.15);
-    border-left-color: white;
-  }
-  
-  .nav-link i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-right: 0.75rem;
-    font-size: 1.125rem;
-  }
-  
-  /* Reducir el tamaño del texto para evitar desbordamiento */
-  .font-medium {
-    font-weight: 500;
-    font-size: 0.9375rem;
-  }
-  
-  /* Espaciado nulo entre opciones para un diseño más compacto */
-  .space-y-0 > * {
-    margin-top: 0;
-    margin-bottom: 0;
-  }
-  
-  /* Estilo para el encabezado del sidebar */
-  .border-b.border-blue-700 {
-    border-color: rgba(255, 255, 255, 0.1);
-  }
-  
-  /* Ocultar la barra de desplazamiento pero permitir el scroll */
-  .py-3 {
-    overflow-y: auto;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
-  }
-  
-  .py-3::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-    display: none;
-  }
-  
-  /* Estilo para el texto del título del sidebar (igual a la imagen 1) */
-  .text-xl {
-    font-size: 1.25rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-  }
-  
-  .text-blue-200 {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  
-  /* Mejoras para el menú de usuario */
-  #userMenu {
-    transition: all 0.2s ease;
-    transform-origin: top right;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  }
-  
-  /* Agregar animación suave al menú desplegable */
-  #userMenu {
+    margin: 0 0.25rem 0.25rem 0.25rem;
+  }
+  
+  .bg-blue-800 .submenu-item {
+    margin: 0 0.25rem 0.25rem 0.25rem;
+  }
+
+  .nav-sublink {
+    margin: 0 0.5rem 0.25rem 1rem;
+  }
+  
+  .nav-sublink.child-active {
+    margin: 0 0.5rem 0.25rem 1rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .submenu-content {
+    max-height: 150px;
+  }
+  
+  .submenu-item.expanded .submenu-content {
+    max-height: 150px;
+  }
+  
+  .nav-sublink {
+    height: 2.5rem;
+    padding: 0.375rem 1rem;
+  }
+}
+
+/* ===== ESTILOS PARA EL MENÚ DESPLEGABLE DE USUARIO ===== */
+#userMenu {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(229, 231, 235, 0.6);
+  border-radius: 0.875rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.12), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+  padding: 0.5rem;
+  min-width: 12rem;
+  transform-origin: top right;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: scale(0.95) translateY(-8px);
+}
+
+#userMenu.hidden {
+  display: none;
+}
+
+#userMenu:not(.hidden) {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+#userMenu a,
+#userMenu button {
+  display: flex;
+  align-items: center;
+  padding: 0.625rem 0.875rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  transition: all 0.2s ease;
+  margin-bottom: 0.125rem;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+#userMenu a:hover,
+#userMenu button:hover {
+  background: rgba(59, 130, 246, 0.08);
+  color: #1d4ed8;
+  transform: translateX(2px);
+}
+
+#userMenu a i,
+#userMenu button i {
+  font-size: 0.875rem;
+  margin-right: 0.625rem;
+  width: 1rem;
+  color: #6b7280;
+  transition: color 0.2s ease;
+}
+
+#userMenu a:hover i,
+#userMenu button:hover i {
+  color: #3b82f6;
+}
+
+#userMenu .border-t {
+  border-color: rgba(229, 231, 235, 0.6);
+  margin: 0.375rem 0;
+}
+
+#userMenu button[data-confirm] {
+  color: #dc2626;
+}
+
+#userMenu button[data-confirm]:hover {
+  background: rgba(220, 38, 38, 0.08);
+  color: #b91c1c;
+}
+
+#userMenu button[data-confirm] i {
+  color: #dc2626;
+}
+
+#userMenu button[data-confirm]:hover i {
+  color: #b91c1c;
+}
+
+/* ===== ESTILOS PARA LA BARRA SUPERIOR ===== */
+header.bg-white {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04), inset 0 -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+header input[type="text"] {
+  background: rgba(249, 250, 251, 0.9);
+  border: 1px solid rgba(209, 213, 219, 0.8);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+header input[type="text"]:focus {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(59, 130, 246, 0.6);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+  transform: translateY(-1px);
+}
+
+header .text-gray-500 {
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+header .text-gray-500:hover {
+  background: rgba(249, 250, 251, 0.8);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+header .fas.fa-bell {
+  transition: all 0.2s ease;
+}
+
+header .text-gray-500:hover .fas.fa-bell {
+  color: #3b82f6;
+  transform: scale(1.05);
+}
+
+header .w-9.h-9.bg-blue-600 {
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(59, 130, 246, 0.25);
+}
+
+header .w-9.h-9.bg-blue-600:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.35);
+}
+
+/* ===== AJUSTES ADICIONALES PARA COMPATIBILIDAD ===== */
+
+/* Ajustes específicos para opciones con texto más largo */
+.nav-link span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Asegurar espaciado nulo entre opciones */
+.space-y-0 > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Fuente específica para elementos de navegación */
+.font-medium {
+  font-weight: 500;
+  font-size: 0.9375rem;
+}
+
+/* Tamaños específicos optimizados */
+.w-6, .h-6 {
+  width: 1.35rem;
+  height: 1.35rem;
+}
+
+.mr-3 {
+  margin-right: 0.675rem;
+}
+
+.py-2 {
+  padding-top: 0.375rem;
+  padding-bottom: 0.375rem;
+}
+
+.px-4 {
+  padding-left: 0.875rem;
+  padding-right: 0.875rem;
+}
+
+/* ===== PREVENCIÓN DE COLAPSO BRUSCO EN NAVEGADORES ===== */
+@supports not (max-height: fit-content) {
+  .submenu-content {
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+  }
+  
+  .submenu-item:not(.expanded) .submenu-content {
     opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.2s ease, transform 0.2s ease;
+    visibility: hidden;
   }
   
-  #userMenu.hidden {
-    display: none;
-  }
-  
-  #userMenu:not(.hidden) {
+  .submenu-item.expanded .submenu-content {
     opacity: 1;
-    transform: scale(1);
+    visibility: visible;
   }
-  
-  /* Estilos para lograr que el sidebar tenga un tamaño compacto */
-  /* Para que todas las opciones quepan sin barra de desplazamiento */
-  .w-6, .h-6 {
-    width: 1.35rem;
-    height: 1.35rem;
-  }
-  
-  .mr-3 {
-    margin-right: 0.675rem;
-  }
-  
-  .py-2 {
-    padding-top: 0.375rem;
-    padding-bottom: 0.375rem;
-  }
-  
-  .px-4 {
-    padding-left: 0.875rem;
-    padding-right: 0.875rem;
-  }
-  
-  /* Ajuste específico para opciones con texto más largo */
-  .nav-link span {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+}
+
+/* ===== INDICADORES VISUALES SUTILES ===== */
+.submenu-header::after {
+  content: '';
+  position: absolute;
+  right: 2.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.submenu-header:hover::after {
+  opacity: 1;
+}
+
+/* ===== ESTADO PARA CUANDO EL SUBMENÚ SE ESTÁ CERRANDO ===== */
+.submenu-content.closing {
+  transition: max-height 0.2s ease-in-out;
+}
+
+/* ===== ESTADO PARA PREVENIR SCROLL EN BODY CUANDO MODAL ABIERTO ===== */
+body.overflow-hidden {
+  overflow: hidden;
+}
 
 
+/*------------------------------------------------------------------*/
 /* ============== ESTILOS PARA EL MODAL DE PROGRAMAS ============== */
 /* Modal - Estructura principal */
 #programModal {
@@ -1113,6 +1186,110 @@
 body.overflow-hidden {
   overflow: hidden;
 }
+
+/* Mejora visual para la imagen del programa */
+#modalContent .image-preview-container img {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+}
+
+/* Iconos para estados con colores */
+#modalContent .fas.fa-play-circle {
+  color: #10b981;
+  margin-right: 0.25rem;
+}
+
+#modalContent .fas.fa-ban {
+  color: #ef4444;
+  margin-right: 0.25rem;
+}
+
+#modalContent .fas.fa-clock {
+  color: #f59e0b;
+  margin-right: 0.25rem;
+}
+
+#modalContent .fas.fa-flag-checkered {
+  color: #6b7280;
+  margin-right: 0.25rem;
+}
+
+/* Iconos para información de auditoría */
+#modalContent .fas.fa-user,
+#modalContent .fas.fa-user-edit {
+  margin-right: 0.25rem;
+  color: #6b7280;
+}
+
+/* Icono para total de inscripciones */
+#modalContent .fas.fa-users {
+  color: #2563eb;
+  margin-right: 0.25rem;
+}
+
+/* Iconos para disponibilidad */
+#modalContent .fas.fa-check-circle {
+  color: #10b981;
+  margin-right: 0.25rem;
+}
+
+#modalContent .fas.fa-times-circle {
+  color: #ef4444;
+  margin-right: 0.25rem;
+}
+
+/* Mejora del código ID */
+#modalContent code {
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+}
+
+/* Mejora del botón de editar */
+#modalContent .bg-blue-600:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Icono del botón editar */
+#modalContent .fas.fa-edit {
+  margin-right: 0.5rem;
+}
+
+/* Hover effect sutil en las tarjetas */
+#modalContent .bg-white.p-4.rounded-lg.border.border-gray-200:hover {
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+/* Mejora del espaciado en listas */
+#modalContent .list-disc.list-inside.space-y-2 li {
+  line-height: 1.5;
+  margin-bottom: 0.5rem;
+}
+
+/* Icono para información del formulario */
+#modalContent .bg-blue-50 .fas.fa-info-circle {
+  color: #3b82f6;
+  margin-right: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Mejora de colores para texto de estado */
+#modalContent .text-green-600 {
+  color: #059669;
+  font-weight: 500;
+}
+
+#modalContent .text-red-600 {
+  color: #dc2626;
+  font-weight: 500;
+}
+
 /*------------------------------------------------------------------*/
 
 /* ============== ESTILOS PARA EL MODAL DE EVENTOS ============== */
@@ -1692,6 +1869,9 @@ body.overflow-hidden {
   overflow: hidden;
 }
 
+/*PROBANDO MEJORAS EN PANEL*/
+
+
 </style>
   
 
@@ -1712,94 +1892,139 @@ body.overflow-hidden {
         </button>
       </div>
       
-      <nav class="flex-1 py-3">
-        <ul class="space-y-0">
-          <li>
-            <a href="<%= admin_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
-              <i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>
-              <span class="font-medium">Dashboard</span>
-            </a>
-          </li>
-          <li>
-            <a href="<%= admin_programs_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'programs' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
-              <i class="fas fa-graduation-cap w-6 h-6 mr-3"></i>
-              <span class="font-medium">Programas</span>
-            </a>
-          </li>
-          <li>
-            <a href="<%= admin_events_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'events' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
-              <i class="fas fa-calendar-alt w-6 h-6 mr-3"></i>
-              <span class="font-medium">Eventos</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-user-plus w-6 h-6 mr-3"></i>
-              <span class="font-medium">Crear Cuentas</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-clipboard-list w-6 h-6 mr-3"></i>
-              <span class="font-medium">Inscripciones Recibidas</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-building w-6 h-6 mr-3"></i>
-              <span class="font-medium">Subir Patrocinadores</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-link w-6 h-6 mr-3"></i>
-              <span class="font-medium">Asociar Patrocinadores</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-users w-6 h-6 mr-3"></i>
-              <span class="font-medium">Usuarios</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-comment-dots w-6 h-6 mr-3"></i>
-              <span class="font-medium">Subir Testimonios</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-book w-6 h-6 mr-3"></i>
-              <span class="font-medium">Recursos Académicos</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-chalkboard-teacher w-6 h-6 mr-3"></i>
-              <span class="font-medium">Mentores</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-trophy w-6 h-6 mr-3"></i>
-              <span class="font-medium">Ganadores</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-users-cog w-6 h-6 mr-3"></i>
-              <span class="font-medium">Equipo Incuba</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-blue-700">
-              <i class="fas fa-envelope w-6 h-6 mr-3"></i>
-              <span class="font-medium">Contáctanos</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
+<nav class="flex-1 py-3 overflow-y-auto">
+  <ul class="space-y-0">
+    <li>
+      <a href="<%= admin_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>
+        <span class="font-medium">Dashboard</span>
+      </a>
+    </li>
+    
+    <!-- Programas - Solo activo cuando NO es inscripciones -->
+    <li>
+      <a href="<%= admin_programs_path %>" class="nav-link flex items-center py-2 px-4 <%= (controller_name == 'programs' && request.path != admin_inscripciones_programs_path) ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-graduation-cap w-6 h-6 mr-3"></i>
+        <span class="font-medium">Programas</span>
+      </a>
+    </li>
+    
+    <!-- Eventos - Solo activo cuando NO es inscripciones -->
+    <li>
+      <a href="<%= admin_events_path %>" class="nav-link flex items-center py-2 px-4 <%= (controller_name == 'events' && request.path != admin_inscripciones_events_path) ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-calendar-alt w-6 h-6 mr-3"></i>
+        <span class="font-medium">Eventos</span>
+      </a>
+    </li>
+    
+<li class="submenu-item <%= controller_name == 'users' ? 'expanded' : '' %>">
+  <div class="submenu-header nav-link flex items-center py-2 px-4 hover:bg-blue-700 cursor-pointer <%= controller_name == 'users' ? 'parent-active' : '' %>" data-submenu="usuarios">
+    <i class="fas fa-users w-6 h-6 mr-3"></i>
+    <span class="font-medium flex-1">Usuarios</span>
+    <i class="fas fa-chevron-right submenu-icon transition-transform duration-200"></i>
+  </div>
+  <ul class="submenu-content space-y-0" data-submenu-content="usuarios">
+    <li>
+      <%= link_to new_admin_user_path, 
+          class: "nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 #{'child-active' if controller_name == 'users' && action_name == 'new'}" do %>
+        <i class="fas fa-user-plus w-5 h-5 mr-3"></i>
+        <span class="font-medium">Crear Usuario</span>
+      <% end %>
+    </li>
+    <li>
+      <%= link_to admin_users_path, 
+          class: "nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 #{'child-active' if controller_name == 'users' && %w[index show edit].include?(action_name)}" do %>
+        <i class="fas fa-list-ul w-5 h-5 mr-3"></i>
+        <span class="font-medium">Gestionar Usuarios</span>
+      <% end %>
+    </li>
+  </ul>
+</li>
+    
+    <!-- Inscripciones Recibidas - CON CLASES ESPECÍFICAS -->
+    <li class="submenu-item <%= request.path == admin_inscripciones_programs_path || request.path == admin_inscripciones_events_path ? 'expanded' : '' %>">
+      <div class="submenu-header nav-link flex items-center py-2 px-4 hover:bg-blue-700 cursor-pointer <%= request.path == admin_inscripciones_programs_path || request.path == admin_inscripciones_events_path ? 'parent-active' : '' %>" data-submenu="inscripciones">
+        <i class="fas fa-clipboard-list w-6 h-6 mr-3"></i>
+        <span class="font-medium flex-1">Inscripciones</span>
+        <i class="fas fa-chevron-right submenu-icon transition-transform duration-200"></i>
+      </div>
+      <ul class="submenu-content space-y-0" data-submenu-content="inscripciones">
+        <li>
+          <%= link_to admin_inscripciones_programs_path, class: "nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 #{'child-active' if request.path == admin_inscripciones_programs_path}" do %>
+            <i class="fas fa-graduation-cap w-5 h-5 mr-3"></i>
+            <span class="font-medium">De Programas</span>
+          <% end %>
+        </li>
+        <li>
+          <%= link_to admin_inscripciones_events_path, class: "nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 #{'child-active' if request.path == admin_inscripciones_events_path}" do %>
+            <i class="fas fa-calendar-check w-5 h-5 mr-3"></i>
+            <span class="font-medium">De Eventos</span>
+          <% end %>
+        </li>
+      </ul>
+    </li>
+    
+    <!-- Patrocinadores -->
+    <li class="submenu-item <%= controller_name == 'sponsors' || controller_name == 'patrocinadores' ? 'expanded' : '' %>">
+      <div class="submenu-header nav-link flex items-center py-2 px-4 hover:bg-blue-700 cursor-pointer <%= controller_name == 'sponsors' || controller_name == 'patrocinadores' ? 'parent-active' : '' %>" data-submenu="patrocinadores">
+        <i class="fas fa-building w-6 h-6 mr-3"></i>
+        <span class="font-medium flex-1">Patrocinadores</span>
+        <i class="fas fa-chevron-right submenu-icon transition-transform duration-200"></i>
+      </div>
+      <ul class="submenu-content space-y-0" data-submenu-content="patrocinadores">
+        <li>
+          <a href="#" class="nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 <%= (controller_name == 'sponsors' && action_name == 'upload') || (controller_name == 'patrocinadores' && action_name == 'new') ? 'child-active' : '' %>">
+            <i class="fas fa-upload w-5 h-5 mr-3"></i>
+            <span class="font-medium">Subir Patrocinadores</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="nav-sublink flex items-center py-2 px-4 pl-12 hover:bg-blue-700 <%= (controller_name == 'sponsors' && action_name == 'associate') || (controller_name == 'patrocinadores' && action_name == 'associate') ? 'child-active' : '' %>">
+            <i class="fas fa-link w-5 h-5 mr-3"></i>
+            <span class="font-medium">Asociar Patrocinadores</span>
+          </a>
+        </li>
+      </ul>
+    </li>
+    
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'testimonials' || controller_name == 'testimonios' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-comment-dots w-6 h-6 mr-3"></i>
+        <span class="font-medium">Subir Testimonios</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'academic_resources' || controller_name == 'recursos' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-book w-6 h-6 mr-3"></i>
+        <span class="font-medium">Recursos Académicos</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'mentors' || controller_name == 'mentores' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-chalkboard-teacher w-6 h-6 mr-3"></i>
+        <span class="font-medium">Mentores</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'winners' || controller_name == 'ganadores' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-trophy w-6 h-6 mr-3"></i>
+        <span class="font-medium">Ganadores</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'team' || controller_name == 'equipo' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-users-cog w-6 h-6 mr-3"></i>
+        <span class="font-medium">Equipo Incuba</span>
+      </a>
+    </li>
+    <li>
+      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'contact' || controller_name == 'contactanos' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+        <i class="fas fa-envelope w-6 h-6 mr-3"></i>
+        <span class="font-medium">Contáctanos</span>
+      </a>
+    </li>
+  </ul>
+</nav>
     </div>
     
     <!-- Main Content -->
@@ -2527,6 +2752,82 @@ document.addEventListener('turbo:render', function() {
 </script>
 
 <!-- ------------------------------------------------------------ -->
+<!-- SCRIPT PARA SUBMENÚS DESPLEGABLES DE LA BARRA LATERAL -->
+<script>
+// JavaScript mejorado para manejar el estado activo
+function initializeActiveNavigation() {
+  console.log("Inicializando navegación activa mejorada");
+  
+  // Detectar elementos activos y expandir submenús automáticamente
+  $('.nav-sublink.active').each(function() {
+    const parentSubmenu = $(this).closest('.submenu-item');
+    const parentHeader = parentSubmenu.find('.submenu-header');
+    
+    if (parentSubmenu.length && parentHeader.length) {
+      // Marcar como expandido
+      parentSubmenu.addClass('expanded');
+      parentHeader.addClass('has-active-child');
+      
+      // Rotar el icono
+      const icon = parentHeader.find('.submenu-icon');
+      icon.css('transform', 'rotate(90deg)');
+      
+      console.log("Submenú expandido automáticamente para elemento activo");
+    }
+  });
+  
+  // Manejar clics en headers de submenú
+  $('.submenu-header').off('click.activeNav').on('click.activeNav', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const submenuItem = $(this).closest('.submenu-item');
+    const isCurrentlyExpanded = submenuItem.hasClass('expanded');
+    
+    // Si no tiene elementos activos, permitir toggle normal
+    if (!$(this).hasClass('has-active-child')) {
+      // Cerrar otros submenús
+      $('.submenu-item').not(submenuItem).removeClass('expanded');
+      $('.submenu-item').not(submenuItem).find('.submenu-icon').css('transform', 'rotate(0deg)');
+      
+      // Toggle del submenú actual
+      submenuItem.toggleClass('expanded');
+      
+      const icon = $(this).find('.submenu-icon');
+      if (submenuItem.hasClass('expanded')) {
+        icon.css('transform', 'rotate(90deg)');
+      } else {
+        icon.css('transform', 'rotate(0deg)');
+      }
+    }
+    // Si tiene elementos activos, mantener expandido pero permitir colapso manual
+    else if (isCurrentlyExpanded) {
+      submenuItem.removeClass('expanded');
+      const icon = $(this).find('.submenu-icon');
+      icon.css('transform', 'rotate(0deg)');
+      
+      // Después de 300ms, volver a expandir automáticamente
+      setTimeout(() => {
+        submenuItem.addClass('expanded');
+        icon.css('transform', 'rotate(90deg)');
+      }, 300);
+    }
+  });
+}
+
+// Inicializar en carga del documento
+$(document).ready(function() {
+  initializeActiveNavigation();
+});
+
+// Reinicializar con Turbo
+$(document).on('turbo:load turbo:render', function() {
+  initializeActiveNavigation();
+});
+
+// Exponer función globalmente
+window.initializeActiveNavigation = initializeActiveNavigation;
+</script>
 
 </body>
 </html>

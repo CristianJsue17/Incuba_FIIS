@@ -2,18 +2,18 @@ module Admin
   class ProgramsController < BaseController
     before_action :set_program, only: [:edit, :update, :cambiar_estado]
 
-    def index
-      # Primero establecemos el orden de los programas y preparamos la paginación
-      @programs = Program.order(created_at: :desc).page(params[:page]).per(10)
+def index
+  @programs = Program.all
   
-      # Inicializamos un programa nuevo para el formulario de filtrado
-      @program = Program.new
+  # Filtros
+  @programs = @programs.where(estado: params[:estado]) if params[:estado].present?
+  @programs = @programs.where("titulo ILIKE ?", "%#{params[:search]}%") if params[:search].present?
   
-      # Si hay un parámetro de estado, filtramos los resultados
-      if params[:estado].present?
-        @programs = @programs.where(estado: params[:estado])
-      end
-    end
+  # Ordenamiento y paginación
+  @programs = @programs.order(created_at: :desc)
+                      .page(params[:page])
+                      .per(10)
+end
     
     def new
       @program = Program.new

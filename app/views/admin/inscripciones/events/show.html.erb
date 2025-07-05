@@ -1,0 +1,1659 @@
+<!-- app/views/admin/inscripciones/events/show.html.erb -->
+
+<div class="inscripciones-show-container">
+  <!-- Header Section -->
+  <div class="show-header">
+    <div class="header-content">
+      <div class="header-left">
+        <%= link_to admin_inscripciones_events_path, class: "back-button" do %>
+          <i class="fas fa-arrow-left"></i>
+          <span>Volver</span>
+        <% end %>
+        
+        <div class="header-title">
+          <h1 class="title">
+            Inscripciones: <%= @event.titulo %>
+          </h1>
+          <div class="event-meta">
+            <span class="type-badge evento">
+              <i class="fas fa-calendar-alt"></i>
+              Evento
+            </span>
+            <span class="separator">•</span>
+            <span class="encargado">
+              <i class="fas fa-user"></i>
+              <%= @event.encargado %>
+            </span>
+            <% if @event.fecha_vencimiento.present? %>
+              <span class="separator">•</span>
+              <span class="vencimiento">
+                <i class="fas fa-clock"></i>
+                <span class="<%= @event.clase_css_tiempo %>">
+                  <%= @event.tiempo_hasta_vencimiento %>
+                </span>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="header-actions">
+        <%= link_to export_excel_admin_inscripciones_event_path(@event, format: :xlsx), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-excel"></i>
+          <span>Excel</span>
+        <% end %>
+        
+        <%= link_to export_pdf_admin_inscripciones_event_path(@event, format: :pdf), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-pdf"></i>
+          <span>PDF</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @event_stats[:total] %></div>
+          <div class="stat-label">Total Inscripciones</div>
+        </div>
+      </div>
+
+      <div class="stat-card pendientes">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @event_stats[:pendientes] %></div>
+          <div class="stat-label">Pendientes</div>
+        </div>
+      </div>
+
+      <div class="stat-card aprobadas">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @event_stats[:aprobadas] %></div>
+          <div class="stat-label">Aprobadas</div>
+        </div>
+      </div>
+
+      <div class="stat-card rechazadas">
+        <div class="stat-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @event_stats[:rechazadas] %></div>
+          <div class="stat-label">Rechazadas</div>
+        </div>
+      </div>
+
+      <div class="stat-card recientes">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-week"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @event_stats[:esta_semana] %></div>
+          <div class="stat-label">Esta Semana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <%= form_with url: admin_inscripciones_event_path(@event), method: :get, 
+        class: "filters-form", local: true do |f| %>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <%= f.text_field :search_inscripcion, value: params[:search_inscripcion], 
+              placeholder: "Buscar por nombre, apellido o email...", 
+              class: "filter-input" %>
+          <div class="filter-icon">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <%= f.select :estado, options_for_select([
+            ['Todos los estados', ''],
+            ['Pendiente', 'pendiente'],
+            ['Aprobado', 'aprobado'],
+            ['Rechazado', 'rechazado']
+          ], params[:estado]), {}, { class: "filter-select" } %>
+          <div class="filter-icon">
+            <i class="fas fa-filter"></i>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <%= f.date_field :fecha_desde, value: params[:fecha_desde], 
+              class: "filter-input", placeholder: "Desde" %>
+        </div>
+
+        <div class="filter-group">
+          <%= f.date_field :fecha_hasta, value: params[:fecha_hasta], 
+              class: "filter-input", placeholder: "Hasta" %>
+        </div>
+
+        <div class="filter-actions">
+          <%= f.submit "Filtrar", class: "btn btn-primary" %>
+          <%= link_to "Limpiar", admin_inscripciones_event_path(@event), 
+              class: "btn btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Inscripciones List -->
+  <div class="inscripciones-list">
+    <% @inscripciones.each_with_index do |inscripcion, index| %>
+      <div class="inscripcion-card" data-inscripcion-id="<%= inscripcion.id %>">
+        <div class="inscripcion-header" onclick="toggleInscripcionDetails(<%= inscripcion.id %>)">
+          <div class="inscripcion-main">
+            <div class="inscripcion-number">
+              #<%= sprintf('%03d', index + 1) %>
+            </div>
+            
+            <div class="inscripcion-info">
+              <div class="inscripcion-name">
+                <%= inscripcion.nombre_lider %> 
+                <%= inscripcion.apellidos_lider %>
+              </div>
+              <div class="inscripcion-meta">
+                <span class="meta-item">
+                  <i class="fas fa-envelope"></i>
+                  <%= inscripcion.correo_lider %>
+                </span>
+                <span class="meta-item">
+                  <i class="fas fa-phone"></i>
+                  <%= inscripcion.telefono_lider %>
+                </span>
+                <span class="meta-item">
+                  <i class="fas fa-calendar"></i>
+                  <%= inscripcion.created_at.strftime("%d/%m/%Y a las %H:%M") %>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="inscripcion-status">
+            <div class="status-badge <%= inscripcion.estado %>">
+              <% case inscripcion.estado %>
+              <% when 'pendiente' %>
+                <i class="fas fa-clock"></i>
+                Pendiente
+              <% when 'aprobado' %>
+                <i class="fas fa-check-circle"></i>
+                Aprobado
+              <% when 'rechazado' %>
+                <i class="fas fa-times-circle"></i>
+                Rechazado
+              <% end %>
+            </div>
+            
+            <div class="inscripcion-actions">
+              <!-- Contact Actions -->
+              <a href="mailto:<%= inscripcion.correo_lider %>" 
+                 class="action-btn email" title="Enviar email">
+                <i class="fas fa-envelope"></i>
+              </a>
+              
+              <% if inscripcion.telefono_lider.present? %>
+                <a href="https://wa.me/51<%= inscripcion.telefono_lider.gsub(/\D/, '') %>" 
+                   target="_blank" class="action-btn whatsapp" title="WhatsApp">
+                  <i class="fab fa-whatsapp"></i>
+                </a>
+              <% else %>
+                <span class="action-btn whatsapp disabled" title="Sin teléfono">
+                  <i class="fab fa-whatsapp"></i>
+                </span>
+              <% end %>
+              
+              <div class="status-dropdown">
+                <button class="action-btn status" onclick="toggleStatusMenu(<%= inscripcion.id %>)">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <div class="status-menu" id="status-menu-<%= inscripcion.id %>">
+                  <%= form_with url: cambiar_estado_inscripcion_admin_inscripciones_event_path(@event), 
+                      method: :patch, local: true, 
+                      class: "status-form", 
+                      data: { confirm: "¿Estás seguro de cambiar el estado a Pendiente?" } do |f| %>
+                    <%= f.hidden_field :inscripcion_id, value: inscripcion.id %>
+                    <%= f.hidden_field :nuevo_estado, value: 'pendiente' %>
+                    <%= f.submit "Pendiente", class: "status-option pendiente" %>
+                  <% end %>
+                  
+                  <%= form_with url: cambiar_estado_inscripcion_admin_inscripciones_event_path(@event), 
+                      method: :patch, local: true, 
+                      class: "status-form",
+                      data: { confirm: "¿Estás seguro de cambiar el estado a Aprobado?" } do |f| %>
+                    <%= f.hidden_field :inscripcion_id, value: inscripcion.id %>
+                    <%= f.hidden_field :nuevo_estado, value: 'aprobado' %>
+                    <%= f.submit "Aprobar", class: "status-option aprobado" %>
+                  <% end %>
+                  
+                  <%= form_with url: cambiar_estado_inscripcion_admin_inscripciones_event_path(@event), 
+                      method: :patch, local: true, 
+                      class: "status-form",
+                      data: { confirm: "¿Estás seguro de cambiar el estado a Rechazado?" } do |f| %>
+                    <%= f.hidden_field :inscripcion_id, value: inscripcion.id %>
+                    <%= f.hidden_field :nuevo_estado, value: 'rechazado' %>
+                    <%= f.submit "Rechazar", class: "status-option rechazado" %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+            
+            <div class="expand-icon">
+              <i class="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="inscripcion-details" id="details-<%= inscripcion.id %>" style="display: none;">
+          <div class="details-content">
+            <!-- Información Personal -->
+            <div class="detail-section">
+              <h4 class="section-title">
+                <i class="fas fa-user"></i>
+                Información Personal
+              </h4>
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>DNI:</label>
+                  <span><%= inscripcion.dni_lider %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Nombres:</label>
+                  <span><%= inscripcion.nombre_lider %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Apellidos:</label>
+                  <span><%= inscripcion.apellidos_lider %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Email:</label>
+                  <span><%= inscripcion.correo_lider %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Teléfono:</label>
+                  <span><%= inscripcion.telefono_lider %></span>
+                </div>
+                <% if inscripcion.respond_to?(:ocupacion_lider) && inscripcion.ocupacion_lider.present? %>
+                  <div class="detail-item">
+                    <label>Ocupación:</label>
+                    <span><%= inscripcion.ocupacion_lider %></span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Información del Emprendimiento/Evento -->
+            <div class="detail-section">
+              <h4 class="section-title">
+                <i class="fas fa-lightbulb"></i>
+                Información del Emprendimiento
+              </h4>
+              
+              <div class="detail-grid">
+                <div class="detail-item full-width">
+                  <label>Nombre del Emprendimiento:</label>
+                  <span><%= inscripcion.nombre_emprendimiento %></span>
+                </div>
+                <% if inscripcion.respond_to?(:numero_integrantes_equipo) && inscripcion.numero_integrantes_equipo.present? %>
+                  <div class="detail-item">
+                    <label>Número de Integrantes:</label>
+                    <span><%= inscripcion.numero_integrantes_equipo %></span>
+                  </div>
+                <% end %>
+                <div class="detail-item full-width">
+                  <label>Descripción del Emprendimiento:</label>
+                  <span class="description"><%= simple_format(inscripcion.descripcion) %></span>
+                </div>
+                <% if inscripcion.respond_to?(:sector_economico) && inscripcion.sector_economico.present? %>
+                  <div class="detail-item">
+                    <label>Sector Económico:</label>
+                    <span><%= inscripcion.sector_economico&.humanize %></span>
+                  </div>
+                <% end %>
+                <% if inscripcion.respond_to?(:categoria) && inscripcion.categoria.present? %>
+                  <div class="detail-item">
+                    <label>Categoría:</label>
+                    <span><%= inscripcion.categoria&.humanize %></span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+
+            <!-- Información Adicional específica de eventos -->
+            <% if inscripcion.respond_to?(:expectativas_programa) && inscripcion.expectativas_programa.present? %>
+              <div class="detail-section">
+                <h4 class="section-title">
+                  <i class="fas fa-calendar-alt"></i>
+                  Expectativas del Evento
+                </h4>
+                <div class="detail-grid">
+                  <div class="detail-item full-width">
+                    <label>¿Qué esperas del evento?:</label>
+                    <span class="description"><%= simple_format(inscripcion.expectativas_programa) %></span>
+                  </div>
+                  <% if inscripcion.respond_to?(:enteraste_programa) && inscripcion.enteraste_programa.present? %>
+                    <div class="detail-item">
+                      <label>¿Cómo se enteró del evento?:</label>
+                      <span><%= inscripcion.enteraste_programa %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Información de Sistema -->
+            <div class="detail-section">
+              <h4 class="section-title">
+                <i class="fas fa-info-circle"></i>
+                Información del Sistema
+              </h4>
+              <div class="detail-grid">
+                <div class="detail-item">
+                  <label>ID de Inscripción:</label>
+                  <span class="id-badge">#<%= inscripcion.id %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Fecha de Inscripción:</label>
+                  <span><%= inscripcion.created_at.strftime("%d de %B de %Y a las %H:%M:%S") %></span>
+                </div>
+                <div class="detail-item">
+                  <label>Estado Actual:</label>
+                  <span class="status-badge <%= inscripcion.estado %>">
+                    <%= inscripcion.estado.humanize %>
+                  </span>
+                </div>
+                <% if inscripcion.updated_at != inscripcion.created_at %>
+                  <div class="detail-item">
+                    <label>Última Actualización:</label>
+                    <span><%= inscripcion.updated_at.strftime("%d de %B de %Y a las %H:%M:%S") %></span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Pagination -->
+  <% if @inscripciones.respond_to?(:current_page) && @inscripciones.total_pages > 1 %>
+    <div class="pagination-wrapper">
+      <div class="pagination-container">
+        <%= paginate @inscripciones, 
+            window: 2,
+            outer_window: 1,
+            left: 1,
+            right: 1,
+            param_name: :page,
+            params: { search_inscripcion: params[:search_inscripcion], estado: params[:estado], fecha_desde: params[:fecha_desde], fecha_hasta: params[:fecha_hasta] } %>
+      </div>
+      
+      <div class="pagination-info-clean">
+        Mostrando inscripciones <%= @inscripciones.offset_value + 1 %> - <%= [@inscripciones.offset_value + @inscripciones.length, @inscripciones.total_count].min %> 
+        de <%= @inscripciones.total_count %> total
+        (Página <%= @inscripciones.current_page %> de <%= @inscripciones.total_pages %>)
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Empty State -->
+  <% if @inscripciones.empty? %>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h3 class="empty-title">No hay inscripciones</h3>
+      <p class="empty-message">
+        <% if params[:search_inscripcion].present? || params[:estado].present? || params[:fecha_desde].present? %>
+          No se encontraron inscripciones que coincidan con los filtros aplicados.
+        <% else %>
+          Este evento aún no tiene inscripciones recibidas.
+        <% end %>
+      </p>
+      
+      <% if params[:search_inscripcion].present? || params[:estado].present? || params[:fecha_desde].present? %>
+        <%= link_to admin_inscripciones_event_path(@event), class: "btn btn-secondary" do %>
+          <i class="fas fa-times"></i>
+          <span>Limpiar filtros</span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<style>
+/* CSS para Vista de Inscripciones de Eventos - Show */
+.inscripciones-show-container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header */
+.show-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+}
+
+.back-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: white;
+  color: #6b7280;
+  text-decoration: none;
+  border-radius: 0.5rem;
+  border: 1px solid #d1d5db;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.back-button:hover {
+  background: #f9fafb;
+  color: #374151;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
+
+.header-title .title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.75rem;
+  line-height: 1.2;
+}
+
+.event-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.type-badge.evento {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.separator {
+  color: #d1d5db;
+  font-weight: 500;
+}
+
+.encargado,
+.vencimiento {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.encargado i,
+.vencimiento i {
+  color: #9ca3af;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-card.total .stat-icon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.stat-card.pendientes .stat-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-card.aprobadas .stat-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-card.rechazadas .stat-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.stat-card.recientes .stat-icon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.stat-content .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-content .stat-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  position: relative;
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filter-input:focus,
+.filter-select:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.filter-select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.filter-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Inscripciones List */
+.inscripciones-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.inscripcion-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.inscripcion-card:hover {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.inscripcion-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.inscripcion-header:hover {
+  background: #f9fafb;
+}
+
+.inscripcion-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.inscripcion-number {
+  background: #f3e8ff;
+  color: #7c3aed;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  flex-shrink: 0;
+}
+
+.inscripcion-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.inscripcion-name {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.inscripcion-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.meta-item i {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+
+.inscripcion-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.status-badge.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.aprobado {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.rechazado {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.inscripcion-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.action-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.action-btn.email {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.action-btn.email:hover {
+  background: #bfdbfe;
+  transform: translateY(-1px);
+}
+
+.action-btn.whatsapp {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.action-btn.whatsapp:hover {
+  background: #bbf7d0;
+  transform: translateY(-1px);
+}
+
+.action-btn.whatsapp.disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.action-btn.whatsapp.disabled:hover {
+  transform: none;
+}
+
+.action-btn.status {
+  background: #f3f4f6;
+  color: #6b7280;
+}
+
+.action-btn.status:hover {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.status-dropdown {
+  position: relative;
+}
+
+.status-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  margin-top: 0.5rem;
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  overflow: hidden;
+  z-index: 10;
+  min-width: 140px;
+  display: none;
+}
+
+.status-menu.show {
+  display: block;
+}
+
+.status-form {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.status-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  color: #374151;
+  font-size: 0.875rem;
+  transition: background 0.3s ease;
+  border: none;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  border-bottom: 1px solid #f3f4f6;
+  font-weight: 500;
+}
+
+.status-option:last-child {
+  border-bottom: none;
+}
+
+.status-option:hover {
+  background: #f9fafb;
+}
+
+.status-option.pendiente:hover {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-option.aprobado:hover {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-option.rechazado:hover {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-option.pendiente::before {
+  content: "\f017"; /* fa-clock */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.status-option.aprobado::before {
+  content: "\f058"; /* fa-check-circle */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.status-option.rechazado::before {
+  content: "\f057"; /* fa-times-circle */
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.expand-icon {
+  color: #9ca3af;
+  transition: transform 0.3s ease;
+  margin-left: 0.5rem;
+}
+
+.inscripcion-card.expanded .expand-icon {
+  transform: rotate(180deg);
+}
+
+/* Details Section */
+.inscripcion-details {
+  border-top: 1px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.details-content {
+  padding: 2rem;
+}
+
+.detail-section {
+  margin-bottom: 2rem;
+}
+
+.detail-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.section-title i {
+  color: #8b5cf6;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.detail-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detail-item label {
+  font-weight: 500;
+  color: #6b7280;
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.detail-item span {
+  color: #1f2937;
+  font-weight: 500;
+}
+
+.detail-item .description {
+  background: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e5e7eb;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.id-badge {
+  background: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-family: 'Monaco', 'Consolas', monospace;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #8b5cf6;
+  color: white;
+  border-color: #8b5cf6;
+}
+
+.btn-primary:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #9ca3af;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+}
+
+.empty-message {
+  color: #6b7280;
+  margin: 0 0 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0 1rem 0;
+  padding: 0.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.pagination-info-clean {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Estilos mejorados para Kaminari */
+.pagination-wrapper nav[role="navigation"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.pagination-wrapper nav[role="navigation"] a,
+.pagination-wrapper nav[role="navigation"] span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.75rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: white;
+  color: #374151;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination-wrapper nav[role="navigation"] a:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"],
+.pagination-wrapper nav[role="navigation"] .current {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: default;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"]:hover,
+.pagination-wrapper nav[role="navigation"] .current:hover {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+  transform: none;
+  box-shadow: none;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"],
+.pagination-wrapper nav[role="navigation"] .disabled {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"]:hover,
+.pagination-wrapper nav[role="navigation"] .disabled:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  transform: none;
+}
+
+.pagination-wrapper nav[role="navigation"] .gap {
+  text-align: center;
+  color: #6b7280;
+  cursor: default;
+  background: transparent;
+  border: transparent;
+}
+
+.pagination-wrapper nav[role="navigation"] .gap:hover {
+  background: transparent;
+  border: transparent;
+  color: #6b7280;
+  transform: none;
+}
+
+.pagination-wrapper nav[role="navigation"] .first a,
+.pagination-wrapper nav[role="navigation"] .prev a,
+.pagination-wrapper nav[role="navigation"] .next a,
+.pagination-wrapper nav[role="navigation"] .last a {
+  min-width: auto;
+  padding: 0.75rem 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .filters-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .filter-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+
+  .filter-actions .btn {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .inscripciones-show-container {
+    padding: 1rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .header-left {
+    width: 100%;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .inscripcion-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .inscripcion-main {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .inscripcion-meta {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .inscripcion-status {
+    justify-content: space-between;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .event-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .stat-content .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .inscripcion-actions {
+    flex-wrap: wrap;
+  }
+
+  .action-btn {
+    width: 36px;
+    height: 36px;
+  }
+
+  .pagination-wrapper nav[role="navigation"] a,
+  .pagination-wrapper nav[role="navigation"] span {
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Loading States */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:disabled:hover {
+  transform: none !important;
+}
+
+/* Focus States */
+.btn:focus,
+.filter-input:focus,
+.filter-select:focus,
+.action-btn:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+.inscripcion-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.stat-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.inscripcion-details.show {
+  animation: slideDown 0.3s ease-out;
+}
+
+/* Scrollbar personalizado */
+.inscripciones-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.inscripciones-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.inscripciones-list::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.inscripciones-list::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+</style>
+
+<script>
+// JavaScript para funcionalidad de la vista Show de Eventos - CON MEMORIA
+document.addEventListener('DOMContentLoaded', function() {
+  
+  // Clave única para localStorage basada en el evento actual
+  const eventId = window.location.pathname.split('/').pop();
+  const storageKey = `event_inscripciones_expanded_${eventId}`;
+  
+  // Función para obtener estados guardados
+  function getExpandedStates() {
+    try {
+      const saved = localStorage.getItem(storageKey);
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      console.warn('Error leyendo estados guardados:', e);
+      return {};
+    }
+  }
+  
+  // Función para guardar estados
+  function saveExpandedStates(states) {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(states));
+    } catch (e) {
+      console.warn('Error guardando estados:', e);
+    }
+  }
+  
+  // Función para expandir/contraer detalles de inscripción - MEJORADA
+  window.toggleInscripcionDetails = function(inscripcionId) {
+    const detailsElement = document.getElementById(`details-${inscripcionId}`);
+    const card = detailsElement.closest('.inscripcion-card');
+    const expandedStates = getExpandedStates();
+    
+    if (detailsElement.style.display === 'none' || !detailsElement.style.display) {
+      // Expandir
+      detailsElement.style.display = 'block';
+      detailsElement.classList.add('show');
+      card.classList.add('expanded');
+      expandedStates[inscripcionId] = true;
+    } else {
+      // Contraer
+      detailsElement.style.display = 'none';
+      detailsElement.classList.remove('show');
+      card.classList.remove('expanded');
+      expandedStates[inscripcionId] = false;
+    }
+    
+    // Guardar el nuevo estado
+    saveExpandedStates(expandedStates);
+  };
+
+  // Función para mostrar/ocultar menú de estado
+  window.toggleStatusMenu = function(inscripcionId) {
+    const menu = document.getElementById(`status-menu-${inscripcionId}`);
+    const allMenus = document.querySelectorAll('.status-menu');
+    
+    // Cerrar todos los otros menús
+    allMenus.forEach(m => {
+      if (m !== menu) {
+        m.classList.remove('show');
+      }
+    });
+    
+    // Toggle del menú actual
+    menu.classList.toggle('show');
+    
+    // Prevenir que el click se propague y cierre el menú
+    event.stopPropagation();
+  };
+
+  // Cerrar menús de estado al hacer click fuera
+  document.addEventListener('click', function(event) {
+    if (!event.target.closest('.status-dropdown')) {
+      document.querySelectorAll('.status-menu').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+  });
+
+  // Confirmar cambios de estado usando los formularios
+  document.querySelectorAll('.status-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      // Obtener el estado del input hidden
+      const nuevoEstado = this.querySelector('input[name="nuevo_estado"]').value;
+      
+      // Crear mensaje personalizado según el estado
+      let estadoTexto = '';
+      let mensaje = '';
+      
+      switch(nuevoEstado) {
+        case 'pendiente':
+          estadoTexto = 'Pendiente';
+          mensaje = `¿Estás seguro de cambiar el estado a "${estadoTexto}"?`;
+          break;
+        case 'aprobado':
+          estadoTexto = 'Aprobado';
+          mensaje = `¿Estás seguro de APROBAR esta inscripción?\n\nEsto significa que el participante será aceptado en el evento.`;
+          break;
+        case 'rechazado':
+          estadoTexto = 'Rechazado';
+          mensaje = `¿Estás seguro de RECHAZAR esta inscripción?\n\nEsta acción indicará que el participante no fue aceptado.`;
+          break;
+        default:
+          estadoTexto = nuevoEstado;
+          mensaje = `¿Estás seguro de cambiar el estado a "${estadoTexto}"?`;
+      }
+      
+      // Mostrar confirmación con el estado correcto
+      if (!confirm(mensaje)) {
+        e.preventDefault();
+        return false;
+      }
+      
+      // Cerrar el menú después de la confirmación
+      const menu = this.closest('.status-menu');
+      if (menu) {
+        menu.classList.remove('show');
+      }
+    });
+  });
+
+  // MEJORADO: Auto-expandir inteligente con memoria
+  const inscripciones = document.querySelectorAll('.inscripcion-card');
+  const expandedStates = getExpandedStates();
+  const hasAnyPreviousState = Object.keys(expandedStates).length > 0;
+  
+  inscripciones.forEach((card, index) => {
+    const inscripcionId = card.dataset.inscripcionId;
+    if (inscripcionId) {
+      
+      if (hasAnyPreviousState) {
+        // Si hay estados guardados, usar esos
+        const shouldBeExpanded = expandedStates[inscripcionId];
+        if (shouldBeExpanded) {
+          setTimeout(() => {
+            toggleInscripcionDetails(inscripcionId);
+          }, 50 * (index + 1)); // Animación más rápida para restaurar estados
+        }
+      } else {
+        // Si es la primera vez (no hay estados guardados) y hay pocas inscripciones
+        if (inscripciones.length <= 3) {
+          setTimeout(() => {
+            toggleInscripcionDetails(inscripcionId);
+          }, 200 * (index + 1));
+        }
+      }
+    }
+  });
+
+  // Función para limpiar memoria (botón opcional)
+  window.clearInscripcionesMemory = function() {
+    if (confirm('¿Limpiar la memoria de tarjetas expandidas? Todas se contraerán.')) {
+      localStorage.removeItem(storageKey);
+      // Contraer todas las tarjetas
+      inscripciones.forEach(card => {
+        const inscripcionId = card.dataset.inscripcionId;
+        const detailsElement = document.getElementById(`details-${inscripcionId}`);
+        if (detailsElement && detailsElement.style.display !== 'none') {
+          toggleInscripcionDetails(inscripcionId);
+        }
+      });
+    }
+  };
+
+  // Búsqueda en tiempo real (opcional)
+  const searchInput = document.querySelector('input[name="search_inscripcion"]');
+  if (searchInput) {
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        // Opcional: implementar búsqueda AJAX en tiempo real
+        console.log('Búsqueda:', this.value);
+      }, 500);
+    });
+  }
+
+  // Animación de entrada para las tarjetas
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animation = 'fadeInUp 0.3s ease-out';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  inscripciones.forEach(card => {
+    observer.observe(card);
+  });
+  
+  // DEBUG: Mostrar en consola el estado de memoria (opcional - remover en producción)
+  console.log('Estados guardados para evento', eventId, ':', expandedStates);
+
+  // Mejorar la navegación con teclado
+  document.addEventListener('keydown', function(e) {
+    // Esc para cerrar menús
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.status-menu').forEach(menu => {
+        menu.classList.remove('show');
+      });
+    }
+    
+    // Ctrl/Cmd + F para enfocar búsqueda
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f' && searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
+  });
+});
+
+// Función para exportar datos (si es necesario)
+function exportData(format) {
+  const params = new URLSearchParams(window.location.search);
+  const exportUrl = window.location.pathname + `/export_${format}?` + params.toString();
+  window.open(exportUrl, '_blank');
+}
+
+// Función para filtros avanzados
+function applyQuickFilter(estado) {
+  const form = document.querySelector('.filters-form');
+  const estadoSelect = form.querySelector('select[name="estado"]');
+  estadoSelect.value = estado;
+  form.submit();
+}
+
+// Agregar estilos de animación CSS
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+document.head.appendChild(style);
+</script>

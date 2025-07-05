@@ -232,96 +232,96 @@
         </div>
       <% end %>
 
-      <!-- Personal Information Section -->
-      <div class="form-section">
-        <div class="section-header">
-          <div class="section-icon">
-            <i class="fas fa-user-circle"></i>
-          </div>
-          <div class="section-title">
-            <h2>Información Personal del Líder</h2>
-            <p>Completa tus datos personales. Los campos con * son obligatorios.</p>
-          </div>
-        </div>
+<!-- Personal Information Section -->
+<div class="form-section">
+  <div class="section-header">
+    <div class="section-icon">
+      <i class="fas fa-user-circle"></i>
+    </div>
+    <div class="section-title">
+      <h2>Información Personal del Líder</h2>
+      <p>Completa tus datos personales. Los campos con * son obligatorios.</p>
+    </div>
+  </div>
 
-        <div class="form-grid">
-          <!-- DNI Field (First) -->
-          <div class="form-group full-width dni-group">
-            <%= f.label :dni_lider, "Documento de Identidad (DNI) *", class: "form-label" %>
-            <div class="input-container">
-              <%= f.text_field :dni_lider, 
-                  class: "form-input", 
-                  required: true, 
-                  placeholder: "Ingresa tu DNI de 8 dígitos",
-                  maxlength: "8",
-                  pattern: "[0-9]{8}" %>
-              <div class="input-icon">
-                <i class="fas fa-id-card"></i>
-              </div>
-            </div>
-            <small class="form-hint">
-              <i class="fas fa-info-circle"></i>
-              Automáticamente buscaremos tus datos en RENIEC
-            </small>
-          </div>
-
-          <!-- Nombres Field -->
-          <div class="form-group">
-            <%= f.label :nombre_lider, "Nombres *", class: "form-label" %>
-            <div class="input-container">
-              <%= f.text_field :nombre_lider, 
-                  class: "form-input", 
-                  required: true, 
-                  placeholder: "Se completará automáticamente" %>
-              <div class="input-icon">
-                <i class="fas fa-user"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Apellidos Field -->
-          <div class="form-group">
-            <%= f.label :apellidos_lider, "Apellidos *", class: "form-label" %>
-            <div class="input-container">
-              <%= f.text_field :apellidos_lider, 
-                  class: "form-input", 
-                  required: true, 
-                  placeholder: "Se completará automáticamente" %>
-              <div class="input-icon">
-                <i class="fas fa-user"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Email Field -->
-          <div class="form-group">
-            <%= f.label :correo_lider, "Correo Electrónico *", class: "form-label" %>
-            <div class="input-container">
-              <%= f.email_field :correo_lider, 
-                  class: "form-input", 
-                  required: true, 
-                  placeholder: "ejemplo@correo.com" %>
-              <div class="input-icon">
-                <i class="fas fa-envelope"></i>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phone Field -->
-          <div class="form-group">
-            <%= f.label :telefono_lider, "Teléfono *", class: "form-label" %>
-            <div class="input-container">
-              <%= f.telephone_field :telefono_lider, 
-                  class: "form-input", 
-                  required: true, 
-                  placeholder: "999 888 777" %>
-              <div class="input-icon">
-                <i class="fas fa-phone"></i>
-              </div>
-            </div>
-          </div>
+  <div class="form-grid">
+    <!-- DNI Field (First) -->
+    <div class="form-group full-width dni-group">
+      <%= f.label :dni_lider, "Documento de Identidad (DNI) *", class: "form-label" %>
+      <div class="input-container">
+        <%= f.text_field :dni_lider, 
+            class: "form-input", 
+            required: true, 
+            placeholder: "Ingresa tu DNI de 8 dígitos",
+            maxlength: "8",
+            pattern: "[0-9]{8}" %>
+        <div class="input-icon">
+          <i class="fas fa-id-card"></i>
         </div>
       </div>
+      <small class="form-hint">
+        <i class="fas fa-info-circle"></i>
+        Automáticamente buscaremos tus datos en RENIEC
+      </small>
+    </div>
+
+    <!-- Nombres Field -->
+    <div class="form-group">
+      <%= f.label :nombre_lider, "Nombres *", class: "form-label" %>
+      <div class="input-container">
+        <%= f.text_field :nombre_lider, 
+            class: "form-input", 
+            required: true, 
+            placeholder: "Se completará automáticamente" %>
+        <div class="input-icon">
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Apellidos Field - CORREGIDO -->
+    <div class="form-group">
+      <%= f.label :apellido_lider, "Apellidos *", class: "form-label" %>
+      <div class="input-container">
+        <%= f.text_field :apellido_lider, 
+            class: "form-input", 
+            required: true, 
+            placeholder: "Se completará automáticamente" %>
+        <div class="input-icon">
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Field -->
+    <div class="form-group">
+      <%= f.label :correo_lider, "Correo Electrónico *", class: "form-label" %>
+      <div class="input-container">
+        <%= f.email_field :correo_lider, 
+            class: "form-input", 
+            required: true, 
+            placeholder: "ejemplo@correo.com" %>
+        <div class="input-icon">
+          <i class="fas fa-envelope"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Phone Field -->
+    <div class="form-group">
+      <%= f.label :telefono_lider, "Teléfono *", class: "form-label" %>
+      <div class="input-container">
+        <%= f.telephone_field :telefono_lider, 
+            class: "form-input", 
+            required: true, 
+            placeholder: "999 888 777" %>
+        <div class="input-icon">
+          <i class="fas fa-phone"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
       <!-- Project Information Section -->
       <div class="form-section">
@@ -1323,33 +1323,42 @@ setTimeout(function() {
   function inicializarConsultaDNI() {
     const dniField = document.querySelector('input[name="formulario_programa_incubacion[dni_lider]"]');
     const nombresField = document.querySelector('input[name="formulario_programa_incubacion[nombre_lider]"]');
-    const apellidosField = document.querySelector('input[name="formulario_programa_incubacion[apellidos_lider]"]');
+    const apellidosField = document.querySelector('input[name="formulario_programa_incubacion[apellido_lider]"]'); // SINGULAR para incubación
     const programIdField = document.querySelector('input[name="id"]');
 
     if (!dniField || !nombresField || !apellidosField || !programIdField) {
+      console.warn('No se encontraron todos los campos necesarios para consulta DNI');
       return;
     }
 
     const programId = programIdField.value;
 
     if (!programId) {
+      console.warn('No se encontró ID del programa');
       return;
     }
 
     let consultaTimeout;
+    let abortController;
     const loadingIndicator = crearIndicadorCarga();
     dniField.parentNode.appendChild(loadingIndicator);
 
     dniField.addEventListener('input', function() {
       const dni = this.value.trim();
       
+      // Cancelar consulta anterior si existe
       clearTimeout(consultaTimeout);
+      if (abortController) {
+        abortController.abort();
+      }
+      
       ocultarIndicadorCarga(loadingIndicator, dniField);
       
       if (dni.length === 8 && /^\d{8}$/.test(dni)) {
+        // TIMEOUT MÁS LARGO PARA AWS (era 1000ms, ahora 1500ms)
         consultaTimeout = setTimeout(() => {
           realizarConsultaDNI(dni, programId, loadingIndicator, dniField, nombresField, apellidosField);
-        }, 1000);
+        }, 1500);
       } else if (dni.length > 0) {
         mostrarErrorCampo(dniField, 'El DNI debe tener exactamente 8 dígitos');
       } else {
@@ -1363,8 +1372,19 @@ setTimeout(function() {
     mostrarIndicadorCarga(loadingIndicator, dniField);
     limpiarErrorCampo(dniField);
 
+    // Crear nuevo AbortController para esta consulta
+    abortController = new AbortController();
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]');
     const token = csrfToken ? csrfToken.getAttribute('content') : '';
+
+    console.log(`Iniciando consulta DNI: ${dni}`);
+    const startTime = Date.now();
+
+    // TIMEOUT MÁS LARGO PARA AWS (era sin timeout, ahora 25 segundos)
+    const timeoutId = setTimeout(() => {
+      abortController.abort();
+    }, 25000);
 
     fetch(`/programas/${programId}/consultar_dni`, {
       method: 'POST',
@@ -1373,28 +1393,63 @@ setTimeout(function() {
         'X-Requested-With': 'XMLHttpRequest',
         'X-CSRF-Token': token
       },
-      body: JSON.stringify({ dni: dni })
+      body: JSON.stringify({ dni: dni }),
+      signal: abortController.signal
     })
-    .then(response => response.json())
+    .then(response => {
+      clearTimeout(timeoutId);
+      const elapsed = Date.now() - startTime;
+      console.log(`Consulta DNI completada en ${elapsed}ms - Status: ${response.status}`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
+      return response.json();
+    })
     .then(data => {
+      console.log('Respuesta DNI:', data);
+      
       if (data.success && data.data) {
         llenarCamposPersonales(data.data, nombresField, apellidosField);
-        mostrarMensajeExito('Datos encontrados y completados automáticamente');
+        mostrarMensajeExito('✓ Datos encontrados y completados automáticamente');
       } else {
-        mostrarErrorCampo(dniField, data.error || 'No se encontraron datos para este DNI');
+        const errorMsg = data.error || 'No se encontraron datos para este DNI';
+        mostrarErrorCampo(dniField, errorMsg);
         habilitarEdicionManual(nombresField, apellidosField);
+        console.warn('Error en consulta DNI:', errorMsg);
       }
     })
     .catch(error => {
-      mostrarErrorCampo(dniField, 'Error de conexión. Puedes llenar los datos manualmente.');
+      clearTimeout(timeoutId);
+      const elapsed = Date.now() - startTime;
+      
+      let errorMessage;
+      
+      if (error.name === 'AbortError') {
+        errorMessage = 'La consulta tomó demasiado tiempo. Puedes llenar los datos manualmente.';
+        console.warn(`Consulta DNI cancelada por timeout después de ${elapsed}ms`);
+      } else if (error.message.includes('Failed to fetch')) {
+        errorMessage = 'Error de conexión. Verifica tu internet y completa los datos manualmente.';
+        console.error('Error de red en consulta DNI:', error);
+      } else {
+        errorMessage = 'Error en la consulta. Puedes llenar los datos manualmente.';
+        console.error('Error en consulta DNI:', error);
+      }
+      
+      mostrarErrorCampo(dniField, errorMessage);
       habilitarEdicionManual(nombresField, apellidosField);
     })
     .finally(() => {
+      clearTimeout(timeoutId);
       ocultarIndicadorCarga(loadingIndicator, dniField);
+      abortController = null;
     });
   }
 
   function llenarCamposPersonales(data, nombresField, apellidosField) {
+    console.log('Llenando campos con:', data);
+    
     if (data.nombres) {
       nombresField.value = data.nombres;
       animarExitoCampo(nombresField);
@@ -1404,11 +1459,15 @@ setTimeout(function() {
       apellidosField.value = data.apellidos_completos;
       animarExitoCampo(apellidosField);
     }
+    
+    // Marcar campos como completados automáticamente
+    nombresField.setAttribute('data-dni-filled', 'true');
+    apellidosField.setAttribute('data-dni-filled', 'true');
   }
 
   function animarExitoCampo(field) {
     field.style.backgroundColor = '#f0f9ff';
-    field.style.borderColor = '#0ea5e9';
+    field.style.borderColor = '#009688'; // Color teal para incubación
     field.style.transition = 'all 0.3s ease';
 
     setTimeout(() => {
@@ -1422,13 +1481,14 @@ setTimeout(function() {
   }
 
   function limpiarCamposPersonales(nombresField, apellidosField) {
-    if (nombresField.style.backgroundColor === 'rgb(240, 249, 255)' || 
-        !nombresField.value.trim()) {
+    // Solo limpiar si fueron llenados automáticamente
+    if (nombresField.getAttribute('data-dni-filled') === 'true') {
       nombresField.value = '';
+      nombresField.removeAttribute('data-dni-filled');
     }
-    if (apellidosField.style.backgroundColor === 'rgb(240, 249, 255)' || 
-        !apellidosField.value.trim()) {
+    if (apellidosField.getAttribute('data-dni-filled') === 'true') {
       apellidosField.value = '';
+      apellidosField.removeAttribute('data-dni-filled');
     }
   }
 
@@ -1436,6 +1496,7 @@ setTimeout(function() {
     [nombresField, apellidosField].forEach(field => {
       field.style.backgroundColor = '#fffbeb';
       field.style.borderColor = '#f59e0b';
+      field.removeAttribute('data-dni-filled');
     });
     
     nombresField.placeholder = 'Ingresa el nombre manualmente';
@@ -1446,7 +1507,7 @@ setTimeout(function() {
       apellidosField.style.backgroundColor = '';
       nombresField.style.borderColor = '';
       apellidosField.style.borderColor = '';
-    }, 3000);
+    }, 5000); // Aumentado de 3 a 5 segundos
   }
 
   function crearIndicadorCarga() {
@@ -1458,7 +1519,7 @@ setTimeout(function() {
       right: 12px;
       top: 50%;
       transform: translateY(-50%);
-      color: #0ea5e9;
+      color: #009688;
       font-size: 0.8rem;
       font-weight: 500;
       background: white;
@@ -1466,21 +1527,43 @@ setTimeout(function() {
       border-radius: 6px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       z-index: 10;
-      border: 1px solid #e0f2fe;
+      border: 1px solid #b2dfdb;
+      max-width: 150px;
+      white-space: nowrap;
     `;
-    indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Consultando...';
+    
+    // Indicador con animación mejorada
+    indicator.innerHTML = `
+      <i class="fas fa-spinner fa-spin" style="margin-right: 4px;"></i>
+      <span class="loading-text">Consultando...</span>
+    `;
+    
     return indicator;
   }
 
   function mostrarIndicadorCarga(indicator, dniField) {
     dniField.parentNode.style.position = 'relative';
     indicator.style.display = 'block';
-    dniField.style.paddingRight = '120px';
+    dniField.style.paddingRight = '160px'; // Aumentado para el nuevo indicador
+    
+    // Cambiar texto después de 5 segundos para indicar que puede tomar tiempo
+    setTimeout(() => {
+      const loadingText = indicator.querySelector('.loading-text');
+      if (loadingText && indicator.style.display !== 'none') {
+        loadingText.textContent = 'Puede tomar unos segundos...';
+      }
+    }, 5000);
   }
 
   function ocultarIndicadorCarga(indicator, dniField) {
     indicator.style.display = 'none';
     dniField.style.paddingRight = '';
+    
+    // Resetear texto
+    const loadingText = indicator.querySelector('.loading-text');
+    if (loadingText) {
+      loadingText.textContent = 'Consultando...';
+    }
   }
 
   function mostrarErrorCampo(field, message) {
@@ -1493,17 +1576,23 @@ setTimeout(function() {
       font-size: 0.8rem;
       margin-top: 6px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 6px;
-      padding: 6px 8px;
+      padding: 8px 10px;
       background: #fef2f2;
       border-radius: 6px;
       border: 1px solid #fecaca;
+      line-height: 1.4;
     `;
-    errorDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+    errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-top: 2px; flex-shrink: 0;"></i> ${message}`;
     
     field.style.borderColor = '#dc2626';
     field.parentNode.appendChild(errorDiv);
+    
+    // Auto-ocultar error después de 10 segundos
+    setTimeout(() => {
+      limpiarErrorCampo(field);
+    }, 10000);
   }
 
   function limpiarErrorCampo(field) {
@@ -1511,10 +1600,13 @@ setTimeout(function() {
     if (errorMsg) {
       errorMsg.remove();
     }
-    field.style.borderColor = '';
+    if (field.style.borderColor === 'rgb(220, 38, 38)') {
+      field.style.borderColor = '';
+    }
   }
 
   function mostrarMensajeExito(message) {
+    // Remover mensaje previo si existe
     const existingMessage = document.querySelector('.dni-success-toast');
     if (existingMessage) {
       existingMessage.remove();
@@ -1526,11 +1618,11 @@ setTimeout(function() {
       position: fixed;
       top: 20px;
       right: 20px;
-      background: linear-gradient(135deg, #10b981, #059669);
+      background: linear-gradient(135deg, #009688, #00796b);
       color: white;
       padding: 16px 20px;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 10px 25px rgba(0, 150, 136, 0.3);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -1559,19 +1651,28 @@ setTimeout(function() {
     
     document.body.appendChild(successDiv);
     
+    // Animar entrada
     setTimeout(() => {
       successDiv.style.transform = 'translateX(0)';
     }, 100);
     
+    // Animar salida
     setTimeout(() => {
       successDiv.style.transform = 'translateX(400px)';
       setTimeout(() => {
-        successDiv.remove();
+        if (successDiv.parentNode) {
+          successDiv.remove();
+        }
       }, 300);
-    }, 3000);
+    }, 4000); // Aumentado de 3 a 4 segundos
   }
 
-  inicializarConsultaDNI();
+  // Inicializar cuando el DOM esté listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', inicializarConsultaDNI);
+  } else {
+    inicializarConsultaDNI();
+  }
 
 }, 1000);
 </script>
