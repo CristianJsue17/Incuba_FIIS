@@ -1,7 +1,9 @@
+# app/models/user.rb
 class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
-  devise :database_authenticatable, :registerable, :recoverable, :rememberable, :validatable
+  devise :database_authenticatable, :registerable, :recoverable,
+         :rememberable, :validatable
 
   belongs_to :occupation
   belongs_to :created_by, class_name: 'User', optional: true
@@ -23,8 +25,9 @@ class User < ApplicationRecord
   scope :activos, -> { where(estado: 'activo') }
   scope :suspendidos, -> { where(estado: 'suspendido') }
   scope :inabilitados, -> { where(estado: 'inabilitado') }
+  scope :por_ultima_actividad, -> { order(ultimo_acceso: :desc) }
 
-  # Métodos
+  # Métodos existentes
   def nombre_completo
     "#{nombre} #{apellido}"
   end
@@ -70,6 +73,24 @@ class User < ApplicationRecord
 
   def es_mentor?
     roles.exists?(nombre: 'Mentor')
+  end
+
+  # Método simple para último acceso
+  def ha_iniciado_sesion?
+    ultimo_acceso.present?
+  end
+
+  # Método simple para descripción de actividad (sin "en línea")
+  def descripcion_ultima_actividad
+    return 'Nunca ha iniciado sesión' unless ha_iniciado_sesion?
+        
+    if ultimo_acceso > 24.hours.ago
+      "Activo hoy a las #{ultimo_acceso.strftime('%H:%M')}"
+    elsif ultimo_acceso > 7.days.ago
+      "Último acceso hace #{time_ago_in_words(ultimo_acceso)}"
+    else
+      "Último acceso: #{ultimo_acceso.strftime('%d/%m/%Y %H:%M')}"
+    end
   end
 
   private

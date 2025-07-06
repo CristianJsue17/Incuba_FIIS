@@ -1077,6 +1077,94 @@
   background-color: #dc2626;
   border-color: #dc2626;
 }
+
+
+
+
+/* ESTILOS PARA SweetAlert2 - CONFIRMACION DE INHABILITACION*/
+.swal-disable-popup {
+  font-family: inherit !important;
+}
+
+.swal-disable-title {
+  color: #1f2937 !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+}
+
+.swal-disable-content {
+  color: #4b5563 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+}
+
+.swal-disable-confirm {
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.swal-disable-confirm:hover {
+  background-color: #dc2626 !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25) !important;
+}
+
+.swal-disable-cancel {
+  font-weight: 600 !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.2s ease !important;
+}
+
+.swal-disable-cancel:hover {
+  background-color: #4b5563 !important;
+  transform: translateY(-1px) !important;
+}
+
+.swal2-popup {
+  border-radius: 1rem !important;
+  border: 2px solid #e5e7eb !important;
+}
+
+.swal2-title {
+  margin-bottom: 1rem !important;
+}
+
+.swal2-html-container {
+  margin: 1rem 0 !important;
+}
+
+.swal2-actions {
+  margin-top: 1.5rem !important;
+  gap: 0.75rem !important;
+}
+
+/* Animación personalizada para el popup */
+.swal2-show {
+  animation: swalSlideInUp 0.4s ease-out !important;
+}
+
+@keyframes swalSlideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Efectos hover para los iconos en la alerta */
+.swal2-html-container i {
+  transition: all 0.2s ease;
+}
+
+.swal2-html-container i:hover {
+  transform: scale(1.1);
+}
 </style>
 
 <% if flash[:notice] %>
@@ -1362,30 +1450,55 @@
                         </a>
                       <% end %>
                       
-                      <!-- INHABILITAR: Solo si NO está inabilitado -->
-                      <% unless user.inabilitado? %>
-                        <%= button_to cambiar_estado_admin_user_path(user), 
-                            method: :patch,
-                            params: { estado: 'inabilitado' },
-                            data: { 
-                              confirm: "¿Inhabilitar usuario #{user.nombre_completo}? Esta acción es permanente hasta reactivación manual."
-                            },
-                            class: "w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 border-0 bg-transparent cursor-pointer",
-                            style: "background: none; border: none;" do %>
-                          <i class="fas fa-user-times mr-1 text-red-600"></i>
-                          Inhabilitar
-                        <% end %>
-                      <% end %>
+<!-- INHABILITAR: Solo si NO está inabilitado -->
+<% unless user.inabilitado? %>
+  <button type="button" 
+          class="w-full text-left px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 cursor-pointer sweet-disable-btn"
+          data-user-id="<%= user.id %>"
+          data-user-name="<%= user.nombre_completo %>"
+          data-url="<%= cambiar_estado_admin_user_path(user) %>"
+          style="background: none; border: none;">
+    <i class="fas fa-user-times mr-1 text-red-600"></i>
+    Inhabilitar
+  </button>
+<% end %>
                     </div>
                   </div>
                 </div>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-gray-700">
-                <div class="text-sm"><%= user.ultimo_acceso&.strftime("%d/%m/%Y") || 'Nunca' %></div>
-                <% if user.ultimo_acceso %>
-                  <div class="text-xs text-gray-500"><%= user.ultimo_acceso.strftime("%H:%M") %> Hora</div>
-                <% end %>
-              </td>
+<td class="px-6 py-4 whitespace-nowrap">
+  <% if user.ha_iniciado_sesion? %>
+    <div class="flex items-center">
+      <div class="w-2 h-2 rounded-full mr-2 bg-gray-400"></div>
+      <div>
+        <div class="text-sm text-gray-900">
+          <%= user.ultimo_acceso.strftime("%d/%m/%Y") %>
+        </div>
+        <div class="text-xs text-gray-500">
+          <% if user.ultimo_acceso > 24.hours.ago %>
+            <%= user.ultimo_acceso.strftime("%H:%M") %> hoy
+          <% elsif user.ultimo_acceso > 7.days.ago %>
+            <span class="text-gray-500">
+              <%= time_ago_in_words(user.ultimo_acceso) %> atrás
+            </span>
+          <% else %>
+            <span class="text-gray-400">
+              <%= user.ultimo_acceso.strftime("%H:%M") %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% else %>
+    <div class="flex items-center">
+      <div class="w-2 h-2 rounded-full mr-2 bg-gray-300"></div>
+      <div>
+        <div class="text-sm text-gray-400">Nunca</div>
+        <div class="text-xs text-gray-400">Sin actividad</div>
+      </div>
+    </div>
+  <% end %>
+</td>
 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
   <div class="flex space-x-2">
     <!-- Botón para abrir modal de detalles -->
@@ -1435,6 +1548,20 @@
           <% end %>
         </tbody>
       </table>
+            <!-- AGREGAR ESTA SECCIÓN DE PAGINACIÓN DESPUÉS DE LA TABLA -->
+      <% if @users.present? && @users.respond_to?(:total_pages) && @users.total_pages > 1 %>
+        <div class="px-6 py-4 bg-white border-t border-gray-200">
+          <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-700">
+              Mostrando usuarios <%= @users.offset_value + 1 %> a <%= @users.offset_value + @users.count %> de <%= @users.total_count %>
+            </div>
+            <div class="flex space-x-2">
+              <%= paginate @users %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+
     </div>
   </div>
 </div>
@@ -1725,20 +1852,18 @@
                 Suspender
               </button>
             <% end %>
-            
-            <% unless user.inabilitado? %>
-              <%= button_to cambiar_estado_admin_user_path(user), 
-                  method: :patch,
-                  params: { estado: 'inabilitado' },
-                  data: { 
-                    confirm: '¿Está seguro de inhabilitar este usuario? Esta acción es permanente hasta que lo reactive manualmente.'
-                  },
-                  class: 'modal-action-btn-improved danger',
-                  style: 'background: none; border: none;' do %>
-                <i class="fas fa-user-times"></i>
-                Inhabilitar
-              <% end %>
-            <% end %>
+
+<!-- Alerta de confirmacion -->          
+<% unless user.inabilitado? %>
+  <button type="button" 
+          class="modal-action-btn-improved danger sweet-disable-btn"
+          data-user-id="<%= user.id %>"
+          data-user-name="<%= user.nombre_completo %>"
+          data-url="<%= cambiar_estado_admin_user_path(user) %>">
+    <i class="fas fa-user-times"></i>
+    Inhabilitar
+  </button>
+<% end %>
             
             <!-- Botón eliminar en el modal también -->
             <%= link_to admin_user_path(user), 
@@ -2519,4 +2644,125 @@ window.addEventListener('beforeunload', function() {
 
 // Ejecutar corrección periódicamente
 setInterval(fixModalStates, 5000);
+</script>
+
+
+
+
+<script>
+// Función para inicializar confirmaciones de inhabilitación con SweetAlert2
+function initSweetAlertConfirmations() {
+  // Manejar botones de inhabilitar
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.sweet-disable-btn')) {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const btn = e.target.closest('.sweet-disable-btn');
+      const userId = btn.getAttribute('data-user-id');
+      const userName = btn.getAttribute('data-user-name');
+      const url = btn.getAttribute('data-url');
+      
+      showDisableConfirmation(userName, url);
+    }
+  });
+}
+
+// Función para mostrar confirmación de inhabilitación
+function showDisableConfirmation(userName, url) {
+  Swal.fire({
+    title: '⚠️ Inhabilitar Usuario',
+    html: `
+      <div style="text-align: left; margin: 1rem 0;">
+        <p><strong>¿Estás seguro de inhabilitar a ${userName}?</strong></p>
+        <br>
+        <p>Esta acción:</p>
+        <ul style="margin: 0.5rem 0; padding-left: 1.5rem; color: #6b7280;">
+          <li>Bloqueará el acceso del usuario al sistema</li>
+          <li>Es <strong>permanente</strong> hasta reactivación manual</li>
+          <li>Mantendrá todos los datos del usuario</li>
+        </ul>
+        <br>
+        <p style="color: #f59e0b; font-weight: 500;">
+          <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>
+          El usuario no podrá iniciar sesión hasta ser reactivado.
+        </p>
+      </div>
+    `,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#ef4444',
+    cancelButtonColor: '#6b7280',
+    confirmButtonText: '<i class="fas fa-user-times" style="margin-right: 0.5rem;"></i>Sí, Inhabilitar',
+    cancelButtonText: '<i class="fas fa-times" style="margin-right: 0.5rem;"></i>Cancelar',
+    reverseButtons: true,
+    focusCancel: true,
+    customClass: {
+      popup: 'swal-disable-popup',
+      title: 'swal-disable-title',
+      htmlContainer: 'swal-disable-content',
+      confirmButton: 'swal-disable-confirm',
+      cancelButton: 'swal-disable-cancel'
+    },
+    didOpen: () => {
+      const popup = Swal.getPopup();
+      popup.style.borderRadius = '1rem';
+      popup.style.boxShadow = '0 25px 50px -12px rgba(0, 0, 0, 0.25)';
+    }
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Simplemente enviar la petición sin alerta intermedia
+      submitDisableRequest(url);
+    }
+  });
+}
+
+// Función para enviar la petición de inhabilitación
+function submitDisableRequest(url) {
+  // Crear formulario temporal
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = url;
+  form.style.display = 'none';
+  
+  // Agregar token CSRF
+  const csrfToken = document.querySelector('meta[name="csrf-token"]');
+  if (csrfToken) {
+    const csrfInput = document.createElement('input');
+    csrfInput.type = 'hidden';
+    csrfInput.name = 'authenticity_token';
+    csrfInput.value = csrfToken.content;
+    form.appendChild(csrfInput);
+  }
+  
+  // Agregar método PATCH
+  const methodInput = document.createElement('input');
+  methodInput.type = 'hidden';
+  methodInput.name = '_method';
+  methodInput.value = 'patch';
+  form.appendChild(methodInput);
+  
+  // Agregar parámetro de estado
+  const estadoInput = document.createElement('input');
+  estadoInput.type = 'hidden';
+  estadoInput.name = 'estado';
+  estadoInput.value = 'inabilitado';
+  form.appendChild(estadoInput);
+  
+  // Enviar formulario
+  document.body.appendChild(form);
+  form.submit();
+}
+
+// MODIFICAR LA FUNCIÓN initUserManagement EXISTENTE PARA INCLUIR LA NUEVA FUNCIÓN
+function initUserManagement() {
+  initFilterDropdown();
+  initEstadoDropdowns();
+  initSuspensionModals();
+  initDetailModals();
+  initSearch();
+  initGlobalKeyboardShortcuts();
+  initDeleteConfirmation();
+  initSweetAlertConfirmations(); // ← AGREGAR ESTA LÍNEA
+}
 </script>

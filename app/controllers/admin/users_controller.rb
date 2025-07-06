@@ -3,13 +3,31 @@ class Admin::UsersController < Admin::BaseController
   before_action :set_user, only: [:show, :edit, :update, :destroy, :cambiar_estado, :suspender_temporalmente, :reactivar]
 
   def index
-    @users = User.includes(:roles, :occupation).order(:created_at)
-    @users = @users.where("nombre ILIKE ? OR apellido ILIKE ? OR email ILIKE ?", 
-                         "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%") if params[:search].present?
+    # MEJORADO: Incluir información de actividad y ordenar por última actividad
+    @users = User.includes(:roles, :occupation)
+                 .por_ultima_actividad  # Usar el scope del modelo
+                 
+    # Aplicar filtros de búsqueda
+    if params[:search].present?
+      search_term = "%#{params[:search]}%"
+      @users = @users.where(
+        "nombre ILIKE ? OR apellido ILIKE ? OR email ILIKE ? OR dni ILIKE ?", 
+        search_term, search_term, search_term, search_term
+      )
+    end
+    
+    # Filtrar por estado
     @users = @users.where(estado: params[:estado]) if params[:estado].present?
+
+    # AGREGAR PAGINACIÓN - 10 usuarios por página
+    @users = @users.page(params[:page]).per(10)
+    
+    # Log para debugging
+    Rails.logger.info "📊 Mostrando #{@users.count} usuarios en el índice admin"
   end
 
   def show
+    Rails.logger.info "👀 Admin #{current_user.email} visualizando usuario: #{@user.email}"
   end
 
   def new
@@ -73,44 +91,47 @@ class Admin::UsersController < Admin::BaseController
     end
   end
 
-def destroy
-  old_status = @user.estado
-  user_name = @user.nombre_completo
-  
-  # Validar que no se elimine el último administrador
-  if @user.es_admin? && User.joins(:roles).where(roles: { nombre: 'Administrador' }).count <= 1
-    redirect_to admin_users_path, alert: "No se puede eliminar al único administrador del sistema."
-    return
-  end
-  
-  # Validar que no se elimine a sí mismo
-  if @user == current_user
-    redirect_to admin_users_path, alert: "No puedes eliminarte a ti mismo."
-    return
-  end
-  
-  begin
-    # Usar transacción para asegurar que todo se elimine correctamente
-    ActiveRecord::Base.transaction do
-      # Eliminar roles asociados
-      @user.user_roles.destroy_all
-      
-      # Eliminar avatar si existe
-      @user.avatar.purge if @user.avatar.attached?
-      
-      # Eliminar el usuario
-      @user.destroy!
+  def destroy
+    old_status = @user.estado
+    user_name = @user.nombre_completo
+    
+    # Validar que no se elimine el último administrador
+    if @user.es_admin? && User.joins(:roles).where(roles: { nombre: 'Administrador' }).count <= 1
+      redirect_to admin_users_path, alert: "No se puede eliminar al único administrador del sistema."
+      return
     end
     
-    log_user_status_change(@user, old_status, 'eliminado', 'deletion')
-    redirect_to admin_users_path, notice: "Usuario #{user_name} eliminado exitosamente."
+    # Validar que no se elimine a sí mismo
+    if @user == current_user
+      redirect_to admin_users_path, alert: "No puedes eliminarte a ti mismo."
+      return
+    end
     
-  rescue ActiveRecord::RecordNotDestroyed => e
-    redirect_to admin_users_path, alert: "Error al eliminar usuario: #{e.message}"
-  rescue => e
-    redirect_to admin_users_path, alert: "Error inesperado: #{e.message}"
+    begin
+      # Usar transacción para asegurar que todo se elimine correctamente
+      ActiveRecord::Base.transaction do
+        # Eliminar roles asociados
+        @user.user_roles.destroy_all
+        
+        # Limpiar caché antes de eliminar
+        clear_user_roles_cache(@user.id)
+        
+        # Eliminar avatar si existe
+        @user.avatar.purge if @user.avatar.attached?
+        
+        # Eliminar el usuario
+        @user.destroy!
+      end
+      
+      log_user_status_change(@user, old_status, 'eliminado', 'deletion')
+      redirect_to admin_users_path, notice: "Usuario #{user_name} eliminado exitosamente."
+      
+    rescue ActiveRecord::RecordNotDestroyed => e
+      redirect_to admin_users_path, alert: "Error al eliminar usuario: #{e.message}"
+    rescue => e
+      redirect_to admin_users_path, alert: "Error inesperado: #{e.message}"
+    end
   end
-end
 
   def cambiar_estado
     nuevo_estado = params[:estado]
@@ -256,10 +277,12 @@ end
 
   def refresh_cache_after_user_status_change(user_id)
     Rails.cache.delete("user_roles_#{user_id}")
+    Rails.logger.info "🔄 Caché limpiado después de cambio de estado para usuario #{user_id}"
   end
 
   def log_user_status_change(user, old_status, new_status, action_type = 'status_change')
     Rails.logger.info "📝 #{action_type.upcase}: Usuario #{user.email} - #{old_status} → #{new_status} por #{current_user.email}"
+    Rails.logger.info "📅 Última actividad del usuario: #{user.ultimo_acceso&.strftime('%d/%m/%Y %H:%M:%S') || 'Nunca'}"
   end
 
   def user_action_message(action, user, temporal = false, extra_info = "")

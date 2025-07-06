@@ -19,14 +19,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </head>
 
-<body class="bg-purple-50">
+<body class="bg-orange-50">
   <div class="flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <div class="bg-purple-800 text-white w-64 flex-shrink-0 flex flex-col">
-      <div class="p-4 border-b border-purple-700 flex items-center justify-between">
+    <div class="bg-orange-800 text-white w-64 flex-shrink-0 flex flex-col">
+      <div class="p-4 border-b border-orange-700 flex items-center justify-between">
         <div>
           <h1 class="text-xl font-bold">Incuba UNAS</h1>
-          <p class="text-xs text-purple-200">Panel de Mentor</p>
+          <p class="text-xs text-orange-200">Panel de Mentor</p>
         </div>
         <button class="text-white">
           <i class="fas fa-bars"></i>
@@ -36,43 +36,43 @@
       <nav class="flex-1 py-3">
         <ul class="space-y-0">
           <li>
-            <a href="<%= mentor_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-purple-700' : 'hover:bg-purple-700' %>">
+            <a href="<%= mentor_dashboard_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'dashboard' ? 'active bg-orange-700' : 'hover:bg-orange-700' %>">
               <i class="fas fa-tachometer-alt w-6 h-6 mr-3"></i>
               <span class="font-medium">Dashboard</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-users w-6 h-6 mr-3"></i>
               <span class="font-medium">Mis Mentoreados</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-calendar-check w-6 h-6 mr-3"></i>
               <span class="font-medium">Sesiones</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-graduation-cap w-6 h-6 mr-3"></i>
               <span class="font-medium">Programas</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-chart-line w-6 h-6 mr-3"></i>
               <span class="font-medium">Progreso</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-book w-6 h-6 mr-3"></i>
               <span class="font-medium">Recursos</span>
             </a>
           </li>
           <li>
-            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-purple-700">
+            <a href="#" class="nav-link flex items-center py-2 px-4 hover:bg-orange-700">
               <i class="fas fa-star w-6 h-6 mr-3"></i>
               <span class="font-medium">Evaluaciones</span>
             </a>
@@ -95,14 +95,21 @@
             <div class="relative">
               <button class="text-gray-500 hover:text-gray-700">
                 <i class="fas fa-bell text-xl"></i>
-                <span class="absolute -top-1 -right-1 bg-purple-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">1</span>
+                <span class="absolute -top-1 -right-1 bg-orange-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">1</span>
               </button>
             </div>
             
             <div class="relative">
               <div class="flex items-center cursor-pointer" id="userMenuButton">
-                <div class="w-9 h-9 bg-purple-600 rounded-full flex items-center justify-center text-white mr-2">
-                  <%= current_user.nombre[0].upcase %>
+                <!-- Avatar dinámico: foto de perfil o iniciales -->
+                <div class="w-9 h-9 bg-orange-600 rounded-full flex items-center justify-center text-white mr-2 overflow-hidden">
+                  <% if current_user.avatar.attached? %>
+                    <%= image_tag current_user.avatar, 
+                        class: "w-full h-full object-cover", 
+                        alt: current_user.nombre_completo %>
+                  <% else %>
+                    <%= current_user.nombre[0].upcase %>
+                  <% end %>
                 </div>
                 <span class="text-gray-700"><%= current_user.nombre %></span>
                 <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
@@ -110,9 +117,9 @@
               
               <!-- Menú desplegable de usuario CORREGIDO -->
               <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                  <i class="fas fa-user mr-2 text-purple-600"></i> Ver Perfil
-                </a>
+                <%= link_to mentor_profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" do %>
+                  <i class="fas fa-user mr-2 text-orange-600"></i> Ver Perfil
+                <% end %>
                 <div class="border-t border-gray-100"></div>
                 
                 <%= button_to destroy_user_session_path, 

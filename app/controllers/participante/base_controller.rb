@@ -1,4 +1,4 @@
-# app/controllers/participante/base_controller.rb - ACTUALIZADO CON CACHÉ Y VERIFICACIÓN DE ESTADOS
+# app/controllers/participante/base_controller.rb - ACTUALIZADO CON TRACKING DE ACTIVIDAD
 class Participante::BaseController < ApplicationController
   layout 'participante'
   before_action :authenticate_user!
@@ -52,12 +52,13 @@ class Participante::BaseController < ApplicationController
     Rails.logger.info "✅ Caché de roles actualizado para participante #{user_id}"
   end
   
-  # NUEVO: Log de acceso para debugging
+  # NUEVO: Log de acceso para debugging CON ACTIVIDAD
   def log_participante_access
     if current_user
       Rails.logger.info "🎓 Participante access: #{current_user.email} → #{controller_name}##{action_name}"
       Rails.logger.info "🔑 Roles cacheados: #{user_roles_cached}" if respond_to?(:user_roles_cached)
       Rails.logger.info "📊 Estado usuario: #{current_user.estado}" if current_user.respond_to?(:estado)
+      Rails.logger.info "⏰ Última actividad: #{current_user.ultimo_acceso&.strftime('%d/%m/%Y %H:%M:%S') || 'Nunca'}"
     end
   end
   
@@ -92,7 +93,7 @@ class Participante::BaseController < ApplicationController
     end
   end
   
-  # NUEVO: Método para estadísticas del caché (útil para debugging)
+  # NUEVO: Método para estadísticas del caché CON ACTIVIDAD (útil para debugging)
   def cache_debug_info
     return unless Rails.env.development?
     
@@ -103,6 +104,12 @@ class Participante::BaseController < ApplicationController
       can_access: current_user&.puede_acceder?,
       roles_cached: user_roles_cached,
       cache_stats: roles_cache_stats,
+      activity: {
+        ultimo_acceso: current_user&.ultimo_acceso&.strftime('%d/%m/%Y %H:%M:%S'),
+        conectado_actualmente: current_user&.conectado_actualmente?,
+        ha_iniciado_sesion: current_user&.ha_iniciado_sesion?,
+        descripcion_actividad: current_user&.descripcion_ultima_actividad
+      },
       permissions: {
         register_events: can_register_events?,
         access_programs: can_access_programs?,
@@ -127,9 +134,23 @@ class Participante::BaseController < ApplicationController
     end
   end
   
-  # NUEVO: Middleware para logging de acciones importantes
+  # NUEVO: Middleware para logging de acciones importantes CON ACTIVIDAD
   def log_important_action(action_name, details = {})
     Rails.logger.info "🎯 Participante #{current_user.email} realizó: #{action_name}"
     Rails.logger.info "📋 Detalles: #{details}" if details.any?
+    Rails.logger.info "⏰ Actividad actualizada: #{Time.current.strftime('%d/%m/%Y %H:%M:%S')}"
+  end
+  
+  # NUEVO: Método para debug específico de participantes
+  def debug_participante_status
+    return unless Rails.env.development? && current_user
+    
+    Rails.logger.info "🐛 DEBUG - Participante Status:"
+    Rails.logger.info "   Usuario: #{current_user.email}"
+    Rails.logger.info "   Estado: #{current_user.estado}"
+    Rails.logger.info "   Puede acceder: #{current_user.puede_acceder?}"
+    Rails.logger.info "   Es participante: #{current_participante?}"
+    Rails.logger.info "   Última actividad: #{current_user.ultimo_acceso&.strftime('%d/%m/%Y %H:%M:%S') || 'Nunca'}"
+    Rails.logger.info "   Descripción actividad: #{current_user.descripcion_ultima_actividad}"
   end
 end
