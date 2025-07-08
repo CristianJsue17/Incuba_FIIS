@@ -22,6 +22,10 @@ module App
     config.i18n.default_locale = :es
     config.i18n.fallbacks = { en: :es }
 
+    # Variable de entorno para Google Maps desde el archivo .env
+    config.google_maps_api_key = ENV['GOOGLE_MAPS_API_KEY']
+
+
     # Configurar páginas de error personalizadas
     config.exceptions_app = self.routes
 

@@ -691,8 +691,8 @@
     </script>
     
     <!-- ========================================= -->
-    <!-- ⚠️ AQUÍ DEBES REEMPLAZAR TU_API_KEY_AQUI CON TU CLAVE REAL -->
+    <!-- ⚠️ AQUÍ CONECTA EL TOKEN DE GOOGLE MAPS -->
     <!-- ========================================= -->
     <script async defer 
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvI3eW5ZVRWnus2ANGIXGYyZYMQ74pwI&callback=initMap&libraries=geometry">
+        src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.config.google_maps_api_key %>&callback=initMap&libraries=geometry">
     </script>
