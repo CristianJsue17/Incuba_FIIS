@@ -131,6 +131,7 @@ i {
   letter-spacing: 1px;
   position: relative;
   font-family: var(--font-heading);
+  margin-top: 8rem;
 }
 
 .mentores__title::after {
@@ -149,6 +150,7 @@ i {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 /* Mentor Card */

@@ -163,7 +163,7 @@
   .servicios-cards {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 70px;
     margin-bottom: 80px;
   }
 

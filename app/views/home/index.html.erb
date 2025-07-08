@@ -10,7 +10,7 @@
   <%= javascript_include_tag "enhanced_home", defer: true %>
   <%= javascript_include_tag "enhanced_header", defer: true %>
   <%= javascript_include_tag "carrusel_program", defer: true %>
-  <%= javascript_include_tag "timeline", defer: true %>
+  
   <%= javascript_include_tag "testimonials", defer: true %>
   <%= javascript_include_tag "footer", defer: true %>
   <%= javascript_include_tag "swiper-bundle.min", defer: true %>
@@ -67,10 +67,10 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                    <a href="eventos/#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                    <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
                   </li>
                   <li class="header__dropdown-item">
                     <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
@@ -85,16 +85,16 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                    <a href="/servicios/preincubacion" class="header__dropdown-link" role="menuitem">Preincubación</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                    <a href="/servicios/incubacion" class="header__dropdown-link" role="menuitem">Incubación</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                    <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                    <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
                   </li>
                 </ul>
               </div>
@@ -106,13 +106,13 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                    <a href="/about#nuestroEquipo" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                    <a href="/about#valores" class="header__dropdown-link" role="menuitem">Valores</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                    <a href="/about#nuestraHistoria" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
                   </li>
                 </ul>
               </div>
@@ -124,10 +124,10 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                    <a href="/mentores#unas" class="header__dropdown-link" role="menuitem">De la UNAS</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                    <a href="/mentores#instituciones" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
                   </li>
                 </ul>
               </div>
@@ -409,7 +409,7 @@
         </svg>
       </button>
 
-      <div clavgs="testimonials__track">
+      <div class="testimonials__track">
         <!-- Testimonial 1 -->
         <div class="testimonial testimonial--active">
           <div class="testimonial__rating">
@@ -513,120 +513,7 @@
   </div>
 </section>
 
-<!-- Sección Timeline -->
-<section class="timeline-section">
-  <div class="timeline-section__container">
-    <h2 class="timeline-section__title">Nuestra Historia</h2>
 
-    <div class="timeline">
-      <div class="timeline__progress-bar">
-        <div class="timeline__progress-fill"></div>
-      </div>
-
-      <div class="timeline__items">
-        <!-- Punto 1 -->
-        <div class="timeline__item" data-year="2010">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2010</div>
-            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
-              Fundación
-            </h3>
-            <p class="timeline__subtitle">Inicio de operaciones en un pequeño local</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, sapiente!</p>
-              <ul>
-                <li>Establecimiento de la empresa</li>
-                <li>Desarrollo del primer prototipo</li>
-                <li>Obtención de financiamiento inicial</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 2 -->
-        <div class="timeline__item" data-year="2013">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2013</div>
-            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
-              Expansión Nacional
-            </h3>
-            <p class="timeline__subtitle">Apertura de oficinas en 5 ciudades principales</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, officiis?</p>
-              <ul>
-                <li>Apertura de 5 nuevas oficinas</li>
-                <li>Contratación de 50 nuevos empleados</li>
-                <li>Lanzamiento de 3 nuevas líneas de productos</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 3 -->
-        <div class="timeline__item" data-year="2016">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2016</div>
-            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
-              Innovación Tecnológica
-            </h3>
-            <p class="timeline__subtitle">Lanzamiento de nuestra plataforma digital</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempore.</p>
-              <ul>
-                <li>Desarrollo de plataforma digital propietaria</li>
-                <li>Implementación de inteligencia artificial en nuestros procesos</li>
-                <li>Obtención de 2 patentes tecnológicas</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 4 -->
-        <div class="timeline__item" data-year="2019">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2019</div>
-            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
-              Expansión Internacional
-            </h3>
-            <p class="timeline__subtitle">Apertura de oficinas en 3 continentes</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, eos.</p>
-              <ul>
-                <li>Apertura de oficinas en Madrid, Singapur y São Paulo</li>
-                <li>Adaptación de productos a mercados locales</li>
-                <li>Establecimiento de alianzas estratégicas internacionales</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 5 -->
-        <div class="timeline__item" data-year="2022">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2022</div>
-            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
-              Sostenibilidad
-            </h3>
-            <p class="timeline__subtitle">Implementación de iniciativas verdes</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, qui?</p>
-              <ul>
-                <li>Certificación como empresa carbono neutral</li>
-                <li>Rediseño de productos con materiales sostenibles</li>
-                <li>Implementación de energías renovables en todas nuestras instalaciones</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Sección Footer -->
 <footer class="footer">
@@ -646,7 +533,7 @@
         </p>
       </div>
 
-      <form class="footer__subscribe">
+      <form class="footer__subscribe" onsubmit="sendMail(event)">
         <label for="emailInput" class="footer__label">Correo electrónico</label>
         <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
         
@@ -654,6 +541,15 @@
           <i class="fas fa-arrow-right"></i> Contacto
         </button>
       </form>
+
+      <script>
+        function sendMail(event) {
+          event.preventDefault(); // evita que el formulario recargue la página
+          const email = document.getElementById('emailInput').value;
+          window.location.href = `mailto:incubaunas@unas.edu.pe?subject=Contacto&body=Correo del usuario: ${email}`;
+        }
+      </script>
+
 
 
       <div class="footer__social">
