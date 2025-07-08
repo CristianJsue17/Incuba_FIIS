@@ -20,7 +20,7 @@
    <div class="header__logo">
      <a href="/" class="header__logo-link" aria-label="Ir al inicio">
        <div class="header__logo-container">
-         <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+         <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy" %>
        </div>
        <div class="header__text-container">
          <span class="header__logo-text">INCUBA UNAS</span>
@@ -52,10 +52,10 @@
          <div class="header__dropdown" role="menu">
            <ul class="header__dropdown-menu">
              <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+               <a href="#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
              </li>
              <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+               <a href="#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
              </li>
              <li class="header__dropdown-item">
                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
@@ -299,7 +299,7 @@
  </div>
 
  <!-- PRÓXIMOS EVENTOS (PENDIENTES) -->
- <div class="eventos-section">
+ <div id="proximosEventos" class="eventos-section">
    <div class="section-header">
      <h2><i class="fas fa-clock"></i> Próximos Eventos</h2>
      <p>Eventos que estarán disponibles próximamente</p>
@@ -426,7 +426,7 @@
  </div>
 
  <!-- EVENTOS PASADOS (INACTIVOS) -->
- <div class="eventos-section">
+ <div id="eventosPasados" class="eventos-section">
    <div class="section-header">
      <h2><i class="fas fa-history"></i> Eventos Pasados</h2>
      <p>Eventos que ya han concluido</p>
@@ -626,24 +626,24 @@
 
 <!-- CSS adicional para el indicador de múltiples imágenes -->
 <style>
-.multiple-images-indicator {
- position: absolute;
- top: 12px;
- right: 12px;
- background: rgba(0, 0, 0, 0.7);
- color: white;
- padding: 4px 8px;
- border-radius: 12px;
- font-size: 12px;
- display: flex;
- align-items: center;
- gap: 4px;
- z-index: 10;
-}
+  .multiple-images-indicator {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 10;
+  }
 
-.multiple-images-indicator i {
- font-size: 10px;
-}
+  .multiple-images-indicator i {
+  font-size: 10px;
+  }
 </style>
 
 <!-- Script JavaScript -->
@@ -757,20 +757,20 @@
 </script>
 
 <script>
-// Contar y mostrar cantidad de eventos en cada sección
-document.addEventListener('DOMContentLoaded', function() {
-  const sections = document.querySelectorAll('.eventos-section');
-  
-  sections.forEach((section, index) => {
-    const eventCards = section.querySelectorAll('.evento-card');
-    const sectionHeader = section.querySelector('.section-header h2');
+  // Contar y mostrar cantidad de eventos en cada sección
+  document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('.eventos-section');
     
-    if (eventCards.length > 0 && sectionHeader) {
-      const countBadge = document.createElement('span');
-      countBadge.className = 'event-count';
-      countBadge.textContent = eventCards.length;
-      sectionHeader.appendChild(countBadge);
-    }
+    sections.forEach((section, index) => {
+      const eventCards = section.querySelectorAll('.evento-card');
+      const sectionHeader = section.querySelector('.section-header h2');
+      
+      if (eventCards.length > 0 && sectionHeader) {
+        const countBadge = document.createElement('span');
+        countBadge.className = 'event-count';
+        countBadge.textContent = eventCards.length;
+        sectionHeader.appendChild(countBadge);
+      }
+    });
   });
-});
 </script>

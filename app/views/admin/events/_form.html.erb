@@ -160,7 +160,7 @@
           <div class="current-images-grid">
             <% event.images.each_with_index do |image, index| %>
               <div class="current-image-item">
-                <%= image_tag image, class: "current-image-preview" %>
+                <%= image_tag image, class: "current-image-preview", loading: "lazy" %>
                 <div class="image-info">
                   <span class="image-number">Imagen <%= index + 1 %></span>
                   <% if index == 0 %>
@@ -291,271 +291,382 @@
 
 <!-- Script para funcionalidades del formulario - MANTENER TU LÓGICA ORIGINAL -->
 <script>
-// Inicialización común para funcionalidades
-document.addEventListener('turbo:load', function() {
-  console.log("Turbo load - Inicializando funcionalidades del evento");
-  setupEventImagePreview();
-  setupEventDateValidation();
-});
+  // Inicialización común para funcionalidades
+  document.addEventListener('turbo:load', function() {
+    console.log("Turbo load - Inicializando funcionalidades del evento");
+    setupEventImagePreview();
+    setupEventDateValidation();
+  });
 
-document.addEventListener('turbo:render', function() {
-  console.log("Turbo render - Inicializando funcionalidades del evento");
-  setupEventImagePreview();
-  setupEventDateValidation();
-});
+  document.addEventListener('turbo:render', function() {
+    console.log("Turbo render - Inicializando funcionalidades del evento");
+    setupEventImagePreview();
+    setupEventDateValidation();
+  });
 
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOMContentLoaded - Inicializando funcionalidades del evento");
-  setupEventImagePreview();
-  setupEventDateValidation();
-});
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOMContentLoaded - Inicializando funcionalidades del evento");
+    setupEventImagePreview();
+    setupEventDateValidation();
+  });
 
-// FUNCIONALIDAD 1: Previsualización de imágenes para eventos - ESPECÍFICA PARA EVENTOS
-function setupEventImagePreview() {
-  // CAMBIO: Usar IDs específicos para eventos
-  const imageInput = document.getElementById('event-images-input');
-  const previewContainer = document.getElementById('event-image-preview-container');
-  
-  if (imageInput && previewContainer) {
-    console.log("Event form: Elements found for EVENT image preview");
+  // FUNCIONALIDAD 1: Previsualización de imágenes para eventos - ESPECÍFICA PARA EVENTOS
+  function setupEventImagePreview() {
+    // CAMBIO: Usar IDs específicos para eventos
+    const imageInput = document.getElementById('event-images-input');
+    const previewContainer = document.getElementById('event-image-preview-container');
     
-    // Eliminar listeners anteriores para evitar duplicados
-    imageInput.removeEventListener('change', handleEventImageChange);
-    imageInput.addEventListener('change', handleEventImageChange);
-    
-    // Si hay archivos ya seleccionados, mostrarlos
-    if (imageInput.files && imageInput.files.length > 0) {
-      handleEventImageChange({ target: imageInput });
+    if (imageInput && previewContainer) {
+      console.log("Event form: Elements found for EVENT image preview");
+      
+      // Eliminar listeners anteriores para evitar duplicados
+      imageInput.removeEventListener('change', handleEventImageChange);
+      imageInput.addEventListener('change', handleEventImageChange);
+      
+      // Si hay archivos ya seleccionados, mostrarlos
+      if (imageInput.files && imageInput.files.length > 0) {
+        handleEventImageChange({ target: imageInput });
+      }
     }
   }
-}
 
-function handleEventImageChange(event) {
-  console.log("Event form: EVENT Image file changed");
-  const files = event.target.files;
-  const previewContainer = document.getElementById('event-image-preview-container');
-  const imageInput = document.getElementById('event-images-input');
-  
-  if (files && files.length > 0 && previewContainer) {
-    // VALIDACIÓN: Verificar si hay más de 3 imágenes
-    if (files.length > 3) {
-      console.log("ERROR: Más de 3 imágenes seleccionadas");
+  function handleEventImageChange(event) {
+    console.log("Event form: EVENT Image file changed");
+    const files = event.target.files;
+    const previewContainer = document.getElementById('event-image-preview-container');
+    const imageInput = document.getElementById('event-images-input');
+    
+    if (files && files.length > 0 && previewContainer) {
+      // VALIDACIÓN: Verificar si hay más de 3 imágenes
+      if (files.length > 3) {
+        console.log("ERROR: Más de 3 imágenes seleccionadas");
+        
+        // Poner borde rojo al input
+        imageInput.style.borderColor = '#ef4444';
+        imageInput.classList.add('is-invalid');
+        
+        // Mostrar error en el contenedor
+        previewContainer.innerHTML = `
+          <div style="padding: 1rem; background: #fef2f2; border: 2px solid #ef4444; border-radius: 0.375rem; text-align: center; color: #dc2626;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 0.5rem; color: #dc2626;"></i>
+            <p style="font-weight: 600; margin-bottom: 0.5rem;">¡Error! Demasiadas imágenes</p>
+            <p style="font-size: 0.875rem; margin-bottom: 0.5rem;">
+              Has seleccionado ${files.length} imágenes. Máximo permitido: 3 imágenes.
+            </p>
+            <p style="font-size: 0.75rem; color: #b91c1c;">
+              Por favor, selecciona solo hasta 3 imágenes para continuar.
+            </p>
+          </div>
+        `;
+        
+        // Limpiar el input después de un momento para que el usuario pueda seleccionar nuevamente
+        setTimeout(() => {
+          imageInput.value = '';
+          previewContainer.innerHTML = `
+            <img src="${document.querySelector('img[alt="Vista previa del evento"]')?.src || '/assets/event_placeholder.png'}" 
+                style="max-width: 100%; height: auto; opacity: 0.5;"
+                alt="Vista previa del evento">
+          `;
+          imageInput.style.borderColor = '';
+          imageInput.classList.remove('is-invalid');
+        }, 3000);
+        
+        return; // Salir de la función
+      }
       
-      // Poner borde rojo al input
-      imageInput.style.borderColor = '#ef4444';
-      imageInput.classList.add('is-invalid');
+      // Si la validación pasa, quitar estilos de error
+      imageInput.style.borderColor = '';
+      imageInput.classList.remove('is-invalid');
       
-      // Mostrar error en el contenedor
-      previewContainer.innerHTML = `
-        <div style="padding: 1rem; background: #fef2f2; border: 2px solid #ef4444; border-radius: 0.375rem; text-align: center; color: #dc2626;">
-          <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 0.5rem; color: #dc2626;"></i>
-          <p style="font-weight: 600; margin-bottom: 0.5rem;">¡Error! Demasiadas imágenes</p>
-          <p style="font-size: 0.875rem; margin-bottom: 0.5rem;">
-            Has seleccionado ${files.length} imágenes. Máximo permitido: 3 imágenes.
-          </p>
-          <p style="font-size: 0.75rem; color: #b91c1c;">
-            Por favor, selecciona solo hasta 3 imágenes para continuar.
+      // NUEVO: Mostrar todas las imágenes seleccionadas en cuadrados separados
+      console.log("Event form: Processing", files.length, "EVENT image files");
+      
+      // Crear el HTML para mostrar todas las imágenes
+      let imagesHtml = '';
+      
+      // Título informativo
+      const titleInfo = `
+        <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f0f9ff; border: 1px solid #3b82f6; border-radius: 0.375rem;">
+          <h4 style="margin: 0; color: #1e40af; font-weight: 600; font-size: 0.875rem;">
+            ✅ Vista previa de imágenes seleccionadas (${files.length})
+          </h4>
+          <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #3730a3;">
+            ${files.length === 1 ? 'Se cargará 1 imagen' : `Se cargarán ${files.length} imágenes`}
           </p>
         </div>
       `;
       
-      // Limpiar el input después de un momento para que el usuario pueda seleccionar nuevamente
-      setTimeout(() => {
-        imageInput.value = '';
-        previewContainer.innerHTML = `
-          <img src="${document.querySelector('img[alt="Vista previa del evento"]')?.src || '/assets/event_placeholder.png'}" 
-               style="max-width: 100%; height: auto; opacity: 0.5;"
-               alt="Vista previa del evento">
-        `;
-        imageInput.style.borderColor = '';
-        imageInput.classList.remove('is-invalid');
-      }, 3000);
+      // Contenedor grid para las imágenes
+      const gridClass = files.length === 1 ? 'single-image' : 
+                      files.length === 2 ? 'two-images' : 'three-images';
       
-      return; // Salir de la función
-    }
-    
-    // Si la validación pasa, quitar estilos de error
-    imageInput.style.borderColor = '';
-    imageInput.classList.remove('is-invalid');
-    
-    // NUEVO: Mostrar todas las imágenes seleccionadas en cuadrados separados
-    console.log("Event form: Processing", files.length, "EVENT image files");
-    
-    // Crear el HTML para mostrar todas las imágenes
-    let imagesHtml = '';
-    
-    // Título informativo
-    const titleInfo = `
-      <div style="margin-bottom: 1rem; padding: 0.75rem; background: #f0f9ff; border: 1px solid #3b82f6; border-radius: 0.375rem;">
-        <h4 style="margin: 0; color: #1e40af; font-weight: 600; font-size: 0.875rem;">
-          ✅ Vista previa de imágenes seleccionadas (${files.length})
-        </h4>
-        <p style="margin: 0.25rem 0 0 0; font-size: 0.75rem; color: #3730a3;">
-          ${files.length === 1 ? 'Se cargará 1 imagen' : `Se cargarán ${files.length} imágenes`}
-        </p>
-      </div>
-    `;
-    
-    // Contenedor grid para las imágenes
-    const gridClass = files.length === 1 ? 'single-image' : 
-                     files.length === 2 ? 'two-images' : 'three-images';
-    
-    imagesHtml += `
-      <div class="preview-images-grid ${gridClass}" style="
-        display: grid; 
-        gap: 1rem; 
-        margin-top: 1rem;
-        grid-template-columns: ${files.length === 1 ? '1fr' : 
-                                files.length === 2 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'};
-        max-width: ${files.length === 1 ? '300px' : 
-                    files.length === 2 ? '600px' : '900px'};
-      ">
-    `;
-    
-    // Procesar cada archivo
-    Array.from(files).forEach((file, index) => {
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-          console.log("Event form: Image", index + 1, "loaded -", file.name);
+      imagesHtml += `
+        <div class="preview-images-grid ${gridClass}" style="
+          display: grid; 
+          gap: 1rem; 
+          margin-top: 1rem;
+          grid-template-columns: ${files.length === 1 ? '1fr' : 
+                                  files.length === 2 ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)'};
+          max-width: ${files.length === 1 ? '300px' : 
+                      files.length === 2 ? '600px' : '900px'};
+        ">
+      `;
+      
+      // Procesar cada archivo
+      Array.from(files).forEach((file, index) => {
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
           
-          // Crear contenedor para esta imagen
-          const imageContainer = `
-            <div class="preview-image-item" style="
-              position: relative;
-              border-radius: 0.5rem;
-              overflow: hidden;
-              border: 2px solid #e5e7eb;
-              background: white;
-              transition: all 0.3s ease;
-            ">
-              <img src="${e.target.result}" 
-                   class="preview-image" 
-                   style="
-                     width: 100%;
-                     height: 150px;
-                     object-fit: cover;
-                     display: block;
-                   ">
-              <div class="image-info" style="
-                position: absolute;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                background: linear-gradient(transparent, rgba(0,0,0,0.8));
-                color: white;
-                padding: 0.5rem;
-                font-size: 0.75rem;
+          reader.onload = function(e) {
+            console.log("Event form: Image", index + 1, "loaded -", file.name);
+            
+            // Crear contenedor para esta imagen
+            const imageContainer = `
+              <div class="preview-image-item" style="
+                position: relative;
+                border-radius: 0.5rem;
+                overflow: hidden;
+                border: 2px solid #e5e7eb;
+                background: white;
+                transition: all 0.3s ease;
               ">
-                <span class="image-number" style="font-weight: 600; display: block;">
-                  Imagen ${index + 1}
-                </span>
-                ${index === 0 ? '<span class="main-image-badge" style="display: inline-block; background: #10b981; color: white; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.625rem; margin-top: 0.25rem; font-weight: 600;">Principal</span>' : ''}
-                <div style="font-size: 0.625rem; margin-top: 0.25rem; opacity: 0.9;">
-                  ${file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name}
+                <img src="${e.target.result}" 
+                    class="preview-image" 
+                    style="
+                      width: 100%;
+                      height: 150px;
+                      object-fit: cover;
+                      display: block;
+                    ">
+                <div class="image-info" style="
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  background: linear-gradient(transparent, rgba(0,0,0,0.8));
+                  color: white;
+                  padding: 0.5rem;
+                  font-size: 0.75rem;
+                ">
+                  <span class="image-number" style="font-weight: 600; display: block;">
+                    Imagen ${index + 1}
+                  </span>
+                  ${index === 0 ? '<span class="main-image-badge" style="display: inline-block; background: #10b981; color: white; padding: 0.125rem 0.375rem; border-radius: 0.25rem; font-size: 0.625rem; margin-top: 0.25rem; font-weight: 600;">Principal</span>' : ''}
+                  <div style="font-size: 0.625rem; margin-top: 0.25rem; opacity: 0.9;">
+                    ${file.name.length > 20 ? file.name.substring(0, 20) + '...' : file.name}
+                  </div>
                 </div>
               </div>
+            `;
+            
+            // Encontrar el contenedor de esta imagen y actualizarlo
+            const imageContainers = previewContainer.querySelectorAll('.preview-image-item');
+            if (imageContainers[index]) {
+              imageContainers[index].outerHTML = imageContainer;
+            }
+          };
+          
+          reader.readAsDataURL(file);
+        }
+      });
+      
+      imagesHtml += '</div>';
+      
+      // Información adicional
+      const additionalInfo = `
+        <div style="margin-top: 1rem; padding: 0.75rem; background: #f9fafb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
+          <p style="margin: 0; font-weight: 500;">Archivos seleccionados:</p>
+          <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
+            ${Array.from(files).map((file, index) => 
+              `<li>${index + 1}. ${file.name} (${Math.round(file.size/1024)}KB)</li>`
+            ).join('')}
+          </ul>
+        </div>
+      `;
+      
+      // Establecer el HTML inicial (se actualizará con las imágenes cuando se carguen)
+      previewContainer.innerHTML = titleInfo + imagesHtml + additionalInfo;
+      
+      // Crear placeholders temporales para cada imagen mientras se cargan
+      const gridContainer = previewContainer.querySelector('.preview-images-grid');
+      if (gridContainer) {
+        Array.from(files).forEach((file, index) => {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'preview-image-item';
+          placeholder.style.cssText = `
+            position: relative;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            border: 2px solid #e5e7eb;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            color: #6b7280;
+            font-size: 0.875rem;
+          `;
+          placeholder.innerHTML = `
+            <div style="text-align: center;">
+              <i class="fas fa-image" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
+              <br>Cargando...
             </div>
           `;
-          
-          // Encontrar el contenedor de esta imagen y actualizarlo
-          const imageContainers = previewContainer.querySelectorAll('.preview-image-item');
-          if (imageContainers[index]) {
-            imageContainers[index].outerHTML = imageContainer;
-          }
-        };
-        
-        reader.readAsDataURL(file);
+          gridContainer.appendChild(placeholder);
+        });
       }
+      
+    } else if (previewContainer) {
+      // Si no hay archivos seleccionados, mostrar placeholder
+      imageInput.style.borderColor = '';
+      imageInput.classList.remove('is-invalid');
+      previewContainer.innerHTML = `
+        <img src="${document.querySelector('img[alt="Vista previa del evento"]')?.src || '/assets/event_placeholder.png'}" 
+            style="max-width: 100%; height: auto; opacity: 0.5;"
+            alt="Vista previa del evento">
+      `;
+    }
+  }
+
+  // FUNCIONALIDAD 2: Validación de fechas para eventos (MANTENER IGUAL - TU LÓGICA ORIGINAL)
+  function setupEventDateValidation() {
+    console.log("Validación de fechas del evento: Iniciando");
+    
+    const form = document.querySelector('form.event-form');
+    const pubDateInput = document.querySelector('input[name="event[fecha_publicacion]"]');
+    const expDateInput = document.querySelector('input[name="event[fecha_vencimiento]"]');
+    
+    if (!form || !pubDateInput || !expDateInput) {
+      console.error("No se encontraron los elementos necesarios para validación de fechas del evento");
+      return;
+    }
+    
+    console.log("Elementos encontrados, configurando validación de fechas del evento");
+    
+    function validateEventDates() {
+      if (pubDateInput.value && expDateInput.value) {
+        const pubDate = new Date(pubDateInput.value);
+        const expDate = new Date(expDateInput.value);
+        
+        console.log("Validando fechas del evento:");
+        console.log("- Fecha publicación:", pubDateInput.value);
+        console.log("- Fecha cierre:", expDateInput.value);
+        
+        if (expDate <= pubDate) {
+          console.error("ERROR: Fecha de cierre debe ser posterior");
+          
+          expDateInput.style.borderColor = '#dc3545';
+          
+          let errorMsg = document.getElementById('date-error-msg');
+          if (!errorMsg) {
+            errorMsg = document.createElement('div');
+            errorMsg.id = 'date-error-msg';
+            errorMsg.style.color = '#dc3545';
+            errorMsg.style.fontWeight = 'bold';
+            errorMsg.style.marginTop = '5px';
+            expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+          }
+          
+          errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
+          errorMsg.style.display = 'block';
+          
+          return false;
+        } else {
+          console.log("Validación de fechas del evento correcta");
+          
+          expDateInput.style.borderColor = '';
+          
+          const errorMsg = document.getElementById('date-error-msg');
+          if (errorMsg) {
+            errorMsg.style.display = 'none';
+          }
+          
+          return true;
+        }
+      }
+      return true;
+    }
+
+    function updateEventEstadoSuggestion() {
+      const estadoSelect = document.querySelector('select[name="event[estado]"]');
+      if (!estadoSelect) return;
+      
+      const now = new Date();
+      const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
+      const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
+      
+      if (!pubDate || !expDate) return;
+      
+      let suggestedEstado = '';
+      let estadoReason = '';
+      
+      if (now < pubDate) {
+        suggestedEstado = 'pendiente';
+        estadoReason = 'aún no ha llegado la fecha de publicación';
+      } else if (now >= pubDate && now < expDate) {
+        suggestedEstado = 'activo';
+        estadoReason = 'está dentro del período de inscripciones';
+      } else if (now >= expDate) {
+        const finalizedUntil = new Date(expDate);
+        finalizedUntil.setHours(finalizedUntil.getHours() + 12);
+        
+        if (now < finalizedUntil) {
+          suggestedEstado = 'finalizado';
+          estadoReason = 'han finalizado las inscripciones (menos de 12 horas)';
+        } else {
+          suggestedEstado = 'inactivo';
+          estadoReason = 'han finalizado las inscripciones (más de 12 horas)';
+        }
+      }
+      
+      if (suggestedEstado) {
+        let estadoInfo = document.getElementById('evento-estado-sugerido-info');
+        if (!estadoInfo) {
+          estadoInfo = document.createElement('div');
+          estadoInfo.id = 'evento-estado-sugerido-info';
+          estadoInfo.style.marginTop = '10px';
+          estadoInfo.style.padding = '8px 12px';
+          estadoInfo.style.borderRadius = '4px';
+          estadoSelect.parentNode.appendChild(estadoInfo);
+        }
+        
+        if (estadoSelect.value !== suggestedEstado) {
+          estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).`;
+          estadoInfo.style.backgroundColor = '#fff3cd';
+          estadoInfo.style.color = '#856404';
+          estadoInfo.style.border = '1px solid #ffeeba';
+        } else {
+          estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado (${estadoReason}).`;
+          estadoInfo.style.backgroundColor = '#d4edda';
+          estadoInfo.style.color = '#155724';
+          estadoInfo.style.border = '1px solid #c3e6cb';
+        }
+      }
+    }
+    
+    // Event listeners
+    pubDateInput.addEventListener('change', function() {
+      validateEventDates();
+      updateEventEstadoSuggestion();
     });
     
-    imagesHtml += '</div>';
+    expDateInput.addEventListener('change', function() {
+      validateEventDates();
+      updateEventEstadoSuggestion();
+    });
     
-    // Información adicional
-    const additionalInfo = `
-      <div style="margin-top: 1rem; padding: 0.75rem; background: #f9fafb; border-radius: 0.375rem; font-size: 0.75rem; color: #6b7280;">
-        <p style="margin: 0; font-weight: 500;">Archivos seleccionados:</p>
-        <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
-          ${Array.from(files).map((file, index) => 
-            `<li>${index + 1}. ${file.name} (${Math.round(file.size/1024)}KB)</li>`
-          ).join('')}
-        </ul>
-      </div>
-    `;
-    
-    // Establecer el HTML inicial (se actualizará con las imágenes cuando se carguen)
-    previewContainer.innerHTML = titleInfo + imagesHtml + additionalInfo;
-    
-    // Crear placeholders temporales para cada imagen mientras se cargan
-    const gridContainer = previewContainer.querySelector('.preview-images-grid');
-    if (gridContainer) {
-      Array.from(files).forEach((file, index) => {
-        const placeholder = document.createElement('div');
-        placeholder.className = 'preview-image-item';
-        placeholder.style.cssText = `
-          position: relative;
-          border-radius: 0.5rem;
-          overflow: hidden;
-          border: 2px solid #e5e7eb;
-          background: #f3f4f6;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 150px;
-          color: #6b7280;
-          font-size: 0.875rem;
-        `;
-        placeholder.innerHTML = `
-          <div style="text-align: center;">
-            <i class="fas fa-image" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
-            <br>Cargando...
-          </div>
-        `;
-        gridContainer.appendChild(placeholder);
+    const estadoSelect = document.querySelector('select[name="event[estado]"]');
+    if (estadoSelect) {
+      estadoSelect.addEventListener('change', function() {
+        updateEventEstadoSuggestion();
       });
     }
     
-  } else if (previewContainer) {
-    // Si no hay archivos seleccionados, mostrar placeholder
-    imageInput.style.borderColor = '';
-    imageInput.classList.remove('is-invalid');
-    previewContainer.innerHTML = `
-      <img src="${document.querySelector('img[alt="Vista previa del evento"]')?.src || '/assets/event_placeholder.png'}" 
-           style="max-width: 100%; height: auto; opacity: 0.5;"
-           alt="Vista previa del evento">
-    `;
-  }
-}
-
-// FUNCIONALIDAD 2: Validación de fechas para eventos (MANTENER IGUAL - TU LÓGICA ORIGINAL)
-function setupEventDateValidation() {
-  console.log("Validación de fechas del evento: Iniciando");
-  
-  const form = document.querySelector('form.event-form');
-  const pubDateInput = document.querySelector('input[name="event[fecha_publicacion]"]');
-  const expDateInput = document.querySelector('input[name="event[fecha_vencimiento]"]');
-  
-  if (!form || !pubDateInput || !expDateInput) {
-    console.error("No se encontraron los elementos necesarios para validación de fechas del evento");
-    return;
-  }
-  
-  console.log("Elementos encontrados, configurando validación de fechas del evento");
-  
-  function validateEventDates() {
-    if (pubDateInput.value && expDateInput.value) {
-      const pubDate = new Date(pubDateInput.value);
-      const expDate = new Date(expDateInput.value);
-      
-      console.log("Validando fechas del evento:");
-      console.log("- Fecha publicación:", pubDateInput.value);
-      console.log("- Fecha cierre:", expDateInput.value);
-      
-      if (expDate <= pubDate) {
-        console.error("ERROR: Fecha de cierre debe ser posterior");
-        
-        expDateInput.style.borderColor = '#dc3545';
+    // Validar al enviar formulario
+    form.addEventListener('submit', function(event) {
+      const isValid = validateEventDates();
+      if (!isValid) {
+        event.preventDefault();
         
         let errorMsg = document.getElementById('date-error-msg');
         if (!errorMsg) {
@@ -570,155 +681,44 @@ function setupEventDateValidation() {
         errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
         errorMsg.style.display = 'block';
         
+        expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
         return false;
-      } else {
-        console.log("Validación de fechas del evento correcta");
-        
-        expDateInput.style.borderColor = '';
-        
-        const errorMsg = document.getElementById('date-error-msg');
-        if (errorMsg) {
-          errorMsg.style.display = 'none';
+      }
+      
+      return true;
+    });
+    
+    // Validación inicial
+    validateEventDates();
+    updateEventEstadoSuggestion();
+    
+    // DIAGNÓSTICO TEMPORAL - Agregar este código para debug
+    form.addEventListener('submit', function(submitEvent) {
+      const imageInput = document.getElementById('event-images-input');
+      console.log("=== DIAGNÓSTICO ENVÍO FORMULARIO ===");
+      console.log("Archivos en el input:", imageInput.files.length);
+      
+      if (imageInput.files.length > 0) {
+        console.log("Lista de archivos que se enviarán:");
+        for(let i = 0; i < imageInput.files.length; i++) {
+          console.log(`- Archivo ${i+1}: ${imageInput.files[i].name} (${Math.round(imageInput.files[i].size/1024)}KB)`);
         }
-        
-        return true;
-      }
-    }
-    return true;
-  }
-
-  function updateEventEstadoSuggestion() {
-    const estadoSelect = document.querySelector('select[name="event[estado]"]');
-    if (!estadoSelect) return;
-    
-    const now = new Date();
-    const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
-    const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
-    
-    if (!pubDate || !expDate) return;
-    
-    let suggestedEstado = '';
-    let estadoReason = '';
-    
-    if (now < pubDate) {
-      suggestedEstado = 'pendiente';
-      estadoReason = 'aún no ha llegado la fecha de publicación';
-    } else if (now >= pubDate && now < expDate) {
-      suggestedEstado = 'activo';
-      estadoReason = 'está dentro del período de inscripciones';
-    } else if (now >= expDate) {
-      const finalizedUntil = new Date(expDate);
-      finalizedUntil.setHours(finalizedUntil.getHours() + 12);
-      
-      if (now < finalizedUntil) {
-        suggestedEstado = 'finalizado';
-        estadoReason = 'han finalizado las inscripciones (menos de 12 horas)';
       } else {
-        suggestedEstado = 'inactivo';
-        estadoReason = 'han finalizado las inscripciones (más de 12 horas)';
-      }
-    }
-    
-    if (suggestedEstado) {
-      let estadoInfo = document.getElementById('evento-estado-sugerido-info');
-      if (!estadoInfo) {
-        estadoInfo = document.createElement('div');
-        estadoInfo.id = 'evento-estado-sugerido-info';
-        estadoInfo.style.marginTop = '10px';
-        estadoInfo.style.padding = '8px 12px';
-        estadoInfo.style.borderRadius = '4px';
-        estadoSelect.parentNode.appendChild(estadoInfo);
+        console.log("¡PROBLEMA! No hay archivos seleccionados");
       }
       
-      if (estadoSelect.value !== suggestedEstado) {
-        estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).`;
-        estadoInfo.style.backgroundColor = '#fff3cd';
-        estadoInfo.style.color = '#856404';
-        estadoInfo.style.border = '1px solid #ffeeba';
-      } else {
-        estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado (${estadoReason}).`;
-        estadoInfo.style.backgroundColor = '#d4edda';
-        estadoInfo.style.color = '#155724';
-        estadoInfo.style.border = '1px solid #c3e6cb';
-      }
-    }
-  }
-  
-  // Event listeners
-  pubDateInput.addEventListener('change', function() {
-    validateEventDates();
-    updateEventEstadoSuggestion();
-  });
-  
-  expDateInput.addEventListener('change', function() {
-    validateEventDates();
-    updateEventEstadoSuggestion();
-  });
-  
-  const estadoSelect = document.querySelector('select[name="event[estado]"]');
-  if (estadoSelect) {
-    estadoSelect.addEventListener('change', function() {
-      updateEventEstadoSuggestion();
+      // Verificar el FormData que se enviará
+      const formData = new FormData(form);
+      const images = formData.getAll('event[images][]');
+      console.log("Archivos en FormData:", images.length);
+      images.forEach((file, index) => {
+        console.log(`FormData archivo ${index + 1}:`, file.name);
+      });
+      
+      console.log("=== FIN DIAGNÓSTICO ===");
+      
+      // Continúa con la validación original de fechas
     });
   }
-  
-  // Validar al enviar formulario
-  form.addEventListener('submit', function(event) {
-    const isValid = validateEventDates();
-    if (!isValid) {
-      event.preventDefault();
-      
-      let errorMsg = document.getElementById('date-error-msg');
-      if (!errorMsg) {
-        errorMsg = document.createElement('div');
-        errorMsg.id = 'date-error-msg';
-        errorMsg.style.color = '#dc3545';
-        errorMsg.style.fontWeight = 'bold';
-        errorMsg.style.marginTop = '5px';
-        expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
-      }
-      
-      errorMsg.textContent = "La fecha de cierre debe ser posterior a la fecha de publicación";
-      errorMsg.style.display = 'block';
-      
-      expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      return false;
-    }
-    
-    return true;
-  });
-  
-  // Validación inicial
-  validateEventDates();
-  updateEventEstadoSuggestion();
-  
-  // DIAGNÓSTICO TEMPORAL - Agregar este código para debug
-  form.addEventListener('submit', function(submitEvent) {
-    const imageInput = document.getElementById('event-images-input');
-    console.log("=== DIAGNÓSTICO ENVÍO FORMULARIO ===");
-    console.log("Archivos en el input:", imageInput.files.length);
-    
-    if (imageInput.files.length > 0) {
-      console.log("Lista de archivos que se enviarán:");
-      for(let i = 0; i < imageInput.files.length; i++) {
-        console.log(`- Archivo ${i+1}: ${imageInput.files[i].name} (${Math.round(imageInput.files[i].size/1024)}KB)`);
-      }
-    } else {
-      console.log("¡PROBLEMA! No hay archivos seleccionados");
-    }
-    
-    // Verificar el FormData que se enviará
-    const formData = new FormData(form);
-    const images = formData.getAll('event[images][]');
-    console.log("Archivos en FormData:", images.length);
-    images.forEach((file, index) => {
-      console.log(`FormData archivo ${index + 1}:`, file.name);
-    });
-    
-    console.log("=== FIN DIAGNÓSTICO ===");
-    
-    // Continúa con la validación original de fechas
-  });
-}
 </script>

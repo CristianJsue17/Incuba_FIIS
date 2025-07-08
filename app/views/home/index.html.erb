@@ -1,4 +1,4 @@
-<!-- spll:disable CSS específicos para home -->
+<!-- sepll:disable CSS específicos para home -->
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag "background" %>
   <%= stylesheet_link_tag "home" %>
@@ -32,7 +32,7 @@
           <a href="/" class="header__logo-link" aria-label="Ir al inicio">
             <!-- DIV SEPARADO PARA EL LOGO -->
             <div class="header__logo-container">
-              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+              <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy"  %>
             </div>
             <!-- DIV SEPARADO PARA EL TEXTO -->
             <div class="header__text-container">
@@ -218,16 +218,16 @@
         
         <div class="hero__images animate-on-scroll">
           <div class="hero__image-container hero__image-container--1">
-            <%= image_tag "principal/startap1.webp", alt: "Pedro - Testimonio de éxito", class: "hero__image", height: 280, width: 280 %>
+            <%= image_tag "principal/startap1.webp", alt: "Pedro - Testimonio de éxito", class: "hero__image", height: 280, width: 280, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--2">
-            <%= image_tag "principal/startap2.webp", alt: "Melisa Zavala - Emprendedora exitosa", class: "hero__image", height: 240, width: 240 %>
+            <%= image_tag "principal/startap2.webp", alt: "Melisa Zavala - Emprendedora exitosa", class: "hero__image", height: 240, width: 240, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--3">
-            <%= image_tag "principal/startap3.webp", alt: "Steven - Innovador destacado", class: "hero__image", height: 200, width: 200 %>
+            <%= image_tag "principal/startap3.webp", alt: "Steven - Innovador destacado", class: "hero__image", height: 200, width: 200, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--4">
-            <%= image_tag "principal/startap4.webp", alt: "Carlos Hidalgo - Mentor experto", class: "hero__image", height: 160, width: 160 %>
+            <%= image_tag "principal/startap4.webp", alt: "Carlos Hidalgo - Mentor experto", class: "hero__image", height: 160, width: 160, loading: "eager" %>
           </div>
         </div>
       </section>
@@ -274,37 +274,39 @@
   </div>
 </div>
 
-<!-- Sección Socios Estratégicos -->
+<!--spell:disable Sección Socios Estratégicos -->
 <section class="partners">
   <div class="partners__container">
     <h2 class="partners__title">Socios Estratégicos</h2>
     <div class="partners__carousel">
       <div class="partners__track">
+        <% logos = {
+          "aliados/CITE-agroindustrial.webp" => "Logo de CITE Agroindustrial",
+          "aliados/cite.webp" => "Logo del CITE",
+          "aliados/equipu_INCUBA_UNAS_0.webp" => "Logo de Equipu",
+          "aliados/Gobierno_Regional_Huanuco_INCUBA_UNAS_0.webp" => "Logo del Gobierno Regional de Huánuco",
+          "aliados/kunan_INCUBA_UNAS_0.webp" => "Logo de Kunan",
+          "aliados/madrid_INCUBA_UNAS.webp" => "Logo de Madrid",
+          "aliados/mentor_day_INCUBA_UNAS_0.webp" => "Logo de Mentor Day",
+          "aliados/ministerio del peru.webp" => "Logo del Ministerio del Perú",
+          "aliados/proinnovate.webp" => "Logo de ProInnóvate",
+          "aliados/red_impacto_INCUBA_UNAS_0.webp" => "Logo de Red Impacto",
+          "aliados/sao_paulo_INCUBA_UNAS.webp" => "Logo de Sao Paulo",
+          "aliados/start_global_INCUBA_UNAS_0.webp" => "Logo de Start Global",
+          "aliados/toilet_INCUBA_UNAS_0.webp" => "Logo de Toilet Board Coalition",
+          "aliados/universida_antofagasta_INCUBA_UNAS.webp" => "Logo de Universidad de Antofagasta",
+          "aliados/unsung_INCUBA_UNAS.webp" => "Logo de Unsung Heroes",
+          "aliados/wadhwani_INCUBA_UNAS.webp" => "Logo de Wadhwani Foundation"
+        } %>
+        
         <% 2.times do %> <!-- Repetimos dos veces los mismos logos -->
-          <% [
-            "aliados/CITE-agroindustrial.webp",
-            "aliados/cite.png",
-            "aliados/cite.png",
-            "aliados/equipu_INCUBA_UNAS_0.png",
-            "aliados/Gobierno_Regional_Huanuco_INCUBA_UNAS_0.png",
-            "aliados/kunan_INCUBA_UNAS_0.png",
-            "aliados/madrid_INCUBA_UNAS.png",
-            "aliados/mentor_day_INCUBA_UNAS_0.png",
-            "aliados/ministerio del peru.png",
-            "aliados/proinnovate.png",
-            "aliados/red_impacto_INCUBA_UNAS_0.png",
-            "aliados/sao_paulo_INCUBA_UNAS.png",
-            "aliados/start_global_INCUBA_UNAS_0.png",
-            "aliados/toilet_INCUBA_UNAS_0.png",
-            "aliados/universida_antofagasta_INCUBA_UNAS.png",
-            "aliados/unsung_INCUBA_UNAS.png",
-            "aliados/wadhwani_INCUBA_UNAS.png"
-          ].each do |logo| %>
+          <% logos.each do |path, alt_text| %>
             <div class="partners__item">
-              <%= image_tag logo, alt: "Socio Estratégico", class: "partners__logo" %>
+              <%= image_tag path, alt: alt_text, class: "partners__logo", loading: "lazy" %>
             </div>
           <% end %>
         <% end %>
+      
       </div>
     </div>
   </div>
@@ -330,7 +332,7 @@
               <% if programa.image.attached? %>
                 <%= image_tag programa.image, 
                     alt: programa.titulo, 
-                    class: "program-img" %>
+                    class: "program-img", loading: "lazy" %>
               <% else %>
                 <div class="program-placeholder">
                   <i class="fas fa-lightbulb"></i>
@@ -402,12 +404,12 @@
 
     <div class="testimonials__carousel">
       <button class="testimonials__nav testimonials__nav--prev" aria-label="Previous testimonial">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" role="img" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
 
-      <div class="testimonials__track">
+      <div clavgs="testimonials__track">
         <!-- Testimonial 1 -->
         <div class="testimonial testimonial--active">
           <div class="testimonial__rating">
@@ -425,7 +427,7 @@
           </p>
           <p class="testimonial__author">KATRINA PARKER</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/pedro.webp", alt: "Katrina Parker" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/pedro.webp", alt: "Katrina Parker" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
         
@@ -468,7 +470,7 @@
           </p>
           <p class="testimonial__author">SOPHIA MARTINEZ</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/steven.webp", alt: "Sophia Martinez" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/steven.webp", alt: "Sophia Martinez" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
 
@@ -489,14 +491,14 @@
           </p>
           <p class="testimonial__author">SOPHIA MARTINEZ</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/carlos_hidalgo.webp", alt: "Carlos Hidalgo" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/carlos_hidalgo.webp", alt: "Carlos Hidalgo" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
         
       </div>
 
       <button class="testimonials__nav testimonials__nav--next" aria-label="Next testimonial">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" role="img" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
@@ -527,7 +529,9 @@
           <div class="timeline__marker"></div>
           <div class="timeline__content">
             <div class="timeline__date">2010</div>
-            <h3 class="timeline__title">Fundación</h3>
+            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
+              Fundación
+            </h3>
             <p class="timeline__subtitle">Inicio de operaciones en un pequeño local</p>
             <div class="timeline__details">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, sapiente!</p>
@@ -545,7 +549,9 @@
           <div class="timeline__marker"></div>
           <div class="timeline__content">
             <div class="timeline__date">2013</div>
-            <h3 class="timeline__title">Expansión Nacional</h3>
+            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
+              Expansión Nacional
+            </h3>
             <p class="timeline__subtitle">Apertura de oficinas en 5 ciudades principales</p>
             <div class="timeline__details">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, officiis?</p>
@@ -563,7 +569,9 @@
           <div class="timeline__marker"></div>
           <div class="timeline__content">
             <div class="timeline__date">2016</div>
-            <h3 class="timeline__title">Innovación Tecnológica</h3>
+            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
+              Innovación Tecnológica
+            </h3>
             <p class="timeline__subtitle">Lanzamiento de nuestra plataforma digital</p>
             <div class="timeline__details">
               <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempore.</p>
@@ -581,7 +589,9 @@
           <div class="timeline__marker"></div>
           <div class="timeline__content">
             <div class="timeline__date">2019</div>
-            <h3 class="timeline__title">Expansión Internacional</h3>
+            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
+              Expansión Internacional
+            </h3>
             <p class="timeline__subtitle">Apertura de oficinas en 3 continentes</p>
             <div class="timeline__details">
               <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, eos.</p>
@@ -599,7 +609,9 @@
           <div class="timeline__marker"></div>
           <div class="timeline__content">
             <div class="timeline__date">2022</div>
-            <h3 class="timeline__title">Sostenibilidad</h3>
+            <h3 class="timeline__title" style="color: #135e58; background-color: #f8f9fa;">
+              Sostenibilidad
+            </h3>
             <p class="timeline__subtitle">Implementación de iniciativas verdes</p>
             <div class="timeline__details">
               <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, qui?</p>
@@ -635,24 +647,28 @@
       </div>
 
       <form class="footer__subscribe">
-        <input type="email" class="footer__input" placeholder="Enter email">
+        <label for="emailInput" class="footer__label">Correo electrónico</label>
+        <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
+        
         <button type="submit" class="footer__button">
-          <i class="fas fa-arrow-right"></i>
-          Contacto
+          <i class="fas fa-arrow-right"></i> Contacto
         </button>
       </form>
 
+
       <div class="footer__social">
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-instagram'></i>
+        <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
         </a>
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-twitter'></i>
+        <a href="https://twitter.com" class="footer__social-link" aria-label="Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
         </a>
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-facebook'></i>
+        <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook">
+          <i class="fab fa-facebook" aria-hidden="true"></i>
         </a>
       </div>
+
+
     </div>
 
     <!-- Columnas de enlaces -->
