@@ -21,6 +21,7 @@
 //= link enhanced_header.js
 //= link enhanced_home.js
 //= link carrusel_program.js
+//= link contact_form.js
 
 
 // CSS Files

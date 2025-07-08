@@ -2020,12 +2020,12 @@ body.overflow-hidden {
         <span class="font-medium">Equipo Incuba</span>
       </a>
     </li>
-    <li>
-      <a href="#" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'contact' || controller_name == 'contactanos' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
-        <i class="fas fa-envelope w-6 h-6 mr-3"></i>
-        <span class="font-medium">Contáctanos</span>
-      </a>
-    </li>
+<li>
+  <a href="<%= admin_contact_index_path %>" class="nav-link flex items-center py-2 px-4 <%= controller_name == 'contact' && action_name == 'index' ? 'active bg-blue-700' : 'hover:bg-blue-700' %>">
+    <i class="fas fa-envelope w-6 h-6 mr-3"></i>
+    <span class="font-medium flex-1">Contáctanos</span>
+  </a>
+</li>
   </ul>
 </nav>
     </div>

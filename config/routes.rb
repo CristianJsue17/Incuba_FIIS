@@ -4,7 +4,6 @@ Rails.application.routes.draw do
 
   devise_for :users
   
-  
   # AGREGAR RUTA PARA CAMBIO DE IDIOMA
   get '/change_locale/:locale', to: 'application#change_locale', as: :change_locale
 
@@ -14,10 +13,8 @@ authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
     
     # CORREGIDO: Especificar el controlador explícitamente
     resource :profile, only: [:show, :update], controller: 'profile' do
-      
-        patch :update_avatar
-        delete :remove_avatar
-      
+      patch :update_avatar
+      delete :remove_avatar
     end
     
     # RUTAS EXISTENTES PARA GESTIÓN DE USUARIOS
@@ -42,6 +39,13 @@ authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
     resources :events do
       member do
         patch :cambiar_estado
+      end
+    end
+
+    # RUTAS DE CONTACTO CORREGIDAS
+    resources :contact, only: [:index, :show, :destroy] do
+      collection do
+        get :stats
       end
     end
 
@@ -128,6 +132,7 @@ end
   
   get 'about', to: 'about#about', as: :about
   get 'contact', to: 'contact#contact', as: :contact
+  post 'contact', to: 'contact#create'
   get 'mentores', to: 'mentors#mentores', as: :mentores
   
   # Ruta raíz

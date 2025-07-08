@@ -1,0 +1,1006 @@
+<!-- views/admin/contact/index.html.erb -->
+
+<style>
+/* Estilos heredados de la vista de usuarios con algunas modificaciones */
+
+/* Animaciones para las tarjetas estadísticas */
+.stat-card {
+  position: relative;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.stat-card:hover::before {
+  opacity: 1;
+}
+
+/* Clases base de utilidades */
+.mb-6 { margin-bottom: 1.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 0.75rem; }
+.mt-4 { margin-top: 1rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mr-2 { margin-right: 0.5rem; }
+.mr-3 { margin-right: 0.75rem; }
+.ml-4 { margin-left: 1rem; }
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.justify-between { justify-content: space-between; }
+.items-center { align-items: center; }
+.items-start { align-items: flex-start; }
+.gap-3 { gap: 0.75rem; }
+.gap-4 { gap: 1rem; }
+.grid { display: grid; }
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+
+/* Tipografía */
+.text-2xl { font-size: 1.5rem; line-height: 2rem; }
+.text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+.text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+.text-xs { font-size: 0.75rem; line-height: 1rem; }
+.font-bold { font-weight: 700; }
+.font-medium { font-weight: 500; }
+.font-semibold { font-weight: 600; }
+.uppercase { text-transform: uppercase; }
+.tracking-wider { letter-spacing: 0.05em; }
+
+/* Colores */
+.text-gray-800 { color: #1f2937; }
+.text-gray-700 { color: #374151; }
+.text-gray-500 { color: #6b7280; }
+.text-gray-400 { color: #9ca3af; }
+.text-gray-900 { color: #111827; }
+.text-white { color: #ffffff; }
+.text-blue-600 { color: #2563eb; }
+.text-green-600 { color: #16a34a; }
+.text-green-700 { color: #15803d; }
+.text-green-800 { color: #166534; }
+.text-red-600 { color: #dc2626; }
+.text-red-700 { color: #b91c1c; }
+.text-yellow-600 { color: #d97706; }
+.text-yellow-800 { color: #92400e; }
+.text-purple-600 { color: #9333ea; }
+
+/* Fondos */
+.bg-white { background-color: #ffffff; }
+.bg-gray-50 { background-color: #f9fafb; }
+.bg-gray-100 { background-color: #f3f4f6; }
+.bg-blue-600 { background-color: #2563eb; }
+.bg-blue-100 { background-color: #dbeafe; }
+.bg-green-100 { background-color: #dcfce7; }
+.bg-green-50 { background-color: #f0fdf4; }
+.bg-red-100 { background-color: #fee2e2; }
+.bg-red-50 { background-color: #fef2f2; }
+.bg-yellow-100 { background-color: #fef3c7; }
+.bg-yellow-200 { background-color: #fde68a; }
+.bg-purple-100 { background-color: #f3e8ff; }
+
+/* Padding y margin */
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-10 { padding-top: 2.5rem; padding-bottom: 2.5rem; }
+.p-5 { padding: 1.25rem; }
+
+/* Bordes y sombras */
+.border { border-width: 1px; }
+.border-gray-200 { border-color: #e5e7eb; }
+.border-green-200 { border-color: #bbf7d0; }
+.border-red-200 { border-color: #fecaca; }
+.rounded { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-md { border-radius: 0.375rem; }
+.rounded-full { border-radius: 9999px; }
+.shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+.shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+.shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+
+/* Estados hover */
+.hover\:bg-gray-50:hover { background-color: #f9fafb; }
+.hover\:bg-gray-100:hover { background-color: #f3f4f6; }
+.hover\:bg-blue-700:hover { background-color: #1d4ed8; }
+.hover\:text-blue-900:hover { color: #1e3a8a; }
+.hover\:text-gray-600:hover { color: #4b5563; }
+
+/* Transiciones */
+.transition-colors { transition-property: background-color, border-color, color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 300ms; }
+
+/* Layout específico */
+.w-full { width: 100%; }
+.w-0 { width: 0px; }
+.w-5 { width: 1.25rem; }
+.w-6 { width: 1.5rem; }
+.w-10 { width: 2.5rem; }
+.w-12 { width: 3rem; }
+.w-48 { width: 12rem; }
+.w-80 { width: 20rem; }
+.h-5 { height: 1.25rem; }
+.h-6 { height: 1.5rem; }
+.h-10 { height: 2.5rem; }
+.h-12 { height: 3rem; }
+
+/* Estados específicos */
+.hidden { display: none; }
+.block { display: block; }
+.inline-flex { display: inline-flex; }
+.absolute { position: absolute; }
+.relative { position: relative; }
+.right-0 { right: 0; }
+.top-0 { top: 0; }
+.z-10 { z-index: 10; }
+.z-20 { z-index: 20; }
+
+/* Tabla */
+.overflow-hidden { overflow: hidden; }
+.overflow-x-auto { overflow-x: auto; }
+.min-w-full { min-width: 100%; }
+.divide-y { border-top-width: 0px; border-bottom-width: 1px; border-style: solid; }
+.divide-gray-200 { border-color: #e5e7eb; }
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.whitespace-nowrap { white-space: nowrap; }
+.leading-5 { line-height: 1.25rem; }
+.truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Espaciado */
+.space-x-2 > * + * { margin-left: 0.5rem; }
+.flex-shrink-0 { flex-shrink: 0; }
+.flex-1 { flex: 1 1 0%; }
+
+/* Responsive */
+@media (min-width: 768px) {
+  .md\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .md\:flex-row { flex-direction: row; }
+  .md\:items-center { align-items: center; }
+  .md\:mb-0 { margin-bottom: 0; }
+  .md\:w-auto { width: auto; }
+}
+
+@media (min-width: 640px) {
+  .sm\:flex-row { flex-direction: row; }
+}
+
+/* Animaciones */
+.animate-fade-in { animation: fadeIn 0.5s ease-in-out; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Búsqueda */
+.pl-10 { padding-left: 2.5rem; }
+.pr-10 { padding-right: 2.5rem; }
+.pr-3 { padding-right: 0.75rem; }
+.pl-3 { padding-left: 0.75rem; }
+.w-4 { width: 1rem; }
+.h-4 { height: 1rem; }
+.inset-y-0 { top: 0px; bottom: 0px; }
+.left-0 { left: 0px; }
+.pointer-events-none { pointer-events: none; }
+.placeholder-gray-500::placeholder { color: #6b7280; }
+.focus\:outline-none:focus { outline: 2px solid transparent; outline-offset: 2px; }
+.focus\:ring-2:focus { box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); }
+.focus\:ring-blue-500:focus { --tw-ring-color: #3b82f6; }
+.focus\:border-blue-500:focus { border-color: #3b82f6; }
+.duration-200 { transition-duration: 200ms; }
+
+/* Estados y badges ESPECÍFICOS PARA MENSAJES */
+.status-indicator { 
+  display: inline-flex; 
+  align-items: center; 
+  padding: 0.25rem 0.75rem; 
+  border-radius: 9999px; 
+  font-size: 0.75rem; 
+  font-weight: 500; 
+}
+
+.badge { 
+  display: inline-flex; 
+  align-items: center; 
+  justify-content: center; 
+  padding: 0.25rem 0.75rem; 
+  border-radius: 9999px; 
+  font-size: 0.75rem; 
+  font-weight: 500; 
+  letter-spacing: 0.025em; 
+}
+
+/* Específico para prioridades */
+.priority-high {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: rgb(239, 68, 68);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.priority-normal {
+  background-color: rgba(107, 114, 128, 0.1);
+  color: rgb(107, 114, 128);
+  border: 1px solid rgba(107, 114, 128, 0.2);
+}
+
+/* Iconos en tarjetas estadísticas */
+.stat-icon { transition: all 0.3s ease; }
+.stat-card:hover .stat-icon { transform: scale(1.15); }
+
+/* Mensajes expandibles */
+.message-preview {
+  max-width: 300px;
+  line-height: 1.4;
+  cursor: pointer;
+}
+
+.message-expanded {
+  max-width: none;
+  background-color: #f8fafc;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: 1px solid #e2e8f0;
+}
+
+/* Loading states */
+.loading-spinner {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 3px solid #e5e7eb;
+  border-radius: 50%;
+  border-top-color: #3b82f6;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mensajes empty state */
+.empty-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #6b7280;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  color: #d1d5db;
+  margin-bottom: 1rem;
+}
+
+/* Filtros y exportación */
+.filter-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.filter-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  min-width: 200px;
+}
+
+.filter-menu a {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #374151;
+  text-decoration: none;
+  border-bottom: 1px solid #f3f4f6;
+  transition: background-color 0.2s ease;
+}
+
+.filter-menu a:hover {
+  background-color: #f9fafb;
+}
+
+.filter-menu a:last-child {
+  border-bottom: none;
+  border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.filter-menu a:first-child {
+  border-radius: 0.5rem 0.5rem 0 0;
+}
+
+/* ESTILOS PARA EL MODAL MEJORADO */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+}
+
+.modal-overlay.modal-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-overlay.modal-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.modal-container {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  max-width: 42rem;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: scale(0.95) translateY(-20px);
+  transition: all 0.3s ease;
+}
+
+.modal-overlay.modal-visible .modal-container {
+  transform: scale(1) translateY(0);
+}
+
+.modal-overlay.modal-hidden .modal-container {
+  transform: scale(0.95) translateY(-20px);
+}
+
+/* Estados de carga y error del modal */
+.modal-loading {
+  padding: 3rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.modal-loading .loading-spinner {
+  margin: 0 auto 1rem;
+}
+
+.modal-error {
+  padding: 3rem;
+  text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .message-preview {
+    max-width: 200px;
+  }
+  
+  .modal-container {
+    width: 95%;
+    margin: 1rem;
+  }
+  
+  .filter-menu {
+    left: 0;
+    right: auto;
+    min-width: 180px;
+  }
+}
+</style>
+
+<% if flash[:notice] %>
+  <div class="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:notice] %></p>
+    </div>
+  </div>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="bg-red-100 border border-red-200 text-red-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-red-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:alert] %></p>
+    </div>
+  </div>
+<% end %>
+
+<div class="mb-6">
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+    <h1 class="text-2xl font-bold text-gray-800 mb-3 md:mb-0">Mensajes de Contacto</h1>
+    
+    <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto items-stretch md:items-center">
+      
+      <!-- BARRA DE BÚSQUEDA -->
+      <div class="w-full md:w-80">
+        <%= form_with url: admin_contact_index_path, method: :get, local: true, 
+                      id: "search-form", 
+                      class: "w-full" do |form| %>
+          <div class="relative">
+            <%= form.text_field :search, 
+                                value: params[:search],
+                                placeholder: "Buscar por nombre, email, asunto...",
+                                class: "w-full h-10 pl-10 pr-10 text-sm border border-gray-200 rounded-lg bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200",
+                                id: "search-input",
+                                autocomplete: "off" %>
+            
+            <!-- Icono de búsqueda -->
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+              </svg>
+            </div>
+            
+            <!-- Botón de limpiar -->
+            <% if params[:search].present? %>
+              <%= link_to admin_contact_index_path, 
+                          class: "absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition-colors duration-200",
+                          title: "Limpiar búsqueda" do %>
+                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                </svg>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- FILTROS -->
+      <div class="filter-dropdown" id="filtroDropdown">
+        <button id="filtroBtn" class="flex items-center px-4 py-2 border border-gray-200 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
+          <i class="fas fa-filter mr-2"></i> Filtros
+          <i class="fas fa-chevron-down ml-2 text-gray-500"></i>
+        </button>
+        <div id="filtroMenu" class="filter-menu hidden">
+          <%= link_to "Todos los mensajes", admin_contact_index_path %>
+          <%= link_to "Prioridad alta", admin_contact_index_path(prioridad: 'alta') %>
+        </div>
+      </div>
+      
+      <!-- EXPORTACIÓN SEPARADA -->
+      <div class="filter-dropdown" id="exportDropdown">
+        <button id="exportBtn" class="flex items-center px-4 py-2 border border-gray-200 rounded-lg shadow-sm bg-white text-gray-700 hover:bg-gray-50 transition-colors whitespace-nowrap">
+          <i class="fas fa-download mr-2"></i> Exportar
+          <i class="fas fa-chevron-down ml-2 text-gray-500"></i>
+        </button>
+        <div id="exportMenu" class="filter-menu hidden">
+          <%= link_to admin_contact_index_path(format: :csv), 
+                      class: "flex items-center" do %>
+            <i class="fas fa-file-csv mr-2 text-green-600"></i> Exportar CSV
+          <% end %>
+          <%= link_to admin_contact_index_path(format: :xlsx), 
+                      class: "flex items-center" do %>
+            <i class="fas fa-file-excel mr-2 text-green-600"></i> Exportar Excel
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENSAJE DE RESULTADOS DE BÚSQUEDA -->
+  <% if params[:search].present? %>
+    <div class="mb-4 text-sm text-gray-600">
+      <% if @formularios_contacto.any? %>
+        <div class="flex items-center text-green-700 bg-green-50 px-3 py-2 rounded-md">
+          <svg class="h-4 w-4 text-green-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          Mostrando <%= @formularios_contacto.count %> resultado(s) para "<span class="font-semibold bg-yellow-200 px-1 rounded"><%= params[:search] %></span>"
+        </div>
+      <% else %>
+        <div class="flex items-center text-red-700 bg-red-50 px-3 py-2 rounded-md">
+          <svg class="h-4 w-4 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
+          </svg>
+          No se encontraron mensajes para "<span class="font-semibold"><%= params[:search] %></span>"
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  
+  <!-- ESTADÍSTICAS RÁPIDAS -->
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div class="bg-white overflow-hidden shadow-md rounded-lg stat-card">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 stat-icon">
+              <i class="fas fa-envelope text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Total Mensajes</dt>
+              <dd class="text-lg font-bold text-gray-900"><%= FormularioContacto.count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-md rounded-lg stat-card">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 stat-icon">
+              <i class="fas fa-calendar-week text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Esta Semana</dt>
+              <dd class="text-lg font-bold text-gray-900"><%= FormularioContacto.where(created_at: 1.week.ago..Time.current).count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-md rounded-lg stat-card">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-600 stat-icon">
+              <i class="fas fa-calendar-alt text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Este Mes</dt>
+              <dd class="text-lg font-bold text-gray-900"><%= FormularioContacto.where(created_at: 1.month.ago..Time.current).count %></dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white overflow-hidden shadow-md rounded-lg stat-card">
+      <div class="p-5">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 stat-icon">
+              <i class="fas fa-exclamation-triangle text-xl"></i>
+            </div>
+          </div>
+          <div class="ml-4 w-0 flex-1">
+            <dl>
+              <dt class="text-sm font-medium text-gray-500 truncate">Prioridad Alta</dt>
+              <dd class="text-lg font-bold text-gray-900">
+                <%= FormularioContacto.where(
+                  FormularioContacto.arel_table[:asunto].lower.matches('%urgente%')
+                  .or(FormularioContacto.arel_table[:asunto].lower.matches('%inmediato%'))
+                  .or(FormularioContacto.arel_table[:asunto].lower.matches('%problema%'))
+                  .or(FormularioContacto.arel_table[:asunto].lower.matches('%error%'))
+                  .or(FormularioContacto.arel_table[:asunto].lower.matches('%ayuda%'))
+                  .or(FormularioContacto.arel_table[:mensaje].lower.matches('%urgente%'))
+                  .or(FormularioContacto.arel_table[:mensaje].lower.matches('%inmediato%'))
+                  .or(FormularioContacto.arel_table[:mensaje].lower.matches('%problema%'))
+                  .or(FormularioContacto.arel_table[:mensaje].lower.matches('%error%'))
+                  .or(FormularioContacto.arel_table[:mensaje].lower.matches('%ayuda%'))
+                ).count %>
+              </dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- TABLA DE MENSAJES -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+          <tr class="bg-gray-50">
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Remitente</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Asunto</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mensaje</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Prioridad</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha</th>
+            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+          <% @formularios_contacto.each do |formulario| %>
+            <tr class="hover:bg-gray-50 transition-colors">
+              
+              <td class="px-6 py-4">
+                <div>
+                  <div class="text-sm font-medium text-gray-900"><%= formulario.nombre_formateado %></div>
+                  <div class="text-sm text-gray-500"><%= formulario.correo %></div>
+                </div>
+              </td>
+              
+              <td class="px-6 py-4">
+                <div class="text-sm text-gray-900 font-medium"><%= formulario.asunto %></div>
+              </td>
+              
+              <td class="px-6 py-4">
+                <div class="message-preview text-sm text-gray-500" data-full-message="<%= html_escape(formulario.mensaje) %>">
+                  <%= truncate(formulario.mensaje, length: 80) %>
+                  <% if formulario.mensaje.length > 80 %>
+                    <span class="text-blue-600 cursor-pointer ml-1 expand-message">...ver más</span>
+                  <% end %>
+                </div>
+              </td>
+              
+              <td class="px-6 py-4 whitespace-nowrap">
+                <% if formulario.prioridad == 'alta' %>
+                  <span class="priority-high status-indicator">
+                    <i class="fas fa-exclamation-triangle mr-1"></i>
+                    Alta
+                  </span>
+                <% else %>
+                  <span class="priority-normal status-indicator">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Normal
+                  </span>
+                <% end %>
+              </td>
+              
+              <td class="px-6 py-4 whitespace-nowrap">
+                <div class="text-sm text-gray-900">
+                  <%= formulario.created_at.strftime("%d/%m/%Y") %>
+                </div>
+                <div class="text-xs text-gray-500">
+                  <%= formulario.created_at.strftime("%H:%M") %>
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  hace <%= time_ago_in_words(formulario.created_at) %>
+                </div>
+              </td>
+              
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <!-- Ver detalles -->
+                  <button class="text-blue-600 hover:text-blue-900 transition-colors view-message-btn" 
+                          title="Ver detalles" 
+                          data-message-id="<%= formulario.id %>">
+                    <i class="fas fa-eye"></i>
+                  </button>
+                  
+                  <!-- Responder por email -->
+                  <a href="mailto:<%= formulario.correo %>?subject=Re: <%= formulario.asunto %>&body=Estimado/a <%= formulario.nombre %>,%0D%0A%0D%0AGracias por contactarnos." 
+                     class="text-purple-600 hover:text-purple-900 transition-colors" 
+                     title="Responder por email">
+                    <i class="fas fa-reply"></i>
+                  </a>
+                  
+                  <!-- Eliminar -->
+                  <button class="text-red-600 hover:text-red-900 transition-colors delete-message-btn" 
+                          title="Eliminar mensaje"
+                          data-message-id="<%= formulario.id %>"
+                          data-message-name="<%= formulario.nombre %>"
+                          data-delete-url="<%= admin_contact_path(formulario) %>">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          
+          <% if @formularios_contacto.empty? %>
+            <tr>
+              <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                <div class="empty-state">
+                  <i class="fas fa-inbox empty-state-icon"></i>
+                  <p class="text-lg font-medium">No hay mensajes disponibles</p>
+                  <p class="text-sm mt-1">Los mensajes de contacto aparecerán aquí cuando los usuarios envíen el formulario</p>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      
+      <!-- PAGINACIÓN CON KAMINARI -->
+      <% if @formularios_contacto.present? && @formularios_contacto.total_pages > 1 %>
+        <div class="px-6 py-4 bg-white border-t border-gray-200">
+          <div class="flex justify-between items-center">
+            <div class="text-sm text-gray-700">
+              Mostrando mensajes <%= @formularios_contacto.offset_value + 1 %> a <%= @formularios_contacto.offset_value + @formularios_contacto.count %> de <%= @formularios_contacto.total_count %>
+            </div>
+            <div class="flex space-x-2">
+              <%= paginate @formularios_contacto, theme: 'tailwind' %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL PARA VER DETALLES DEL MENSAJE -->
+<div id="messageModal" class="modal-overlay">
+  <div class="modal-container">
+    <div id="messageModalContent">
+      <!-- El contenido se carga dinámicamente -->
+    </div>
+  </div>
+</div>
+
+<script>
+// Inicialización principal
+document.addEventListener('DOMContentLoaded', function() {
+  initContactManagement();
+});
+
+function initContactManagement() {
+  initFilterDropdown();
+  initExportDropdown();
+  initMessageModal();
+  initExpandableMessages();
+  initSearch();
+  initFlashMessages();
+  initDeleteButtons();
+}
+
+// Dropdown de filtros
+function initFilterDropdown() {
+  const filtroBtn = document.getElementById('filtroBtn');
+  const filtroMenu = document.getElementById('filtroMenu');
+  
+  if (filtroBtn && filtroMenu) {
+    filtroBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      filtroMenu.classList.toggle('hidden');
+      // Cerrar dropdown de export si está abierto
+      document.getElementById('exportMenu')?.classList.add('hidden');
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!filtroBtn.contains(e.target) && !filtroMenu.contains(e.target)) {
+        filtroMenu.classList.add('hidden');
+      }
+    });
+  }
+}
+
+// Dropdown de exportación
+function initExportDropdown() {
+  const exportBtn = document.getElementById('exportBtn');
+  const exportMenu = document.getElementById('exportMenu');
+  
+  if (exportBtn && exportMenu) {
+    exportBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      exportMenu.classList.toggle('hidden');
+      // Cerrar dropdown de filtros si está abierto
+      document.getElementById('filtroMenu')?.classList.add('hidden');
+    });
+    
+    document.addEventListener('click', function(e) {
+      if (!exportBtn.contains(e.target) && !exportMenu.contains(e.target)) {
+        exportMenu.classList.add('hidden');
+      }
+    });
+  }
+}
+
+// Modal para ver detalles del mensaje
+function initMessageModal() {
+  const viewButtons = document.querySelectorAll('.view-message-btn');
+  const modal = document.getElementById('messageModal');
+  
+  viewButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      showMessageDetails(messageId);
+    });
+  });
+  
+  // Cerrar modal al hacer click en el overlay
+  if (modal) {
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) {
+        closeMessageModal();
+      }
+    });
+  }
+  
+  // Cerrar modal con ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !modal.classList.contains('modal-hidden')) {
+      closeMessageModal();
+    }
+  });
+}
+
+function showMessageDetails(messageId) {
+  const modal = document.getElementById('messageModal');
+  const modalContent = document.getElementById('messageModalContent');
+  
+  if (!modal || !modalContent) return;
+  
+  // Mostrar modal con animación
+  modal.classList.remove('modal-hidden');
+  modal.classList.add('modal-visible');
+  
+  modalContent.innerHTML = `
+    <div class="modal-loading">
+      <div class="loading-spinner"></div>
+      <p class="text-gray-600 mt-4">Cargando detalles del mensaje...</p>
+    </div>
+  `;
+  
+  // Cargar detalles
+  fetch(`/admin/contact/${messageId}`, {
+    headers: {
+      'Accept': 'text/html',
+      'X-Requested-With': 'XMLHttpRequest'
+    }
+  })
+  .then(response => response.text())
+  .then(html => {
+    modalContent.innerHTML = html;
+  })
+  .catch(error => {
+    modalContent.innerHTML = `
+      <div class="modal-error">
+        <div class="text-red-600 mb-4">
+          <i class="fas fa-exclamation-triangle text-4xl"></i>
+        </div>
+        <p class="text-red-600 font-medium">Error al cargar el mensaje</p>
+        <button onclick="closeMessageModal()" class="mt-4 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+          Cerrar
+        </button>
+      </div>
+    `;
+  });
+}
+
+function closeMessageModal() {
+  const modal = document.getElementById('messageModal');
+  if (modal) {
+    modal.classList.remove('modal-visible');
+    modal.classList.add('modal-hidden');
+  }
+}
+
+// Mensajes expandibles
+function initExpandableMessages() {
+  document.addEventListener('click', function(e) {
+    if (e.target.classList.contains('expand-message')) {
+      const preview = e.target.closest('.message-preview');
+      const fullMessage = preview.getAttribute('data-full-message');
+      
+      preview.innerHTML = fullMessage;
+      preview.classList.add('message-expanded');
+    }
+  });
+}
+
+// Búsqueda
+let searchTimeout;
+function initSearch() {
+  const searchInput = document.getElementById('search-input');
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', function(e) {
+    clearTimeout(searchTimeout);
+    const query = e.target.value.trim();
+    
+    searchTimeout = setTimeout(() => {
+      doSearch(query);
+    }, 500);
+  });
+
+  searchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      clearTimeout(searchTimeout);
+      doSearch(e.target.value.trim());
+    }
+  });
+}
+
+function doSearch(query) {
+  const url = new URL(window.location.href);
+  
+  if (query === '') {
+    url.searchParams.delete('search');
+  } else {
+    url.searchParams.set('search', query);
+  }
+  
+  window.location.href = url.toString();
+}
+
+// Botones de eliminar con SweetAlert2
+function initDeleteButtons() {
+  const deleteButtons = document.querySelectorAll('.delete-message-btn');
+  
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const messageId = this.getAttribute('data-message-id');
+      const messageName = this.getAttribute('data-message-name');
+      const deleteUrl = this.getAttribute('data-delete-url');
+      
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: `¿Deseas eliminar el mensaje de ${messageName}? Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc2626',
+        cancelButtonColor: '#6b7280',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar',
+        reverseButtons: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Crear formulario y enviarlo
+          const form = document.createElement('form');
+          form.method = 'POST';
+          form.action = deleteUrl;
+          
+          // Token CSRF
+          const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+          const csrfInput = document.createElement('input');
+          csrfInput.type = 'hidden';
+          csrfInput.name = 'authenticity_token';
+          csrfInput.value = csrfToken;
+          form.appendChild(csrfInput);
+          
+          // Método DELETE
+          const methodInput = document.createElement('input');
+          methodInput.type = 'hidden';
+          methodInput.name = '_method';
+          methodInput.value = 'delete';
+          form.appendChild(methodInput);
+          
+          // Enviar formulario
+          document.body.appendChild(form);
+          form.submit();
+        }
+      });
+    });
+  });
+}
+
+// Auto-ocultar mensajes flash
+function initFlashMessages() {
+  setTimeout(function() {
+    const flashMessages = document.querySelectorAll('.animate-fade-in');
+    flashMessages.forEach(function(message) {
+      message.style.transition = 'opacity 0.5s, transform 0.5s';
+      message.style.opacity = '0';
+      message.style.transform = 'translateY(-10px)';
+      
+      setTimeout(function() {
+        message.remove();
+      }, 500);
+    });
+  }, 5000);
+}
+
+// Funciones globales
+window.closeMessageModal = closeMessageModal;
+
+// Reinicializar en navegación Turbo si está disponible
+document.addEventListener('turbo:load', initContactManagement);
+</script>

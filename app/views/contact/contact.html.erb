@@ -23,6 +23,7 @@
         <%= javascript_include_tag "footer", defer: true %>
         <%= javascript_include_tag "swiper-bundle.min", defer: true %>
         <%= javascript_include_tag "swiper-init", defer: true %>
+        <%= javascript_include_tag "contact_form", defer: true %>
   <% end %>
 </head>
 
@@ -175,6 +176,20 @@
     </header>
 
     <main>
+        <!-- Mensajes Flash -->
+        <% if flash[:success] %>
+          <div class="alert alert-success" id="flashMessage">
+            <i class="fas fa-check-circle"></i>
+            <%= flash[:success] %>
+          </div>
+        <% end %>
+
+        <% if flash[:error] %>
+          <div class="alert alert-error" id="flashMessage">
+            <i class="fas fa-exclamation-triangle"></i>
+            <%= flash[:error] %>
+          </div>
+        <% end %>
 
         <section class="contact">
             <div class="contact__container">
@@ -242,57 +257,174 @@
                     </div>
 
                     <div class="contact__form-container">
-                        <form class="contact__form" id="contactForm">
+                        <%= form_with model: @formulario_contacto, local: true, url: contact_path, html: { class: "contact__form", id: "contactForm" } do |form| %>
                             <div class="contact__form-header">
                                 <h3 class="contact__form-title">Envíanos un mensaje</h3>
                             </div>
 
+                            <!-- Campo Nombre -->
                             <div class="contact__form-group">
                                 <div class="contact__input-wrapper">
-                                    <input type="text" id="name" class="contact__input" placeholder=" " required>
-                                    <label for="name" class="contact__label">Nombre y Apellido</label>
+                                    <%= form.text_field :nombre, 
+                                        class: "contact__input", 
+                                        placeholder: " ", 
+                                        required: true,
+                                        id: "formulario_contacto_nombre" %>
+                                    <%= form.label :nombre, "Nombre y Apellido", class: "contact__label" %>
                                     <span class="contact__input-focus"></span>
                                 </div>
+                                <% if @formulario_contacto&.errors&.[](:nombre)&.any? %>
+                                  <div class="contact__error-message">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <%= @formulario_contacto.errors[:nombre].first %>
+                                  </div>
+                                <% end %>
                             </div>
 
                             <div class="contact__form-row">
+                                <!-- Campo Correo -->
                                 <div class="contact__form-group">
                                     <div class="contact__input-wrapper">
-                                        <input type="email" id="email" class="contact__input" placeholder=" " required>
-                                        <label for="email" class="contact__label">Correo Electrónico</label>
+                                        <%= form.email_field :correo, 
+                                            class: "contact__input", 
+                                            placeholder: " ", 
+                                            required: true,
+                                            id: "formulario_contacto_correo" %>
+                                        <%= form.label :correo, "Correo Electrónico", class: "contact__label" %>
                                         <span class="contact__input-focus"></span>
                                     </div>
+                                    <% if @formulario_contacto&.errors&.[](:correo)&.any? %>
+                                      <div class="contact__error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <%= @formulario_contacto.errors[:correo].first %>
+                                      </div>
+                                    <% end %>
                                 </div>
 
+                                <!-- Campo Asunto -->
                                 <div class="contact__form-group">
                                     <div class="contact__input-wrapper">
-                                        <input type="tel" id="phone" class="contact__input" placeholder=" " required>
-                                        <label for="phone" class="contact__label">Teléfono</label>
+                                        <%= form.text_field :asunto, 
+                                            class: "contact__input", 
+                                            placeholder: " ", 
+                                            required: true,
+                                            id: "formulario_contacto_asunto" %>
+                                        <%= form.label :asunto, "Asunto", class: "contact__label" %>
                                         <span class="contact__input-focus"></span>
                                     </div>
+                                    <% if @formulario_contacto&.errors&.[](:asunto)&.any? %>
+                                      <div class="contact__error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        <%= @formulario_contacto.errors[:asunto].first %>
+                                      </div>
+                                    <% end %>
                                 </div>
                             </div>
 
+                            <!-- Campo Mensaje -->
                             <div class="contact__form-group">
                                 <div class="contact__input-wrapper">
-                                    <textarea id="message" class="contact__textarea" placeholder=" " required></textarea>
-                                    <label for="message" class="contact__label">Mensaje</label>
+                                    <%= form.text_area :mensaje, 
+                                        class: "contact__textarea", 
+                                        placeholder: " ", 
+                                        required: true,
+                                        id: "formulario_contacto_mensaje" %>
+                                    <%= form.label :mensaje, "Mensaje", class: "contact__label" %>
                                     <span class="contact__input-focus"></span>
                                 </div>
+                                <% if @formulario_contacto&.errors&.[](:mensaje)&.any? %>
+                                  <div class="contact__error-message">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <%= @formulario_contacto.errors[:mensaje].first %>
+                                  </div>
+                                <% end %>
                             </div>
 
-                            <button type="submit" class="contact__submit-btn">
+                            <%= form.submit "Enviar Mensaje", class: "contact__submit-btn" do %>
                                 <span class="contact__btn-text">Enviar Mensaje</span>
                                 <span class="contact__btn-icon">
                                     <i class='bx bxs-paper-plane'></i>
                                 </span>
-                            </button>
-                        </form>
+                            <% end %>
+                        <% end %>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ========================================= -->
+        <!-- NUEVA SECCIÓN DEL MAPA -->
+        <!-- ========================================= -->
+        <section class="map-section">
+            <div class="map-section__container">
+                <div class="map-section__header">
+                    <h2 class="map-section__title">NUESTRA UBICACIÓN</h2>
+                    <p class="map-section__subtitle">Encuéntranos fácilmente en el Campus de la Universidad Nacional Agraria de la Selva</p>
+                </div>
+                
+                <div class="map-section__content">
+                    <div class="map-section__map-container">
+                        <div class="map-section__loading" id="mapLoading">
+                            <div class="map-section__loading-spinner"></div>
+                            <p>Cargando ubicación...</p>
+                        </div>
+                        
+                        <!-- Controles personalizados -->
+                        <div class="map-section__controls">
+                            <button class="map-section__control-btn" id="satelliteBtn" title="Vista satelital">
+                                <i class="fas fa-satellite"></i>
+                            </button>
+                            <button class="map-section__control-btn map-section__control-btn--active" id="roadmapBtn" title="Vista mapa">
+                                <i class="fas fa-map"></i>
+                            </button>
+                            <button class="map-section__control-btn" id="terrainBtn" title="Vista terreno">
+                                <i class="fas fa-mountain"></i>
+                            </button>
+                            <button class="map-section__control-btn" id="streetViewBtn" title="Street View">
+                                <i class="fas fa-street-view"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="map" class="map-section__map"></div>
+                    </div>
+                    
+                    <div class="map-section__info">
+                        <div class="map-section__info-card">
+                            <div class="map-section__info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="map-section__info-content">
+                                <h3>Dirección Exacta</h3>
+                                <p>Carr. Central km. 1.21<br>Tingo María 10131, Huánuco</p>
+                            </div>
+                        </div>
+                        
+                        <div class="map-section__info-card">
+                            <div class="map-section__info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="map-section__info-content">
+                                <h3>Horarios de Atención</h3>
+                                <p>Lunes a Viernes: 8:00 AM - 3:00 PM<br>Estado: <span class="map-section__status-open">Abierto</span></p>
+                            </div>
+                        </div>
+                        
+                        <div class="map-section__info-card">
+                            <div class="map-section__info-icon">
+                                <i class="fas fa-route"></i>
+                            </div>
+                            <div class="map-section__info-content">
+                                <h3>Cómo Llegar</h3>
+                                <p>Dentro del campus UNAS, cerca de la Facultad de Ingeniería</p>
+                                <a href="https://maps.google.com/?q=-9.3142652,-75.9964959" target="_blank" class="map-section__directions-btn">
+                                    <i class="fas fa-directions"></i> Ver direcciones
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <footer class="footer">
             <div class="footer__decoration footer__decoration--top-left"></div>
@@ -366,9 +498,201 @@
             </div>
         </footer>
 
-
     </main>
 
-</body>
-
-</html>
+    <!-- ========================================= -->
+    <!-- JAVASCRIPT PARA EL MAPA -->
+    <!-- ========================================= -->
+    <script>
+        // Configuración del mapa
+        const CONFIG = {
+            // Coordenadas exactas de Google Maps para Incuba UNAS
+            lat: -9.3142652,
+            lng: -75.9964959,
+            zoom: 17
+        };
+        
+        let map;
+        let marker;
+        let infoWindow;
+        
+        // Función para inicializar Google Maps
+        function initMap() {
+            // Configuración del mapa
+            const mapOptions = {
+                center: { lat: CONFIG.lat, lng: CONFIG.lng },
+                zoom: CONFIG.zoom,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                disableDefaultUI: false,
+                zoomControl: true,
+                mapTypeControl: false,
+                scaleControl: true,
+                streetViewControl: false,
+                rotateControl: true,
+                fullscreenControl: true,
+                gestureHandling: 'cooperative',
+                styles: [
+                    {
+                        "featureType": "poi",
+                        "elementType": "labels",
+                        "stylers": [{"visibility": "on"}]
+                    },
+                    {
+                        "featureType": "poi.business",
+                        "stylers": [{"visibility": "on"}]
+                    }
+                ]
+            };
+            
+            // Crear el mapa
+            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            
+            // Crear marcador personalizado
+            const customIcon = {
+                url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+                    <svg width="40" height="50" viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20 0C8.95 0 0 8.95 0 20c0 15 20 30 20 30s20-15 20-30c0-11.05-8.95-20-20-20z" fill="#3366cc"/>
+                        <circle cx="20" cy="20" r="12" fill="white"/>
+                        <text x="20" y="25" text-anchor="middle" fill="#3366cc" font-family="Arial" font-size="12" font-weight="bold">🚀</text>
+                    </svg>
+                `),
+                scaledSize: new google.maps.Size(40, 50),
+                anchor: new google.maps.Point(20, 50)
+            };
+            
+            // Crear marcador
+            marker = new google.maps.Marker({
+                position: { lat: CONFIG.lat, lng: CONFIG.lng },
+                map: map,
+                icon: customIcon,
+                title: 'Incuba UNAS',
+                animation: google.maps.Animation.DROP
+            });
+            
+            // Contenido del InfoWindow
+            const infoWindowContent = `
+                <div style="padding: 1rem; max-width: 300px; font-family: 'Poppins', sans-serif;">
+                    <h4 style="margin: 0 0 0.5rem 0; color: #3366cc; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+                        <i class="fas fa-rocket" style="color: #3366cc;"></i> Incuba UNAS
+                    </h4>
+                    <p style="margin: 0.25rem 0; color: #64748b; font-size: 0.9rem; line-height: 1.5;"><strong>Consultora de administración empresarial</strong></p>
+                    <p style="margin: 0.25rem 0; color: #f59e0b; font-weight: 600; font-size: 0.9rem;">⭐ 4.5 (431 reseñas)</p>
+                    <p style="margin: 0.25rem 0; color: #64748b; font-size: 0.9rem;"><i class="fas fa-map-marker-alt" style="color: #6b7280;"></i> Carr. Central km. 1.21, Tingo María</p>
+                    <p style="margin: 0.25rem 0; color: #10b981; font-weight: 500; font-size: 0.9rem;"><i class="fas fa-clock"></i> Abierto • Cierra a las 3 p.m.</p>
+                    <p style="margin: 0.25rem 0; color: #64748b; font-size: 0.9rem;"><i class="fas fa-phone" style="color: #f59e0b;"></i> 922 012 421</p>
+                </div>
+            `;
+            
+            // Crear InfoWindow
+            infoWindow = new google.maps.InfoWindow({
+                content: infoWindowContent
+            });
+            
+            // Evento click en el marcador
+            marker.addListener('click', () => {
+                infoWindow.open(map, marker);
+            });
+            
+            // Animación de entrada del mapa
+            setTimeout(() => {
+                document.getElementById('mapLoading').style.display = 'none';
+                document.getElementById('map').style.opacity = '1';
+                
+                // Animación de zoom
+                map.setZoom(14);
+                setTimeout(() => {
+                    map.setZoom(CONFIG.zoom);
+                }, 1000);
+                
+                // Abrir InfoWindow después de la animación
+                setTimeout(() => {
+                    infoWindow.open(map, marker);
+                }, 2500);
+                
+                // Añadir bounce al marcador
+                setTimeout(() => {
+                    marker.setAnimation(google.maps.Animation.BOUNCE);
+                    setTimeout(() => {
+                        marker.setAnimation(null);
+                    }, 2000);
+                }, 3000);
+                
+            }, 1500);
+            
+            // Configurar controles personalizados
+            setupCustomControls();
+        }
+        
+        // Función para configurar controles personalizados
+        function setupCustomControls() {
+            // Botón vista satelital
+            document.getElementById('satelliteBtn').addEventListener('click', () => {
+                map.setMapTypeId(google.maps.MapTypeId.SATELLITE);
+                updateActiveButton('satelliteBtn');
+            });
+            
+            // Botón vista mapa
+            document.getElementById('roadmapBtn').addEventListener('click', () => {
+                map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+                updateActiveButton('roadmapBtn');
+            });
+            
+            // Botón vista terreno
+            document.getElementById('terrainBtn').addEventListener('click', () => {
+                map.setMapTypeId(google.maps.MapTypeId.TERRAIN);
+                updateActiveButton('terrainBtn');
+            });
+            
+            // Botón Street View
+            document.getElementById('streetViewBtn').addEventListener('click', () => {
+                const streetViewService = new google.maps.StreetViewService();
+                
+                streetViewService.getPanorama({
+                    location: { lat: CONFIG.lat, lng: CONFIG.lng },
+                    radius: 100
+                }, (data, status) => {
+                    if (status === google.maps.StreetViewStatus.OK) {
+                        const panorama = new google.maps.StreetViewPanorama(
+                            document.getElementById('map'), {
+                                position: { lat: CONFIG.lat, lng: CONFIG.lng },
+                                pov: { heading: 0, pitch: 0 },
+                                zoom: 1
+                            }
+                        );
+                        updateActiveButton('streetViewBtn');
+                    } else {
+                        alert('Street View no está disponible en esta ubicación');
+                    }
+                });
+            });
+        }
+        
+        // Función para actualizar botón activo
+        function updateActiveButton(activeId) {
+            document.querySelectorAll('.map-section__control-btn').forEach(btn => {
+                btn.classList.remove('map-section__control-btn--active');
+            });
+            document.getElementById(activeId).classList.add('map-section__control-btn--active');
+        }
+        
+        // Función para manejar errores de carga
+        function handleMapError() {
+            document.getElementById('mapLoading').innerHTML = `
+                <div style="text-align: center; color: #ef4444;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p><strong>Error al cargar Google Maps</strong></p>
+                    <p>Verifica tu clave API o conexión a internet</p>
+                </div>
+            `;
+        }
+        
+        // Manejar errores de Google Maps
+        window.gm_authFailure = handleMapError;
+    </script>
+    
+    <!-- ========================================= -->
+    <!-- ⚠️ AQUÍ DEBES REEMPLAZAR TU_API_KEY_AQUI CON TU CLAVE REAL -->
+    <!-- ========================================= -->
+    <script async defer 
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDXvI3eW5ZVRWnus2ANGIXGYyZYMQ74pwI&callback=initMap&libraries=geometry">
+    </script>
