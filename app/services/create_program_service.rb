@@ -90,21 +90,27 @@ class CreateProgramService < ApplicationService
   end
   
   # CAMBIO PRINCIPAL: Crear plantillas para admin
-  def create_form_plantilla(program)
-    return unless program.persisted?
-    
-    case program.tipo
-    when 'preincubacion'
-      program.create_formulario_plantilla_preincubacion!(es_plantilla: true)
-    when 'incubacion'
-      program.create_formulario_plantilla_incubacion!(es_plantilla: true)
-    when 'innovacion'
-      program.create_formulario_plantilla_innovacion!(es_plantilla: true)
-    end
-  rescue => e
-    Rails.logger.error("Error creating form template: #{e.message}")
-    program.errors.add(:base, "Error al crear formulario plantilla: #{e.message}")
+def create_form_plantilla(program)
+  return unless program.persisted?
+  
+  # Parámetros base para plantillas (para admin)
+  plantilla_params = { 
+    es_plantilla: true,
+    estado: 'pendiente' # AGREGAR ESTADO POR DEFECTO
+  }
+  
+  case program.tipo
+  when 'preincubacion'
+    program.create_formulario_plantilla_preincubacion!(plantilla_params)
+  when 'incubacion'
+    program.create_formulario_plantilla_incubacion!(plantilla_params)
+  when 'innovacion'
+    program.create_formulario_plantilla_innovacion!(plantilla_params)
   end
+rescue => e
+  Rails.logger.error("Error creating form template: #{e.message}")
+  program.errors.add(:base, "Error al crear formulario plantilla: #{e.message}")
+end
   
   def handle_error(exception)
     program = exception.record || Program.new(@params.except(

@@ -1,0 +1,1975 @@
+<!-- app/views/participante/profile/show.html.erb -->
+
+<style>
+/* === ESTILOS PARA PERFIL DE PARTICIPANTE === */
+
+/* Contenedor principal sin header grande */
+.profile-container-compact {
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 1.5rem;
+}
+
+/* Header compacto con diseño horizontal - tema verde para participantes */
+.profile-header-compact {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 2rem;
+  position: relative;
+}
+
+/* Avatar más grande */
+.avatar-large {
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 4px solid rgba(255, 255, 255, 0.9) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.3s ease !important;
+}
+
+.avatar-large:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-placeholder-large {
+  width: 150px !important;
+  height: 150px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: 4px solid rgba(255, 255, 255, 0.9) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 4rem !important;
+  color: white !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Centrar el contenido del header manteniendo diseño horizontal */
+.profile-header-compact div[style*="flex"] {
+  justify-content: center !important;
+  align-items: center !important;
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 2rem !important;
+}
+
+/* Información del usuario al lado del avatar */
+.user-info-side {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  gap: 0.75rem !important;
+  text-align: left !important;
+}
+
+.user-name-large {
+  font-size: 2.25rem !important;
+  font-weight: 700 !important;
+  margin: 0 !important;
+  color: white !important;
+  line-height: 1.2 !important;
+}
+
+.user-email-large {
+  font-size: 1.125rem !important;
+  opacity: 0.9 !important;
+  margin: 0 !important;
+  color: white !important;
+}
+
+.user-role-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 9999px !important;
+  font-size: 0.875rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  backdrop-filter: blur(10px) !important;
+  width: fit-content !important;
+}
+
+/* Body compacto */
+.profile-body-compact {
+  padding: 1.5rem;
+}
+
+/* Formulario compacto */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.form-group-compact {
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.form-group-compact:hover {
+  border-color: #10b981;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+}
+
+.form-label-compact {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #059669;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-control-compact {
+  width: 100%;
+  padding: 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  color: #1f2937;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+}
+
+.form-control-compact:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.form-control-compact:disabled {
+  background-color: #f3f4f6;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.form-select-compact {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%2310b981' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1em 1em;
+  padding-right: 2.5rem;
+  appearance: none;
+}
+
+/* Display de solo lectura */
+.display-value-compact {
+  color: #1f2937;
+  font-weight: 500;
+  padding: 0.625rem 0.75rem;
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.375rem;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+}
+
+.empty-value-compact {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+/* Secciones */
+.section-compact {
+  margin-bottom: 1.5rem;
+}
+
+.section-title-compact {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #059669;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title-compact i {
+  color: #10b981;
+}
+
+/* Botones con tema verde para participantes */
+.btn-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.375rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none;
+}
+
+.btn-primary-compact {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-color: #10b981;
+}
+
+.btn-primary-compact:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.btn-success-compact {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-color: #10b981;
+}
+
+.btn-success-compact:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.btn-secondary-compact {
+  background-color: #f3f4f6;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary-compact:hover {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+.btn-warning-compact {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+  border-color: #f59e0b;
+}
+
+.btn-warning-compact:hover {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
+}
+
+/* Grupo de botones */
+.btn-group-compact {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* Avatar upload */
+.avatar-upload-compact {
+  text-align: center;
+  margin-bottom: 1rem;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 1rem !important;
+  flex-wrap: wrap !important;
+}
+
+.avatar-upload-compact input[type="file"] {
+  display: none;
+}
+
+.avatar-upload-label-compact {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3) !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1.25rem !important;
+  border-radius: 0.5rem !important;
+  transition: all 0.3s ease !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.75rem;
+}
+
+.avatar-upload-label-compact:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Botón eliminar foto - estilo moderno rojo */
+.btn-compact.btn-secondary-compact[onclick="removeAvatarAjax()"] {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3) !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-compact.btn-secondary-compact[onclick="removeAvatarAjax()"]:hover {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4) !important;
+}
+
+/* Alertas compactas */
+.alert-compact {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid;
+  display: flex;
+  align-items: center;
+}
+
+.alert-success-compact {
+  background-color: #f0fdf4;
+  border-color: #bbf7d0;
+  color: #166534;
+}
+
+.alert-danger-compact {
+  background-color: #fef2f2;
+  border-color: #fca5a5;
+  color: #991b1b;
+}
+
+/* Mensajes flash estilo participantes */
+.bg-green-100 {
+  background-color: #dcfce7;
+}
+
+.border-green-200 {
+  border-color: #bbf7d0;
+}
+
+.text-green-800 {
+  color: #166534;
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.rounded {
+  border-radius: 0.25rem;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.w-5 {
+  width: 1.25rem;
+}
+
+.text-green-600 {
+  color: #16a34a;
+}
+
+.mr-2 {
+  margin-right: 0.5rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+/* Email protegido */
+.email-protected {
+  background-color: #fef3c7;
+  border: 1px solid #f59e0b;
+  border-radius: 0.375rem;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #92400e;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Modal para cambio de contraseña */
+.password-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.password-modal.hidden {
+  display: none;
+}
+
+.password-modal-content {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 2rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border: 2px solid #10b981;
+}
+
+.password-modal-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.password-modal-header h3 {
+  color: #059669;
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.password-form-group {
+  margin-bottom: 1rem;
+}
+
+.password-form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.password-form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+}
+
+.password-form-control:focus {
+  outline: none;
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.password-modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .form-row.two-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+  
+  .form-row.three-cols {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+}
+
+@media (max-width: 767px) {
+  .profile-body-compact {
+    padding: 1rem;
+  }
+  
+  .btn-group-compact {
+    flex-direction: column;
+  }
+  
+  .btn-compact {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Responsive para header con avatar */
+  .profile-header-compact div[style*="flex"] {
+    flex-direction: column !important;
+    text-align: center !important;
+    gap: 1rem !important;
+  }
+
+  .user-info-side {
+    align-items: center;
+    text-align: center;
+  }
+
+  .user-name-large {
+    font-size: 1.5rem;
+  }
+
+  .avatar-large,
+  .avatar-placeholder-large {
+    width: 120px !important;
+    height: 120px !important;
+  }
+  
+  .avatar-upload-compact {
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+}
+
+/* Animaciones */
+.profile-container-compact {
+  animation: slideInUp 0.3s ease-out;
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estados */
+.form-control-compact.is-invalid {
+  border-color: #ef4444;
+}
+
+.form-control-compact.is-valid {
+  border-color: #10b981;
+}
+
+.invalid-feedback {
+  color: #ef4444;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* Avatar preview */
+.avatar-preview-compact {
+  display: none;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.avatar-preview-compact.active {
+  display: block;
+}
+
+.avatar-preview-compact img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #10b981;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+/* Efectos especiales */
+.form-group-compact:focus-within {
+  transform: translateY(-1px);
+}
+
+.form-group-compact:focus-within .form-label-compact {
+  color: #10b981;
+  font-weight: 700;
+}
+
+/* Utilidades adicionales */
+.w-full {
+  width: 100%;
+}
+
+/* Efectos adicionales para todos los botones */
+.btn-compact {
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+.btn-compact::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+  transition: left 0.5s !important;
+}
+
+.btn-compact:hover::before {
+  left: 100% !important;
+}
+
+/* Estilos para el toggle de contraseña */
+.password-toggle-btn:hover {
+  color: #10b981 !important;
+}
+
+.password-form-control.has-error {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.password-form-control.has-success {
+  border-color: #10b981 !important;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Animación de shake para errores */
+@keyframes shake {
+  0%, 20%, 40%, 60%, 80% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-5px);
+  }
+}
+
+.shake {
+  animation: shake 0.5s ease-in-out;
+}
+</style>
+
+<!-- Mensajes flash -->
+<% if flash[:notice] %>
+  <div class="bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded mb-4 animate-fade-in">
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium"><%= flash[:notice] %></p>
+    </div>
+  </div>
+
+  <script>
+    // Ocultar el mensaje de éxito después de 4 segundos
+    setTimeout(function() {
+      const flashMessage = document.querySelector('.bg-green-100');
+      if (flashMessage) {
+        flashMessage.style.transition = 'opacity 0.5s, transform 0.5s';
+        flashMessage.style.opacity = '0';
+        flashMessage.style.transform = 'translateY(-10px)';
+        
+        // Eliminar del DOM después de la transición
+        setTimeout(function() {
+          flashMessage.remove();
+        }, 500);
+      }
+    }, 4000);
+  </script>
+<% end %>
+
+<% if flash[:alert] %>
+  <div class="alert-compact alert-danger-compact">
+    <div style="display: flex; align-items: center;">
+      <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>
+      <span><%= flash[:alert] %></span>
+    </div>
+  </div>
+<% end %>
+
+<!-- Título y botones principales -->
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+  <div>
+    <h1 style="font-size: 1.5rem; font-weight: 700; color: #059669; margin: 0;">MI PERFIL</h1>
+    <p style="color: #6b7280; margin: 0.25rem 0 0 0; font-size: 0.875rem;">
+      Actualiza tu información personal y mantén tu perfil al día.
+    </p>
+  </div>
+  <div style="display: flex; gap: 0.5rem;">
+    <button onclick="togglePasswordModal()" class="btn-compact btn-warning-compact">
+      <i class="fas fa-key"></i>
+      Contraseña
+    </button>
+  </div>
+</div>
+
+<div class="profile-container-compact">
+  <!-- Header compacto con foto más grande -->
+  <div class="profile-header-compact">
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <!-- Avatar más grande -->
+      <div class="avatar-compact-container">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, class: "avatar-large", id: "current-avatar-compact" %>
+        <% else %>
+          <div class="avatar-placeholder-large" id="avatar-placeholder-compact">
+            <i class="fas fa-user"></i>
+          </div>
+        <% end %>
+      </div>
+      
+      <!-- Info del usuario al lado -->
+      <div class="user-info-side">
+        <h1 class="user-name-large"><%= @user.nombre_completo %></h1>
+        <p class="user-email-large"><%= @user.email %></p>
+        <div class="user-role-badge">
+          <i class="fas fa-graduation-cap"></i>
+          Participante
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Body del perfil -->
+  <div class="profile-body-compact">
+    
+    <!-- Vista de solo lectura (inicial) -->
+    <div class="profile-display-compact" id="profile-display-compact">
+      
+      <!-- Sección de Avatar -->
+      <div class="section-compact">
+        <div class="avatar-upload-compact">
+          <%= form_with model: @user, url: update_avatar_participante_profile_path, method: :patch, local: true, html: { multipart: true, style: "display: inline-block;" } do |f| %>
+            <%= f.file_field :avatar, id: "avatar-input-compact", accept: "image/*", style: "display: none;" %>
+            <label for="avatar-input-compact" class="avatar-upload-label-compact">
+              <i class="fas fa-camera"></i>
+              <%= @user.avatar.attached? ? 'Cambiar foto' : 'Subir foto' %>
+            </label>
+            
+<% if @user.avatar.attached? %>
+  <button type="button" 
+          onclick="removeAvatarAjax()" 
+          class="btn-compact btn-secondary-compact"
+          style="font-size: 0.75rem; padding: 0.5rem 1rem;"
+          id="remove-avatar-btn">
+    <i class="fas fa-trash"></i>
+    <span id="remove-avatar-text">Eliminar Foto</span>
+  </button>
+<% end %>
+            
+            <!-- Vista previa del avatar -->
+            <div class="avatar-preview-compact" id="avatar-preview-compact">
+              <img id="preview-image-compact" src="" alt="Vista previa">
+              <div style="margin-top: 0.75rem;">
+                <%= f.submit "Actualizar foto", class: "btn-compact btn-success-compact", style: "font-size: 0.75rem; padding: 0.5rem 1rem;" %>
+                <button type="button" onclick="cancelAvatarPreviewCompact()" class="btn-compact btn-secondary-compact" style="font-size: 0.75rem; padding: 0.5rem 1rem;">
+                  Cancelar
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      
+      <!-- Información Personal -->
+      <div class="section-compact">
+        <h3 class="section-title-compact">
+          <i class="fas fa-user"></i>
+          Información Personal
+        </h3>
+        
+        <div class="form-row two-cols">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Nombres:</label>
+            <div class="display-value-compact"><%= @user.nombre %></div>
+          </div>
+          
+          <div class="form-group-compact">
+            <label class="form-label-compact">Apellidos:</label>
+            <div class="display-value-compact"><%= @user.apellido %></div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Correo Electrónico:</label>
+            <div class="display-value-compact" style="background-color: #f3f4f6; color: #6b7280;">
+              <%= @user.email %>
+            </div>
+            <div class="email-protected">
+              <i class="fas fa-lock"></i>
+              <span>Email protegido por seguridad</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row two-cols">
+          <div class="form-group-compact">
+            <label class="form-label-compact">DNI:</label>
+            <div class="display-value-compact">
+              <%= @user.dni.present? ? @user.dni : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+          
+          <div class="form-group-compact">
+            <label class="form-label-compact">Teléfono:</label>
+            <div class="display-value-compact">
+              <%= @user.telefono.present? ? @user.telefono : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Información Académica/Profesional -->
+      <div class="section-compact">
+        <h3 class="section-title-compact">
+          <i class="fas fa-graduation-cap"></i>
+          Campo Académico
+        </h3>
+        
+        <div class="form-row">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Ocupación:</label>
+            <div class="display-value-compact">
+              <%= @user.occupation&.nombre || content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row two-cols">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Facultad:</label>
+            <div class="display-value-compact">
+              <%= @user.facultad.present? ? @user.facultad : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+          
+          <div class="form-group-compact">
+            <label class="form-label-compact">Procedencia:</label>
+            <div class="display-value-compact">
+              <%= @user.proviene.present? ? @user.proviene : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Información de Emprendimiento -->
+      <div class="section-compact">
+        <h3 class="section-title-compact">
+          <i class="fas fa-lightbulb"></i>
+          Información de Emprendimiento
+        </h3>
+        
+        <div class="form-row">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Descripción:</label>
+            <div class="display-value-compact" style="min-height: 60px; align-items: flex-start; padding-top: 0.75rem;">
+              <%= @user.descripcion.present? ? @user.descripcion : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row two-cols">
+          <div class="form-group-compact">
+            <label class="form-label-compact">Miembros del equipo:</label>
+            <div class="display-value-compact">
+              <%= @user.cantidad_miembros_equipo.present? ? @user.cantidad_miembros_equipo : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+          
+          <div class="form-group-compact">
+            <label class="form-label-compact">Nombres de proyectos:</label>
+            <div class="display-value-compact">
+              <%= @user.nombre_proyectos.present? ? @user.nombre_proyectos : content_tag(:span, 'No especificado', class: 'empty-value-compact') %>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Botón para editar -->
+      <div class="btn-group-compact">
+        <button onclick="toggleEditModeCompact()" class="btn-compact btn-primary-compact">
+          <i class="fas fa-edit"></i>
+          Editar Perfil
+        </button>
+      </div>
+    </div>
+    
+    <!-- Formulario de edición (inicialmente oculto) -->
+    <div class="profile-form-compact" id="profile-form-compact" style="display: none;">
+      <%= form_with model: @user, url: participante_profile_path, method: :patch, local: true, html: { class: "w-full" } do |f| %>
+        
+        <!-- Mostrar errores si los hay -->
+        <% if @user.errors.any? %>
+          <div class="alert-compact alert-danger-compact">
+            <h5 style="font-weight: 600; margin-bottom: 0.5rem;">
+              <i class="fas fa-exclamation-triangle"></i>
+              Corrige los siguientes errores:
+            </h5>
+            <ul style="margin: 0; padding-left: 1.5rem; list-style-type: disc;">
+              <% @user.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+        
+        <!-- Información Personal -->
+        <div class="section-compact">
+          <h3 class="section-title-compact">
+            <i class="fas fa-user"></i>
+            Información Personal
+          </h3>
+          
+          <div class="form-row two-cols">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Nombres:</label>
+              <%= f.text_field :nombre, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:nombre].any?}", 
+                              required: true %>
+              <% if @user.errors[:nombre].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:nombre].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="form-group-compact">
+              <label class="form-label-compact">Apellidos:</label>
+              <%= f.text_field :apellido, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:apellido].any?}", 
+                              required: true %>
+              <% if @user.errors[:apellido].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:apellido].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Correo Electrónico:</label>
+              <%= f.email_field :email, 
+                              class: "form-control-compact", 
+                              disabled: true %>
+              <div class="email-protected">
+                <i class="fas fa-lock"></i>
+                <span>Email protegido por seguridad - No se puede modificar</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row two-cols">
+            <div class="form-group-compact">
+              <label class="form-label-compact">DNI:</label>
+              <%= f.text_field :dni, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:dni].any?}",
+                              placeholder: "12345678" %>
+              <% if @user.errors[:dni].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:dni].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="form-group-compact">
+              <label class="form-label-compact">Teléfono:</label>
+              <%= f.text_field :telefono, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:telefono].any?}",
+                              placeholder: "+51 999 999 999" %>
+              <% if @user.errors[:telefono].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:telefono].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Información Académica/Profesional -->
+        <div class="section-compact">
+          <h3 class="section-title-compact">
+            <i class="fas fa-graduation-cap"></i>
+            Campo Académico
+          </h3>
+          
+          <div class="form-row">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Ocupación:</label>
+              <%= f.collection_select :occupation_id, 
+                                     Occupation.all.order(:nombre), 
+                                     :id, 
+                                     :nombre, 
+                                     { prompt: 'Seleccionar ocupación...' }, 
+                                     { class: "form-control-compact form-select-compact #{'is-invalid' if @user.errors[:occupation_id].any?}" } %>
+              <% if @user.errors[:occupation_id].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:occupation_id].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="form-row two-cols">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Facultad:</label>
+              <%= f.text_field :facultad, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:facultad].any?}",
+                              placeholder: "Ej: Ingeniería de Sistemas" %>
+              <% if @user.errors[:facultad].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:facultad].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="form-group-compact">
+              <label class="form-label-compact">Procedencia:</label>
+              <%= f.text_field :proviene, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:proviene].any?}",
+                              placeholder: "Ej: Universidad Nacional" %>
+              <% if @user.errors[:proviene].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:proviene].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Información de Emprendimiento -->
+        <div class="section-compact">
+          <h3 class="section-title-compact">
+            <i class="fas fa-lightbulb"></i>
+            Información de Emprendimiento
+          </h3>
+          
+          <div class="form-row">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Descripción:</label>
+              <%= f.text_area :descripcion, 
+                             class: "form-control-compact #{'is-invalid' if @user.errors[:descripcion].any?}",
+                             rows: 3,
+                             placeholder: "Cuéntanos sobre tu proyecto o idea de emprendimiento..." %>
+              <% if @user.errors[:descripcion].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:descripcion].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+          
+          <div class="form-row two-cols">
+            <div class="form-group-compact">
+              <label class="form-label-compact">Miembros del equipo:</label>
+              <%= f.number_field :cantidad_miembros_equipo, 
+                                class: "form-control-compact #{'is-invalid' if @user.errors[:cantidad_miembros_equipo].any?}",
+                                min: 1,
+                                placeholder: "1" %>
+              <% if @user.errors[:cantidad_miembros_equipo].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:cantidad_miembros_equipo].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+            
+            <div class="form-group-compact">
+              <label class="form-label-compact">Nombres de proyectos:</label>
+              <%= f.text_field :nombre_proyectos, 
+                              class: "form-control-compact #{'is-invalid' if @user.errors[:nombre_proyectos].any?}",
+                              placeholder: "Ej: App de delivery, Sistema web..." %>
+              <% if @user.errors[:nombre_proyectos].any? %>
+                <div class="invalid-feedback">
+                  <%= @user.errors[:nombre_proyectos].join(', ') %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Botones de acción -->
+        <div class="btn-group-compact">
+          <button type="button" onclick="toggleEditModeCompact()" class="btn-compact btn-secondary-compact">
+            <i class="fas fa-times"></i>
+            Cancelar
+          </button>
+          <%= f.submit "Guardar Cambios", class: "btn-compact btn-success-compact" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<!-- Modal para cambio de contraseña -->
+<div class="password-modal hidden" id="password-modal">
+  <div class="password-modal-content">
+    <div class="password-modal-header">
+      <h3>
+        <i class="fas fa-key" style="margin-right: 0.5rem; color: #10b981;"></i>
+        Cambiar Contraseña
+      </h3>
+    </div>
+    
+    <!-- Contenedor para errores de validación dentro del modal -->
+    <div id="modal-errors-container" class="hidden" style="margin-bottom: 1rem; padding: 1rem; background-color: #fef2f2; border: 1px solid #fca5a5; border-radius: 0.5rem; color: #991b1b;">
+      <div style="display: flex; align-items: center; margin-bottom: 0.5rem;">
+        <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>
+        <strong>Corrige los siguientes errores:</strong>
+      </div>
+      <ul id="modal-errors-list" style="margin: 0; padding-left: 1.5rem; list-style-type: disc;"></ul>
+    </div>
+    
+    <form id="password-form-ajax">
+      <div class="password-form-group">
+        <label class="password-form-label">Contraseña Actual*</label>
+        <div style="position: relative;">
+          <input type="password" 
+                 id="current_password" 
+                 name="current_password" 
+                 class="password-form-control" 
+                 required 
+                 placeholder="Ingresa tu contraseña actual"
+                 style="padding-right: 3rem;">
+        </div>
+      </div>
+      
+      <div class="password-form-group">
+        <label class="password-form-label">Nueva Contraseña*</label>
+        <div style="position: relative;">
+          <input type="password" 
+                 id="new_password" 
+                 name="user[password]" 
+                 class="password-form-control" 
+                 required 
+                 placeholder="Mínimo 8 caracteres"
+                 style="padding-right: 3rem;">
+          <button type="button" 
+                  class="password-toggle-btn" 
+                  onmousedown="showPassword('new_password')" 
+                  onmouseup="hidePassword('new_password')" 
+                  onmouseleave="hidePassword('new_password')"
+                  style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.5rem; border-radius: 0.25rem; transition: color 0.2s;">
+            <i class="fas fa-eye" id="toggle-icon-new_password"></i>
+          </button>
+        </div>
+      </div>
+      
+      <div class="password-form-group">
+        <label class="password-form-label">Confirmar Nueva Contraseña*</label>
+        <div style="position: relative;">
+          <input type="password" 
+                 id="confirm_password" 
+                 name="user[password_confirmation]" 
+                 class="password-form-control" 
+                 required 
+                 placeholder="Confirma tu nueva contraseña"
+                 style="padding-right: 3rem;">
+          <button type="button" 
+                  class="password-toggle-btn" 
+                  onmousedown="showPassword('confirm_password')" 
+                  onmouseup="hidePassword('confirm_password')" 
+                  onmouseleave="hidePassword('confirm_password')"
+                  style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: #6b7280; cursor: pointer; padding: 0.5rem; border-radius: 0.25rem; transition: color 0.2s;">
+            <i class="fas fa-eye" id="toggle-icon-confirm_password"></i>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Campo oculto para indicar que es cambio de contraseña -->
+      <input type="hidden" name="change_password" value="true">
+      
+      <div class="password-modal-actions">
+        <button type="button" onclick="togglePasswordModal()" class="btn-compact btn-secondary-compact" style="flex: 1;">
+          <i class="fas fa-times"></i>
+          Cancelar
+        </button>
+        <button type="submit" class="btn-compact btn-warning-compact" style="flex: 1;" id="password-submit-btn">
+          <span id="password-submit-text">Cambiar Contraseña</span>
+        </button>
+      </div>
+    </form>
+    
+    <div style="margin-top: 1rem; padding: 0.75rem; background-color: #fef3c7; border-radius: 0.375rem; border: 1px solid #f59e0b;">
+      <div style="font-size: 0.75rem; color: #92400e;">
+        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+        <strong>Requisitos de seguridad:</strong>
+        <ul style="margin: 0.5rem 0 0 1rem; padding: 0;">
+          <li>Mínimo 8 caracteres</li>
+          <li>Se recomienda usar letras, números y símbolos</li>
+          <li>Evita contraseñas fáciles de adivinar</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === INICIALIZACIÓN PRINCIPAL ===
+document.addEventListener('DOMContentLoaded', function() {
+  initializeProfileCompact();
+});
+
+document.addEventListener('turbo:load', function() {
+  initializeProfileCompact();
+});
+
+document.addEventListener('turbo:render', function() {
+  initializeProfileCompact();
+});
+
+function initializeProfileCompact() {
+  console.log("Inicializando funcionalidad del perfil compacto de participante");
+  
+  setupAvatarPreviewCompact();
+  setupFormValidationCompact();
+  setupPasswordFormAjax();
+  
+  // Si hay errores en el formulario, mostrar automáticamente el modo edición
+  const errors = document.querySelector('.alert-danger-compact');
+  if (errors) {
+    showEditModeCompact();
+  }
+}
+
+// ========================================
+// === FUNCIONALIDAD DE CAMBIO DE MODO ===
+// ========================================
+
+function toggleEditModeCompact() {
+  const displayDiv = document.getElementById('profile-display-compact');
+  const formDiv = document.getElementById('profile-form-compact');
+  
+  if (displayDiv && formDiv) {
+    if (displayDiv.style.display === 'none') {
+      showDisplayModeCompact();
+    } else {
+      showEditModeCompact();
+    }
+  }
+}
+
+function showDisplayModeCompact() {
+  const displayDiv = document.getElementById('profile-display-compact');
+  const formDiv = document.getElementById('profile-form-compact');
+  
+  if (displayDiv && formDiv) {
+    displayDiv.style.display = 'block';
+    formDiv.style.display = 'none';
+    console.log("Cambiado a modo vista compacto");
+  }
+}
+
+function showEditModeCompact() {
+  const displayDiv = document.getElementById('profile-display-compact');
+  const formDiv = document.getElementById('profile-form-compact');
+  
+  if (displayDiv && formDiv) {
+    displayDiv.style.display = 'none';
+    formDiv.style.display = 'block';
+    
+    formDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    
+    const firstInput = formDiv.querySelector('input[type="text"]:not([disabled])');
+    if (firstInput) {
+      setTimeout(() => firstInput.focus(), 300);
+    }
+    
+    console.log("Cambiado a modo edición compacto");
+  }
+}
+
+// =======================================
+// === FUNCIONALIDAD DE AVATAR ===
+// =======================================
+
+function setupAvatarPreviewCompact() {
+  const avatarInput = document.getElementById('avatar-input-compact');
+  const avatarPreview = document.getElementById('avatar-preview-compact');
+  const previewImage = document.getElementById('preview-image-compact');
+  
+  if (avatarInput && avatarPreview && previewImage) {
+    console.log("Configurando vista previa de avatar compacto");
+    
+    avatarInput.removeEventListener('change', handleAvatarChangeCompact);
+    avatarInput.addEventListener('change', handleAvatarChangeCompact);
+  }
+}
+
+function handleAvatarChangeCompact(event) {
+  const file = event.target.files[0];
+  const avatarPreview = document.getElementById('avatar-preview-compact');
+  const previewImage = document.getElementById('preview-image-compact');
+  
+  if (file && avatarPreview && previewImage) {
+    console.log("Archivo de avatar seleccionado:", file.name);
+    
+    if (!file.type.startsWith('image/')) {
+      alert('Por favor, selecciona solo archivos de imagen.');
+      event.target.value = '';
+      return;
+    }
+    
+    if (file.size > 5 * 1024 * 1024) {
+      alert('El archivo es demasiado grande. Máximo 5MB.');
+      event.target.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      previewImage.src = e.target.result;
+      avatarPreview.classList.add('active');
+      avatarPreview.style.display = 'block';
+      console.log("Vista previa de avatar compacto cargada");
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function cancelAvatarPreviewCompact() {
+  const avatarInput = document.getElementById('avatar-input-compact');
+  const avatarPreview = document.getElementById('avatar-preview-compact');
+  
+  if (avatarInput && avatarPreview) {
+    avatarInput.value = '';
+    avatarPreview.classList.remove('active');
+    avatarPreview.style.display = 'none';
+    console.log("Vista previa de avatar compacto cancelada");
+  }
+}
+
+// ELIMINAR AVATAR CON AJAX
+function removeAvatarAjax() {
+  if (!confirm('¿Estás seguro de eliminar tu foto de perfil?')) {
+    return;
+  }
+  
+  const button = document.getElementById('remove-avatar-btn');
+  const buttonText = document.getElementById('remove-avatar-text');
+  const originalText = buttonText.textContent;
+  
+  button.disabled = true;
+  buttonText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Eliminando...';
+  
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  
+  fetch('/participante/profile/remove_avatar', {
+    method: 'DELETE',
+    headers: {
+      'X-CSRF-Token': csrfToken,
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.status === 'success') {
+      // 1. Actualizar avatar en el perfil
+      const avatarContainer = document.querySelector('.avatar-compact-container');
+      const currentAvatar = document.getElementById('current-avatar-compact');
+      const avatarPlaceholder = document.getElementById('avatar-placeholder-compact');
+      
+      if (currentAvatar) {
+        currentAvatar.style.display = 'none';
+      }
+      
+      if (avatarPlaceholder) {
+        avatarPlaceholder.style.display = 'flex';
+      } else {
+        const newPlaceholder = document.createElement('div');
+        newPlaceholder.className = 'avatar-placeholder-large';
+        newPlaceholder.id = 'avatar-placeholder-compact';
+        newPlaceholder.innerHTML = '<i class="fas fa-user"></i>';
+        avatarContainer.appendChild(newPlaceholder);
+      }
+      
+      // 2. Actualizar avatar en el header también
+      updateHeaderAvatar();
+      
+      button.style.display = 'none';
+      
+      const uploadLabel = document.querySelector('.avatar-upload-label-compact');
+      if (uploadLabel) {
+        uploadLabel.innerHTML = '<i class="fas fa-camera"></i> Subir foto';
+      }
+      
+      showSuccessMessage(data.message);
+      console.log('Avatar eliminado exitosamente');
+    } else {
+      showErrorMessage(data.message || 'Error al eliminar la foto de perfil');
+      button.disabled = false;
+      buttonText.textContent = originalText;
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+    showErrorMessage('Error de conexión al eliminar la foto de perfil');
+    button.disabled = false;
+    buttonText.textContent = originalText;
+  });
+}
+
+// Actualizar avatar en el header
+function updateHeaderAvatar() {
+  // Buscar el contenedor del avatar en el header
+  const headerAvatarContainer = document.querySelector('#userMenuButton .w-9.h-9');
+  
+  if (headerAvatarContainer) {
+    // Obtener la inicial del usuario
+    const userName = document.querySelector('#userMenuButton span')?.textContent.trim();
+    const initial = userName ? userName.charAt(0).toUpperCase() : 'U';
+    
+    // Reemplazar el contenido con la inicial
+    headerAvatarContainer.innerHTML = initial;
+    
+    console.log('Avatar del header actualizado con inicial:', initial);
+  }
+}
+
+// Función para actualizar cuando se sube una nueva foto
+function updateHeaderAvatarWithImage(imageSrc) {
+  const headerAvatarContainer = document.querySelector('#userMenuButton .w-9.h-9');
+  
+  if (headerAvatarContainer && imageSrc) {
+    headerAvatarContainer.innerHTML = `<img src="${imageSrc}" class="w-full h-full object-cover" alt="Avatar">`;
+    console.log('Avatar del header actualizado con nueva imagen');
+  }
+}
+
+// ================================================
+// === VALIDACIÓN DEL FORMULARIO PRINCIPAL ===
+// ================================================
+
+function setupFormValidationCompact() {
+  const form = document.querySelector('.profile-form-compact form');
+  
+  if (form) {
+    console.log("Configurando validación del formulario compacto");
+    
+    const requiredFields = form.querySelectorAll('input[required]');
+    requiredFields.forEach(field => {
+      field.addEventListener('blur', function() {
+        validateFieldCompact(this);
+      });
+      
+      field.addEventListener('input', function() {
+        if (this.classList.contains('is-invalid')) {
+          validateFieldCompact(this);
+        }
+      });
+    });
+    
+    form.addEventListener('submit', function(e) {
+      let hasErrors = false;
+      
+      requiredFields.forEach(field => {
+        if (!validateFieldCompact(field)) {
+          hasErrors = true;
+        }
+      });
+      
+      if (hasErrors) {
+        e.preventDefault();
+        alert('Por favor, completa todos los campos requeridos correctamente.');
+        
+        const firstError = form.querySelector('.is-invalid');
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+        
+        return false;
+      }
+    });
+  }
+}
+
+function validateFieldCompact(field) {
+  const value = field.value.trim();
+  const isRequired = field.hasAttribute('required');
+  
+  if (isRequired && value === '') {
+    field.classList.add('is-invalid');
+    field.classList.remove('is-valid');
+    return false;
+  } else if (value !== '') {
+    field.classList.remove('is-invalid');
+    field.classList.add('is-valid');
+    return true;
+  } else {
+    field.classList.remove('is-invalid', 'is-valid');
+    return true;
+  }
+}
+
+// ===========================================
+// === MODAL DE CONTRASEÑA CON AJAX ===
+// ===========================================
+
+// FUNCIONES PARA MOSTRAR/OCULTAR CONTRASEÑAS
+function showPassword(inputId) {
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById(`toggle-icon-${inputId}`);
+  
+  if (input && icon) {
+    input.type = 'text';
+    icon.className = 'fas fa-eye-slash';
+  }
+}
+
+function hidePassword(inputId) {
+  const input = document.getElementById(inputId);
+  const icon = document.getElementById(`toggle-icon-${inputId}`);
+  
+  if (input && icon) {
+    input.type = 'password';
+    icon.className = 'fas fa-eye';
+  }
+}
+
+// CONFIGURACIÓN DEL FORMULARIO AJAX
+function setupPasswordFormAjax() {
+  const form = document.getElementById('password-form-ajax');
+  
+  if (form) {
+    console.log("Configurando formulario de contraseña con AJAX para participante");
+    
+    form.removeEventListener('submit', handlePasswordFormSubmit);
+    form.addEventListener('submit', handlePasswordFormSubmit);
+    
+    const inputs = form.querySelectorAll('input[type="password"], input[name="current_password"]');
+    inputs.forEach(input => {
+      input.addEventListener('input', function() {
+        clearFieldError(this);
+        validatePasswordField(this);
+      });
+    });
+  }
+}
+
+function handlePasswordFormSubmit(e) {
+  e.preventDefault();
+  
+  console.log('🚀 Iniciando envío del formulario de contraseña (participante)');
+  
+  const form = e.target;
+  const submitBtn = document.getElementById('password-submit-btn');
+  const submitText = document.getElementById('password-submit-text');
+  
+  if (!validatePasswordForm()) {
+    console.log('❌ Validación falló');
+    return;
+  }
+  
+  console.log('✅ Validación pasó');
+  
+  submitBtn.disabled = true;
+  submitText.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cambiando...';
+  
+  const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+  const formData = new FormData(form);
+  
+  console.log('📤 Datos a enviar a /participante/profile');
+  
+  const headers = {
+    'X-CSRF-Token': csrfToken,
+    'Accept': 'application/json'
+  };
+  
+  fetch('/participante/profile', {
+    method: 'PATCH',
+    headers: headers,
+    body: formData
+  })
+  .then(response => {
+    console.log('📥 Respuesta recibida del servidor:');
+    console.log('  Status:', response.status);
+    console.log('  Content-Type:', response.headers.get('content-type'));
+    
+    const contentType = response.headers.get('content-type');
+    
+    if (!contentType || !contentType.includes('application/json')) {
+      console.error('🚨 PROBLEMA: El servidor NO devolvió JSON');
+      console.error('   Content-Type recibido:', contentType);
+      
+      return response.text().then(text => {
+        console.error('📄 Contenido recibido (primeros 500 caracteres):');
+        console.error(text.substring(0, 500));
+        
+        throw new Error(`Servidor devolvió ${contentType} en lugar de JSON.`);
+      });
+    }
+    
+    console.log('✅ Respuesta es JSON válida');
+    return response.json();
+  })
+  .then(data => {
+    console.log('📊 Datos JSON parseados:', data);
+    
+    if (data.status === 'success') {
+      console.log('🎉 Éxito:', data.message);
+      showPasswordSuccess(data.message);
+      
+      setTimeout(() => {
+        togglePasswordModal();
+      }, 1500);
+      
+    } else if (data.status === 'error') {
+      console.log('⚠️ Error de validación:', data.errors);
+      showPasswordErrors(data.errors);
+    } else {
+      console.log('❓ Respuesta inesperada:', data);
+      showPasswordErrors({
+        general: ['Respuesta inesperada del servidor']
+      });
+    }
+  })
+  .catch(error => {
+    console.error('💥 ERROR CAPTURADO:', error);
+    
+    showPasswordErrors({
+      general: [error.message]
+    });
+  })
+  .finally(() => {
+    console.log('🏁 Finalizando - restaurando botón');
+    submitBtn.disabled = false;
+    submitText.textContent = 'Cambiar Contraseña';
+  });
+}
+
+// VALIDACIÓN DEL LADO CLIENTE
+function validatePasswordForm() {
+  const currentPassword = document.getElementById('current_password');
+  const newPassword = document.getElementById('new_password');
+  const confirmPassword = document.getElementById('confirm_password');
+  
+  let isValid = true;
+  let errors = {};
+  
+  if (!currentPassword.value.trim()) {
+    errors.current_password = ['La contraseña actual es requerida'];
+    isValid = false;
+  }
+  
+  if (!newPassword.value.trim()) {
+    errors.password = ['La nueva contraseña es requerida'];
+    isValid = false;
+  } else if (newPassword.value.length < 8) {
+    errors.password = ['La nueva contraseña debe tener al menos 8 caracteres'];
+    isValid = false;
+  }
+  
+  if (!confirmPassword.value.trim()) {
+    errors.password_confirmation = ['La confirmación de contraseña es requerida'];
+    isValid = false;
+  } else if (newPassword.value !== confirmPassword.value) {
+    errors.password_confirmation = ['La confirmación de contraseña no coincide'];
+    isValid = false;
+  }
+  
+  if (!isValid) {
+    showPasswordErrors(errors);
+  }
+  
+  return isValid;
+}
+
+function validatePasswordField(input) {
+  const id = input.id;
+  const value = input.value.trim();
+  
+  switch(id) {
+    case 'current_password':
+      if (value) {
+        input.classList.remove('has-error');
+        input.classList.add('has-success');
+      }
+      break;
+      
+    case 'new_password':
+      if (value.length >= 8) {
+        input.classList.remove('has-error');
+        input.classList.add('has-success');
+        
+        const confirmInput = document.getElementById('confirm_password');
+        if (confirmInput.value) {
+          validatePasswordField(confirmInput);
+        }
+      } else if (value.length > 0) {
+        input.classList.add('has-error');
+        input.classList.remove('has-success');
+      }
+      break;
+      
+    case 'confirm_password':
+      const newPasswordInput = document.getElementById('new_password');
+      if (value && value === newPasswordInput.value && value.length >= 8) {
+        input.classList.remove('has-error');
+        input.classList.add('has-success');
+      } else if (value.length > 0) {
+        input.classList.add('has-error');
+        input.classList.remove('has-success');
+      }
+      break;
+  }
+}
+
+function clearFieldError(input) {
+  input.classList.remove('has-error');
+}
+
+// MOSTRAR ERRORES EN EL MODAL
+function showPasswordErrors(errors) {
+  const errorsContainer = document.getElementById('modal-errors-container');
+  const errorsList = document.getElementById('modal-errors-list');
+  
+  if (!errorsContainer || !errorsList) return;
+  
+  errorsList.innerHTML = '';
+  
+  Object.entries(errors).forEach(([field, messages]) => {
+    messages.forEach(message => {
+      const li = document.createElement('li');
+      li.textContent = message;
+      errorsList.appendChild(li);
+    });
+    
+    const fieldInput = getFieldInput(field);
+    if (fieldInput) {
+      fieldInput.classList.add('has-error');
+      fieldInput.classList.remove('has-success');
+    }
+  });
+  
+  errorsContainer.classList.remove('hidden');
+  
+  const modal = document.querySelector('.password-modal-content');
+  if (modal) {
+    modal.classList.add('shake');
+    setTimeout(() => {
+      modal.classList.remove('shake');
+    }, 500);
+  }
+  
+  errorsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function getFieldInput(fieldName) {
+  switch(fieldName) {
+    case 'current_password':
+      return document.getElementById('current_password');
+    case 'password':
+      return document.getElementById('new_password');
+    case 'password_confirmation':
+      return document.getElementById('confirm_password');
+    default:
+      return null;
+  }
+}
+
+// MOSTRAR MENSAJE DE ÉXITO
+function showPasswordSuccess(message) {
+  const errorsContainer = document.getElementById('modal-errors-container');
+  
+  if (errorsContainer) {
+    errorsContainer.classList.add('hidden');
+  }
+  
+  const form = document.getElementById('password-form-ajax');
+  const successDiv = document.createElement('div');
+  successDiv.className = 'success-message';
+  successDiv.style.cssText = `
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    border-radius: 0.5rem;
+    color: #166534;
+    display: flex;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+  `;
+  successDiv.innerHTML = `
+    <i class="fas fa-check-circle" style="margin-right: 0.5rem; color: #10b981;"></i>
+    <span>${message}</span>
+  `;
+  
+  form.parentNode.insertBefore(successDiv, form);
+  
+  form.reset();
+  
+  form.querySelectorAll('.password-form-control').forEach(input => {
+    input.classList.remove('has-error', 'has-success');
+  });
+}
+
+// CONTROL DEL MODAL
+function togglePasswordModal() {
+  const modal = document.getElementById('password-modal');
+  
+  if (modal) {
+    if (modal.classList.contains('hidden')) {
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      
+      clearModalMessages();
+      
+      const firstInput = modal.querySelector('input[type="password"]');
+      if (firstInput) {
+        setTimeout(() => firstInput.focus(), 100);
+      }
+      
+      console.log("Modal de contraseña abierto (participante)");
+    } else {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+      
+      clearModalMessages();
+      const form = document.getElementById('password-form-ajax');
+      if (form) {
+        form.reset();
+        form.querySelectorAll('.password-form-control').forEach(input => {
+          input.classList.remove('has-error', 'has-success');
+        });
+      }
+      
+      console.log("Modal de contraseña cerrado (participante)");
+    }
+  }
+}
+
+function clearModalMessages() {
+  const errorsContainer = document.getElementById('modal-errors-container');
+  if (errorsContainer) {
+    errorsContainer.classList.add('hidden');
+  }
+  
+  const successMessages = document.querySelectorAll('.success-message');
+  successMessages.forEach(msg => msg.remove());
+}
+
+// =========================================
+// === MENSAJES DE ÉXITO/ERROR GLOBALES ===
+// =========================================
+
+function showSuccessMessage(message) {
+  const existingMessage = document.querySelector('.flash-message-ajax');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'bg-green-100 border border-green-200 text-green-800 px-4 py-3 rounded mb-4 animate-fade-in flash-message-ajax';
+  messageDiv.innerHTML = `
+    <div class="flex items-center">
+      <svg class="h-5 w-5 text-green-600 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+      </svg>
+      <p class="font-medium">${message}</p>
+    </div>
+  `;
+  
+  const profileContainer = document.querySelector('.profile-container-compact');
+  profileContainer.parentNode.insertBefore(messageDiv, profileContainer);
+  
+  setTimeout(() => {
+    messageDiv.style.transition = 'opacity 0.5s, transform 0.5s';
+    messageDiv.style.opacity = '0';
+    messageDiv.style.transform = 'translateY(-10px)';
+    
+    setTimeout(() => {
+      messageDiv.remove();
+    }, 500);
+  }, 4000);
+}
+
+function showErrorMessage(message) {
+  const existingMessage = document.querySelector('.flash-message-ajax');
+  if (existingMessage) {
+    existingMessage.remove();
+  }
+  
+  const messageDiv = document.createElement('div');
+  messageDiv.className = 'alert-compact alert-danger-compact flash-message-ajax';
+  messageDiv.innerHTML = `
+    <div style="display: flex; align-items: center;">
+      <i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>
+      <span>${message}</span>
+    </div>
+  `;
+  
+  const profileContainer = document.querySelector('.profile-container-compact');
+  profileContainer.parentNode.insertBefore(messageDiv, profileContainer);
+  
+  setTimeout(() => {
+    messageDiv.style.transition = 'opacity 0.5s';
+    messageDiv.style.opacity = '0';
+    
+    setTimeout(() => {
+      messageDiv.remove();
+    }, 500);
+  }, 6000);
+}
+
+// =======================================
+// === EVENT LISTENERS GLOBALES ===
+// =======================================
+
+// Cerrar modal con ESC
+document.addEventListener('keydown', function(event) {
+  if (event.key === 'Escape') {
+    const passwordModal = document.getElementById('password-modal');
+    if (passwordModal && !passwordModal.classList.contains('hidden')) {
+      togglePasswordModal();
+    }
+  }
+});
+
+// Cerrar modal al hacer click fuera
+document.addEventListener('click', function(event) {
+  const passwordModal = document.getElementById('password-modal');
+  if (passwordModal && !passwordModal.classList.contains('hidden')) {
+    if (event.target === passwordModal) {
+      togglePasswordModal();
+    }
+  }
+});
+
+console.log("✅ Funcionalidad del perfil compacto de participante cargada correctamente");
+</script>

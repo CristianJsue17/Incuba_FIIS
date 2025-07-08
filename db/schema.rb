@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
+ActiveRecord::Schema[7.1].define(version: 2025_07_04_053306) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -119,7 +119,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "es_plantilla", default: false, null: false
+    t.string "estado", default: "pendiente"
+    t.index ["created_at"], name: "index_formulario_eventos_on_created_at"
     t.index ["es_plantilla"], name: "index_formulario_eventos_on_es_plantilla"
+    t.index ["estado"], name: "index_formulario_eventos_on_estado"
+    t.index ["event_id", "es_plantilla"], name: "index_formulario_eventos_on_event_id_and_es_plantilla"
     t.index ["event_id"], name: "index_formulario_eventos_on_event_id"
   end
 
@@ -134,6 +138,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "es_plantilla", default: false, null: false
+    t.string "estado", default: "pendiente", null: false
+    t.index ["estado"], name: "index_formulario_programa_incubacions_on_estado"
     t.index ["program_id", "es_plantilla"], name: "index_incubacion_program_plantilla"
     t.index ["program_id"], name: "index_formulario_programa_incubacions_on_program_id"
   end
@@ -149,6 +155,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "es_plantilla", default: false, null: false
+    t.string "estado", default: "pendiente", null: false
+    t.index ["estado"], name: "index_formulario_programa_innovacions_on_estado"
     t.index ["program_id", "es_plantilla"], name: "index_innovacion_program_plantilla"
     t.index ["program_id"], name: "index_formulario_programa_innovacions_on_program_id"
   end
@@ -170,6 +178,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "es_plantilla", default: false, null: false
+    t.string "estado", default: "pendiente", null: false
+    t.index ["estado"], name: "index_formulario_programa_preincubacions_on_estado"
     t.index ["program_id", "es_plantilla"], name: "index_preincubacion_program_plantilla"
     t.index ["program_id"], name: "index_formulario_programa_preincubacions_on_program_id"
   end
@@ -403,10 +413,12 @@ ActiveRecord::Schema[7.1].define(version: 2025_06_23_000457) do
     t.string "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
+    t.datetime "suspension_until"
     t.index ["created_by_id"], name: "index_users_on_created_by_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["occupation_id"], name: "index_users_on_occupation_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["suspension_until"], name: "index_users_on_suspension_until"
     t.index ["updated_by_id"], name: "index_users_on_updated_by_id"
   end
 

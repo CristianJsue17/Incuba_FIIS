@@ -77,54 +77,61 @@
     
     <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Top Navigation -->
-      <header class="bg-white shadow-sm">
-        <div class="flex items-center justify-between p-4">
-          <div class="flex items-center">
-            <h1 class="text-lg font-semibold text-gray-700">Dashboard Participante</h1>
-            <span class="text-gray-500 ml-3">¡Bienvenido emprendedor!</span>
+<!-- Top Navigation -->
+<header class="bg-white shadow-sm">
+  <div class="flex items-center justify-between p-4">
+    <div class="flex items-center">
+      <h1 class="text-lg font-semibold text-gray-700">Dashboard Participante</h1>
+      <span class="text-gray-500 ml-3">¡Bienvenido emprendedor!</span>
+    </div>
+    
+    <div class="flex items-center space-x-4">
+      <div class="relative">
+        <button class="text-gray-500 hover:text-gray-700">
+          <i class="fas fa-bell text-xl"></i>
+          <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">2</span>
+        </button>
+      </div>
+      
+      <div class="relative">
+        <div class="flex items-center cursor-pointer" id="userMenuButton">
+          <!-- Avatar dinámico: foto de perfil o iniciales -->
+          <div class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white mr-2 overflow-hidden">
+            <% if current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, 
+                  class: "w-full h-full object-cover", 
+                  alt: current_user.nombre_completo %>
+            <% else %>
+              <%= current_user.nombre[0].upcase %>
+            <% end %>
           </div>
-          
-          <div class="flex items-center space-x-4">
-            <div class="relative">
-              <button class="text-gray-500 hover:text-gray-700">
-                <i class="fas fa-bell text-xl"></i>
-                <span class="absolute -top-1 -right-1 bg-green-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">2</span>
-              </button>
-            </div>
-            
-            <div class="relative">
-              <div class="flex items-center cursor-pointer" id="userMenuButton">
-                <div class="w-9 h-9 bg-green-600 rounded-full flex items-center justify-center text-white mr-2">
-                  <%= current_user.nombre[0].upcase %>
-                </div>
-                <span class="text-gray-700"><%= current_user.nombre %></span>
-                <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
-              </div>
-              
-              <!-- Menú desplegable de usuario CORREGIDO -->
-              <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors">
-                  <i class="fas fa-user mr-2 text-green-600"></i> Ver Perfil
-                </a>
-                <div class="border-t border-gray-100"></div>
-                
-                <%= button_to destroy_user_session_path, 
-                    method: :delete,
-                    form: { 
-                      style: "margin: 0; display: block;" 
-                    },
-                    class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors border-0 bg-transparent cursor-pointer",
-                    data: { 
-                      confirm: "¿Estás seguro que quieres cerrar sesión?" 
-                    } do %>
-                  <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
-                <% end %>
-              </div>
-            </div>
-          </div>
+          <span class="text-gray-700"><%= current_user.nombre %></span>
+          <i class="fas fa-chevron-down ml-1 text-gray-500"></i>
         </div>
-      </header>
+        
+        <!-- Menú desplegable de usuario CORREGIDO -->
+        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border">
+          <%= link_to participante_profile_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition-colors" do %>
+            <i class="fas fa-user mr-2 text-green-600"></i> Ver Perfil
+          <% end %>
+          <div class="border-t border-gray-100"></div>
+          
+          <%= button_to destroy_user_session_path, 
+              method: :delete,
+              form: { 
+                style: "margin: 0; display: block;" 
+              },
+              class: "w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-red-50 hover:text-red-600 transition-colors border-0 bg-transparent cursor-pointer",
+              data: { 
+                confirm: "¿Estás seguro que quieres cerrar sesión?" 
+              } do %>
+            <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
       
       <!-- Page Content -->
       <main class="flex-1 overflow-y-auto p-6">

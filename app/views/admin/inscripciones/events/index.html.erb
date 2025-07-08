@@ -1,0 +1,1323 @@
+<!-- app/views/admin/inscripciones/events/index.html.erb -->
+
+<div class="inscripciones-container">
+  <!-- Header Section -->
+  <div class="inscripciones-header">
+    <div class="header-content">
+      <div class="header-title">
+        <h1 class="title">
+          <i class="fas fa-calendar-alt"></i>
+          Inscripciones de Eventos
+        </h1>
+        <p class="subtitle">Gestiona todas las inscripciones de eventos recibidas</p>
+      </div>
+      
+      <div class="header-actions">
+        <%= link_to export_all_excel_admin_inscripciones_events_path(format: :xlsx), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-excel"></i>
+          <span>Exportar Todo Excel</span>
+        <% end %>
+        
+        <%= link_to export_all_pdf_admin_inscripciones_events_path(format: :pdf), 
+            class: "btn btn-secondary" do %>
+          <i class="fas fa-file-pdf"></i>
+          <span>Exportar Todo PDF</span>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats Section -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-card total">
+        <div class="stat-icon">
+          <i class="fas fa-calendar-alt"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:total_inscripciones] %></div>
+          <div class="stat-label">Total Inscripciones</div>
+        </div>
+      </div>
+
+      <div class="stat-card pendientes">
+        <div class="stat-icon">
+          <i class="fas fa-clock"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:pendientes] %></div>
+          <div class="stat-label">Pendientes</div>
+        </div>
+      </div>
+
+      <div class="stat-card aprobadas">
+        <div class="stat-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:aprobadas] %></div>
+          <div class="stat-label">Aprobadas</div>
+        </div>
+      </div>
+
+      <div class="stat-card rechazadas">
+        <div class="stat-icon">
+          <i class="fas fa-times-circle"></i>
+        </div>
+        <div class="stat-content">
+          <div class="stat-number"><%= @stats[:por_estado][:rechazadas] %></div>
+          <div class="stat-label">Rechazadas</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="filters-section">
+    <%= form_with url: admin_inscripciones_events_path, method: :get, 
+        class: "filters-form", local: true do |f| %>
+      
+      <div class="filters-grid">
+        <div class="filter-group">
+          <%= f.text_field :search, value: params[:search], 
+              placeholder: "Buscar evento por título...", 
+              class: "filter-input" %>
+          <div class="filter-icon">
+            <i class="fas fa-search"></i>
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <%= f.submit "Filtrar", class: "btn btn-primary" %>
+          <%= link_to "Limpiar", admin_inscripciones_events_path, 
+              class: "btn btn-secondary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Events Grid -->
+  <div class="events-grid">
+    <% @events.each do |event| %>
+      <div class="event-card" data-event-id="<%= event.id %>">
+        <div class="event-header">
+          <div class="event-type">
+            <span class="type-badge evento">
+              <i class="fas fa-calendar-alt"></i>
+              Evento
+            </span>
+          </div>
+          
+          <div class="event-status">
+            <span class="status-badge <%= event.estado %>">
+              <%= event.estado.humanize %>
+            </span>
+          </div>
+        </div>
+
+        <div class="event-content">
+          <h3 class="event-title"><%= event.titulo %></h3>
+          <p class="event-description">
+            <%= truncate(event.descripcion, length: 120) %>
+          </p>
+          
+          <div class="event-meta">
+            <div class="meta-item">
+              <i class="fas fa-user"></i>
+              <span><%= event.encargado %></span>
+            </div>
+            <div class="meta-item">
+              <i class="fas fa-calendar"></i>
+              <span><%= event.created_at.strftime("%d/%m/%Y") %></span>
+            </div>
+            <% if event.fecha_vencimiento.present? %>
+              <div class="meta-item">
+                <i class="fas fa-clock"></i>
+                <span class="<%= event.clase_css_tiempo %>">
+                  <%= event.tiempo_hasta_vencimiento %>
+                </span>
+              </div>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="event-stats">
+          <% stats = event.inscripciones_por_estado %>
+          
+          <div class="mini-stats">
+            <div class="mini-stat total">
+              <span class="number"><%= stats[:total] %></span>
+              <span class="label">Total</span>
+            </div>
+            
+            <div class="mini-stat pendientes">
+              <span class="number"><%= stats[:pendiente] %></span>
+              <span class="label">Pendientes</span>
+            </div>
+            
+            <div class="mini-stat aprobadas">
+              <span class="number"><%= stats[:aprobado] %></span>
+              <span class="label">Aprobadas</span>
+            </div>
+            
+            <div class="mini-stat rechazadas">
+              <span class="number"><%= stats[:rechazado] %></span>
+              <span class="label">Rechazadas</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="event-actions">
+          <%= link_to admin_inscripciones_event_path(event), 
+              class: "btn btn-primary" do %>
+            <i class="fas fa-eye"></i>
+            <span>Ver Inscripciones (<%= stats[:total] %>)</span>
+          <% end %>
+          
+          <% if stats[:total] > 0 %>
+            <div class="action-group">
+              <%= link_to export_excel_admin_inscripciones_event_path(event, format: :xlsx), 
+                  class: "btn btn-outline", title: "Exportar Excel" do %>
+                <i class="fas fa-file-excel"></i>
+              <% end %>
+              
+              <%= link_to export_pdf_admin_inscripciones_event_path(event, format: :pdf), 
+                  class: "btn btn-outline", title: "Exportar PDF" do %>
+                <i class="fas fa-file-pdf"></i>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Pagination Section -->
+  <% if @events.respond_to?(:current_page) && @events.total_pages > 1 %>
+    <div class="pagination-wrapper">
+      <div class="pagination-container">
+        <%= paginate @events, 
+            window: 2,
+            outer_window: 1,
+            left: 1,
+            right: 1,
+            param_name: :page,
+            params: { search: params[:search] } %>
+      </div>
+      
+      <div class="pagination-info-clean">
+        Mostrando eventos con sus inscripciones <%= @events.offset_value + 1 %> - <%= [@events.offset_value + @events.length, @events.total_count].min %> 
+        de <%= @events.total_count %> total
+        (Página <%= @events.current_page %> de <%= @events.total_pages %>)
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Empty State -->
+  <% if @events.empty? %>
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="fas fa-inbox"></i>
+      </div>
+      <h3 class="empty-title">No se encontraron eventos</h3>
+      <p class="empty-message">
+        <% if params[:search].present? %>
+          No hay eventos que coincidan con los filtros aplicados.
+        <% else %>
+          Aún no hay eventos creados en el sistema.
+        <% end %>
+      </p>
+      
+      <% if params[:search].present? %>
+        <%= link_to admin_inscripciones_events_path, class: "btn btn-secondary" do %>
+          <i class="fas fa-times"></i>
+          <span>Limpiar filtros</span>
+        <% end %>
+      <% else %>
+        <%= link_to admin_events_path, class: "btn btn-primary" do %>
+          <i class="fas fa-plus"></i>
+          <span>Crear primer evento</span>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <!-- Recent Activity Sidebar -->
+  <% if @stats[:recientes].any? %>
+    <div class="recent-activity" id="recentActivity">
+      <div class="activity-header">
+        <h4 class="activity-title">
+          <i class="fas fa-clock"></i>
+          <span class="activity-title-text">Inscripciones Recientes</span>
+        </h4>
+        
+        <button class="minimize-btn" id="minimizeBtn" title="Minimizar">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+      
+      <div class="activity-content" id="activityContent">
+        <div class="activity-list">
+          <% @stats[:recientes].each do |item| %>
+            <div class="activity-item">
+              <div class="activity-icon evento">
+                <i class="fas fa-calendar-alt"></i>
+              </div>
+              
+              <div class="activity-content-item">
+                <div class="activity-name">
+                  <%= item[:inscripcion].nombre_lider %> 
+                  <%= item[:inscripcion].apellidos_lider %>
+                </div>
+                <div class="activity-program">
+                  <%= item[:inscripcion].event.titulo %>
+                </div>
+                <div class="activity-time">
+                  <%= item[:inscripcion].event.tiempo_transcurrido(item[:inscripcion].created_at) %> atrás
+                </div>
+              </div>
+              
+              <div class="activity-action">
+                <%= link_to admin_inscripciones_event_path(item[:inscripcion].event), 
+                    class: "btn btn-sm" do %>
+                  <i class="fas fa-eye"></i>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<style>
+/* CSS para Vista de Inscripciones de Eventos - Index */
+.inscripciones-container {
+  padding: 2rem;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Header */
+.inscripciones-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+}
+
+.header-title .title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title .title i {
+  color: #8b5cf6;
+}
+
+.header-title .subtitle {
+  color: #6b7280;
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+/* Stats Section */
+.stats-section {
+  margin-bottom: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.stat-card {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.stat-card.total .stat-icon {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.stat-card.pendientes .stat-icon {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.stat-card.aprobadas .stat-icon {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.stat-card.rechazadas .stat-icon {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.stat-content .stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.stat-content .stat-label {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-top: 0.25rem;
+}
+
+/* Filters Section */
+.filters-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+.filters-form {
+  width: 100%;
+}
+
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: end;
+}
+
+.filter-group {
+  position: relative;
+}
+
+.filter-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.filter-icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.filter-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Events Grid */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.event-card {
+  background: white;
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.event-header {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.type-badge.evento {
+  background: #f3e8ff;
+  color: #7c3aed;
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-badge.activo {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactivo {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.status-badge.pendiente {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.status-badge.finalizado {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.event-content {
+  padding: 1.5rem;
+  flex: 1;
+}
+
+.event-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.75rem;
+  line-height: 1.3;
+}
+
+.event-description {
+  color: #6b7280;
+  line-height: 1.5;
+  margin: 0 0 1rem;
+}
+
+.event-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
+.meta-item i {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.event-stats {
+  padding: 1rem 1.5rem;
+  background: #f9fafb;
+  border-top: 1px solid #e5e7eb;
+}
+
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.mini-stat {
+  text-align: center;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.mini-stat:hover {
+  transform: translateY(-1px);
+}
+
+.mini-stat.total {
+  background: rgba(139, 92, 246, 0.1);
+}
+
+.mini-stat.pendientes {
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.mini-stat.aprobadas {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.mini-stat.rechazadas {
+  background: rgba(239, 68, 68, 0.1);
+}
+
+.mini-stat .number {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  line-height: 1;
+}
+
+.mini-stat .label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.event-actions {
+  padding: 1.5rem;
+  background: white;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-primary {
+  background: #8b5cf6;
+  color: white;
+  border-color: #8b5cf6;
+}
+
+.btn-primary:hover {
+  background: #7c3aed;
+  border-color: #7c3aed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-secondary {
+  background: white;
+  color: #374151;
+  border-color: #d1d5db;
+}
+
+.btn-secondary:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #6b7280;
+  border-color: #d1d5db;
+  padding: 0.5rem;
+  width: 40px;
+  height: 40px;
+}
+
+.btn-outline:hover {
+  background: #f9fafb;
+  color: #374151;
+  border-color: #9ca3af;
+}
+
+.btn-sm {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.75rem;
+}
+
+/* Empty State */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+}
+
+.empty-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  border-radius: 50%;
+  background: #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: #9ca3af;
+}
+
+.empty-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0 0 0.5rem;
+}
+
+.empty-message {
+  color: #6b7280;
+  margin: 0 0 2rem;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Recent Activity Sidebar */
+.recent-activity {
+  position: fixed;
+  right: 2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 300px;
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  max-height: 400px;
+  overflow: hidden;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.recent-activity.minimized {
+  width: 60px;
+}
+
+.activity-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+  border-radius: 1rem 1rem 0 0;
+}
+
+.activity-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f2937;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-title i {
+  color: #8b5cf6;
+  flex-shrink: 0;
+}
+
+.activity-title-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity 0.3s ease;
+}
+
+.minimize-btn {
+  background: transparent;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 0.375rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.minimize-btn:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.minimize-btn i {
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+}
+
+.activity-content {
+  max-height: 320px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.activity-content.hidden {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.activity-list {
+  /* Empty for now */
+}
+
+.activity-item {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+  background: #f9fafb;
+}
+
+.activity-item:last-child {
+  border-bottom: none;
+}
+
+.activity-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: white;
+  flex-shrink: 0;
+}
+
+.activity-icon.evento {
+  background: #8b5cf6;
+}
+
+.activity-content-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.activity-name {
+  font-weight: 500;
+  color: #1f2937;
+  font-size: 0.875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.activity-program {
+  color: #6b7280;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 0.125rem;
+}
+
+.activity-time {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  margin-top: 0.125rem;
+}
+
+.activity-action {
+  flex-shrink: 0;
+}
+
+/* Estados del sidebar minimizado */
+.recent-activity.minimized .activity-title-text {
+  opacity: 0;
+}
+
+.recent-activity.minimized .activity-header {
+  padding: 1rem 0.75rem;
+  justify-content: center;
+}
+
+.recent-activity.minimized .minimize-btn {
+  margin: 0;
+}
+
+.recent-activity.minimized .minimize-btn i {
+  transform: rotate(180deg);
+}
+
+/* Tooltip para estado minimizado */
+.recent-activity.minimized .activity-title {
+  position: relative;
+}
+
+.recent-activity.minimized .activity-title::after {
+  content: "Inscripciones Recientes";
+  position: absolute;
+  left: calc(100% + 0.5rem);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #1f2937;
+  color: white;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.recent-activity.minimized .activity-title:hover::after {
+  opacity: 1;
+}
+
+.recent-activity.minimized .activity-title::before {
+  content: "";
+  position: absolute;
+  left: calc(100% + 0.25rem);
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-right-color: #1f2937;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 20;
+}
+
+.recent-activity.minimized .activity-title:hover::before {
+  opacity: 1;
+}
+
+/* Pagination */
+.pagination-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0 1rem 0;
+  padding: 0.5rem;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.pagination-info-clean {
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.875rem;
+  margin-top: 0;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+/* Estilos mejorados para Kaminari */
+.pagination-wrapper nav[role="navigation"] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.pagination-wrapper nav[role="navigation"] a,
+.pagination-wrapper nav[role="navigation"] span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.75rem;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  background: white;
+  color: #374151;
+  transition: all 0.2s ease-in-out;
+}
+
+.pagination-wrapper nav[role="navigation"] a:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+  color: #1f2937;
+  transform: translateY(-1px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"],
+.pagination-wrapper nav[role="navigation"] .current {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+  font-weight: 600;
+  cursor: default;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-current="page"]:hover,
+.pagination-wrapper nav[role="navigation"] .current:hover {
+  background: #8b5cf6;
+  border-color: #8b5cf6;
+  color: white;
+  transform: none;
+  box-shadow: none;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"],
+.pagination-wrapper nav[role="navigation"] .disabled {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pagination-wrapper nav[role="navigation"] span[aria-disabled="true"]:hover,
+.pagination-wrapper nav[role="navigation"] .disabled:hover {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+  color: #9ca3af;
+  transform: none;
+}
+
+.pagination-wrapper nav[role="navigation"] .gap {
+  text-align: center;
+  color: #6b7280;
+  cursor: default;
+  background: transparent;
+  border: transparent;
+}
+
+.pagination-wrapper nav[role="navigation"] .gap:hover {
+  background: transparent;
+  border: transparent;
+  color: #6b7280;
+  transform: none;
+}
+
+.pagination-wrapper nav[role="navigation"] .first a,
+.pagination-wrapper nav[role="navigation"] .prev a,
+.pagination-wrapper nav[role="navigation"] .next a,
+.pagination-wrapper nav[role="navigation"] .last a {
+  min-width: auto;
+  padding: 0.75rem 1rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .recent-activity {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .inscripciones-container {
+    padding: 1rem;
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .filter-actions {
+    justify-content: stretch;
+  }
+
+  .filter-actions .btn {
+    flex: 1;
+  }
+
+  .events-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .mini-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+
+  .event-actions {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stat-card {
+    padding: 1rem;
+  }
+
+  .stat-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .stat-content .stat-number {
+    font-size: 1.5rem;
+  }
+
+  .event-card {
+    margin: 0 -0.5rem;
+    border-radius: 0.5rem;
+  }
+
+  .mini-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .pagination-wrapper nav[role="navigation"] a,
+  .pagination-wrapper nav[role="navigation"] span {
+    min-width: 2rem;
+    height: 2rem;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* Loading States */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.btn:disabled:hover {
+  transform: none !important;
+}
+
+/* Focus States */
+.btn:focus,
+.filter-input:focus {
+  outline: 2px solid #8b5cf6;
+  outline-offset: 2px;
+}
+
+/* Animaciones */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.event-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.stat-card {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.recent-activity {
+  animation: slideIn 0.5s ease-out;
+}
+
+/* Scrollbar para activity list */
+.activity-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.activity-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.activity-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 2px;
+}
+
+.activity-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const sidebar = document.getElementById('recentActivity');
+  const minimizeBtn = document.getElementById('minimizeBtn');
+  const activityContent = document.getElementById('activityContent');
+  
+  if (!sidebar || !minimizeBtn || !activityContent) return;
+  
+  // Verificar si hay un estado guardado en localStorage
+  const isMinimized = localStorage.getItem('eventsSidebarMinimized') === 'true';
+  
+  // Aplicar estado inicial
+  if (isMinimized) {
+    sidebar.classList.add('minimized');
+    activityContent.classList.add('hidden');
+    minimizeBtn.title = 'Expandir';
+  }
+  
+  // Función para alternar el estado
+  function toggleSidebar() {
+    const isCurrentlyMinimized = sidebar.classList.contains('minimized');
+    
+    if (isCurrentlyMinimized) {
+      // Expandir
+      sidebar.classList.remove('minimized');
+      activityContent.classList.remove('hidden');
+      minimizeBtn.title = 'Minimizar';
+      localStorage.setItem('eventsSidebarMinimized', 'false');
+    } else {
+      // Minimizar
+      sidebar.classList.add('minimized');
+      activityContent.classList.add('hidden');
+      minimizeBtn.title = 'Expandir';
+      localStorage.setItem('eventsSidebarMinimized', 'true');
+    }
+  }
+  
+  // Event listener para el botón
+  minimizeBtn.addEventListener('click', toggleSidebar);
+  
+  // Permitir expandir haciendo click en el sidebar minimizado
+  sidebar.addEventListener('click', function(e) {
+    if (sidebar.classList.contains('minimized') && e.target.closest('.minimize-btn') === null) {
+      toggleSidebar();
+    }
+  });
+  
+  // Prevenir que el click en elementos internos expanda el sidebar
+  activityContent.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+});
+
+// Animaciones de entrada
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animation = 'fadeInUp 0.5s ease-out';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.event-card, .stat-card').forEach(card => {
+  observer.observe(card);
+});
+</script>

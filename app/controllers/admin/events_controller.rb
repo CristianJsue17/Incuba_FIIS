@@ -5,13 +5,15 @@ class Admin::EventsController < Admin::BaseController
 
   def index
     @events = Event.includes(:user, :created_by)
-                   .order(created_at: :desc)
-                   .page(params[:page])
-                   .per(10)
-         
-    # Filtros
+    
+    # PRIMERO aplicar filtros de búsqueda y estado
     @events = @events.where(estado: params[:estado]) if params[:estado].present?
     @events = @events.where("titulo ILIKE ?", "%#{params[:search]}%") if params[:search].present?
+    
+    # DESPUÉS aplicar ordenamiento y paginación
+    @events = @events.order(created_at: :desc)
+                    .page(params[:page])
+                    .per(10)
   end
 
   def show

@@ -4,29 +4,77 @@ Rails.application.routes.draw do
 
   devise_for :users
   
+  
   # AGREGAR RUTA PARA CAMBIO DE IDIOMA
   get '/change_locale/:locale', to: 'application#change_locale', as: :change_locale
 
-  authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
-    namespace :admin do
-      get 'dashboard', to: 'dashboard#index', as: :dashboard
-      resources :programs do
+authenticate :user, ->(user) { user.roles.exists?(nombre: 'Administrador') } do
+  namespace :admin do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+    
+    # CORREGIDO: Especificar el controlador explícitamente
+    resource :profile, only: [:show, :update], controller: 'profile' do
+      
+        patch :update_avatar
+        delete :remove_avatar
+      
+    end
+    
+    # RUTAS EXISTENTES PARA GESTIÓN DE USUARIOS
+    resources :users do
+      member do
+        patch :cambiar_estado
+        patch :suspender_temporalmente
+        patch :reactivar
+      end
+    end
+                
+    resources :programs do
+      member do
+        patch :cambiar_estado
+      end
+      collection do
+        get 'tipo_formulario'
+      end
+    end
+                            
+    # RUTAS DE EVENTOS
+    resources :events do
+      member do
+        patch :cambiar_estado
+      end
+    end
+
+    # RUTAS PARA INSCRIPCIONES
+    namespace :inscripciones do
+      # Inscripciones de programas (existente)
+      resources :programs, only: [:index, :show] do
         member do
-          patch :cambiar_estado
+          patch :cambiar_estado_inscripcion
+          get :export_pdf
+          get :export_excel
         end
         collection do
-          get 'tipo_formulario'
+          get :export_all_excel
+          get :export_all_pdf
         end
       end
-      
-      # AGREGAR ESTA LÍNEA:
-      resources :events do
+
+      # NUEVO: Inscripciones de eventos
+      resources :events, only: [:index, :show] do
         member do
-          patch :cambiar_estado
+          patch :cambiar_estado_inscripcion
+          get :export_pdf
+          get :export_excel
+        end
+        collection do
+          get :export_all_excel
+          get :export_all_pdf
         end
       end
     end
   end
+end
 
  # Rutas para servicios y programas
   get 'servicios', to: 'services#servicios', as: 'servicios'
@@ -54,16 +102,29 @@ post 'eventos/:id/consultar_dni', to: 'inscripciones_event#consultar_dni', as: '
 # Ruta para mostrar confirmación de inscripción de eventos
 get 'inscripciones_event/confirmacion', to: 'inscripciones_event#confirmacion', as: 'confirmacion_inscripcion_evento'
   
-  # Rutas para otros roles
-  authenticate :user do
-    namespace :participante do
-      get 'dashboard', to: 'dashboard#index', as: :dashboard
-    end
+
+# Rutas para roles de participante y mentor
+# Estas rutas deben ir después de las rutas de admin para evitar conflictos
+authenticate :user do
+  namespace :participante do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
     
-    namespace :mentor do
-      get 'dashboard', to: 'dashboard#index', as: :dashboard
+    resource :profile, only: [:show, :update], controller: 'profile' do
+      patch :update_avatar
+      delete :remove_avatar
     end
   end
+  
+  namespace :mentor do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+    
+    # AGREGAR ESTAS RUTAS PARA EL PERFIL DE MENTOR
+    resource :profile, only: [:show, :update], controller: 'profile' do
+      patch :update_avatar
+      delete :remove_avatar
+    end
+  end
+end
   
   get 'about', to: 'about#about', as: :about
   get 'contact', to: 'contact#contact', as: :contact
@@ -71,4 +132,17 @@ get 'inscripciones_event/confirmacion', to: 'inscripciones_event#confirmacion', 
   
   # Ruta raíz
   root 'home#index'
+
+  # RUTAS PARA PÁGINAS DE ERROR (deben ir al final)
+  match "/404", to: "errors#not_found", via: :all
+  match "/500", to: "errors#internal_server_error", via: :all
+  match "/503", to: "errors#service_unavailable", via: :all
+
+
+    # ===== RUTAS TEMPORALES PARA PROBAR ERRORES (ELIMINAR DESPUÉS) =====
+  #if Rails.env.development?
+    #get '/test_404', to: proc { raise ActionController::RoutingError.new('Página no encontrada') }
+    #get '/test_500', to: proc { raise StandardError.new('Error interno del servidor') }
+    #get '/test_503', to: 'errors#service_unavailable'  # ← CAMBIAR ESTA LÍNEA
+  #end
 end

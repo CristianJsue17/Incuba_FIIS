@@ -1,0 +1,417 @@
+# app/views/admin/inscripciones/events/export_all_excel.xlsx.axlsx
+# REEMPLAZA TODO EL ARCHIVO con esta versión mejorada:
+
+wb = xlsx_package.workbook
+
+# ==========================================
+# ESTILOS MEJORADOS
+# ==========================================
+title_style = wb.styles.add_style(
+  sz: 18, b: true, fg_color: "1f2937",
+  alignment: { horizontal: :center }
+)
+
+subtitle_style = wb.styles.add_style(
+  sz: 14, b: true, fg_color: "4f46e5",
+  alignment: { horizontal: :center }
+)
+
+header_style = wb.styles.add_style(
+  sz: 11, b: true, fg_color: "ffffff",
+  fill_color: "4f46e5", border: Axlsx::STYLE_THIN_BORDER,
+  alignment: { horizontal: :center, vertical: :center }
+)
+
+subheader_style = wb.styles.add_style(
+  sz: 10, b: true, fg_color: "ffffff",
+  fill_color: "6366f1", border: Axlsx::STYLE_THIN_BORDER,
+  alignment: { horizontal: :center }
+)
+
+data_style = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  alignment: { wrap_text: true, vertical: :center }
+)
+
+info_header_style = wb.styles.add_style(
+  sz: 12, b: true, fg_color: "1f2937",
+  fill_color: "e5e7eb", border: Axlsx::STYLE_THIN_BORDER
+)
+
+# Estilos para estados
+estado_activo = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "dcfce7", fg_color: "166534", b: true
+)
+
+estado_inactivo = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "fee2e2", fg_color: "991b1b", b: true
+)
+
+estado_pendiente = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "fef3c7", fg_color: "92400e", b: true
+)
+
+estado_finalizado = wb.styles.add_style(
+  sz: 10, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "f3f4f6", fg_color: "374151", b: true
+)
+
+# Estilos para inscripciones
+inscripcion_pendiente = wb.styles.add_style(
+  sz: 9, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "fef3c7", fg_color: "92400e"
+)
+
+inscripcion_aprobada = wb.styles.add_style(
+  sz: 9, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "dcfce7", fg_color: "166534"
+)
+
+inscripcion_rechazada = wb.styles.add_style(
+  sz: 9, border: Axlsx::STYLE_THIN_BORDER,
+  fill_color: "fee2e2", fg_color: "991b1b"
+)
+
+# Calcular estadísticas generales de forma simple
+total_events = @events.count
+total_inscripciones = 0
+eventos_activos = 0
+eventos_finalizados = 0
+eventos_inactivos = 0
+eventos_pendientes = 0
+
+@events.each do |event|
+  begin
+    stats = event.inscripciones_por_estado
+    total_inscripciones += stats[:total].to_i
+    
+    case event.estado
+    when 'activo' then eventos_activos += 1
+    when 'finalizado' then eventos_finalizados += 1
+    when 'inactivo' then eventos_inactivos += 1
+    when 'pendiente' then eventos_pendientes += 1
+    end
+  rescue => e
+    Rails.logger.warn "Error calculando stats para evento #{event.id}: #{e.message}"
+  end
+end
+
+# ==========================================
+# HOJA 1: DASHBOARD EJECUTIVO
+# ==========================================
+wb.add_worksheet(name: "Dashboard Ejecutivo") do |sheet|
+  # Header principal
+  sheet.add_row ["LINAS - LABORATORIO DE INNOVACIÓN"], style: title_style
+  sheet.add_row ["REPORTE EJECUTIVO DE EVENTOS"], style: subtitle_style
+  sheet.add_row ["Generado el #{Time.current.strftime('%d de %B del %Y a las %H:%M')}"], style: data_style
+  sheet.add_row []
+  
+  # Métricas principales en formato dashboard
+  sheet.add_row ["MÉTRICAS PRINCIPALES"], style: info_header_style
+  sheet.add_row []
+  
+  # Fila de métricas clave
+  sheet.add_row ["EVENTOS", "INSCRIPCIONES", "TASA PROMEDIO", "EVENTOS ACTIVOS"], style: header_style
+  sheet.add_row [
+    total_events,
+    total_inscripciones,
+    total_events > 0 ? "#{(total_inscripciones.to_f / total_events).round(1)} por evento" : "0",
+    eventos_activos
+  ], style: data_style
+  
+  sheet.add_row []
+  
+  # Distribución por estado
+  sheet.add_row ["DISTRIBUCIÓN POR ESTADO"], style: info_header_style
+  sheet.add_row []
+  
+  sheet.add_row ["Estado del Evento", "Cantidad", "Porcentaje", "Descripción"], style: header_style
+  
+  # Calcular porcentajes
+  porcentaje_activos = total_events > 0 ? ((eventos_activos.to_f / total_events) * 100).round(1) : 0
+  porcentaje_finalizados = total_events > 0 ? ((eventos_finalizados.to_f / total_events) * 100).round(1) : 0
+  porcentaje_inactivos = total_events > 0 ? ((eventos_inactivos.to_f / total_events) * 100).round(1) : 0
+  porcentaje_pendientes = total_events > 0 ? ((eventos_pendientes.to_f / total_events) * 100).round(1) : 0
+  
+  sheet.add_row ["Activos", eventos_activos, "#{porcentaje_activos}%", "Eventos abiertos para inscripciones"], 
+                style: [estado_activo, estado_activo, estado_activo, data_style]
+  sheet.add_row ["Finalizados", eventos_finalizados, "#{porcentaje_finalizados}%", "Eventos completados"], 
+                style: [estado_finalizado, estado_finalizado, estado_finalizado, data_style]
+  sheet.add_row ["Pendientes", eventos_pendientes, "#{porcentaje_pendientes}%", "Eventos por iniciar"], 
+                style: [estado_pendiente, estado_pendiente, estado_pendiente, data_style]
+  sheet.add_row ["Inactivos", eventos_inactivos, "#{porcentaje_inactivos}%", "Eventos suspendidos"], 
+                style: [estado_inactivo, estado_inactivo, estado_inactivo, data_style]
+  
+  sheet.add_row []
+  
+  # Top 5 eventos con más inscripciones
+  sheet.add_row ["TOP 5 EVENTOS CON MÁS INSCRIPCIONES"], style: info_header_style
+  sheet.add_row []
+  
+  # Ordenar eventos por número de inscripciones
+  eventos_ordenados = @events.sort_by do |event|
+    begin
+      -event.inscripciones_por_estado[:total]
+    rescue
+      0
+    end
+  end.first(5)
+  
+  sheet.add_row ["Ranking", "Título del Evento", "Encargado", "Total Inscripciones", "Estado"], style: subheader_style
+  
+  eventos_ordenados.each_with_index do |event, index|
+    begin
+      stats = event.inscripciones_por_estado
+      estado_style = case event.estado
+                    when 'activo' then estado_activo
+                    when 'finalizado' then estado_finalizado
+                    when 'pendiente' then estado_pendiente
+                    when 'inactivo' then estado_inactivo
+                    else data_style
+                    end
+      
+      sheet.add_row [
+        "##{index + 1}",
+        event.titulo || "Sin título",
+        event.encargado || "N/A",
+        stats[:total],
+        event.estado.humanize
+      ], style: [data_style, data_style, data_style, data_style, estado_style]
+    rescue => e
+      sheet.add_row ["##{index + 1}", "Error al cargar", "N/A", "0", "N/A"], style: data_style
+    end
+  end
+  
+  # Ajustar anchos
+  sheet.column_widths 15, 30, 20, 15, 12
+end
+
+# ==========================================
+# HOJA 2: LISTA COMPLETA DE EVENTOS
+# ==========================================
+wb.add_worksheet(name: "Lista Completa de Eventos") do |sheet|
+  sheet.add_row ["LISTA COMPLETA DE EVENTOS"], style: title_style
+  sheet.add_row ["Todos los eventos registrados en el sistema"], style: subtitle_style
+  sheet.add_row []
+  
+  headers = [
+    "ID", "Título del Evento", "Encargado", "Estado", "Fecha Creación", 
+    "Fecha Publicación", "Fecha Vencimiento", "Total Inscripciones", 
+    "Pendientes", "Aprobadas", "Rechazadas", "Descripción"
+  ]
+  sheet.add_row headers, style: header_style
+  
+  @events.each do |event|
+    begin
+      stats = event.inscripciones_por_estado
+      estado_style = case event.estado
+                    when 'activo' then estado_activo
+                    when 'finalizado' then estado_finalizado
+                    when 'pendiente' then estado_pendiente
+                    when 'inactivo' then estado_inactivo
+                    else data_style
+                    end
+      
+      row_data = [
+        event.id,
+        event.titulo || "Sin título",
+        event.encargado || "N/A",
+        event.estado.humanize,
+        event.created_at.strftime('%d/%m/%Y'),
+        event.fecha_publicacion&.strftime('%d/%m/%Y %H:%M') || "No definida",
+        event.fecha_vencimiento&.strftime('%d/%m/%Y %H:%M') || "No definida",
+        stats[:total],
+        stats[:pendiente],
+        stats[:aprobado], 
+        stats[:rechazado],
+        (event.descripcion || "Sin descripción").truncate(50)
+      ]
+      
+      # Aplicar estilo de estado solo a la columna de estado
+      row_styles = Array.new(row_data.length, data_style)
+      row_styles[3] = estado_style # Columna de estado
+      
+      sheet.add_row row_data, style: row_styles
+    rescue => e
+      Rails.logger.warn "Error procesando evento #{event.id}: #{e.message}"
+      sheet.add_row [event.id, "Error al cargar", "N/A", "N/A", "N/A", "N/A", "N/A", 0, 0, 0, 0, "Error"], style: data_style
+    end
+  end
+  
+  # Ajustar anchos de columnas
+  sheet.column_widths 6, 25, 18, 12, 12, 16, 16, 8, 8, 8, 8, 30
+end
+
+# ==========================================
+# HOJA 3: TODAS LAS INSCRIPCIONES
+# ==========================================
+wb.add_worksheet(name: "Todas las Inscripciones") do |sheet|
+  sheet.add_row ["TODAS LAS INSCRIPCIONES DE EVENTOS"], style: title_style
+  sheet.add_row ["Consolidado de inscripciones de todos los eventos"], style: subtitle_style
+  sheet.add_row []
+  
+  headers = [
+    "ID", "Evento", "Nombre Completo", "Email", "Teléfono", 
+    "Estado", "Fecha Inscripción", "Encargado del Evento", "Estado del Evento"
+  ]
+  sheet.add_row headers, style: header_style
+  
+  # Obtener todas las inscripciones
+  todas_las_inscripciones = []
+  @events.each do |event|
+    begin
+      inscripciones = event.todas_inscripciones
+      inscripciones.each do |inscripcion|
+        todas_las_inscripciones << {
+          inscripcion: inscripcion,
+          evento: event
+        }
+      end
+    rescue => e
+      Rails.logger.warn "Error obteniendo inscripciones del evento #{event.id}: #{e.message}"
+    end
+  end
+  
+  # Ordenar por fecha de inscripción (más recientes primero)
+  todas_las_inscripciones.sort_by! { |item| item[:inscripcion].created_at }.reverse!
+  
+  # Agregar inscripciones con estilos mejorados
+  todas_las_inscripciones.each do |item|
+    inscripcion = item[:inscripcion]
+    evento = item[:evento]
+    
+    # Estilo según estado de inscripción
+    estado_inscripcion_style = case inscripcion.estado
+                              when 'pendiente' then inscripcion_pendiente
+                              when 'aprobado' then inscripcion_aprobada
+                              when 'rechazado' then inscripcion_rechazada
+                              else data_style
+                              end
+    
+    # Estilo según estado del evento
+    estado_evento_style = case evento.estado
+                         when 'activo' then estado_activo
+                         when 'finalizado' then estado_finalizado
+                         when 'pendiente' then estado_pendiente
+                         when 'inactivo' then estado_inactivo
+                         else data_style
+                         end
+    
+    nombre_completo = "#{inscripcion.nombre_lider} #{inscripcion.apellidos_lider}".strip
+    
+    row_data = [
+      inscripcion.id,
+      evento.titulo || "Sin título",
+      nombre_completo,
+      inscripcion.correo_lider || "N/A",
+      inscripcion.telefono_lider || "N/A",
+      (inscripcion.estado || "Pendiente").humanize,
+      inscripcion.created_at.strftime('%d/%m/%Y %H:%M'),
+      evento.encargado || "N/A",
+      evento.estado.humanize
+    ]
+    
+    # Aplicar estilos específicos a columnas relevantes
+    row_styles = Array.new(row_data.length, data_style)
+    row_styles[5] = estado_inscripcion_style # Estado de inscripción
+    row_styles[8] = estado_evento_style      # Estado del evento
+    
+    sheet.add_row row_data, style: row_styles
+  end
+  
+  # Ajustar anchos
+  sheet.column_widths 8, 25, 25, 25, 15, 12, 16, 18, 12
+  
+  # Resumen mejorado al final
+  sheet.add_row []
+  sheet.add_row ["RESUMEN DE INSCRIPCIONES"], style: info_header_style
+  
+  # Contar por estado de inscripción
+  pendientes = todas_las_inscripciones.count { |item| item[:inscripcion].estado == 'pendiente' }
+  aprobadas = todas_las_inscripciones.count { |item| item[:inscripcion].estado == 'aprobado' }
+  rechazadas = todas_las_inscripciones.count { |item| item[:inscripcion].estado == 'rechazado' }
+  
+  sheet.add_row ["Estado", "Cantidad", "Porcentaje"], style: subheader_style
+  
+  total_inscripciones_count = todas_las_inscripciones.count
+  porcentaje_pendientes = total_inscripciones_count > 0 ? ((pendientes.to_f / total_inscripciones_count) * 100).round(1) : 0
+  porcentaje_aprobadas = total_inscripciones_count > 0 ? ((aprobadas.to_f / total_inscripciones_count) * 100).round(1) : 0
+  porcentaje_rechazadas = total_inscripciones_count > 0 ? ((rechazadas.to_f / total_inscripciones_count) * 100).round(1) : 0
+  
+  sheet.add_row ["Total", total_inscripciones_count, "100%"], style: [data_style, data_style, data_style]
+  sheet.add_row ["Pendientes", pendientes, "#{porcentaje_pendientes}%"], style: [inscripcion_pendiente, inscripcion_pendiente, inscripcion_pendiente]
+  sheet.add_row ["Aprobadas", aprobadas, "#{porcentaje_aprobadas}%"], style: [inscripcion_aprobada, inscripcion_aprobada, inscripcion_aprobada]
+  sheet.add_row ["Rechazadas", rechazadas, "#{porcentaje_rechazadas}%"], style: [inscripcion_rechazada, inscripcion_rechazada, inscripcion_rechazada]
+end
+
+# ==========================================
+# HOJA 4: ANÁLISIS TEMPORAL
+# ==========================================
+wb.add_worksheet(name: "Análisis Temporal") do |sheet|
+  sheet.add_row ["ANÁLISIS TEMPORAL DE EVENTOS"], style: title_style
+  sheet.add_row ["Eventos por mes y tendencias de inscripciones"], style: subtitle_style
+  sheet.add_row []
+  
+  # Eventos creados por mes (últimos 12 meses)
+  sheet.add_row ["EVENTOS CREADOS POR MES (Últimos 12 meses)"], style: info_header_style
+  sheet.add_row []
+  
+  sheet.add_row ["Mes", "Eventos Creados", "Inscripciones Totales"], style: header_style
+  
+  # Generar datos de los últimos 12 meses
+  (0..11).each do |i|
+    fecha = i.months.ago.beginning_of_month
+    eventos_del_mes = @events.select { |event| event.created_at >= fecha && event.created_at < fecha.end_of_month }
+    inscripciones_del_mes = eventos_del_mes.sum do |event|
+      begin
+        event.inscripciones_por_estado[:total]
+      rescue
+        0
+      end
+    end
+    
+    sheet.add_row [
+      fecha.strftime('%B %Y'),
+      eventos_del_mes.count,
+      inscripciones_del_mes
+    ], style: data_style
+  end
+  
+  sheet.add_row []
+  
+  # Eventos próximos a vencer
+  sheet.add_row ["EVENTOS PRÓXIMOS A VENCER (Próximos 30 días)"], style: info_header_style
+  sheet.add_row []
+  
+  eventos_por_vencer = @events.select do |event|
+    event.fecha_vencimiento.present? && 
+    event.fecha_vencimiento.between?(Time.current, 30.days.from_now) &&
+    event.estado == 'activo'
+  end.sort_by(&:fecha_vencimiento)
+  
+  if eventos_por_vencer.any?
+    sheet.add_row ["Evento", "Encargado", "Fecha Vencimiento", "Días Restantes", "Inscripciones"], style: header_style
+    
+    eventos_por_vencer.each do |event|
+      dias_restantes = ((event.fecha_vencimiento - Time.current) / 1.day).round
+      stats = event.inscripciones_por_estado
+      
+      urgencia_style = dias_restantes <= 7 ? estado_inactivo : (dias_restantes <= 15 ? estado_pendiente : data_style)
+      
+      sheet.add_row [
+        event.titulo,
+        event.encargado,
+        event.fecha_vencimiento.strftime('%d/%m/%Y %H:%M'),
+        "#{dias_restantes} días",
+        stats[:total]
+      ], style: [data_style, data_style, data_style, urgencia_style, data_style]
+    end
+  else
+    sheet.add_row ["No hay eventos próximos a vencer en los próximos 30 días"], style: data_style
+  end
+  
+  sheet.column_widths 30, 20, 18, 15, 12
+end

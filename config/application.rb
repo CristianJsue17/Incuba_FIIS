@@ -22,5 +22,8 @@ module App
     config.i18n.default_locale = :es
     config.i18n.fallbacks = { en: :es }
 
+    # Configurar páginas de error personalizadas
+    config.exceptions_app = self.routes
+
   end
 end
