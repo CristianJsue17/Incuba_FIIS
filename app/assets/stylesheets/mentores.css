@@ -123,14 +123,15 @@ i {
 }
 
 .mentores__title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   text-align: center;
   color: var(--color-primary);
-  margin-bottom: 3rem;
+  margin-bottom: 8rem;
   font-weight: 700;
   letter-spacing: 1px;
   position: relative;
   font-family: var(--font-heading);
+  margin-top: 8rem;
 }
 
 .mentores__title::after {
@@ -149,6 +150,7 @@ i {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 2rem;
+  margin-bottom: 4rem;
 }
 
 /* Mentor Card */
@@ -228,7 +230,7 @@ i {
 }
 
 .mentor-card__name {
-  font-size: 1.25rem;
+  font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
   color: var(--color-primary);
@@ -237,18 +239,19 @@ i {
 
 .mentor-card__role {
   color: #64748b;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   font-family: var(--font-body);
 }
 
 .mentor-card__back .mentor-card__name {
   color: var(--color-white);
   margin-bottom: 1rem;
+  font-size: 2.3rem;
 }
 
 .mentor-card__description {
   margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  font-size: 1.4rem;
   line-height: 1.5;
   font-family: var(--font-body);
 }
@@ -278,7 +281,7 @@ i {
 }
 
 .mentor-card__social-link i {
-  font-size: 1.2rem;
+  font-size: 2.2rem;
 }
 
 /* Responsive */

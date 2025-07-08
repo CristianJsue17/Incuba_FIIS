@@ -993,7 +993,7 @@ dd {
                   <div class="flex-shrink-0 h-10 w-10">
                     <!-- CORREGIDO: Manejo seguro de imágenes -->
                     <% if event.images.attached? && event.imagen_principal %>
-                      <%= image_tag event.imagen_principal, class: "h-10 w-10 rounded-full object-cover" %>
+                      <%= image_tag event.imagen_principal, class: "h-10 w-10 rounded-full object-cover", loading: "lazy" %>
                     <% else %>
                       <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                         <i class="fas fa-calendar-alt text-gray-400"></i>

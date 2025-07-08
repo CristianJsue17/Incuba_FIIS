@@ -168,7 +168,7 @@
       
       <div class="image-preview-container mt-3" id="image-preview-container" data-image-preview-target="preview">
         <% if program.image.attached? %>
-          <%= image_tag program.image, style: "max-width: 100%; height: auto;" %>
+          <%= image_tag program.image, style: "max-width: 100%; height: auto;", loading: "lazy" %>
         <% else %>
           <img src="<%= asset_path('program_placeholder.png') %>" 
                style="max-width: 100%; height: auto; opacity: 0.5;">
@@ -241,105 +241,242 @@
 
 <!-- Script de respaldo para la previsualización -->
 <script>
-// Inicialización común para ambas funcionalidades
-document.addEventListener('turbo:load', function() {
-  console.log("Turbo load - Inicializando funcionalidades con JavaScript puro");
-  setupImagePreview();
-  setupDateValidation();
-});
+  // Inicialización común para ambas funcionalidades
+  document.addEventListener('turbo:load', function() {
+    console.log("Turbo load - Inicializando funcionalidades con JavaScript puro");
+    setupImagePreview();
+    setupDateValidation();
+  });
 
-document.addEventListener('turbo:render', function() {
-  console.log("Turbo render - Inicializando funcionalidades con JavaScript puro");
-  setupImagePreview();
-  setupDateValidation();
-});
+  document.addEventListener('turbo:render', function() {
+    console.log("Turbo render - Inicializando funcionalidades con JavaScript puro");
+    setupImagePreview();
+    setupDateValidation();
+  });
 
-// También escuchar el evento DOMContentLoaded para navegadores sin Turbo
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("DOMContentLoaded - Inicializando funcionalidades con JavaScript puro");
-  setupImagePreview();
-  setupDateValidation();
-});
+  // También escuchar el evento DOMContentLoaded para navegadores sin Turbo
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log("DOMContentLoaded - Inicializando funcionalidades con JavaScript puro");
+    setupImagePreview();
+    setupDateValidation();
+  });
 
-// FUNCIONALIDAD 1: Previsualización de imágenes
-function setupImagePreview() {
-  const imageInput = document.getElementById('program-image-input');
-  const previewContainer = document.getElementById('image-preview-container');
-  
-  if (imageInput && previewContainer) {
-    console.log("Backup script: Elements found");
+  // FUNCIONALIDAD 1: Previsualización de imágenes
+  function setupImagePreview() {
+    const imageInput = document.getElementById('program-image-input');
+    const previewContainer = document.getElementById('image-preview-container');
     
-    // Eliminar listeners anteriores para evitar duplicados
-    imageInput.removeEventListener('change', handleImageChange);
-    imageInput.addEventListener('change', handleImageChange);
-    
-    // Si hay un archivo ya seleccionado, mostrarlo
-    if (imageInput.files && imageInput.files[0]) {
-      handleImageChange({ target: imageInput });
+    if (imageInput && previewContainer) {
+      console.log("Backup script: Elements found");
+      
+      // Eliminar listeners anteriores para evitar duplicados
+      imageInput.removeEventListener('change', handleImageChange);
+      imageInput.addEventListener('change', handleImageChange);
+      
+      // Si hay un archivo ya seleccionado, mostrarlo
+      if (imageInput.files && imageInput.files[0]) {
+        handleImageChange({ target: imageInput });
+      }
     }
   }
-}
 
-function handleImageChange(event) {
-  console.log("Backup script: File changed");
-  const file = event.target.files[0];
-  const previewContainer = document.getElementById('image-preview-container');
-  
-  if (file && previewContainer) {
-    console.log("Backup script: Processing file", file.name);
-    const reader = new FileReader();
+  function handleImageChange(event) {
+    console.log("Backup script: File changed");
+    const file = event.target.files[0];
+    const previewContainer = document.getElementById('image-preview-container');
     
-    reader.onload = function(e) {
-      console.log("Backup script: File loaded");
-      previewContainer.innerHTML = `
-        <img src="${e.target.result}" 
-             class="img-thumbnail" 
-             style="max-width: 200px; max-height: 200px; object-fit: cover;">
-      `;
-    };
-    
-    reader.readAsDataURL(file);
+    if (file && previewContainer) {
+      console.log("Backup script: Processing file", file.name);
+      const reader = new FileReader();
+      
+      reader.onload = function(e) {
+        console.log("Backup script: File loaded");
+        previewContainer.innerHTML = `
+          <img src="${e.target.result}" 
+              class="img-thumbnail" 
+              style="max-width: 200px; max-height: 200px; object-fit: cover;">
+        `;
+      };
+      
+      reader.readAsDataURL(file);
+    }
   }
-}
 
-// FUNCIONALIDAD 2: Validación de fechas
-function setupDateValidation() {
-  // Selección directa y con log para depuración
-  console.log("Validación de fechas: Buscando elementos del formulario");
-  
-  const form = document.querySelector('form.program-form'); // usar un selector más específico
-  console.log("Formulario encontrado:", !!form);
-  
-  const pubDateInput = document.querySelector('input[name="program[fecha_publicacion]"]');
-  console.log("Campo fecha publicación encontrado:", !!pubDateInput);
-  
-  const expDateInput = document.querySelector('input[name="program[fecha_vencimiento]"]');
-  console.log("Campo fecha vencimiento encontrado:", !!expDateInput);
-  
-  if (!form || !pubDateInput || !expDateInput) {
-    console.error("No se pudieron encontrar todos los elementos necesarios para validación de fechas");
-    return;
-  }
-  
-  console.log("Todos los elementos encontrados, configurando validación de fechas");
-  
-  // Función simplificada para validar fechas
-  function validateDates() {
-    if (pubDateInput.value && expDateInput.value) {
-      const pubDate = new Date(pubDateInput.value);
-      const expDate = new Date(expDateInput.value);
-      
-      console.log("Validando fechas:");
-      console.log("- Fecha publicación:", pubDateInput.value);
-      console.log("- Fecha vencimiento:", expDateInput.value);
-      
-      if (expDate <= pubDate) {
-        console.error("ERROR: Fecha de vencimiento debe ser posterior");
+  // FUNCIONALIDAD 2: Validación de fechas
+  function setupDateValidation() {
+    // Selección directa y con log para depuración
+    console.log("Validación de fechas: Buscando elementos del formulario");
+    
+    const form = document.querySelector('form.program-form'); // usar un selector más específico
+    console.log("Formulario encontrado:", !!form);
+    
+    const pubDateInput = document.querySelector('input[name="program[fecha_publicacion]"]');
+    console.log("Campo fecha publicación encontrado:", !!pubDateInput);
+    
+    const expDateInput = document.querySelector('input[name="program[fecha_vencimiento]"]');
+    console.log("Campo fecha vencimiento encontrado:", !!expDateInput);
+    
+    if (!form || !pubDateInput || !expDateInput) {
+      console.error("No se pudieron encontrar todos los elementos necesarios para validación de fechas");
+      return;
+    }
+    
+    console.log("Todos los elementos encontrados, configurando validación de fechas");
+    
+    // Función simplificada para validar fechas
+    function validateDates() {
+      if (pubDateInput.value && expDateInput.value) {
+        const pubDate = new Date(pubDateInput.value);
+        const expDate = new Date(expDateInput.value);
         
-        // Mostrar error visual
-        expDateInput.style.borderColor = '#dc3545';
+        console.log("Validando fechas:");
+        console.log("- Fecha publicación:", pubDateInput.value);
+        console.log("- Fecha vencimiento:", expDateInput.value);
         
-        // Agregar mensaje de error
+        if (expDate <= pubDate) {
+          console.error("ERROR: Fecha de vencimiento debe ser posterior");
+          
+          // Mostrar error visual
+          expDateInput.style.borderColor = '#dc3545';
+          
+          // Agregar mensaje de error
+          let errorMsg = document.getElementById('date-error-msg');
+          if (!errorMsg) {
+            errorMsg = document.createElement('div');
+            errorMsg.id = 'date-error-msg';
+            errorMsg.style.color = '#dc3545';
+            errorMsg.style.fontWeight = 'bold';
+            errorMsg.style.marginTop = '5px';
+            expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
+          }
+          
+          errorMsg.textContent = "La fecha de vencimiento debe ser posterior a la fecha de publicación";
+          errorMsg.style.display = 'block';
+          
+          return false;
+        } else {
+          console.log("Validación de fechas correcta");
+          
+          // Quitar error visual
+          expDateInput.style.borderColor = '';
+          
+          // Ocultar mensaje de error si existe
+          const errorMsg = document.getElementById('date-error-msg');
+          if (errorMsg) {
+            errorMsg.style.display = 'none';
+          }
+          
+          return true;
+        }
+      }
+      return true;
+    }
+
+    // Función para actualizar la sugerencia de estado según las fechas
+    function updateEstadoSuggestion() {
+      const estadoSelect = document.querySelector('select[name="program[estado]"]');
+      if (!estadoSelect) return;
+      
+      const now = new Date();
+      const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
+      const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
+      
+      if (!pubDate || !expDate) return;
+      
+      console.log("Calculando estado sugerido según fechas:");
+      console.log("- Fecha actual:", now);
+      console.log("- Fecha publicación:", pubDate);
+      console.log("- Fecha vencimiento:", expDate);
+      
+      // Determinar el estado sugerido según las fechas
+      let suggestedEstado = '';
+      let estadoReason = '';
+      
+      if (now < pubDate) {
+        suggestedEstado = 'pendiente';
+        estadoReason = 'aún no ha llegado la fecha de publicación';
+      } else if (now >= pubDate && now < expDate) {
+        suggestedEstado = 'activo';
+        estadoReason = 'está dentro del período de vigencia';
+      } else if (now >= expDate) {
+        // Calcular si han pasado 12 horas desde vencimiento
+        const finalizedUntil = new Date(expDate);
+        finalizedUntil.setHours(finalizedUntil.getHours() + 12);
+        
+        if (now < finalizedUntil) {
+          suggestedEstado = 'finalizado';
+          estadoReason = 'ha pasado la fecha de vencimiento (menos de 12 horas)';
+        } else {
+          suggestedEstado = 'inactivo';
+          estadoReason = 'ha pasado la fecha de vencimiento (más de 12 horas)';
+        }
+      }
+      
+      console.log("- Estado sugerido:", suggestedEstado, "-", estadoReason);
+      
+      // Mostrar mensaje informativo sobre el estado sugerido
+      if (suggestedEstado) {
+        let estadoInfo = document.getElementById('estado-sugerido-info');
+        if (!estadoInfo) {
+          estadoInfo = document.createElement('div');
+          estadoInfo.id = 'estado-sugerido-info';
+          estadoInfo.style.marginTop = '10px';
+          estadoInfo.style.padding = '8px 12px';
+          estadoInfo.style.borderRadius = '4px';
+          estadoSelect.parentNode.appendChild(estadoInfo);
+        }
+        
+        // Si el estado actual no coincide con el sugerido, mostrar una sugerencia
+        if (estadoSelect.value !== suggestedEstado) {
+          estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).
+                                  <br>Puedes mantener <strong>${estadoSelect.value}</strong> si lo prefieres.`;
+          estadoInfo.style.backgroundColor = '#fff3cd';
+          estadoInfo.style.color = '#856404';
+          estadoInfo.style.border = '1px solid #ffeeba';
+        } else {
+          estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado para estas fechas (${estadoReason}).`;
+          estadoInfo.style.backgroundColor = '#d4edda';
+          estadoInfo.style.color = '#155724';
+          estadoInfo.style.border = '1px solid #c3e6cb';
+        }
+      }
+    }
+    
+    // Validar al cambiar las fechas
+    pubDateInput.addEventListener('change', function() {
+      console.log("Cambio en fecha de publicación:", pubDateInput.value);
+      validateDates();
+      updateEstadoSuggestion();
+    });
+    
+    expDateInput.addEventListener('change', function() {
+      console.log("Cambio en fecha de vencimiento:", expDateInput.value);
+      validateDates();
+      updateEstadoSuggestion();
+    });
+    
+    // Escuchar cambios en el select de estado
+    const estadoSelect = document.querySelector('select[name="program[estado]"]');
+    if (estadoSelect) {
+      estadoSelect.addEventListener('change', function() {
+        console.log("Cambio en estado:", estadoSelect.value);
+        updateEstadoSuggestion();
+      });
+    }
+    
+    // Validar al enviar el formulario
+    form.addEventListener('submit', function(event) {
+      console.log("Intento de envío del formulario");
+      
+      const isValid = validateDates();
+      if (!isValid) {
+        console.error("Formulario inválido, previniendo envío");
+        event.preventDefault();
+        
+        // Quitamos el alert que es molesto
+        // alert("Error: La fecha de vencimiento debe ser posterior a la fecha de publicación");
+        
+        // En lugar de mostrar una alerta, aseguramos que el mensaje de error sea visible
         let errorMsg = document.getElementById('date-error-msg');
         if (!errorMsg) {
           errorMsg = document.createElement('div');
@@ -353,156 +490,19 @@ function setupDateValidation() {
         errorMsg.textContent = "La fecha de vencimiento debe ser posterior a la fecha de publicación";
         errorMsg.style.display = 'block';
         
+        // Hacer scroll hasta el campo con error para que sea visible
+        expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        
         return false;
-      } else {
-        console.log("Validación de fechas correcta");
-        
-        // Quitar error visual
-        expDateInput.style.borderColor = '';
-        
-        // Ocultar mensaje de error si existe
-        const errorMsg = document.getElementById('date-error-msg');
-        if (errorMsg) {
-          errorMsg.style.display = 'none';
-        }
-        
-        return true;
-      }
-    }
-    return true;
-  }
-
-  // Función para actualizar la sugerencia de estado según las fechas
-  function updateEstadoSuggestion() {
-    const estadoSelect = document.querySelector('select[name="program[estado]"]');
-    if (!estadoSelect) return;
-    
-    const now = new Date();
-    const pubDate = pubDateInput.value ? new Date(pubDateInput.value) : null;
-    const expDate = expDateInput.value ? new Date(expDateInput.value) : null;
-    
-    if (!pubDate || !expDate) return;
-    
-    console.log("Calculando estado sugerido según fechas:");
-    console.log("- Fecha actual:", now);
-    console.log("- Fecha publicación:", pubDate);
-    console.log("- Fecha vencimiento:", expDate);
-    
-    // Determinar el estado sugerido según las fechas
-    let suggestedEstado = '';
-    let estadoReason = '';
-    
-    if (now < pubDate) {
-      suggestedEstado = 'pendiente';
-      estadoReason = 'aún no ha llegado la fecha de publicación';
-    } else if (now >= pubDate && now < expDate) {
-      suggestedEstado = 'activo';
-      estadoReason = 'está dentro del período de vigencia';
-    } else if (now >= expDate) {
-      // Calcular si han pasado 12 horas desde vencimiento
-      const finalizedUntil = new Date(expDate);
-      finalizedUntil.setHours(finalizedUntil.getHours() + 12);
-      
-      if (now < finalizedUntil) {
-        suggestedEstado = 'finalizado';
-        estadoReason = 'ha pasado la fecha de vencimiento (menos de 12 horas)';
-      } else {
-        suggestedEstado = 'inactivo';
-        estadoReason = 'ha pasado la fecha de vencimiento (más de 12 horas)';
-      }
-    }
-    
-    console.log("- Estado sugerido:", suggestedEstado, "-", estadoReason);
-    
-    // Mostrar mensaje informativo sobre el estado sugerido
-    if (suggestedEstado) {
-      let estadoInfo = document.getElementById('estado-sugerido-info');
-      if (!estadoInfo) {
-        estadoInfo = document.createElement('div');
-        estadoInfo.id = 'estado-sugerido-info';
-        estadoInfo.style.marginTop = '10px';
-        estadoInfo.style.padding = '8px 12px';
-        estadoInfo.style.borderRadius = '4px';
-        estadoSelect.parentNode.appendChild(estadoInfo);
       }
       
-      // Si el estado actual no coincide con el sugerido, mostrar una sugerencia
-      if (estadoSelect.value !== suggestedEstado) {
-        estadoInfo.innerHTML = `<strong>Sugerencia:</strong> Para estas fechas se recomienda el estado <strong>${suggestedEstado}</strong> (${estadoReason}).
-                                <br>Puedes mantener <strong>${estadoSelect.value}</strong> si lo prefieres.`;
-        estadoInfo.style.backgroundColor = '#fff3cd';
-        estadoInfo.style.color = '#856404';
-        estadoInfo.style.border = '1px solid #ffeeba';
-      } else {
-        estadoInfo.innerHTML = `<strong>Correcto:</strong> El estado <strong>${suggestedEstado}</strong> es el recomendado para estas fechas (${estadoReason}).`;
-        estadoInfo.style.backgroundColor = '#d4edda';
-        estadoInfo.style.color = '#155724';
-        estadoInfo.style.border = '1px solid #c3e6cb';
-      }
-    }
-  }
-  
-  // Validar al cambiar las fechas
-  pubDateInput.addEventListener('change', function() {
-    console.log("Cambio en fecha de publicación:", pubDateInput.value);
-    validateDates();
-    updateEstadoSuggestion();
-  });
-  
-  expDateInput.addEventListener('change', function() {
-    console.log("Cambio en fecha de vencimiento:", expDateInput.value);
-    validateDates();
-    updateEstadoSuggestion();
-  });
-  
-  // Escuchar cambios en el select de estado
-  const estadoSelect = document.querySelector('select[name="program[estado]"]');
-  if (estadoSelect) {
-    estadoSelect.addEventListener('change', function() {
-      console.log("Cambio en estado:", estadoSelect.value);
-      updateEstadoSuggestion();
+      console.log("Formulario válido, continuando envío");
+      return true;
     });
+    
+    // Ejecutar validación inicial
+    console.log("Ejecutando validación inicial de fechas");
+    validateDates();
+    updateEstadoSuggestion();
   }
-  
-  // Validar al enviar el formulario
-  form.addEventListener('submit', function(event) {
-    console.log("Intento de envío del formulario");
-    
-    const isValid = validateDates();
-    if (!isValid) {
-      console.error("Formulario inválido, previniendo envío");
-      event.preventDefault();
-      
-      // Quitamos el alert que es molesto
-      // alert("Error: La fecha de vencimiento debe ser posterior a la fecha de publicación");
-      
-      // En lugar de mostrar una alerta, aseguramos que el mensaje de error sea visible
-      let errorMsg = document.getElementById('date-error-msg');
-      if (!errorMsg) {
-        errorMsg = document.createElement('div');
-        errorMsg.id = 'date-error-msg';
-        errorMsg.style.color = '#dc3545';
-        errorMsg.style.fontWeight = 'bold';
-        errorMsg.style.marginTop = '5px';
-        expDateInput.parentNode.insertBefore(errorMsg, expDateInput.nextSibling);
-      }
-      
-      errorMsg.textContent = "La fecha de vencimiento debe ser posterior a la fecha de publicación";
-      errorMsg.style.display = 'block';
-      
-      // Hacer scroll hasta el campo con error para que sea visible
-      expDateInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      
-      return false;
-    }
-    
-    console.log("Formulario válido, continuando envío");
-    return true;
-  });
-  
-  // Ejecutar validación inicial
-  console.log("Ejecutando validación inicial de fechas");
-  validateDates();
-  updateEstadoSuggestion();
-}
 </script>

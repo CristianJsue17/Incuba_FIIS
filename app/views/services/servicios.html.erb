@@ -30,151 +30,151 @@
 </div>
 
 <!-- Header reestructurado con dropdowns completos -->
-    <header class="header" role="banner">
-      <div class="header__container">
-        <div class="header__logo">
-          <a href="/" class="header__logo-link" aria-label="Ir al inicio">
-            <!-- DIV SEPARADO PARA EL LOGO -->
-            <div class="header__logo-container">
-              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
-            </div>
-            <!-- DIV SEPARADO PARA EL TEXTO -->
-            <div class="header__text-container">
-              <span class="header__logo-text">INCUBA UNAS</span>
-            </div>
-          </a>
+<header class="header" role="banner">
+  <div class="header__container">
+    <div class="header__logo">
+      <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+        <!-- DIV SEPARADO PARA EL LOGO -->
+        <div class="header__logo-container">
+          <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy" %>
         </div>
+        <!-- DIV SEPARADO PARA EL TEXTO -->
+        <div class="header__text-container">
+          <span class="header__logo-text">INCUBA UNAS</span>
+        </div>
+      </a>
+    </div>
 
-        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
-          <ul class="header__menu">
-            <!-- PROGRAMAS -->
-            <li class="header__menu-item header__menu-item--has-dropdown">
-              <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <!-- EVENTOS -->
-            <li class="header__menu-item header__menu-item--has-dropdown">
-              <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <!-- SERVICIOS -->
-            <li class="header__menu-item header__menu-item--has-dropdown">
-              <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <!-- NOSOTROS -->
-            <li class="header__menu-item header__menu-item--has-dropdown">
-              <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <!-- MENTORES -->
-            <li class="header__menu-item header__menu-item--has-dropdown">
-              <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-
-            <!-- CONTACTO -->
-            <li class="header__menu-item">
-              <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
-            </li>
-          </ul>
-        </nav>
-
-        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP + LOGIN MÓVIL -->
-        <div class="header__actions">
-          <!-- SELECTOR DE IDIOMA -->
-          <%= render 'shared/language_switcher' %>
-          
-          <!-- LOGIN DESKTOP -->
-          <div class="header__login-container">
-            <a href="<%= new_user_session_path %>"
-               class="header__action-btn header__action-btn--login"
-               data-turbo="false"
-               aria-label="<%= t('navigation.iniciar_sesion') %>">
-            </a>
-            <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+    <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+      <ul class="header__menu">
+        <!-- PROGRAMAS -->
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
+              </li>
+            </ul>
           </div>
+        </li>
 
-          <!-- LOGIN MÓVIL - AHORA AQUÍ FUERA DEL MENÚ -->
-          <a href="<%= new_user_session_path %>"
-             class="header__action-btn header__action-btn--mobile"
-             data-turbo="false"
-             aria-label="Iniciar sesión">
-            <i class="fas fa-user" aria-hidden="true"></i>
-          </a>
-        </div>
+        <!-- EVENTOS -->
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="eventos/#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+              </li>
+            </ul>
+          </div>
+        </li>
 
-        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
-          <span class="header__hamburger-line" aria-hidden="true"></span>
-          <span class="header__hamburger-line" aria-hidden="true"></span>
-          <span class="header__hamburger-line" aria-hidden="true"></span>
-        </button>
+        <!-- SERVICIOS -->
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="/servicios/preincubacion" class="header__dropdown-link" role="menuitem">Preincubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="/servicios/incubacion" class="header__dropdown-link" role="menuitem">Incubación</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- NOSOTROS -->
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="/about#nuestroEquipo" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="/about#valores" class="header__dropdown-link" role="menuitem">Valores</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="/about#nuestraHistoria" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- MENTORES -->
+        <li class="header__menu-item header__menu-item--has-dropdown">
+          <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+          <div class="header__dropdown" role="menu">
+            <ul class="header__dropdown-menu">
+              <li class="header__dropdown-item">
+                <a href="/mentores#unas" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+              </li>
+              <li class="header__dropdown-item">
+                <a href="/mentores#instituciones" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+
+        <!-- CONTACTO -->
+        <li class="header__menu-item">
+          <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP + LOGIN MÓVIL -->
+    <div class="header__actions">
+      <!-- SELECTOR DE IDIOMA -->
+      <%= render 'shared/language_switcher' %>
+      
+      <!-- LOGIN DESKTOP -->
+      <div class="header__login-container">
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+        </a>
+        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
       </div>
-    </header>
+
+      <!-- LOGIN MÓVIL - AHORA AQUÍ FUERA DEL MENÚ -->
+      <a href="<%= new_user_session_path %>"
+          class="header__action-btn header__action-btn--mobile"
+          data-turbo="false"
+          aria-label="Iniciar sesión">
+        <i class="fas fa-user" aria-hidden="true"></i>
+      </a>
+    </div>
+
+    <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+      <span class="header__hamburger-line" aria-hidden="true"></span>
+    </button>
+  </div>
+</header>
 
 <div class="servicios-container">
   <div class="hero-servicios">
@@ -215,10 +215,11 @@
         </div>
       </div>
     <% end %>
+    <div id="otrosSection"></div>
   </div>
   
   <!-- Sección extra moderna -->
-  <div class="extra-section">
+  <div  class="extra-section">
     <div class="extra-section-content">
       <h2>¿Por qué elegir Incuba UNAS?</h2>
       <p>Somos el aliado que todo emprendedor necesita para llevar su proyecto al siguiente nivel.</p>
@@ -450,14 +451,14 @@
     color: white;
     padding: 8px 16px;
     border-radius: 30px;
-    font-size: 0.9rem;
+    font-size: 1.2rem;
     font-weight: 500;
     margin-bottom: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 153, 0.2);
   }
 
   .hero-servicios h1 {
-    font-size: 3.5rem;
+    font-size: 4rem;
     background: linear-gradient(135deg, var(--azul), var(--azul-claro));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -480,7 +481,7 @@
   }
 
   .hero-servicios p {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     color: #666;
     max-width: 700px;
     margin: 0 auto;
@@ -491,8 +492,8 @@
   .servicios-cards {
     display: flex;
     flex-direction: column;
-    gap: 40px;
-    margin-bottom: 80px;
+    gap: 70px;
+    margin-bottom: 120px;
   }
 
   .servicio-card {
@@ -561,7 +562,7 @@
     color: var(--azul);
     padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.8rem;
+    font-size: 1.3rem;
     font-weight: 600;
     z-index: 2;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -587,7 +588,7 @@
   }
 
   .servicio-content h2 {
-    font-size: 2rem;
+    font-size: 2.5rem;
     margin-bottom: 15px;
     color: #333;
     font-weight: 700;
@@ -599,7 +600,7 @@
   }
 
   .servicio-content p {
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     line-height: 1.6;
     color: #666;
     margin-bottom: 25px;
@@ -624,6 +625,10 @@
     transform: translateX(5px);
   }
 
+  .servicio-features li span {
+    font-size: 1.3rem;
+  }
+
   .feature-icon {
     display: flex;
     align-items: center;
@@ -638,7 +643,7 @@
 
   .feature-icon i {
     color: white;
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .btn-ver-programas {
@@ -679,7 +684,7 @@
     background: white;
     border-radius: var(--borde-radius);
     padding: 60px 40px;
-    margin-top: 60px;
+    margin-top: 100px;
     box-shadow: var(--sombra);
     position: relative;
     overflow: hidden;
@@ -701,14 +706,14 @@
   }
 
   .extra-section h2 {
-    font-size: 2.2rem;
+    font-size: 2.8rem;
     color: #333;
     margin-bottom: 20px;
     text-align: center;
   }
 
   .extra-section p {
-    font-size: 1.1rem;
+    font-size: 1.5rem;
     color: #666;
     text-align: center;
     max-width: 700px;
@@ -757,13 +762,13 @@
   }
 
   .benefit-card h3 {
-    font-size: 1.3rem;
+    font-size: 1.8rem;
     color: #333;
     margin-bottom: 10px;
   }
 
   .benefit-card p {
-    font-size: 0.95rem;
+    font-size: 1.3rem;
     color: #666;
     margin: 0;
   }

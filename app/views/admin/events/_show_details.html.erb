@@ -90,7 +90,7 @@
             <!-- Una sola imagen - mostrar grande -->
             <div class="flex items-center justify-center" style="height: 200px;">
               <%= image_tag event.imagen_principal, 
-                  class: "max-w-full max-h-full object-contain rounded-lg border" %>
+                  class: "max-w-full max-h-full object-contain rounded-lg border", loading: "lazy" %>
             </div>
           <% elsif event.images.count == 2 %>
             <!-- Dos imágenes - mostrar en grid 2x1 -->
@@ -98,7 +98,7 @@
               <% event.images.each_with_index do |image, index| %>
                 <div class="relative group cursor-pointer" onclick="openImageModal('<%= url_for(image) %>', '<%= event.titulo %>', <%= index + 1 %>)">
                   <%= image_tag image, 
-                      class: "w-full h-24 object-cover rounded-lg border hover:opacity-90 transition-opacity" %>
+                      class: "w-full h-24 object-cover rounded-lg border hover:opacity-90 transition-opacity", loading: "lazy" %>
                   <div class="absolute bottom-1 left-1">
                     <span class="bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded">
                       <%= index + 1 %>
@@ -114,7 +114,7 @@
               <% event.images.each_with_index do |image, index| %>
                 <div class="relative group cursor-pointer" onclick="openImageModal('<%= url_for(image) %>', '<%= event.titulo %>', <%= index + 1 %>)">
                   <%= image_tag image, 
-                      class: "w-full h-20 object-cover rounded-lg border hover:opacity-90 transition-opacity" %>
+                      class: "w-full h-20 object-cover rounded-lg border hover:opacity-90 transition-opacity", loading: "lazy" %>
                   <div class="absolute bottom-1 left-1">
                     <span class="bg-black bg-opacity-70 text-white text-xs px-1 py-0.5 rounded text-xs">
                       <%= index + 1 %>
@@ -255,34 +255,34 @@
 </div>
 
 <script>
-// Funciones para el modal de imágenes
-function openImageModal(imageUrl, eventTitle, imageNumber) {
-  const modal = document.getElementById('imageModal');
-  const modalImage = document.getElementById('modalImage');
-  const modalInfo = document.getElementById('modalImageInfo');
-  
-  if (modal && modalImage && modalInfo) {
-    modalImage.src = imageUrl;
-    modalImage.alt = `${eventTitle} - Imagen ${imageNumber}`;
-    modalInfo.innerHTML = `<strong>${eventTitle}</strong><br>Imagen ${imageNumber}`;
+  // Funciones para el modal de imágenes
+  function openImageModal(imageUrl, eventTitle, imageNumber) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalInfo = document.getElementById('modalImageInfo');
     
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+    if (modal && modalImage && modalInfo) {
+      modalImage.src = imageUrl;
+      modalImage.alt = `${eventTitle} - Imagen ${imageNumber}`;
+      modalInfo.innerHTML = `<strong>${eventTitle}</strong><br>Imagen ${imageNumber}`;
+      
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    }
   }
-}
 
-function closeImageModal() {
-  const modal = document.getElementById('imageModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
+  function closeImageModal() {
+    const modal = document.getElementById('imageModal');
+    if (modal) {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
   }
-}
 
-// Cerrar modal con ESC
-document.addEventListener('keydown', function(e) {
-  if (e.key === 'Escape') {
-    closeImageModal();
-  }
-});
+  // Cerrar modal con ESC
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      closeImageModal();
+    }
+  });
 </script>

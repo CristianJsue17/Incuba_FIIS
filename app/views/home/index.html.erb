@@ -1,4 +1,4 @@
-<!-- spll:disable CSS específicos para home -->
+<!-- sepll:disable CSS específicos para home -->
 <% content_for :stylesheets do %>
   <%= stylesheet_link_tag "background" %>
   <%= stylesheet_link_tag "home" %>
@@ -10,7 +10,7 @@
   <%= javascript_include_tag "enhanced_home", defer: true %>
   <%= javascript_include_tag "enhanced_header", defer: true %>
   <%= javascript_include_tag "carrusel_program", defer: true %>
-  <%= javascript_include_tag "timeline", defer: true %>
+  
   <%= javascript_include_tag "testimonials", defer: true %>
   <%= javascript_include_tag "footer", defer: true %>
   <%= javascript_include_tag "swiper-bundle.min", defer: true %>
@@ -32,7 +32,7 @@
           <a href="/" class="header__logo-link" aria-label="Ir al inicio">
             <!-- DIV SEPARADO PARA EL LOGO -->
             <div class="header__logo-container">
-              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+              <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy"  %>
             </div>
             <!-- DIV SEPARADO PARA EL TEXTO -->
             <div class="header__text-container">
@@ -67,10 +67,10 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                    <a href="eventos/#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                    <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
                   </li>
                   <li class="header__dropdown-item">
                     <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
@@ -85,16 +85,16 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                    <a href="/servicios/preincubacion" class="header__dropdown-link" role="menuitem">Preincubación</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
+                    <a href="/servicios/incubacion" class="header__dropdown-link" role="menuitem">Incubación</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                    <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
+                    <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
                   </li>
                 </ul>
               </div>
@@ -106,13 +106,13 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                    <a href="/about#nuestroEquipo" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
+                    <a href="/about#valores" class="header__dropdown-link" role="menuitem">Valores</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                    <a href="/about#nuestraHistoria" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
                   </li>
                 </ul>
               </div>
@@ -124,10 +124,10 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                    <a href="/mentores#unas" class="header__dropdown-link" role="menuitem">De la UNAS</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                    <a href="/mentores#instituciones" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
                   </li>
                 </ul>
               </div>
@@ -218,16 +218,16 @@
         
         <div class="hero__images animate-on-scroll">
           <div class="hero__image-container hero__image-container--1">
-            <%= image_tag "principal/startap1.jpg", alt: "Pedro - Testimonio de éxito", class: "hero__image", height: 280, width: 280 %>
+            <%= image_tag "principal/startap1.webp", alt: "Pedro - Testimonio de éxito", class: "hero__image", height: 280, width: 280, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--2">
-            <%= image_tag "principal/startap2.png", alt: "Melisa Zavala - Emprendedora exitosa", class: "hero__image", height: 240, width: 240 %>
+            <%= image_tag "principal/startap2.webp", alt: "Melisa Zavala - Emprendedora exitosa", class: "hero__image", height: 240, width: 240, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--3">
-            <%= image_tag "principal/startap3.jpg", alt: "Steven - Innovador destacado", class: "hero__image", height: 200, width: 200 %>
+            <%= image_tag "principal/startap3.webp", alt: "Steven - Innovador destacado", class: "hero__image", height: 200, width: 200, loading: "eager" %>
           </div>
           <div class="hero__image-container hero__image-container--4">
-            <%= image_tag "principal/startap4.jpg", alt: "Carlos Hidalgo - Mentor experto", class: "hero__image", height: 160, width: 160 %>
+            <%= image_tag "principal/startap4.webp", alt: "Carlos Hidalgo - Mentor experto", class: "hero__image", height: 160, width: 160, loading: "eager" %>
           </div>
         </div>
       </section>
@@ -274,37 +274,39 @@
   </div>
 </div>
 
-<!-- Sección Socios Estratégicos -->
+<!--spell:disable Sección Socios Estratégicos -->
 <section class="partners">
   <div class="partners__container">
     <h2 class="partners__title">Socios Estratégicos</h2>
     <div class="partners__carousel">
       <div class="partners__track">
+        <% logos = {
+          "aliados/CITE-agroindustrial.webp" => "Logo de CITE Agroindustrial",
+          "aliados/cite.webp" => "Logo del CITE",
+          "aliados/equipu_INCUBA_UNAS_0.webp" => "Logo de Equipu",
+          "aliados/Gobierno_Regional_Huanuco_INCUBA_UNAS_0.webp" => "Logo del Gobierno Regional de Huánuco",
+          "aliados/kunan_INCUBA_UNAS_0.webp" => "Logo de Kunan",
+          "aliados/madrid_INCUBA_UNAS.webp" => "Logo de Madrid",
+          "aliados/mentor_day_INCUBA_UNAS_0.webp" => "Logo de Mentor Day",
+          "aliados/ministerio del peru.webp" => "Logo del Ministerio del Perú",
+          "aliados/proinnovate.webp" => "Logo de ProInnóvate",
+          "aliados/red_impacto_INCUBA_UNAS_0.webp" => "Logo de Red Impacto",
+          "aliados/sao_paulo_INCUBA_UNAS.webp" => "Logo de Sao Paulo",
+          "aliados/start_global_INCUBA_UNAS_0.webp" => "Logo de Start Global",
+          "aliados/toilet_INCUBA_UNAS_0.webp" => "Logo de Toilet Board Coalition",
+          "aliados/universida_antofagasta_INCUBA_UNAS.webp" => "Logo de Universidad de Antofagasta",
+          "aliados/unsung_INCUBA_UNAS.webp" => "Logo de Unsung Heroes",
+          "aliados/wadhwani_INCUBA_UNAS.webp" => "Logo de Wadhwani Foundation"
+        } %>
+        
         <% 2.times do %> <!-- Repetimos dos veces los mismos logos -->
-          <% [
-            "aliados/CITE-agroindustrial.webp",
-            "aliados/cite.png",
-            "aliados/cite.png",
-            "aliados/equipu_INCUBA_UNAS_0.png",
-            "aliados/Gobierno_Regional_Huanuco_INCUBA_UNAS_0.png",
-            "aliados/kunan_INCUBA_UNAS_0.png",
-            "aliados/madrid_INCUBA_UNAS.png",
-            "aliados/mentor_day_INCUBA_UNAS_0.png",
-            "aliados/ministerio del peru.png",
-            "aliados/proinnovate.png",
-            "aliados/red_impacto_INCUBA_UNAS_0.png",
-            "aliados/sao_paulo_INCUBA_UNAS.png",
-            "aliados/start_global_INCUBA_UNAS_0.png",
-            "aliados/toilet_INCUBA_UNAS_0.png",
-            "aliados/universida_antofagasta_INCUBA_UNAS.png",
-            "aliados/unsung_INCUBA_UNAS.png",
-            "aliados/wadhwani_INCUBA_UNAS.png"
-          ].each do |logo| %>
+          <% logos.each do |path, alt_text| %>
             <div class="partners__item">
-              <%= image_tag logo, alt: "Socio Estratégico", class: "partners__logo" %>
+              <%= image_tag path, alt: alt_text, class: "partners__logo", loading: "lazy" %>
             </div>
           <% end %>
         <% end %>
+      
       </div>
     </div>
   </div>
@@ -330,7 +332,7 @@
               <% if programa.image.attached? %>
                 <%= image_tag programa.image, 
                     alt: programa.titulo, 
-                    class: "program-img" %>
+                    class: "program-img", loading: "lazy" %>
               <% else %>
                 <div class="program-placeholder">
                   <i class="fas fa-lightbulb"></i>
@@ -402,7 +404,7 @@
 
     <div class="testimonials__carousel">
       <button class="testimonials__nav testimonials__nav--prev" aria-label="Previous testimonial">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" role="img" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="15 18 9 12 15 6"></polyline>
         </svg>
       </button>
@@ -425,10 +427,10 @@
           </p>
           <p class="testimonial__author">KATRINA PARKER</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/pedro.png", alt: "Katrina Parker" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/pedro.webp", alt: "Katrina Parker" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
-
+        
         <!-- Testimonial 2 -->
         <div class="testimonial">
           <div class="testimonial__rating">
@@ -447,7 +449,7 @@
           </p>
           <p class="testimonial__author">JAMES WILSON</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/melisa_zavala.png", alt: "James Wilson" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/melisa_zavala.webp", alt: "James Wilson" , class: "testimonial__image" %>
           </div>
         </div>
 
@@ -468,7 +470,7 @@
           </p>
           <p class="testimonial__author">SOPHIA MARTINEZ</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/steven.png", alt: "Sophia Martinez" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/steven.webp", alt: "Sophia Martinez" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
 
@@ -489,13 +491,14 @@
           </p>
           <p class="testimonial__author">SOPHIA MARTINEZ</p>
           <div class="testimonial__avatar">
-            <%= image_tag "testimonios/carlos_hidalgo.png", alt: "Carlos Hidalgo" , class: "testimonial__image" %>
+            <%= image_tag "testimonios/carlos_hidalgo.webp", alt: "Carlos Hidalgo" , class: "testimonial__image", loading: "lazy" %>
           </div>
         </div>
+        
       </div>
 
       <button class="testimonials__nav testimonials__nav--next" aria-label="Next testimonial">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" role="img" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="9 18 15 12 9 6"></polyline>
         </svg>
       </button>
@@ -510,110 +513,7 @@
   </div>
 </section>
 
-<!-- Sección Timeline -->
-<section class="timeline-section">
-  <div class="timeline-section__container">
-    <h2 class="timeline-section__title">Nuestra Historia</h2>
 
-    <div class="timeline">
-      <div class="timeline__progress-bar">
-        <div class="timeline__progress-fill"></div>
-      </div>
-
-      <div class="timeline__items">
-        <!-- Punto 1 -->
-        <div class="timeline__item" data-year="2010">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2010</div>
-            <h3 class="timeline__title">Fundación</h3>
-            <p class="timeline__subtitle">Inicio de operaciones en un pequeño local</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Neque, sapiente!</p>
-              <ul>
-                <li>Establecimiento de la empresa</li>
-                <li>Desarrollo del primer prototipo</li>
-                <li>Obtención de financiamiento inicial</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 2 -->
-        <div class="timeline__item" data-year="2013">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2013</div>
-            <h3 class="timeline__title">Expansión Nacional</h3>
-            <p class="timeline__subtitle">Apertura de oficinas en 5 ciudades principales</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, officiis?</p>
-              <ul>
-                <li>Apertura de 5 nuevas oficinas</li>
-                <li>Contratación de 50 nuevos empleados</li>
-                <li>Lanzamiento de 3 nuevas líneas de productos</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 3 -->
-        <div class="timeline__item" data-year="2016">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2016</div>
-            <h3 class="timeline__title">Innovación Tecnológica</h3>
-            <p class="timeline__subtitle">Lanzamiento de nuestra plataforma digital</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Magnam, tempore.</p>
-              <ul>
-                <li>Desarrollo de plataforma digital propietaria</li>
-                <li>Implementación de inteligencia artificial en nuestros procesos</li>
-                <li>Obtención de 2 patentes tecnológicas</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 4 -->
-        <div class="timeline__item" data-year="2019">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2019</div>
-            <h3 class="timeline__title">Expansión Internacional</h3>
-            <p class="timeline__subtitle">Apertura de oficinas en 3 continentes</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sunt, eos.</p>
-              <ul>
-                <li>Apertura de oficinas en Madrid, Singapur y São Paulo</li>
-                <li>Adaptación de productos a mercados locales</li>
-                <li>Establecimiento de alianzas estratégicas internacionales</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <!-- Punto 5 -->
-        <div class="timeline__item" data-year="2022">
-          <div class="timeline__marker"></div>
-          <div class="timeline__content">
-            <div class="timeline__date">2022</div>
-            <h3 class="timeline__title">Sostenibilidad</h3>
-            <p class="timeline__subtitle">Implementación de iniciativas verdes</p>
-            <div class="timeline__details">
-              <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, qui?</p>
-              <ul>
-                <li>Certificación como empresa carbono neutral</li>
-                <li>Rediseño de productos con materiales sostenibles</li>
-                <li>Implementación de energías renovables en todas nuestras instalaciones</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- Sección Footer -->
 <footer class="footer">
@@ -633,25 +533,38 @@
         </p>
       </div>
 
-      <form class="footer__subscribe">
-        <input type="email" class="footer__input" placeholder="Enter email">
+      <form class="footer__subscribe" onsubmit="sendMail(event)">
+        <label for="emailInput" class="footer__label">Correo electrónico</label>
+        <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
+        
         <button type="submit" class="footer__button">
-          <i class="fas fa-arrow-right"></i>
-          Contacto
+          <i class="fas fa-arrow-right"></i> Contacto
         </button>
       </form>
 
+      <script>
+        function sendMail(event) {
+          event.preventDefault(); // evita que el formulario recargue la página
+          const email = document.getElementById('emailInput').value;
+          window.location.href = `mailto:incubaunas@unas.edu.pe?subject=Contacto&body=Correo del usuario: ${email}`;
+        }
+      </script>
+
+
+
       <div class="footer__social">
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-instagram'></i>
+        <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram">
+          <i class="fab fa-instagram" aria-hidden="true"></i>
         </a>
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-twitter'></i>
+        <a href="https://twitter.com" class="footer__social-link" aria-label="Twitter">
+          <i class="fab fa-twitter" aria-hidden="true"></i>
         </a>
-        <a href="#" class="footer__social-link">
-          <i class='fab fa-facebook'></i>
+        <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook">
+          <i class="fab fa-facebook" aria-hidden="true"></i>
         </a>
       </div>
+
+
     </div>
 
     <!-- Columnas de enlaces -->

@@ -6,24 +6,25 @@
   --azul: #000099;
   --azul-hover: #0000cc;
   --azul-claro: #3333ff;
-  --verde: #00CC66;
+  --verde: #00cc66;
   --verde-claro: #33ff99;
-  --blanco: #FFFFFF;
+  --blanco: #ffffff;
   --gris-claro: #f8f9fa;
   --gris-medio: #e9ecef;
-  --fondo: #F9FBFF;
+  --fondo: #f9fbff;
   --sombra: 0 10px 30px rgba(0, 0, 153, 0.08);
   --sombra-hover: 0 15px 35px rgba(0, 0, 153, 0.15);
   --transicion: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   --borde-radius: 16px;
   --borde-radius-sm: 8px;
-  --evento-color: #FF6B35; /* Color naranja para eventos */
+  --evento-color: #ff6b35; /* Color naranja para eventos */
   --evento-color-claro: rgba(255, 107, 53, 0.1);
   --evento-color-rgb: 255, 107, 53;
 }
 
 /* Reset básico */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -32,7 +33,7 @@ body, html {
   overflow-y: auto !important;
   background-color: var(--fondo);
   position: relative;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 /* Elementos decorativos de fondo */
@@ -92,7 +93,12 @@ body, html {
 
 .bg-line {
   position: absolute;
-  background: linear-gradient(90deg, rgba(0, 0, 153, 0) 0%, rgba(0, 0, 153, 0.1) 50%, rgba(0, 0, 153, 0) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 153, 0) 0%,
+    rgba(0, 0, 153, 0.1) 50%,
+    rgba(0, 0, 153, 0) 100%
+  );
   height: 1px;
   width: 100%;
 }
@@ -127,11 +133,11 @@ body, html {
   position: relative;
   overflow: hidden;
   margin-top: 40px;
-  background: linear-gradient(135deg, var(--evento-color), #E55100);
+  background: linear-gradient(135deg, var(--evento-color), #e55100);
 }
 
 .eventos-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -172,20 +178,20 @@ body, html {
   background: rgba(255, 255, 255, 0.2);
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 1.3rem;
   font-weight: 600;
   margin-bottom: 15px;
   letter-spacing: 1px;
 }
 
 .tipo-info h1 {
-  font-size: 2.8rem;
+  font-size: 3.5rem;
   margin: 0 0 15px;
   font-weight: 800;
 }
 
 .tipo-info p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   margin: 0;
   max-width: 600px;
   opacity: 0.9;
@@ -230,10 +236,10 @@ body, html {
 .estado-badge {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   padding: 6px 12px;
   border-radius: 20px;
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   font-weight: 600;
   color: white;
   text-transform: uppercase;
@@ -244,7 +250,7 @@ body, html {
 }
 
 .estado-badge i {
-  font-size: 0.8rem;
+  font-size: 1.5rem;
 }
 
 .evento-card:hover .estado-badge {
@@ -265,7 +271,11 @@ body, html {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5));
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.1),
+    rgba(0, 0, 0, 0.5)
+  );
   z-index: 1;
 }
 
@@ -288,17 +298,18 @@ body, html {
   color: #333;
   padding: 5px 12px;
   border-radius: 20px;
-  font-size: 0.8rem;
+  font-size: 1.1rem;
   font-weight: 600;
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .evento-fecha i {
   color: var(--evento-color);
+  font-size: 1.5rem;
 }
 
 .evento-content {
@@ -309,7 +320,7 @@ body, html {
 }
 
 .evento-content h2 {
-  font-size: 1.5rem;
+  font-size: 2.5rem;
   color: #333;
   margin: 0 0 15px;
   font-weight: 700;
@@ -322,7 +333,7 @@ body, html {
 }
 
 .evento-content p {
-  font-size: 1rem;
+  font-size: 1.5rem;
   color: #666;
   margin: 0 0 15px;
   line-height: 1.6;
@@ -335,14 +346,15 @@ body, html {
   padding: 8px 10px;
   background: #f8f9fa;
   border-radius: 6px;
-  font-size: 0.9rem;
+  font-size: 1.4rem;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .evento-encargado i {
   color: var(--evento-color);
+  font-size: 1.5rem;
 }
 
 /* Mensajes de disponibilidad */
@@ -350,7 +362,7 @@ body, html {
   margin: 15px 0;
   padding: 10px 12px;
   border-radius: 8px;
-  font-size: 0.85rem;
+  font-size: 1.5rem;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -391,14 +403,14 @@ body, html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 15px;
   background: #f5f5f5;
   color: #333;
   text-decoration: none;
   border-radius: 30px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   transition: var(--transicion);
   flex: 1;
 }
@@ -412,14 +424,14 @@ body, html {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   padding: 10px 15px;
   background: var(--evento-color);
   color: white;
   text-decoration: none;
   border-radius: 30px;
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   transition: var(--transicion);
   flex: 1;
   position: relative;
@@ -500,13 +512,13 @@ body, html {
 }
 
 .no-eventos h3 {
-  font-size: 1.8rem;
+  font-size: 2.8rem;
   color: #333;
   margin: 0 0 15px;
 }
 
 .no-eventos p {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: #666;
   max-width: 600px;
   margin: 0 auto 25px;
@@ -573,16 +585,16 @@ body, html {
     padding: 30px;
     text-align: center;
   }
-  
+
   .tipo-icono {
     margin-right: 0;
     margin-bottom: 20px;
   }
-  
+
   .tipo-info h1 {
     font-size: 2.2rem;
   }
-  
+
   .eventos-grid {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   }
@@ -592,43 +604,43 @@ body, html {
   .eventos-header {
     padding: 25px;
   }
-  
+
   .tipo-icono {
     width: 80px;
     height: 80px;
   }
-  
+
   .tipo-icono i {
     font-size: 2.2rem;
   }
-  
+
   .tipo-info h1 {
     font-size: 1.8rem;
   }
-  
+
   .tipo-info p {
     font-size: 1rem;
   }
-  
+
   .evento-content {
     padding: 20px;
   }
-  
+
   .evento-actions {
     flex-direction: column;
   }
-  
+
   .estado-badge {
     font-size: 0.7rem;
     padding: 4px 8px;
     gap: 3px;
   }
-  
+
   .evento-fecha {
     top: 50px !important;
     font-size: 0.8rem;
   }
-  
+
   .disponibilidad-info {
     font-size: 0.8rem;
     padding: 8px 10px;
@@ -639,24 +651,24 @@ body, html {
   .eventos-header {
     padding: 20px;
   }
-  
+
   .tipo-icono {
     width: 60px;
     height: 60px;
   }
-  
+
   .tipo-icono i {
     font-size: 1.8rem;
   }
-  
+
   .tipo-info h1 {
     font-size: 1.6rem;
   }
-  
+
   .tipo-info p {
     font-size: 0.9rem;
   }
-  
+
   .eventos-grid {
     grid-template-columns: 1fr;
   }
@@ -689,7 +701,11 @@ body, html {
   text-align: center;
   margin-bottom: 40px;
   padding: 30px 20px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(248, 250, 252, 0.9)
+  );
   border-radius: var(--borde-radius);
   box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
   backdrop-filter: blur(10px);
@@ -699,25 +715,34 @@ body, html {
 }
 
 .section-header::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 3px;
-  background: linear-gradient(90deg, transparent, var(--section-color, #059669), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--section-color, #059669),
+    transparent
+  );
   opacity: 0.7;
 }
 
 .section-header h2 {
-  font-size: 2.4rem;
+  font-size: 3.5rem;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 15px;
   font-weight: 800;
-  background: linear-gradient(135deg, var(--section-color, #059669), var(--section-color-dark, #047857));
+  background: linear-gradient(
+    135deg,
+    var(--section-color, #059669),
+    var(--section-color-dark, #047857)
+  );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -734,13 +759,13 @@ body, html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  font-size: 2.2rem;
+  font-size: 2.5rem;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .section-header p {
   color: #64748b;
-  font-size: 1.2rem;
+  font-size: 1.8rem;
   max-width: 700px;
   margin: 0 auto;
   line-height: 1.6;
@@ -757,7 +782,11 @@ body, html {
 }
 
 .eventos-section:nth-child(1) .section-header {
-  background: linear-gradient(135deg, rgba(5, 150, 105, 0.1), rgba(16, 185, 129, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(5, 150, 105, 0.1),
+    rgba(16, 185, 129, 0.05)
+  );
   border-color: rgba(5, 150, 105, 0.2);
 }
 
@@ -781,7 +810,11 @@ body, html {
 }
 
 .eventos-section:nth-child(2) .section-header {
-  background: linear-gradient(135deg, rgba(217, 119, 6, 0.1), rgba(251, 191, 36, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(217, 119, 6, 0.1),
+    rgba(251, 191, 36, 0.05)
+  );
   border-color: rgba(217, 119, 6, 0.2);
 }
 
@@ -805,7 +838,11 @@ body, html {
 }
 
 .eventos-section:nth-child(3) .section-header {
-  background: linear-gradient(135deg, rgba(107, 114, 128, 0.1), rgba(156, 163, 175, 0.05));
+  background: linear-gradient(
+    135deg,
+    rgba(107, 114, 128, 0.1),
+    rgba(156, 163, 175, 0.05)
+  );
   border-color: rgba(107, 114, 128, 0.2);
 }
 
@@ -831,7 +868,7 @@ body, html {
 }
 
 .eventos-section:nth-child(3) .evento-card::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -850,11 +887,16 @@ body, html {
 
 /* Separadores entre secciones */
 .eventos-section:not(:last-child)::after {
-  content: '';
+  content: "";
   display: block;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(203, 213, 225, 0.5), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(203, 213, 225, 0.5),
+    transparent
+  );
   margin: 40px 0 0;
 }
 
@@ -889,21 +931,21 @@ body, html {
   .eventos-section {
     margin-bottom: 60px;
   }
-  
+
   .section-header {
     padding: 25px 15px;
     margin-bottom: 30px;
   }
-  
+
   .section-header h2 {
     font-size: 2rem;
     gap: 12px;
   }
-  
+
   .section-header h2 i {
     font-size: 1.8rem;
   }
-  
+
   .section-header p {
     font-size: 1.1rem;
   }
@@ -913,27 +955,27 @@ body, html {
   .eventos-section {
     margin-bottom: 50px;
   }
-  
+
   .section-header {
     padding: 20px 15px;
     margin-bottom: 25px;
   }
-  
+
   .section-header h2 {
     font-size: 1.8rem;
     gap: 10px;
     flex-direction: column;
     text-align: center;
   }
-  
+
   .section-header h2 i {
     font-size: 1.6rem;
   }
-  
+
   .section-header p {
     font-size: 1rem;
   }
-  
+
   .event-count {
     margin-left: 0 !important;
     margin-top: 5px;
@@ -944,11 +986,11 @@ body, html {
   .section-header h2 {
     font-size: 1.6rem;
   }
-  
+
   .section-header h2 i {
     font-size: 1.4rem;
   }
-  
+
   .section-header p {
     font-size: 0.95rem;
   }

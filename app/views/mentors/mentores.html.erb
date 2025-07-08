@@ -38,7 +38,7 @@
           <a href="/" class="header__logo-link" aria-label="Ir al inicio">
             <!-- DIV SEPARADO PARA EL LOGO -->
             <div class="header__logo-container">
-              <%= image_tag "logo-incuba.png", alt: "Logo Incuba UNAS", class: "header__logo-img" %>
+              <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy" %>
             </div>
             <!-- DIV SEPARADO PARA EL TEXTO -->
             <div class="header__text-container">
@@ -72,15 +72,15 @@
               <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
-                  </li>
+                    <li class="header__dropdown-item">
+                        <a href="eventos/#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
+                    </li>
                 </ul>
               </div>
             </li>
@@ -90,18 +90,18 @@
               <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Preincubación</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Incubación</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Open Innovation</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otros</a>
-                  </li>
+                    <li class="header__dropdown-item">
+                        <a href="/servicios/preincubacion" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="/servicios/incubacion" class="header__dropdown-link" role="menuitem">Incubación</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
+                    </li>
                 </ul>
               </div>
             </li>
@@ -111,15 +111,15 @@
               <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Misión y Visión</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
-                  </li>
+                    <li class="header__dropdown-item">
+                        <a href="/about#nuestroEquipo" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="/about#valores" class="header__dropdown-link" role="menuitem">Valores</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="/about#nuestraHistoria" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                    </li>
                 </ul>
               </div>
             </li>
@@ -130,10 +130,10 @@
               <div class="header__dropdown" role="menu">
                 <ul class="header__dropdown-menu">
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                    <a href="#unas" class="header__dropdown-link" role="menuitem">De la UNAS</a>
                   </li>
                   <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                    <a href="#instituciones" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
                   </li>
                 </ul>
               </div>
@@ -177,19 +177,123 @@
         </button>
       </div>
     </header>
-
+      
     <main>
-
+        <div id="unas"></div>
         <section class="mentores">
-            <h2 class="mentores__title">MENTORES</h2>
+            <h2 class="mentores__title">MENTORES UNAS</h2>
         
+            <div class="mentores__grid">
+                
+                <!-- Mentor Card 1 -->
+                <div class="mentor-card">
+                    <div class="mentor-card__inner">
+                        <div class="mentor-card__front">
+                            <div class="mentor-card__image-container">
+                                <%= image_tag "mentores/miguel segura.webp", alt: "Miguel Segura", class: "mentor-card__image", loading: "lazy" %>
+                            </div>
+                            <div class="mentor-card__info">
+                                <h3 class="mentor-card__name">Miguel Segura</h3>
+                                <p class="mentor-card__role">Ing. Mecánico Electricista</p>
+                            </div>
+                        </div>
+                        <div class="mentor-card__back">
+                            <h3 class="mentor-card__name">Miguel Segura</h3>
+                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus, totam!</p>
+                            <div class="mentor-card__social">
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-stack-overflow'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Mentor Card 2 -->
+                <div class="mentor-card">
+                    <div class="mentor-card__inner">
+                        <div class="mentor-card__front">
+                            <div class="mentor-card__image-container">
+                                <%= image_tag "mentores/cinthia varela.jpeg", alt: "Cinthia Varela", class: "mentor-card__image", loading: "lazy" %>
+                            </div>
+                            <div class="mentor-card__info">
+                                <h3 class="mentor-card__name">Cinthia Varela</h3>
+                                <p class="mentor-card__role">Data Science</p>
+                            </div>
+                        </div>
+                        <div class="mentor-card__back">
+                            <h3 class="mentor-card__name">Cinthia Varela</h3>
+                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis, veritatis.</p>
+                            <div class="mentor-card__social">
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-youtube'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Mentor Card 3 -->
+                <div class="mentor-card">
+                    <div class="mentor-card__inner">
+                        <div class="mentor-card__front">
+                            <div class="mentor-card__image-container">
+                                <%= image_tag "mentores/rannoverg yanac.webp", alt: "Rannoverg Yanac", class: "mentor-card__image", loading: "lazy" %>
+                            </div>
+                            <div class="mentor-card__info">
+                                <h3 class="mentor-card__name">Rannoverg Yanac</h3>
+                                <p class="mentor-card__role">Ing. en Informática y Sistemas</p>
+                            </div>
+                        </div>
+                        <div class="mentor-card__back">
+                            <h3 class="mentor-card__name">Rannoverg Yanac</h3>
+                            <p class="mentor-card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, natus.</p>
+                            <div class="mentor-card__social">
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-instagram-alt'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+                <!-- Mentor Card 4 -->
+                <div class="mentor-card">
+                    <div class="mentor-card__inner">
+                        <div class="mentor-card__front">
+                            <div class="mentor-card__image-container">
+                                <%= image_tag "mentores/Yessenia Saavedra.webp", alt: "Yessenia Saavedra", class: "mentor-card__image", loading: "lazy" %>
+                            </div>
+                            <div class="mentor-card__info">
+                                <h3 class="mentor-card__name">Yessenia Saavedra</h3>
+                                <p class="mentor-card__role">Especialista de Innovación en CITEagroindustrial HUALLAGA</p>
+                            </div>
+                        </div>
+                        <div class="mentor-card__back">
+                            <h3 class="mentor-card__name">Yessenia Saavedra</h3>
+                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <div class="mentor-card__social">
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
+                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-twitter'></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        
+            </div>
+            
+
+            <div id="instituciones"> </div>
+            <h2 class="mentores__title">MENTORES DE OTRAS INSTITUCIONES</h2>
+
             <div class="mentores__grid">
                 <!-- Mentor Card 1 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/guisela carbajal.png", alt: "Guisela Carbajal", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/guisela carbajal.webp", alt: "Guisela Carbajal", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Guisela Carbajal</h3>
@@ -213,7 +317,7 @@
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/julio guere.png", alt: "Julio Guere", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/julio guere.webp", alt: "Julio Guere", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Julio Guere</h3>
@@ -231,85 +335,13 @@
                         </div>
                     </div>
                 </div>
-        
+                
                 <!-- Mentor Card 3 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/miguel segura.png", alt: "Miguel Segura", class: "mentor-card__image" %>
-                            </div>
-                            <div class="mentor-card__info">
-                                <h3 class="mentor-card__name">Miguel Segura</h3>
-                                <p class="mentor-card__role">Ing. Mecánico Electricista</p>
-                            </div>
-                        </div>
-                        <div class="mentor-card__back">
-                            <h3 class="mentor-card__name">Miguel Segura</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus, totam!</p>
-                            <div class="mentor-card__social">
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-stack-overflow'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Mentor Card 4 -->
-                <div class="mentor-card">
-                    <div class="mentor-card__inner">
-                        <div class="mentor-card__front">
-                            <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/cinthia varela.jpeg", alt: "Cinthia Varela", class: "mentor-card__image" %>
-                            </div>
-                            <div class="mentor-card__info">
-                                <h3 class="mentor-card__name">Cinthia Varela</h3>
-                                <p class="mentor-card__role">Data Science</p>
-                            </div>
-                        </div>
-                        <div class="mentor-card__back">
-                            <h3 class="mentor-card__name">Cinthia Varela</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis, veritatis.</p>
-                            <div class="mentor-card__social">
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-youtube'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Mentor Card 5 -->
-                <div class="mentor-card">
-                    <div class="mentor-card__inner">
-                        <div class="mentor-card__front">
-                            <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/rannoverg yanac.png", alt: "Rannoverg Yanac", class: "mentor-card__image" %>
-                            </div>
-                            <div class="mentor-card__info">
-                                <h3 class="mentor-card__name">Rannoverg Yanac</h3>
-                                <p class="mentor-card__role">Ing. en Informática y Sistemas</p>
-                            </div>
-                        </div>
-                        <div class="mentor-card__back">
-                            <h3 class="mentor-card__name">Rannoverg Yanac</h3>
-                            <p class="mentor-card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, natus.</p>
-                            <div class="mentor-card__social">
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-instagram-alt'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Mentor Card 6 -->
-                <div class="mentor-card">
-                    <div class="mentor-card__inner">
-                        <div class="mentor-card__front">
-                            <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/olga timoteo.png", alt: "Olga Timoteo", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/olga timoteo.webp", alt: "Olga Timoteo", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Olga Timoteo</h3>
@@ -328,12 +360,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 7 -->
+                <!-- Mentor Card 4 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                               <%= image_tag "mentores/jaime cavero.png", alt: "Jaime Cavero", class: "mentor-card__image" %>
+                               <%= image_tag "mentores/jaime cavero.webp", alt: "Jaime Cavero", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Jaime Cavero</h3>
@@ -352,12 +384,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 8 -->
+                <!-- Mentor Card 5 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Hongsung Yoo.png", alt: "Hongsung Yoo", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Hongsung Yoo.webp", alt: "Hongsung Yoo", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Hongsung Yoo</h3>
@@ -376,36 +408,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 9 -->
+                <!-- Mentor Card 6 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Yessenia Saavedra.png", alt: "Yessenia Saavedra", class: "mentor-card__image" %>
-                            </div>
-                            <div class="mentor-card__info">
-                                <h3 class="mentor-card__name">Yessenia Saavedra</h3>
-                                <p class="mentor-card__role">Especialista de Innovación en CITEagroindustrial HUALLAGA</p>
-                            </div>
-                        </div>
-                        <div class="mentor-card__back">
-                            <h3 class="mentor-card__name">Yessenia Saavedra</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
-                            <div class="mentor-card__social">
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
-                                <a href="#" class="mentor-card__social-link"><i class='bx bxl-twitter'></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        
-                <!-- Mentor Card 10 -->
-                <div class="mentor-card">
-                    <div class="mentor-card__inner">
-                        <div class="mentor-card__front">
-                            <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Dennys Pereyra.png", alt: "Dennys Pereyra", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Dennys Pereyra.webp", alt: "Dennys Pereyra", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Dennys Pereyra</h3>
@@ -424,12 +432,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 11 -->
+                <!-- Mentor Card 7 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Cinthia Kuo.png", alt: "Cinthia Kuo", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Cinthia Kuo.webp", alt: "Cinthia Kuo", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Cinthia Kuo</h3>
@@ -448,12 +456,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 12 -->
+                <!-- Mentor Card 8 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Evelyn Ramos.png", alt: "Evelyn Ramos", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Evelyn Ramos.webp", alt: "Evelyn Ramos", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Evelyn Ramos</h3>
@@ -472,12 +480,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 13 -->
+                <!-- Mentor Card 9 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Ronald Barzola.png", alt: "Ronald Barzola", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Ronald Barzola.webp", alt: "Ronald Barzola", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Ronald Barzola</h3>
@@ -496,12 +504,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 14 -->
+                <!-- Mentor Card 10 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Clarissa Victorio.png", alt: "Clarissa Victorio", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Clarissa Victorio.webp", alt: "Clarissa Victorio", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Clarissa Victorio</h3>
@@ -520,12 +528,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 15 -->
+                <!-- Mentor Card 11 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/María Cueva.png", alt: "María Cueva", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/María Cueva.webp", alt: "María Cueva", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">María Cueva</h3>
@@ -544,12 +552,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 16 -->
+                <!-- Mentor Card 12 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Estrella Aco.png", alt: "Estrella Aco", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Estrella Aco.webp", alt: "Estrella Aco", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Estrella Aco</h3>
@@ -568,12 +576,12 @@
                     </div>
                 </div>
         
-                <!-- Mentor Card 17 -->
+                <!-- Mentor Card 13 -->
                 <div class="mentor-card">
                     <div class="mentor-card__inner">
                         <div class="mentor-card__front">
                             <div class="mentor-card__image-container">
-                                <%= image_tag "mentores/Michell Anyosa.png", alt: "Michell Anyosa", class: "mentor-card__image" %>
+                                <%= image_tag "mentores/Michell Anyosa.webp", alt: "Michell Anyosa", class: "mentor-card__image", loading: "lazy" %>
                             </div>
                             <div class="mentor-card__info">
                                 <h3 class="mentor-card__name">Michell Anyosa</h3>
@@ -592,9 +600,8 @@
                     </div>
                 </div>
             </div>
+
         </section>
-
-
 
         <footer class="footer">
             <div class="footer__decoration footer__decoration--top-left"></div>
