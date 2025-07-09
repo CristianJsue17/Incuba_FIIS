@@ -97,7 +97,7 @@ img {
 }
 
 i {
-  font-size: 20px;
+  font-size: 14px;
 }
 
 /* Main content para que no se superponga con el header fijo */
@@ -115,6 +115,7 @@ i {
 /* Contact Section */
 .contact {
   padding: 5rem 1rem;
+  background: linear-gradient(50deg, #f8fafc 0%, #e2e8f0 100%);
 }
 
 .contact__container {
@@ -527,8 +528,9 @@ i {
   }
 
   .contact__detail-item {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
+    gap: 2rem;
   }
 
   .contact__icon-wrapper {
@@ -938,7 +940,7 @@ i {
 }
 
 .map-section__title {
-  font-size: 2.5rem;
+  font-size: 4rem;
   color: var(--color-primary);
   margin-bottom: 1rem;
   font-weight: 700;
@@ -961,7 +963,7 @@ i {
 }
 
 .map-section__subtitle {
-  font-size: 1.1rem;
+  font-size: 1.5rem;
   color: #64748b;
   max-width: 600px;
   margin: 0 auto;

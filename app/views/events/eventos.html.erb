@@ -30,22 +30,9 @@
 
    <nav class="header__nav" role="navigation" aria-label="Navegación principal">
      <ul class="header__menu">
-       <li class="header__menu-item header__menu-item--has-dropdown">
-         <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
-         <div class="header__dropdown" role="menu">
-           <ul class="header__dropdown-menu">
-             <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
-             </li>
-             <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
-             </li>
-             <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
-             </li>
-           </ul>
-         </div>
-       </li>
+      <li class="header__menu-item header__menu-item--has-dropdown">
+        <%= link_to t('navigation.programas'), programas_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+      </li>
        <!-- EVENTOS -->
        <li class="header__menu-item header__menu-item--has-dropdown">
          <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
@@ -56,9 +43,6 @@
              </li>
              <li class="header__dropdown-item">
                <a href="#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
-             </li>
-             <li class="header__dropdown-item">
-               <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
              </li>
            </ul>
          </div>
@@ -78,7 +62,7 @@
               <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
             </li>
             <li class="header__dropdown-item">
-              <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
+              <a href="servicios/#otrosSection" class="header__dropdown-link" role="menuitem">Otros</a>
             </li>
            </ul>
          </div>
@@ -129,6 +113,7 @@
           class="header__action-btn header__action-btn--login"
           data-turbo="false"
           aria-label="<%= t('navigation.iniciar_sesion') %>">
+          <i class="fa-solid fa-user"></i>
        </a>
        <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
      </div>
@@ -570,13 +555,14 @@
                </p>
            </div>
 
-           <form class="footer__subscribe">
-               <input type="email" class="footer__input" placeholder="Enter email">
-               <button type="submit" class="footer__button">
-                   <i class="fas fa-arrow-right"></i>
-                   Contacto
-               </button>
-           </form>
+           <form class="footer__subscribe" onsubmit="sendMail(event)">
+            <label for="emailInput" class="footer__label">Correo electrónico</label>
+            <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
+            
+            <button type="submit" class="footer__button">
+              <i class="fas fa-arrow-right"></i> Contacto
+            </button>
+          </form>
 
            <div class="footer__social">
                <a href="#" class="footer__social-link">

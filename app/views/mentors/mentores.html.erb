@@ -51,20 +51,7 @@
           <ul class="header__menu">
             <!-- PROGRAMAS -->
             <li class="header__menu-item header__menu-item--has-dropdown">
-              <a href="#" class="header__menu-link"><%= t('navigation.programas') %></a>
-              <div class="header__dropdown" role="menu">
-                <ul class="header__dropdown-menu">
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Nuestros Programas</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Convocatorias</a>
-                  </li>
-                  <li class="header__dropdown-item">
-                    <a href="#" class="header__dropdown-link" role="menuitem">Startup Culminados</a>
-                  </li>
-                </ul>
-              </div>
+                <%= link_to t('navigation.programas'), programas_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
             </li>
 
             <!-- EVENTOS -->
@@ -77,9 +64,6 @@
                     </li>
                     <li class="header__dropdown-item">
                         <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
-                    </li>
-                    <li class="header__dropdown-item">
-                        <a href="#" class="header__dropdown-link" role="menuitem">Noticias</a>
                     </li>
                 </ul>
               </div>
@@ -100,7 +84,7 @@
                         <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
                     </li>
                     <li class="header__dropdown-item">
-                        <a href="" class="header__dropdown-link" role="menuitem">Otros</a>
+                        <a href="servicios/#otrosSection" class="header__dropdown-link" role="menuitem">Otros</a>
                     </li>
                 </ul>
               </div>
@@ -157,6 +141,7 @@
                class="header__action-btn header__action-btn--login"
                data-turbo="false"
                aria-label="<%= t('navigation.iniciar_sesion') %>">
+               <i class="fa-solid fa-user"></i>
             </a>
             <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
           </div>
@@ -199,7 +184,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Miguel Segura</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Minus, totam!</p>
+                            <p class="mentor-card__description">
+                                Ingeniero con amplia experiencia en proyectos de innovación tecnológica, Miguel asesora a startups universitarias en el desarrollo de soluciones energéticas sostenibles y la aplicación de ingeniería mecánica en entornos emprendedores.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -223,7 +210,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Cinthia Varela</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Facilis, veritatis.</p>
+                            <p class="mentor-card__description">
+                                Especialista en ciencia de datos aplicada a negocios emergentes, Cinthia guía a startups en el uso de inteligencia artificial y análisis predictivo para impulsar decisiones estratégicas basadas en datos.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -247,7 +236,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Rannoverg Yanac</h3>
-                            <p class="mentor-card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, natus.</p>
+                            <p class="mentor-card__description">
+                                Ingeniero con experiencia en desarrollo de software y arquitectura de sistemas, Rannoverg asesora a startups tecnológicas en la implementación de soluciones escalables y en la adopción de buenas prácticas en ingeniería de software.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -271,7 +262,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Yessenia Saavedra</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Con amplia experiencia en el impulso de la innovación agroindustrial, Yessenia asesora a emprendedores en el desarrollo de productos sostenibles, fortaleciendo la articulación entre tecnología, valor agregado y el sector rural.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -302,7 +295,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Guisela Carbajal</h3>
-                            <p class="mentor-card__description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis, optio.</p>
+                            <p class="mentor-card__description">
+                                Ingeniera Agroindustrial con sólida experiencia en gestión de proyectos de I+D+i+e, Guisela impulsa la innovación tecnológica en el sector agroalimentario, apoyando a startups en el diseño de productos sostenibles y con alto valor agregado.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -326,7 +321,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Julio Guere</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat, fugiat!</p>
+                            <p class="mentor-card__description">    
+                                Profesional con experiencia en formulación, ejecución y acompañamiento de proyectos agroindustriales, Julio brinda mentoría estratégica a emprendedores para fortalecer la gestión, sostenibilidad e innovación en iniciativas del sector productivo.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -350,7 +347,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Olga Timoteo</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Especialista en investigación, desarrollo e innovación, Olga acompaña a equipos emprendedores en la gestión de ideas innovadoras, articulando estrategias de valor para transformar proyectos en soluciones sostenibles con impacto real.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -374,7 +373,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Jaime Cavero</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Con amplia trayectoria en el ecosistema emprendedor, Jaime asesora e invierte en startups con alto potencial de crecimiento, guiando a los equipos fundadores en la validación de modelos de negocio, escalabilidad y acceso a capital.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -398,7 +399,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Hongsung Yoo</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Inversor internacional comprometido con el crecimiento del emprendimiento, Hongsung Yoo apoya a startups en etapas tempranas, ofreciendo mentoría estratégica y conexiones clave para su expansión en mercados globales.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -422,7 +425,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Dennys Pereyra</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Consultor especializado en agronegocios y gestión de proyectos, Dennys acompaña a emprendedores en la formulación, ejecución y evaluación de iniciativas productivas sostenibles, fortaleciendo la innovación y el desarrollo rural.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -446,7 +451,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Cinthia Kuo</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                With extensive experience in intellectual property and innovation strategy, Cinthia advises startups and entrepreneurs on how to protect and leverage their intangible assets to enhance competitiveness and market expansion.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -470,7 +477,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Evelyn Ramos</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Fundadora de EVAND'S y apasionada por la investigación nutricional, Evelyn impulsa proyectos innovadores que promueven la alimentación saludable, combinando ciencia, emprendimiento y bienestar en productos con impacto social positivo.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -494,7 +503,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Ronald Barzola</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Especialista en transformación digital con enfoque en emprendimiento e innovación, Ronald acompaña a startups en la adopción de tecnologías disruptivas. Como ex becario de YLAI y ProInnóvate, aporta una visión global y estratégica al ecosistema emprendedor.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -518,7 +529,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Clarissa Victorio</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Máster en Marketing Digital y Dirección Comercial, Clarissa asesora a emprendimientos en la creación de estrategias de posicionamiento, comunicación efectiva y desarrollo comercial, impulsando marcas con enfoque en el entorno digital.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -542,7 +555,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">María Cueva</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Profesional en Ingeniería Empresarial con sólida experiencia en gestión de talento y el sector asegurador, María brinda mentoría en el desarrollo organizacional, liderazgo estratégico y planificación empresarial orientada al crecimiento sostenible.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -566,7 +581,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Estrella Aco</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                Con formación en alta dirección y gestión turística, Estrella asesora a emprendedores en el desarrollo de modelos de negocio sostenibles, liderazgo estratégico y mejora de experiencias en el sector servicios y turismo.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -590,7 +607,9 @@
                         </div>
                         <div class="mentor-card__back">
                             <h3 class="mentor-card__name">Michell Anyosa</h3>
-                            <p class="mentor-card__description">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Dolorem, ea!</p>
+                            <p class="mentor-card__description">
+                                MsC y MBA con sólida trayectoria en liderazgo empresarial, Michell es coach fundador y gerente de innovación, acompañando a startups en el desarrollo de modelos de negocio disruptivos, estrategias ágiles y crecimiento sostenible en entornos altamente competitivos.
+                            </p>
                             <div class="mentor-card__social">
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-linkedin-square'></i></a>
                                 <a href="#" class="mentor-card__social-link"><i class='bx bxl-github'></i></a>
@@ -620,11 +639,12 @@
                         </p>
                     </div>
 
-                    <form class="footer__subscribe">
-                        <input type="email" class="footer__input" placeholder="Enter email">
+                    <form class="footer__subscribe" onsubmit="sendMail(event)">
+                        <label for="emailInput" class="footer__label">Correo electrónico</label>
+                        <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
+                        
                         <button type="submit" class="footer__button">
-                            <i class="fas fa-arrow-right"></i>
-                            Suscribete
+                        <i class="fas fa-arrow-right"></i> Contacto
                         </button>
                     </form>
 

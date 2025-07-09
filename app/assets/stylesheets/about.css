@@ -220,11 +220,20 @@
   }
 
   .about__title {
-    font-size: 1.8rem;
+    font-size: 3.7rem;
   }
 
   .about__section {
     margin-bottom: 50px;
+  }
+
+  .about__section--vision .about__content-wrapper{
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .about__vertical-title h2{
+    font-size: 4rem;
   }
 
   .about__vertical-title {
@@ -237,10 +246,20 @@
 
   .about__text-content {
     padding: 20px 15px;
+    text-align: center;
   }
 
   .about__image-grid {
     min-height: 200px;
+  }
+
+  .card-group{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .timeline{
+    margin: 5rem 0;
   }
 }
 

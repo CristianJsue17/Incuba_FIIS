@@ -1,2 +1,1531 @@
-<h1>Programs#index</h1>
-<p>Find me in app/views/programs/index.html.erb</p>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Programas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- sepll:disable CSS específicos para home -->
+    <% content_for :stylesheets do %>
+        <%= stylesheet_link_tag "background" %>
+        <%= stylesheet_link_tag "home" %>
+    <% end %>
+
+    <!-- JavaScript específicos para home -->
+    <% content_for :scripts do %>
+        <%= javascript_include_tag "enhanced_home", defer: true %>
+        <%= javascript_include_tag "enhanced_header", defer: true %>
+        
+        <%= javascript_include_tag "footer", defer: true %>
+    <% end %>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            min-height: 100vh;
+        }
+
+        .portfolio-section {
+            padding: 80px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            background: var(--color-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .section-subtitle {
+            font-size: 1.6rem;
+            color: #718096;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .programs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .program-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .program-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .program-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .program-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .program-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 20px;
+        }
+
+        .program-logo {
+            width: 95px;
+            height: 95px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            color: white;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .program-card:hover .program-logo {
+            transform: rotate(0deg) scale(1.1);
+        }
+
+        .organicglob .program-logo {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+        }
+
+        .delisetas .program-logo {
+            background: linear-gradient(135deg, #ed8936, #dd6b20);
+        }
+
+        .smart-musa .program-logo {
+            background: linear-gradient(135deg, #4299e1, #3182ce);
+        }
+
+        .ecoflame .program-logo {
+            background: linear-gradient(135deg, #f56565, #e53e3e);
+        }
+
+        .program-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+
+        .program-category {
+            font-size: 1rem;
+            color: #718096;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .program-description {
+            color: #4a5568;
+            font-size: 1.5rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            justify-content: start;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .social-link {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(135deg, #3b82f6, #10b981);
+        }
+
+        .social-link:hover {
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .program-card {
+            animation: fadeInUp 0.6s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .program-card:nth-child(1) { animation-delay: 0.1s; }
+        .program-card:nth-child(2) { animation-delay: 0.2s; }
+        .program-card:nth-child(3) { animation-delay: 0.3s; }
+        .program-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @media (max-width: 1200px) {
+            .programs-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .portfolio-section {
+                padding: 60px 15px;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .programs-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .program-card {
+                padding: 30px 25px;
+            }
+
+            .program-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+
+            .program-logo {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+
+            .program-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .program-card {
+                padding: 25px 20px;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.42);
+            }
+
+            .social-link{
+                font-size: 1.6rem;
+            }
+
+            .program-description{
+                font-size: 1.4rem;
+            }
+        }
+
+        /* Efectos adicionales */
+        .program-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .program-card:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+<!-- Header reestructurado con dropdowns completos -->
+    <header class="header" role="banner">
+    <div class="header__container">
+        <div class="header__logo">
+        <a href="/" class="header__logo-link" aria-label="Ir al inicio">
+            <!-- DIV SEPARADO PARA EL LOGO -->
+            <div class="header__logo-container">
+            <%= image_tag "logo-incuba.webp", alt: "Logo Incuba UNAS", class: "header__logo-img", loading: "lazy"  %>
+            </div>
+            <!-- DIV SEPARADO PARA EL TEXTO -->
+            <div class="header__text-container">
+            <span class="header__logo-text">INCUBA UNAS</span>
+            </div>
+        </a>
+        </div>
+
+        <nav class="header__nav" role="navigation" aria-label="Navegación principal">
+        <ul class="header__menu">
+            <!-- PROGRAMAS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+                <%= link_to t('navigation.programas'), programas_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+            </li>
+
+            <!-- EVENTOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+            <%= link_to t('navigation.eventos'), eventos_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+            <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                    <li class="header__dropdown-item">
+                        <a href="eventos/#proximosEventos" class="header__dropdown-link" role="menuitem">Próximos Eventos</a>
+                    </li>
+                    <li class="header__dropdown-item">
+                        <a href="eventos/#eventosPasados" class="header__dropdown-link" role="menuitem">Eventos Pasados</a>
+                    </li>
+                </ul>
+            </div>
+            </li>
+
+            <!-- SERVICIOS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+            <%= link_to t('navigation.servicios'), servicios_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+            <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                <li class="header__dropdown-item">
+                    <a href="/servicios/preincubacion" class="header__dropdown-link" role="menuitem">Preincubación</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="/servicios/incubacion" class="header__dropdown-link" role="menuitem">Incubación</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="/servicios/innovacion" class="header__dropdown-link" role="menuitem">Open Innovation</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="servicios/#otrosSection" class="header__dropdown-link" role="menuitem">Otros</a>
+                </li>
+                </ul>
+            </div>
+            </li>
+
+            <!-- NOSOTROS -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+            <%= link_to t('navigation.nosotros'), about_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+            <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                <li class="header__dropdown-item">
+                    <a href="/about#nuestroEquipo" class="header__dropdown-link" role="menuitem">Nuestro Equipo</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="/about#valores" class="header__dropdown-link" role="menuitem">Valores</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="/about#nuestraHistoria" class="header__dropdown-link" role="menuitem">Nuestra Historia</a>
+                </li>
+                </ul>
+            </div>
+            </li>
+
+            <!-- MENTORES -->
+            <li class="header__menu-item header__menu-item--has-dropdown">
+            <%= link_to t('navigation.mentores'), mentores_path, class: "header__menu-link", "aria-haspopup" => "true", "aria-expanded" => "false" %>
+            <div class="header__dropdown" role="menu">
+                <ul class="header__dropdown-menu">
+                <li class="header__dropdown-item">
+                    <a href="/mentores#unas" class="header__dropdown-link" role="menuitem">De la UNAS</a>
+                </li>
+                <li class="header__dropdown-item">
+                    <a href="/mentores#instituciones" class="header__dropdown-link" role="menuitem">Otras Instituciones</a>
+                </li>
+                </ul>
+            </div>
+            </li>
+
+            <!-- CONTACTO -->
+            <li class="header__menu-item">
+            <%= link_to t('navigation.contacto'), contact_path, class: "header__menu-link" %>
+            </li>
+        </ul>
+        </nav>
+
+        <!-- LOGIN Y SELECTOR DE IDIOMA DESKTOP + LOGIN MÓVIL -->
+        <div class="header__actions">
+        <!-- SELECTOR DE IDIOMA -->
+        <%= render 'shared/language_switcher' %>
+        
+        <!-- LOGIN DESKTOP -->
+        <div class="header__login-container">
+            <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--login"
+            data-turbo="false"
+            aria-label="<%= t('navigation.iniciar_sesion') %>">
+            <i class="fa-solid fa-user"></i>
+            </a>
+            <span class="header__login-text"><%= t('navigation.iniciar_sesion') %></span>
+        </div>
+
+        <!-- LOGIN MÓVIL - AHORA AQUÍ FUERA DEL MENÚ -->
+        <a href="<%= new_user_session_path %>"
+            class="header__action-btn header__action-btn--mobile"
+            data-turbo="false"
+            aria-label="Iniciar sesión">
+            <i class="fas fa-user" aria-hidden="true"></i>
+        </a>
+        </div>
+
+        <button class="header__hamburger" aria-label="Abrir menú de navegación" aria-expanded="false">
+        <span class="header__hamburger-line" aria-hidden="true"></span>
+        <span class="header__hamburger-line" aria-hidden="true"></span>
+        <span class="header__hamburger-line" aria-hidden="true"></span>
+        </button>
+    </div>
+    </header>   
+
+
+    <section class="portfolio-section">
+        <div class="section-header">
+            <h2 class="section-title">PROGRAMAS</h2>
+            <p class="section-subtitle">Descubre nuestros programas innovadores que están transformando diferentes sectores con tecnología sostenible y soluciones inteligentes.</p>
+        </div>
+
+        <div class="programs-grid">
+            <!-- ORGANICGLOB -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/organicglob_incuba_unas.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">ORGANICGLOB</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Alimento balanceado para peces, formulado con proteína sostenible derivada de larvas, de bajo costo, que favorece la salud, el rendimiento y crecimiento óptimo de los peces, promoviendo la sostenibilidad ambiental.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DELISETAS -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/delisetas.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">DELISETAS</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Producimos setas nativas mediante bioconversión y biotecnología micológica, ofreciendo productos nutritivos y de alta calidad para consumidores preocupados por la salud, la gastronomía y el medio ambiente.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SMART MUSA -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/smart_musa_0.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">SMART MUSA</h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Cámara térmica que integra tecnologías IoT y App Móvil para la gestión precisa de parámetros ambientales. Producción de frijoles. Utilizar una cámara térmica moderna para la propagación de hijuelos de plátano.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ECOFLAME -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/ecoflame_INCUBA_UNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">ECOFLAME</h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Elaboración de briquetas ecológicas con residuos de cajonería, aprovechando su alto valor calórico como combustible sostenible. Este innovador producto ecoamigable mejora la cocción y la calidad de vida en zonas rurales.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TMAUT -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/tmaut.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">TMAUT</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Polvo o harina de hoja de papaya y hojas de matico, ampliamente reconocidas por sus propiedades naturales, que sirve para hacer ungüentos, emplastos terapéuticos y también tomarlo como un té medicinal relajante.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- LUMBRA -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/lumbra_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">LUMBRA </h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es una app diseñada para optimizar procesos en agroindustria, mejorando eficiencia y reduciendo costos. Dirigida a café-cacao, frutas, hortalizas y lácteos, ofrece flujogramas, catálogos de máquinas y costos detallados.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MAGYK -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/magik_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">MAGYK </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    La cosmética natural amazónica utiliza ingredientes autóctonos de la región, valorados por sus beneficios para piel, cabello y bienestar. Es una opción sostenible, respetuosa con la biodiversidad y el medio ambiente.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DERMOGÉNESIS RUNASH -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/runash_IncubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> DERMOGÉNESIS RUNASH </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Las láminas de piel de tilapia representan una alternativa innovadora, biológica, económica y eficaz para tratar quemaduras, acelerando la curación, reduciendo el dolor y superando a los apósitos convencionales.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- EXPLORA.ME -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/explorame.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">EXPLORA.ME</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Plataforma logística de viajeros es una herramienta integral que simplifica y optimiza el proceso de desplazamiento, conectando recursos y servicios para brindar comodidad, eficiencia y sostenibilidad.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CONTYSOFT -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/contysoft.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">CONTYSOFT</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es una app diseñada para optimizar procesos en agroindustria, mejorando eficiencia y reduciendo costos. Dirigida a café-cacao, frutas, hortalizas y lácteos, ofrece flujogramas, catálogos de máquinas y costos detallados.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- COCONAFRESH -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/cocona_fresh.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> COCONAFRESH </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Se busca alta productividad en cocona, reduciendo costos con altas densidades y rendimientos para competir en el mercado de esencia, industrializando su producción con cubos congelados fortificados con hierro para refrescos.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hope -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/hope_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> Hope </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Los adhesivos sintéticos industriales generan contaminantes que afectan la salud, causando enfermedades respiratorias y neurológicas. Reducir su uso mejora el aire y protege a personas de químicos peligrosos.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MR. PERUVIAN COFFEE -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/hhhcafe.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">MR. PERUVIAN COFFEE</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Se centra en la creación de miniinvernaderos automatizados para el cultivo de café. Estos invernaderos están diseñados para optimizar recursos, mejorar la productividad y asegurar la sostenibilidad ambiental.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- BAMBUFOR -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/bambufor_0.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">BAMBUFOR</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Somos un staff de profesionales altamente especializados en la cadena productiva del bambú, impulsando soluciones innovadoras y sostenibles con fines de mejora económica, ambiental, social y cultural dentro de nuestra región.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- TM ENERGY -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/tmenergi.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> TM ENERGY </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Diseño de un sistema HVAC para optimizar la producción de huevos en el galpón 4 de gallinas hy-line brown de la Facultad de Zootecnia, Universidad Nacional Agraria de la Seva,  Leoncio Prado.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Bio Josh -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/bio_josh_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> Bio Josh </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Reducir y valorizar residuos orgánicos mediante tecnologías en simbiosis: Bio Josh Compost para biodegradación y Hemetia Compost para larvas. Es más eficaz que el compost tradicional y la lombricultura.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Motion Sense -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/motion_sense_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">Motion Sense</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Motion Sense es un gadget con sensor de movimiento que detecta obstáculos y alerta con vibraciones, permitiendo moverse con seguridad. Es ligero, duradero, fácil de usar y mejora la vida de personas con discapacidad visual.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- ENGORDAMÁS -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/engordamas_incuba_unas.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">ENGORDAMÁS</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Suplemento nutricional en bloques diseñado para mejorar la salud y productividad del ganado en la selva peruana. Ayuda a combatir la desnutrición al proporcionar un equilibrio de nutrientes esenciales, favoreciendo un mejor desarrollo y rendimiento.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MALETERAS EXCURSIÓN LIBRE -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/excursion_libre.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> MALETERAS EXCURSIÓN LIBRE </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Debido a la nueva tendencia de hacer turismo en moto, veo oportunidad de negocio en crear y vender maletas para motos que puedan montarse y desmontarse con facilidad para llevarse a la habitación del hotel.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SHITARI -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/shitari.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> SHITARI </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Elaboración de aguardiente a base de caña de azúcar el aguardiente tiene un grado de 50 de volumen con un aroma profundo, pioneros en el destilado de caña de azúcar en la provincia de Leoncio Prado.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- CARBUM -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/innovate_bamboo_incubaUNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">CARBUM</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es un carbón e insecticida ecológico de bambú. Con las cañas y residuos del bambú mediante un proceso de pirólisis se obtiene productos ecológicos como el carbón vegetal de bambú y un líquido que sirve como insecticida ecológico.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- BELLA MODA -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/bellaModa_INCUBA_UNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">BELLA MODA</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Capas fabricadas con telas etiquetadas con un alto factor de protección ultravioleta (UPF), especialmente diseñadas para bloquear rayos UV. Un UPF de 50+ brinda máxima protección solar, ideal para climas soleados.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Runtu -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/runtu_INCUBA_UNAS.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> Runtu </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Producción de huevos azules y verdes, obtenidos mediante el manejo sostenible de gallinas a libre pastoreo, alto en vitamina A y E, ricos en Omega 3, proteínas, y bajos en colesterol y grasas saturadas.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Q´UMIR -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/qumir.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> Q´UMIR </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es una infusión aromática y refrescante a base de hierbas medicinales, cuidadosamente seleccionadas, tales como pampa orégano, lemon grass, orégano francés, menta, manzanilla y guisantes mariposa, ideal para relajarse.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- BEEWAYTA -->
+            <div class="program-card organicglob">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/beewayta.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">BEEWAYTA</h3>
+                        <p class="program-category">Alimentación Sostenible</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Implementación de un meliponario, con fines de conservación, turismo, educación e investigación de abejas nativas sin aguijón, promoviendo la polinización sostenible, la biodiversidad local y el desarrollo de productos derivados para la comunidad.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- AKIN JOURNEYS -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/akin_incuba_unas.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">AKIN JOURNEYS</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Emprendimiento de turismo que brinda la oportunidad de experimentar, vivir y aprender las bondades que la provincia de Leoncio Prado ofrece al mundo, destacando su valor cultural y natural mediante paquetes turísticos que construyan identidad.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KHALIMA -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/qhalima_incuba_unas.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> KHALIMA </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Son productos de aceites esenciales a base de cáscaras frutales de la Amazonía, extraídos para preservar sus propiedades naturales y ofrecer beneficios aromáticos y terapéuticos, ideales para el cuidado personal y el bienestar.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- KILLIMSA -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/killimsa.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> KILLIMSA </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Producir carbón vegetal que provenga de los residuos generados en la transformación primaria del bambú y, a la vez, provenientes de plantaciones debidamente registrados y manejados de manera sostenible y responsable.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SELVATE -->
+            <div class="program-card delisetas">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/selvate.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title">SELVATE</h3>
+                        <p class="program-category">Biotecnología Alimentaria</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es una infusión de hortalizas funcionales descongestionantes, 100% natural y sin reacciones adversas. Actúa desde la primera toma, cura las enfermedades y secuelas, induce a expectorar, elimina gérmenes y es un antibiótico natural.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- INNOVA 3G -->
+            <div class="program-card smart-musa">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/bionatuplast.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> INNOVA 3G </h3>
+                        <p class="program-category">Tecnología IoT</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Es un plástico que se degrada por la acción de microorganismos como bacterias, hongos y algas, compuesto de materiales como almidón y celulosa, descomponiéndose en dióxido de carbono, biomasa, agua y sales minerales.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- MIKUY -->
+            <div class="program-card ecoflame">
+                <div class="program-header">
+                    <div class="program-logo">
+                        <%= image_tag "programas/mikuy_peru_incuba.webp", class: "program-logo", loading: "lazy"  %>
+                    </div>
+                    <div>
+                        <h3 class="program-title"> KILLIMSA </h3>
+                        <p class="program-category">Energía Renovable</p>
+                    </div>
+                </div>
+                
+                <p class="program-description">
+                    Barritas nutritivas de chocolate con cáscara de cacao y pulpa de café, ricas en nutrientes y antioxidantes. Combaten anemia, hipocalcemia y desnutrición, mejorando la digestión y fortaleciendo el sistema inmunológico. Ideales para una alimentación equilibrada.
+                </p>
+
+                <div class="social-links">
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://web.facebook.com/INCUBAUNAS" class="social-link linkedin">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Footer -->
+    <footer class="footer">
+        <div class="footer__decoration footer__decoration--top-left"></div>
+        <div class="footer__decoration footer__decoration--bottom-right"></div>
+
+        <div class="footer__container">
+            <!-- Columna izquierda: Logo y suscripción -->
+            <div class="footer__column footer__column--main">
+            <div class="footer__logo-container">
+                <div class="footer__logo">
+                <span class="footer__logo-icon">I</span>NCUBA UNAS
+                </div>
+                <p class="footer__description">
+                Incuba UNAS es una incubadora de empresas que busca impulsar el desarrollo de
+                emprendimientos innovadores y sostenibles en la región.
+                </p>
+            </div>
+
+            <form class="footer__subscribe" onsubmit="sendMail(event)">
+                <label for="emailInput" class="footer__label">Correo electrónico</label>
+                <input type="email" id="emailInput" class="footer__input" placeholder="Enter email" required>
+                
+                <button type="submit" class="footer__button">
+                <i class="fas fa-arrow-right"></i> Contacto
+                </button>
+            </form>
+
+            <script>
+                function sendMail(event) {
+                event.preventDefault(); // evita que el formulario recargue la página
+                const email = document.getElementById('emailInput').value;
+                window.location.href = `mailto:incubaunas@unas.edu.pe?subject=Contacto&body=Correo del usuario: ${email}`;
+                }
+            </script>
+
+
+
+            <div class="footer__social">
+                <a href="https://instagram.com" class="footer__social-link" aria-label="Instagram">
+                <i class="fab fa-instagram" aria-hidden="true"></i>
+                </a>
+                <a href="https://twitter.com" class="footer__social-link" aria-label="Twitter">
+                <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+                <a href="https://facebook.com" class="footer__social-link" aria-label="Facebook">
+                <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </div>
+
+
+            </div>
+
+            <!-- Columnas de enlaces -->
+            <div class="footer__column">
+            <h3 class="footer__heading">Principal</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Programas</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Nosotros</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Portafolio</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Equipo</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Contacto</a></li>
+            </ul>
+            </div>
+
+            <div class="footer__column">
+            <h3 class="footer__heading">Nosotros</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">Otros servicios</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Tutores</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Eventos</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Pro Innova</a></li>
+            </ul>
+            </div>
+
+            <div class="footer__column">
+            <h3 class="footer__heading">Enlaces de Interés</h3>
+            <ul class="footer__links">
+                <li class="footer__item"><a href="#" class="footer__link">UNAS</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">PRO Innóvate</a></li>
+                <li class="footer__item"><a href="#" class="footer__link">Ministerio de la Producción</a></li>
+            </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animación de entrada cuando los elementos entran en viewport
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observar las tarjetas cuando se cargan
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.program-card').forEach(card => {
+                observer.observe(card);
+            });
+
+            // Efecto de parallax sutil en el título
+            window.addEventListener('scroll', function() {
+                const scrolled = window.pageYOffset;
+                const parallax = document.querySelector('.section-header');
+                const speed = scrolled * 0.3;
+                parallax.style.transform = `translateY(${speed}px)`;
+            });
+
+            // Efecto de hover mejorado para los logos
+            document.querySelectorAll('.program-logo').forEach(logo => {
+                logo.addEventListener('mouseenter', function() {
+                    this.style.transform = 'rotate(0deg) scale(1.1)';
+                });
+                
+                logo.addEventListener('mouseleave', function() {
+                    this.style.transform = 'rotate(0deg) scale(1)';
+                });
+            });
+
+            // Efecto de click en las tarjetas
+            document.querySelectorAll('.program-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.social-links')) {
+                        this.style.transform = 'scale(0.98)';
+                        setTimeout(() => {
+                            this.style.transform = '';
+                        }, 150);
+                    }
+                });
+            });
+        });
+
+        // Efecto de partículas flotantes (opcional)
+        function createFloatingParticles() {
+            const particles = document.createElement('div');
+            particles.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+            `;
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.style.cssText = `
+                    position: absolute;
+                    width: 4px;
+                    height: 4px;
+                    background: rgba(102, 126, 234, 0.3);
+                    border-radius: 50%;
+                    animation: float ${5 + Math.random() * 10}s infinite linear;
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                `;
+                particles.appendChild(particle);
+            }
+            
+            document.body.appendChild(particles);
+        }
+
+        // Agregar keyframes para las partículas
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes float {
+                0% { transform: translateY(0px) rotate(0deg); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Inicializar partículas
+        createFloatingParticles();
+    </script>
+</body>
+</html>

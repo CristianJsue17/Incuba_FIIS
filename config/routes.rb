@@ -106,6 +106,7 @@ post 'eventos/:id/consultar_dni', to: 'inscripciones_event#consultar_dni', as: '
 # Ruta para mostrar confirmación de inscripción de eventos
 get 'inscripciones_event/confirmacion', to: 'inscripciones_event#confirmacion', as: 'confirmacion_inscripcion_evento'
   
+get 'programas', to: 'programs#index', as: 'programas'
 
 # Rutas para roles de participante y mentor
 # Estas rutas deben ir después de las rutas de admin para evitar conflictos

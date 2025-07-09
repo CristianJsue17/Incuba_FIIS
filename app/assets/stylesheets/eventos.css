@@ -320,7 +320,7 @@ html {
 }
 
 .evento-content h2 {
-  font-size: 2.5rem;
+  font-size: 2.2rem;
   color: #333;
   margin: 0 0 15px;
   font-weight: 700;
@@ -988,11 +988,19 @@ html {
   }
 
   .section-header h2 i {
-    font-size: 1.4rem;
+    font-size: 2.4rem;
   }
 
   .section-header p {
-    font-size: 0.95rem;
+    font-size: 1.2rem;
+  }
+
+  .disponibilidad-info{
+    font-size: 1rem;
+  }
+
+  .evento-content h2 {
+    font-size: 1.8rem;
   }
 }
 
